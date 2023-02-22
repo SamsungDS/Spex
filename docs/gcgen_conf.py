@@ -7,6 +7,9 @@ from spexs2 import xml  # TODO: for debugging
 from abc import abstractmethod, ABC
 
 
+RESERVED = "RESERVED"
+
+
 class EntityMeta(TypedDict):
     title: NotRequired[str]
     fig_id: str
@@ -64,13 +67,15 @@ class FigureExtractor:
 
     def extract_data_subtbls(self, entity_base: EntityMeta, data: Element) -> Iterator[Entity]:
         tbls = Xpath.elems(data, "./table")
+        assert len(tbls) <= 1, "invariant broken - expected each field to have at most 1 sub-table"
         if len(tbls) == 0:
             return
-        elif len(tbls) > 1:
-            for ndx, tbl in enumerate(tbls):
-                ent = {**entity_base}
-                ent["fig_id"] = f"""{ent["fig_id"]}{ndx}"""
-                yield from self.__parse(ent, tbl)
+        # elif len(tbls) > 1:
+        #     # TODO: remove iff invariant above holds
+        #     for ndx, tbl in enumerate(tbls):
+        #         ent = {**entity_base}
+        #         ent["fig_id"] = f"""{ent["fig_id"]}{ndx}"""
+        #         yield from self.__parse(ent, tbl)
         else:
             yield from self.__parse(entity_base, tbls[0])
 
@@ -233,6 +238,21 @@ class StructTable(TypedDict):
     fields: List[Union["StructTable", StructField]]
 
 
+def data_extract_field_brief(row: Element, data: Element, BRIEF_MAXLEN=60):
+    p1_opt = Xpath.elem_first(data, "./p[1]")
+    if p1_opt is None:
+        return None
+    p1 = p1_opt
+    txt = "".join(p1.itertext()).strip()
+    if ":" not in txt:
+        return None
+    brief = txt.split(":", 1)[1].strip().rstrip(".")
+    if len(brief) <= BRIEF_MAXLEN:
+        return brief
+    _brief = brief.split(".", 1)[0]
+    return _brief if len(_brief) <= BRIEF_MAXLEN else None
+
+
 # should have way of naming these tables also.
 # maybe a map from fig-id to str name
 class ValueTableExtractor(FigureExtractor):
@@ -271,6 +291,7 @@ class ValueTableExtractor(FigureExtractor):
         for row in Xpath.elems(self.tbl, "./tr/td[1]/parent::tr"):
             try:
                 yield row, self.val_extract(row), self.data_extract(row)
+                xrow = "".join(row.itertext()).lstrip().lower()
             except Exception as e:
                 if "".join(row.itertext()).lstrip().lower().startswith("notes:"):
                     continue
@@ -290,27 +311,18 @@ class ValueTableExtractor(FigureExtractor):
         p1 = Xpath.elem_first_req(data, "./p[1]")
         txt = "".join(p1.itertext()).strip()
         if txt.lower() == "reserved":
-            return "-reserved-"  # TODO: better magic value needed
+            return RESERVED
         txt_parts = txt.split(":", 1)
-        if len(txt_parts) == 1:
-            return txt
-        return txt_parts[0]
+        # generic naming strategy
+        return txt_parts[0].replace(" ", "_").upper()
 
     def data_extract_field_brief(self, row: Element, data: Element) -> Optional[str]:
-        p1 = Xpath.elem_first_req(data, "./p[1]")
-        txt = "".join(p1.itertext()).strip()
-        if ":" not in txt:
-            return None
-        brief = txt.split(":", 1)[1].strip().rstrip(".")
-        if len(brief) <= self.BRIEF_MAXLEN:
-            return brief
-        _brief = brief.split(".", 1)[0]
-        return _brief if len(_brief) <= self.BRIEF_MAXLEN else None
+        return data_extract_field_brief(row, data, self.BRIEF_MAXLEN)
 
 
 class StructTableExtractor(FigureExtractor, ABC):
     rgx_range = re_compile(r"(?P<end>\d+)\s*(:\s*(?P<start>\d+))?")
-    rgx_field_lbl = re_compile(r"(\((?P<lbl>[^\)]*)\)\s*:)")
+    rgx_field_lbl = re_compile(r"^.*\s+(\((?P<lbl>[^\)]*)\)\s*:)")
 
     @property
     @abstractmethod
@@ -396,32 +408,22 @@ class StructTableExtractor(FigureExtractor, ABC):
             p1 = Xpath.elem_first_req(data, "./p[1]")
             txt = "".join(p1.itertext()).strip()
             if txt.lower() == "reserved":
-                return "-reserved-"  # TODO: better magic value needed
+                return RESERVED
             m = self.rgx_field_lbl.match(txt)
             if m is not None:
-                breakpoint()
+                return m.group("lbl").replace(" ", "").lower()
             txt_parts = txt.split(":", 1)
-            if len(txt_parts) == 1:
-                return txt
-            return txt_parts[0]
+            # generic naming strategy
+            # TODO: improve, replace certain words/sentences by certain abbreviations
+            #       namespace -> ns, pointer -> ptr
+            gen_name = "".join(w[0] for w in txt_parts[0].split()).lower()
+            return gen_name
         except Exception as e:
             breakpoint()
             raise e
 
     def data_extract_field_brief(self, row: Element, data: Element) -> Optional[str]:
-        # TODO: apply similar for value extraction
-        p1_opt = Xpath.elem_first(data, "./p[1]")
-        if p1_opt is None:
-            return None
-        p1 = p1_opt
-        txt = "".join(p1.itertext()).strip()
-        if ":" not in txt:
-            return None
-        brief = txt.split(":", 1)[1].strip().rstrip(".")
-        if len(brief) <= self.BRIEF_MAXLEN:
-            return brief
-        _brief = brief.split(".", 1)[0]
-        return _brief if len(_brief) <= self.BRIEF_MAXLEN else None
+        return data_extract_field_brief(row, data, self.BRIEF_MAXLEN)
 
 
 class BitsTableExtractor(StructTableExtractor):
