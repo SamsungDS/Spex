@@ -1,8 +1,16 @@
-from typing import TYPE_CHECKING, Dict, Iterator, TypedDict, NotRequired, Protocol, List, Union
+from typing import TYPE_CHECKING, Dict, Iterator, TypedDict, NotRequired, Protocol, List, Union, runtime_checkable
+
 
 if TYPE_CHECKING:
-    from spexs2.extractors.figure import FigureExtractor
     from spexs2.xml import Element
+
+
+JSON = Union[None, bool, str, float, int, List['JSON'], Dict[str, 'JSON']]
+
+
+@runtime_checkable
+class ToJson(Protocol):
+    def to_json(self) -> JSON: ...
 
 
 class EntityMeta(TypedDict):
@@ -44,8 +52,8 @@ class ValueTable(TypedDict):
 
 
 class Range(TypedDict):
-    start: int
-    end: int
+    low: int
+    high: int
 
 
 class StructField(TypedDict):

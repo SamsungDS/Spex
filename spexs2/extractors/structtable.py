@@ -1,19 +1,16 @@
 from abc import ABC, abstractmethod
 from re import compile as re_compile
-from typing import TYPE_CHECKING, Iterator, Tuple, Union, Optional, List
-from spexs2.extractors.figure import FigureExtractor
+from typing import Iterator, Tuple, Union, List, Optional
+from spexs2.extractors.figure import FigureExtractor, RowResult
 from spexs2.extractors.helpers import data_extract_field_brief
 from spexs2.xml import Element, Xpath
-from spexs2.defs import RESERVED
+from spexs2.defs import RESERVED, Entity, EntityMeta, Range, StructField, StructTable
+from spexs2.lint import Code
 from spexs2 import xml  # TODO: for debugging
 
 
-if TYPE_CHECKING:
-    from spexs2.defs import Entity, EntityMeta, Range, StructField, StructTable
-
-
 class StructTableExtractor(FigureExtractor, ABC):
-    rgx_range = re_compile(r"(?P<end>\d+)\s*(:\s*(?P<start>\d+))?")
+    rgx_range = re_compile(r"(?P<high>\d+)\s*(:\s*(?P<low>\d+))?")
     rgx_field_lbl = re_compile(r"^.*\s+(\((?P<lbl>[^\)]*)\)\s*:)")
 
     @property
@@ -25,8 +22,11 @@ class StructTableExtractor(FigureExtractor, ABC):
         fields: List[Union[StructTable, StructField]] = []
         for row, val, data in self.rows():
             val_cleaned: Union[str, Range] = self.val_clean(row, val)
+            if val_cleaned == "…":
+                # skip these filler rows
+                continue
             if isinstance(val_cleaned, dict):  # is range
-                override_key = (self.fig_id, str(val_cleaned["start"]))
+                override_key = (self.fig_id, str(val_cleaned["low"]))
             else:
                 override_key = (self.fig_id, val_cleaned)
 
@@ -35,7 +35,7 @@ class StructTableExtractor(FigureExtractor, ABC):
                 label = self.data_extract_field_label(row, data)
 
             sfield: StructField = {
-                "range": self.val_clean(row, val),
+                "range": val_cleaned,
                 "label": label
             }
 
@@ -62,22 +62,37 @@ class StructTableExtractor(FigureExtractor, ABC):
             "fields": fields
         }
 
-    def rows(self) -> Iterator[Tuple[Element, Element, Element]]:
+    def row_iter(self) -> Iterator[Element]:
         # select first td where parent is a tr
-        # .. then select the parent (tr) again
+        # ... then select the parent (tr) again
         # -> filters out header (th) rows
-        # TODO: maybe filter out iterator from try/except
-        for row in Xpath.elems(self.tbl, "./tr/td[1]/parent::tr"):
+        yield from Xpath.elems(self.tbl, "./tr/td[1]/parent::tr")
+
+    def rows_on_err(self, row, err: Exception) -> Optional[RowResult]:
+        row_txt = "".join(row.itertext()).lstrip().lower()
+        if row_txt.startswith("…"):
+            return None  # SKIP
+        elif row_txt.startswith("notes:"):
+            raise StopIteration  # abort further processing
+        else:
+            raise err  # propagate actual error
+
+    def rows(self) -> Iterator[Tuple[Element, Element, Element]]:
+        for row in self.row_iter():
             try:
                 yield row, self.val_extract(row), self.data_extract(row)
+            except StopIteration:
+                return
             except Exception as e:
-                row_txt = "".join(row.itertext()).lstrip().lower()
-                # TODO: hack - skip notes/... rows.
-                if row_txt.startswith("notes:") or row_txt.startswith("…"):
-                    continue
-                else:
-                    breakpoint()
-                    raise e
+                try:
+                    return self.rows_on_err(row, e)
+                except StopIteration:
+                    return
+                except Exception as err:
+                    if err != e:
+                        raise err from e
+                    else:
+                        raise e
 
     def val_extract(self, row: Element) -> Element:
         return Xpath.elem_first_req(row, "./td[1]")
@@ -86,11 +101,16 @@ class StructTableExtractor(FigureExtractor, ABC):
         val = "".join(val_cell.itertext()).strip().lower()
         m = self.rgx_range.match(val)
         if not m:  # cannot parse into a range, sadly
+            # elided rows are simply skipped.
+            if val != "…":
+                self.add_issue(Code.V1002, row=val)
             return val
-        end = int(m.group("end"))
-        _start = m.group("start")
-        start = int(_start) if _start is not None else end
-        return {"start": start, "end": end}
+        high = int(m.group("high"))
+        _low = m.group("low")
+        low = int(_low) if _low is not None else high
+        if low > high:
+            self.add_issue(Code.V1003, row=val)
+        return {"low": low, "high": high}
 
     def data_extract(self, row: Element) -> Element:
         return Xpath.elem_first_req(row, "./td[2]")

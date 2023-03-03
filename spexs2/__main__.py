@@ -2,11 +2,9 @@ import argparse
 import json
 from pathlib import Path
 import textwrap
-from typing import Optional, Union, Dict, List, Protocol, Iterator
+from typing import Protocol
 from spexs2 import parse
-
-
-JSON = Union[None, bool, str, float, int, List['JSON'], Dict[str, 'JSON']]
+from spexs2.defs import JSON
 
 
 def arg_input(arg: str) -> Path:
@@ -130,8 +128,10 @@ def main():
             w.write_meta("specification", sdoc.key)
             w.write_meta("revision", sdoc.rev)
             w.write_meta("format version", 1)  # TODO define elsewhere
-            for entity in sdoc.parse():
+            dparser = sdoc.get_parser()
+            for entity in dparser.parse():
                 w.write_entity(entity)
+            w.write_meta("lint", dparser.linter.to_json())
 
 
 if __name__ == "__main__":

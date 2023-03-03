@@ -3,21 +3,49 @@ from typing import TYPE_CHECKING, Dict, Tuple, Type, Optional, Iterator
 from spexs2.xml import Xpath
 from spexs2.extractors.valuetable import ValueTableExtractor
 from spexs2.extractors.structtable import BitsTableExtractor, BytesTableExtractor
+from spexs2.lint import LintEntry, Code, Linter
+from spexs2.defs import JSON, Entity, EntityMeta
 
 if TYPE_CHECKING:
     from spexs2.xml import Element
     from spexs2.extractors.figure import FigureExtractor
-    from spexs2.defs import Entity, EntityMeta
+
+
+class DocLinter:
+    """
+    Records linting issues raised from transforming the HTML to a JSON model.
+
+    Implements the `spexs2.lint.Linter` protocol.
+    """
+    def __init__(self):
+        self._lint_issues = []
+
+    def add_issue(self, code: Code, fig: str, *,
+                  msg: str = "",
+                  row: Optional[str] = None) -> LintEntry:
+
+        l_entry = LintEntry(
+            code=code,
+            fig=fig,
+            msg=msg,
+            row=row
+        )
+        self._lint_issues.append(l_entry)
+        return l_entry
+
+    def to_json(self) -> JSON:
+        return [l_entry.to_json() for l_entry in self._lint_issues]
 
 
 class DocumentParser:
     rgx_fig_id = re_compile(r"Figure\s+(?P<figid>[^\s^:]+).*")
-    fig_extractor_overrides: Dict[str, "FigureExtractor"] = {}
+    fig_extractor_overrides: Dict[str, Type["FigureExtractor"]] = {}
 
     def __init__(self, doc: "Element", spec: str, revision: str):
         self.__doc = doc
         self.__spec = spec
         self.__revision = revision
+        self.__linter = DocLinter()
         self.__post_init__()
 
     def __post_init__(self) -> None:
@@ -51,6 +79,10 @@ class DocumentParser:
     def doc(self) -> "Element":
         return self.__doc
 
+    @property
+    def linter(self) -> Linter:
+        return self.__linter
+
     def _on_extract_figure_title(self, tbl: "Element") -> Optional[str]:
         """Extract title from figure table."""
         # title = "".join(Xpath.elem_first_req(tbl, "./tr[1]").itertext()).strip()
@@ -69,7 +101,7 @@ class DocumentParser:
         assert m is not None, f"failed to extract figure ID from {figure_title}"
         return m.group("figid")
 
-    def iter_figures(self) -> Iterator[Tuple["EntityMeta", "Element"]]:
+    def iter_figures(self) -> Iterator[Tuple[EntityMeta, "Element"]]:
         for tbl in Xpath.elems(self.doc, "./body/table"):
             # Kludge: should be fixed in source documents, but a few tables
             # (Fig202, Fig223 in Base 2.0c spec) are wrapped in an extra table
@@ -107,7 +139,7 @@ class DocumentParser:
         e = self.extractor_defaults().get(td1_txt, None)
         return e  # may be an extractor, may be None
 
-    def _on_parse_fig(self, entity: "EntityMeta", tbl: "Element") -> Iterator["Entity"]:
+    def _on_parse_fig(self, entity: EntityMeta, tbl: "Element") -> Iterator[Entity]:
         """Parse figure, emitting one or more entities.
 
         NOTE: a figure table may contain nested tables which themselves
@@ -117,12 +149,15 @@ class DocumentParser:
         if extractor_cls is None:
             return
 
-        e = extractor_cls(self, entity, tbl, self._on_parse_fig)
+        e = extractor_cls(self, entity, tbl, self._on_parse_fig, self.__linter)
         yield from e()
 
-    def parse(self) -> Iterator["EntityMeta"]:
+    def parse(self) -> Iterator[EntityMeta]:
         # for each eligible top-level figure
         for entity, tbl in self.iter_figures():
             # ... produce one or more entities (parsed figures)
             # depending on the figure type and whether it contains nested tables.
             yield from self._on_parse_fig(entity, tbl)
+
+
+__all__ = ["DocumentParser"]
