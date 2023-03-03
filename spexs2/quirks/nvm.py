@@ -8,6 +8,7 @@ from spexs2.xml import Element, Xpath
 
 class NvmFig23(StructTableExtractor):
     type = "bits"
+    _fig24: Optional[Element]
 
     def __post_init__(self) -> None:
         self._fig24 = None
@@ -18,7 +19,9 @@ class NvmFig23(StructTableExtractor):
         except StopIteration as e:
             raise e
         except Exception as e:
-            row_txt = "".join(row.itertext()).lstrip().lower()
+            row_txt = "".join(
+                e.decode("utf-8") if isinstance(e, bytes) else e
+                for e in row.itertext()).lstrip().lower()
             if row_txt.startswith("figure 24"):
                 self._fig24 = row
             raise StopIteration  # stop further processing

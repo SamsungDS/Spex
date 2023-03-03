@@ -11,7 +11,10 @@ def data_extract_field_brief(row: "Element", data: "Element", brief_maxlen=60) -
     if p1_opt is None:
         return None
     p1 = p1_opt
-    txt = "".join(p1.itertext()).strip()
+    txt = "".join(
+        # typestubs say we can receive either str's or byte's
+        e.decode("utf-8") if isinstance(e, bytes) else e
+        for e in p1.itertext()).strip()
     if ":" not in txt:
         return None
     brief = txt.split(":", 1)[1].strip().rstrip(".")

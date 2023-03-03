@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Iterator, List, Optional
+from typing import TYPE_CHECKING, Iterator, List, Optional, Union
 from spexs2.extractors.figure import FigureExtractor
 from spexs2.extractors.helpers import data_extract_field_brief
 from spexs2.xml import Xpath, Element
@@ -14,7 +14,7 @@ class ValueTableExtractor(FigureExtractor):
     def __call__(self) -> Iterator["Entity"]:
         fields: List[ValueField] = []
         for row, val, data in self.rows():
-            val_cleaned: Union[str, Range] = self.val_clean(row, val)
+            val_cleaned: Union[str, int] = self.val_clean(row, val)
             if val_cleaned == "…":
                 # skip these filler rows
                 continue
@@ -43,16 +43,19 @@ class ValueTableExtractor(FigureExtractor):
     def val_extract(self, row: Element) -> Element:
         return Xpath.elem_first_req(row, "./td[1]")
 
-    def val_clean(self, row: Element, val_cell: Element) -> str:
+    def val_clean(self, row: Element, val_cell: Element) -> Union[str, int]:
         # TODO: read as number if possible, complain if not a hex value using the 'h' suffix
-        return "".join(val_cell.itertext()).strip().lower()
+        return "".join(
+            e.decode("utf-8") if isinstance(e, bytes) else e
+            for e in val_cell.itertext()).strip().lower()
 
     def data_extract(self, row: Element) -> Element:
         return Xpath.elem_first_req(row, "./td[2]")
 
     def data_extract_field_label(self, row: Element, data: Element) -> str:
         p1 = Xpath.elem_first_req(data, "./p[1]")
-        txt = "".join(p1.itertext()).strip()
+        txt = "".join(
+            e.decode("utf-8") if isinstance(e, bytes) else e for e in p1.itertext()).strip()
         if txt.lower() == "reserved":
             return RESERVED
         txt_parts = txt.split(":", 1)

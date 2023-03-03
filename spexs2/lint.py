@@ -44,13 +44,13 @@ class LintEntry:
             assert self.row is not None, "R|L|V codes point to a row or label/value within the row, row field must be set"
 
     def to_json(self) -> JSON:
-        ret = {"code": self.code.name, "msg": self.msg, "fig": self.fig, "context": self.ctx}
+        ret: Dict[str, JSON] = {"code": self.code.name, "msg": self.msg, "fig": self.fig, "context": self.ctx}
         if self.row is not None:
             ret["row"] = self.row
         return ret
 
 
-class Linter(ToJson):
+class Linter(Protocol):
     def add_issue(self, c: Code, fig: str, *,
                   msg: Optional[str] = None,
                   row: Optional[str] = None) -> LintEntry: ...

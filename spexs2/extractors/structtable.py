@@ -66,7 +66,9 @@ class StructTableExtractor(FigureExtractor, ABC):
         return Xpath.elem_first_req(row, "./td[1]")
 
     def val_clean(self, row: Element, val_cell: Element) -> Union[str, "Range"]:
-        val = "".join(val_cell.itertext()).strip().lower()
+        val = "".join(
+            e.decode("utf-8") if isinstance(e, bytes) else e
+            for e in val_cell.itertext()).strip().lower()
         m = self.rgx_range.match(val)
         if not m:  # cannot parse into a range, sadly
             # elided rows are simply skipped.
@@ -86,7 +88,9 @@ class StructTableExtractor(FigureExtractor, ABC):
     def data_extract_field_label(self, row: Element, data: Element) -> str:
         try:
             p1 = Xpath.elem_first_req(data, "./p[1]")
-            txt = "".join(p1.itertext()).strip()
+            txt = "".join(
+                e.decode("utf-8") if isinstance(e, bytes) else e
+                for e in p1.itertext()).strip()
             if txt.lower() == "reserved":
                 return RESERVED
             m = self.rgx_field_lbl.match(txt)

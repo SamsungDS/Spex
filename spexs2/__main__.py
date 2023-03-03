@@ -2,9 +2,14 @@ import argparse
 import json
 from pathlib import Path
 import textwrap
-from typing import Protocol
+from typing import Protocol, Dict, TypedDict, List
 from spexs2 import parse
 from spexs2.defs import JSON
+
+
+class S2Model(TypedDict):
+    meta: Dict[str, JSON]
+    entities: List[JSON]
 
 
 def arg_input(arg: str) -> Path:
@@ -36,7 +41,7 @@ class Writer(Protocol):
 class StdoutWriter(Writer):
     def __init__(self, src: Path):
         self._src = src
-        self._doc = {
+        self._doc: S2Model = {
             "meta": {},
             "entities": [],
         }
@@ -65,7 +70,7 @@ class FileWriter:
         fname = src.name[:-len(src.suffix)]
         _dst = output / f"{fname}.json"
         self._dst = open(_dst, "w")
-        self._doc = {
+        self._doc: S2Model = {
             "meta": {},
             "entities": [],
         }

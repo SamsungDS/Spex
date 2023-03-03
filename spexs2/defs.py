@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, Dict, Iterator, TypedDict, NotRequired, Protoc
 
 if TYPE_CHECKING:
     from spexs2.xml import Element
+    from spexs2.extractors.figure import FigureExtractor
 
 
 JSON = Union[None, bool, str, float, int, List['JSON'], Dict[str, 'JSON']]
@@ -39,7 +40,7 @@ RESERVED = "RESERVED"
 
 
 class ValueField(TypedDict):
-    val: str
+    val: Union[str, int]
     label: str
     brief: NotRequired[str]
 

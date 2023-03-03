@@ -7,7 +7,7 @@ from spexs2.lint import LintEntry, Code, Linter
 from spexs2.defs import JSON, Entity, EntityMeta
 
 if TYPE_CHECKING:
-    from spexs2.xml import Element
+    from spexs2.xml import ElementTree, Element
     from spexs2.extractors.figure import FigureExtractor
 
 
@@ -21,13 +21,13 @@ class DocLinter:
         self._lint_issues = []
 
     def add_issue(self, code: Code, fig: str, *,
-                  msg: str = "",
+                  msg: Optional[str] = None,
                   row: Optional[str] = None) -> LintEntry:
 
         l_entry = LintEntry(
             code=code,
             fig=fig,
-            msg=msg,
+            msg="" if msg is None else msg,
             row=row
         )
         self._lint_issues.append(l_entry)
@@ -41,7 +41,7 @@ class DocumentParser:
     rgx_fig_id = re_compile(r"Figure\s+(?P<figid>[^\s^:]+).*")
     fig_extractor_overrides: Dict[str, Type["FigureExtractor"]] = {}
 
-    def __init__(self, doc: "Element", spec: str, revision: str):
+    def __init__(self, doc: "ElementTree", spec: str, revision: str):
         self.__doc = doc
         self.__spec = spec
         self.__revision = revision
@@ -76,7 +76,7 @@ class DocumentParser:
         return self.__revision
 
     @property
-    def doc(self) -> "Element":
+    def doc(self) -> "ElementTree":
         return self.__doc
 
     @property
@@ -88,10 +88,13 @@ class DocumentParser:
         # title = "".join(Xpath.elem_first_req(tbl, "./tr[1]").itertext()).strip()
         fig_tr = Xpath.elem_first(tbl, "./tr[1]")
         assert fig_tr is not None
-        title = "".join(fig_tr.itertext()).strip()
+        title = "".join(
+            e.decode("utf-8") if isinstance(e, bytes) else e
+            for e in fig_tr.itertext()).strip()
         # remove entire tr to simplify downstream processing between top-level and
         # nested figures.
-        fig_tr.getparent().remove(fig_tr)
+        if parent := fig_tr.getparent():
+            parent.remove(fig_tr)
         return title if "Figure" in title else None
 
     def _on_extract_figure_id(self, tbl: "Element", figure_title: str) -> str:
@@ -130,7 +133,9 @@ class DocumentParser:
         td1 = Xpath.elem_first(tbl, "./tr[1]/*[1]")
         if td1 is None:
             return None
-        td1_txt = "".join(td1.itertext()).lower().strip()
+        td1_txt = "".join(
+            e.decode("utf-8") if isinstance(e, bytes) else e
+            for e in td1.itertext()).lower().strip()
         td1_txt = {
             "byte": "bytes",
             "bit": "bits",

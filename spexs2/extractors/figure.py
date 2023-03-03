@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Optional, Iterator, Tuple
 from spexs2.xml import Element, Xpath
 from spexs2.lint import Linter, LintEntry, Code
@@ -12,7 +13,7 @@ if TYPE_CHECKING:
 RowResult = Tuple[Element, Element, Element]
 
 
-class FigureExtractor:
+class FigureExtractor(ABC):
     BRIEF_MAXLEN: int = 60
     __linter: Linter
 
@@ -104,6 +105,15 @@ class FigureExtractor:
         else:
             yield from self.__parse(entity_base, tbls[0])
 
+    @abstractmethod
     def __call__(self) -> Iterator["Entity"]:
         # must drive the process from this fn
+        ...
+
+    @abstractmethod
+    def val_extract(self, row: Element) -> Element:
+        ...
+
+    @abstractmethod
+    def data_extract(self, row: Element) -> Element:
         ...

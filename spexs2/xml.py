@@ -2,7 +2,9 @@ from typing import Optional, cast, List, Union
 from lxml.etree import _Element, _ElementTree
 from lxml import etree
 
-Element = Union[_Element, _ElementTree]
+# Element = Union[_Element, _ElementTree]
+Element = _Element
+ElementTree = _ElementTree
 
 
 def fmt(elem: Element) -> str:
@@ -23,7 +25,7 @@ def spit(path: str, elem: Element) -> None:
 
 class Xpath:
     @classmethod
-    def elems(cls, e: Element, query: str) -> List[Element]:
+    def elems(cls, e: Union[ElementTree, Element], query: str) -> List[Element]:
         res = e.xpath(query)
         assert isinstance(res, list)
         # cannot use type Element with isinstance
@@ -39,19 +41,19 @@ class Xpath:
         return cast(List[Element], res)
 
     @classmethod
-    def elem_first(cls, e: Element, query: str) -> Optional[Element]:
+    def elem_first(cls, e: Union[ElementTree, Element], query: str) -> Optional[Element]:
         res = cls.elems(e, query)
         return res[0] if len(res) > 0 else None
 
     @classmethod
-    def elem_first_req(cls, e: Element, query: str) -> Optional[Element]:
+    def elem_first_req(cls, e: Union[ElementTree, Element], query: str) -> Element:
         res = cls.elems(e, query)
         if len(res) == 0:
             raise RuntimeError("failed to find required element")
         return res[0]
 
     @classmethod
-    def attrs(cls, e: Element, query: str) -> List[str]:
+    def attrs(cls, e: Union[ElementTree, Element], query: str) -> List[str]:
         res = e.xpath(query)
         assert isinstance(res, list)
         if len(res) > 0 and not isinstance(res[0], str):
@@ -61,14 +63,14 @@ class Xpath:
         return cast(List[str], res)
 
     @classmethod
-    def attr_first(cls, e: Element, query: str) -> Optional[str]:
+    def attr_first(cls, e: Union[ElementTree, Element], query: str) -> Optional[str]:
         res = cls.attrs(e, query)
         return res[0] if len(res) > 0 else None
 
     @classmethod
     def attr_first_req(
         cls,
-        e: Element,
+        e: Union[ElementTree, Element],
         query: str,
     ) -> str:
         res = cls.attrs(e, query)
@@ -77,4 +79,4 @@ class Xpath:
         return res[0]
 
 
-__all__ = ["fmt", "pp", "spit", "etree", "Element", "Xpath"]
+__all__ = ["fmt", "pp", "spit", "etree", "Element", "ElementTree", "Xpath"]
