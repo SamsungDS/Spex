@@ -3,6 +3,7 @@ from spexs2.extractors.figure import FigureExtractor
 from spexs2.extractors.helpers import data_extract_field_brief
 from spexs2.xml import Xpath, Element
 from spexs2.defs import RESERVED
+from spexs2.lint import Code
 from spexs2 import xml  # TODO: for debugging
 
 if TYPE_CHECKING:
@@ -13,8 +14,12 @@ class ValueTableExtractor(FigureExtractor):
     def __call__(self) -> Iterator["Entity"]:
         fields: List[ValueField] = []
         for row, val, data in self.rows():
+            val_cleaned: Union[str, Range] = self.val_clean(row, val)
+            if val_cleaned == "…":
+                # skip these filler rows
+                continue
             value_field: ValueField = {
-                "val": self.val_clean(row, val),
+                "val": val_cleaned,
                 "label": self.data_extract_field_label(row, data),
             }
             brief = self.data_extract_field_brief(row, data)
@@ -39,6 +44,7 @@ class ValueTableExtractor(FigureExtractor):
         return Xpath.elem_first_req(row, "./td[1]")
 
     def val_clean(self, row: Element, val_cell: Element) -> str:
+        # TODO: read as number if possible, complain if not a hex value using the 'h' suffix
         return "".join(val_cell.itertext()).strip().lower()
 
     def data_extract(self, row: Element) -> Element:
@@ -50,6 +56,12 @@ class ValueTableExtractor(FigureExtractor):
         if txt.lower() == "reserved":
             return RESERVED
         txt_parts = txt.split(":", 1)
+        if txt_parts[0] == txt_parts:
+            # to infer labels, we need the text to be of the form
+            # 'Foo Bar Baz: lorem ipsum...' - if no colon is found, this is
+            # not the case, ergo we cannot reliably extract a label.
+            # TODO: fix, must have the cleaned value here, for reporting
+            self.add_issue(Code.L1003, row=row)
         # generic naming strategy
         return txt_parts[0].replace(" ", "_").upper()
 

@@ -26,7 +26,8 @@ class Xpath:
     def elems(cls, e: Element, query: str) -> List[Element]:
         res = e.xpath(query)
         assert isinstance(res, list)
-        if len(res) > 0 and not isinstance(res[0], Element):
+        # cannot use type Element with isinstance
+        if len(res) > 0 and not isinstance(res[0], (_Element, _ElementTree)):
             if query.startswith("@") or "/@" in query:
                 raise RuntimeError(
                     "don't query attribute values with this function, use `Xpath.attrs`"
