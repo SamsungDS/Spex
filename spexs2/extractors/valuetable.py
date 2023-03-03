@@ -1,5 +1,5 @@
 from typing import TYPE_CHECKING, Iterator, List, Optional
-from spexs2.extractors.figure import FigureExtractor, RowResult
+from spexs2.extractors.figure import FigureExtractor
 from spexs2.extractors.helpers import data_extract_field_brief
 from spexs2.xml import Xpath, Element
 from spexs2.defs import RESERVED

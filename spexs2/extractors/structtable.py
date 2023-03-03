@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from re import compile as re_compile
-from typing import Iterator, Tuple, Union, List, Optional
-from spexs2.extractors.figure import FigureExtractor, RowResult
+from typing import Iterator, Union, List, Optional
+from spexs2.extractors.figure import FigureExtractor
 from spexs2.extractors.helpers import data_extract_field_brief
 from spexs2.xml import Element, Xpath
 from spexs2.defs import RESERVED, Entity, EntityMeta, Range, StructField, StructTable
