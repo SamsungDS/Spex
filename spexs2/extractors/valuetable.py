@@ -34,8 +34,7 @@ class ValueTableExtractor(FigureExtractor):
                 value_field["brief"] = brief
 
             subtbl_ent: "EntityMeta" = {
-                # TODO: change to use value offset instead of field name
-                "fig_id": f"""{self.fig_id}_{value_field["label"]}""",
+                "fig_id": f"""{self.fig_id}_{str(val_cleaned)}""",
                 "parent_fig_id": self.fig_id
             }
             yield from self.extract_data_subtbls(subtbl_ent, data)
