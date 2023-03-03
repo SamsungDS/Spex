@@ -13,8 +13,6 @@ class ValueTableExtractor(FigureExtractor):
     def __call__(self) -> Iterator["Entity"]:
         fields: List[ValueField] = []
         for row, val, data in self.rows():
-            # val = self.val_clean(row, self.val_extract(row))
-            # data_raw: Element = self.data_extract(row)
             value_field: ValueField = {
                 "val": self.val_clean(row, val),
                 "label": self.data_extract_field_label(row, data),
