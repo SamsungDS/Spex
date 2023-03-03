@@ -64,6 +64,38 @@ class FigureExtractor:
                                        fig if fig is not None else self.fig_id,
                                        msg=msg, row=row)
 
+    def row_iter(self) -> Iterator[Element]:
+        # select first td where parent is a tr
+        # ... then select the parent (tr) again
+        # -> filters out header (th) rows
+        yield from Xpath.elems(self.tbl, "./tr/td[1]/parent::tr")
+
+    def rows_on_err(self, row, err: Exception) -> Optional[RowResult]:
+        row_txt = "".join(row.itertext()).lstrip().lower()
+        if row_txt.startswith("…"):
+            return None  # SKIP
+        elif row_txt.startswith("notes:"):
+            raise StopIteration  # abort further processing
+        else:
+            raise err  # propagate actual error
+
+    def rows(self) -> Iterator[RowResult]:
+        for row in self.row_iter():
+            try:
+                yield row, self.val_extract(row), self.data_extract(row)
+            except StopIteration:
+                return
+            except Exception as e:
+                try:
+                    return self.rows_on_err(row, e)
+                except StopIteration:
+                    return
+                except Exception as err:
+                    if err != e:
+                        raise err from e
+                    else:
+                        raise e
+
     def extract_data_subtbls(self, entity_base: "EntityMeta", data: Element) -> Iterator["Entity"]:
         tbls = Xpath.elems(data, "./table")
         assert len(tbls) <= 1, "invariant broken - expected each field to have at most 1 sub-table"

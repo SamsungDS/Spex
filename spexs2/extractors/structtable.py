@@ -62,38 +62,6 @@ class StructTableExtractor(FigureExtractor, ABC):
             "fields": fields
         }
 
-    def row_iter(self) -> Iterator[Element]:
-        # select first td where parent is a tr
-        # ... then select the parent (tr) again
-        # -> filters out header (th) rows
-        yield from Xpath.elems(self.tbl, "./tr/td[1]/parent::tr")
-
-    def rows_on_err(self, row, err: Exception) -> Optional[RowResult]:
-        row_txt = "".join(row.itertext()).lstrip().lower()
-        if row_txt.startswith("…"):
-            return None  # SKIP
-        elif row_txt.startswith("notes:"):
-            raise StopIteration  # abort further processing
-        else:
-            raise err  # propagate actual error
-
-    def rows(self) -> Iterator[Tuple[Element, Element, Element]]:
-        for row in self.row_iter():
-            try:
-                yield row, self.val_extract(row), self.data_extract(row)
-            except StopIteration:
-                return
-            except Exception as e:
-                try:
-                    return self.rows_on_err(row, e)
-                except StopIteration:
-                    return
-                except Exception as err:
-                    if err != e:
-                        raise err from e
-                    else:
-                        raise e
-
     def val_extract(self, row: Element) -> Element:
         return Xpath.elem_first_req(row, "./td[1]")
 

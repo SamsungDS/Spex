@@ -1,5 +1,5 @@
-from typing import TYPE_CHECKING, Iterator, List, Tuple, Optional
-from spexs2.extractors.figure import FigureExtractor
+from typing import TYPE_CHECKING, Iterator, List, Optional
+from spexs2.extractors.figure import FigureExtractor, RowResult
 from spexs2.extractors.helpers import data_extract_field_brief
 from spexs2.xml import Xpath, Element
 from spexs2.defs import RESERVED
@@ -36,21 +36,6 @@ class ValueTableExtractor(FigureExtractor):
             "type": "values",
             "fields": fields
         }
-
-    def rows(self) -> Iterator[Tuple[Element, Element, Element]]:
-        # select first td where parent is a tr
-        # .. then select the parent (tr) again
-        # -> filters out header (th) rows
-        # TODO: maybe filter out iterator from try/catch
-        for row in Xpath.elems(self.tbl, "./tr/td[1]/parent::tr"):
-            try:
-                yield row, self.val_extract(row), self.data_extract(row)
-                xrow = "".join(row.itertext()).lstrip().lower()
-            except Exception as e:
-                if "".join(row.itertext()).lstrip().lower().startswith("notes:"):
-                    continue
-                else:
-                    raise e
 
     def val_extract(self, row: Element) -> Element:
         return Xpath.elem_first_req(row, "./td[1]")
