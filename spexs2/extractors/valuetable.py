@@ -18,10 +18,17 @@ class ValueTableExtractor(FigureExtractor):
             if val_cleaned == "…":
                 # skip these filler rows
                 continue
+
+            override_key = (self.fig_id, val_cleaned)
+            label = self.doc_parser.label_overrides.get(override_key, None)
+            if label is None:
+                label = self.data_extract_field_label(row, data)
+
             value_field: ValueField = {
                 "val": val_cleaned,
-                "label": self.data_extract_field_label(row, data),
+                "label": label,
             }
+
             brief = self.data_extract_field_brief(row, data)
             if brief is not None:
                 value_field["brief"] = brief
