@@ -5,6 +5,7 @@ import textwrap
 from typing import Protocol, Dict, TypedDict, List
 from spexs2 import parse
 from spexs2.defs import JSON
+from spexs2.lint import Code
 
 
 class S2Model(TypedDict):
@@ -29,6 +30,10 @@ def arg_output(arg: str) -> Path:
         raise RuntimeError(f"output must be a directory (or omitted)")
 
     return p
+
+
+def arg_lintcode(arg: str) -> List[Code]:
+    return [Code[c.strip().upper()] for c in arg.split(",")]
 
 
 class Writer(Protocol):
@@ -116,10 +121,11 @@ def main():
         "-o", "--output", type=arg_output, default=None,
         help="path to directory where the output JSON file(s) should be stored."
     )
+    parser.add_argument(
+        "--lint-ignore", type=arg_lintcode
+    )
 
     args = parser.parse_args()
-    print("   IN:", type(args.input), repr(args.input))
-    print("  OUT:", type(args.output), repr(args.output))
 
     def get_writer(src: Path) -> Writer:
         if args.output:
@@ -136,7 +142,12 @@ def main():
             dparser = sdoc.get_parser()
             for entity in dparser.parse():
                 w.write_entity(entity)
-            w.write_meta("lint", dparser.linter.to_json())
+
+            ignore_lint_codes = set(c.name for c in args.lint_ignore)
+            w.write_meta("lint", [
+                lint_err for lint_err in dparser.linter.to_json()
+                if lint_err["code"] not in ignore_lint_codes
+            ])
 
 
 if __name__ == "__main__":
