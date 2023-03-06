@@ -93,8 +93,9 @@ class DocumentParser:
             for e in fig_tr.itertext()).strip()
         # remove entire tr to simplify downstream processing between top-level and
         # nested figures.
-        if parent := fig_tr.getparent():
-            parent.remove(fig_tr)
+        parent = fig_tr.getparent()
+        assert parent is not None
+        parent.remove(fig_tr)
         return title if "Figure" in title else None
 
     def _on_extract_figure_id(self, tbl: "Element", figure_title: str) -> str:
