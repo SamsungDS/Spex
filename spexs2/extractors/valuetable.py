@@ -15,6 +15,7 @@ class ValueTableExtractor(FigureExtractor):
         fields: List[ValueField] = []
         for row, val, data in self.rows():
             val_cleaned: Union[str, int] = self.val_clean(row, val)
+            row_key = str(val_cleaned)
             if val_cleaned == "…":
                 # skip these filler rows
                 continue
@@ -22,14 +23,16 @@ class ValueTableExtractor(FigureExtractor):
             override_key = (self.fig_id, val_cleaned)
             label = self.doc_parser.label_overrides.get(override_key, None)
             if label is None:
-                label = self.data_extract_field_label(row, data)
+                label = self.data_extract_field_label(row, row_key, data)
+            else:
+                self.add_issue(Code.L1003, row_key=val_cleaned)
 
             value_field: ValueField = {
                 "val": val_cleaned,
                 "label": label,
             }
 
-            brief = self.data_extract_field_brief(row, data)
+            brief = self.data_extract_field_brief(row, row_key, data)
             if brief is not None:
                 value_field["brief"] = brief
 
@@ -58,7 +61,7 @@ class ValueTableExtractor(FigureExtractor):
     def data_extract(self, row: Element) -> Element:
         return Xpath.elem_first_req(row, "./td[2]")
 
-    def data_extract_field_label(self, row: Element, data: Element) -> str:
+    def data_extract_field_label(self, row: Element, row_key: str, data: Element) -> str:
         p1 = Xpath.elem_first_req(data, "./p[1]")
         txt = "".join(
             e.decode("utf-8") if isinstance(e, bytes) else e for e in p1.itertext()).strip()
@@ -70,9 +73,9 @@ class ValueTableExtractor(FigureExtractor):
             # 'Foo Bar Baz: lorem ipsum...' - if no colon is found, this is
             # not the case, ergo we cannot reliably extract a label.
             # TODO: fix, must have the cleaned value here, for reporting
-            self.add_issue(Code.L1003, row=row)
+            self.add_issue(Code.L1003, row_key=row_key)
         # generic naming strategy
         return txt_parts[0].replace(" ", "_").upper()
 
-    def data_extract_field_brief(self, row: Element, data: Element) -> Optional[str]:
+    def data_extract_field_brief(self, row: Element, row_key: str, data: Element) -> Optional[str]:
         return data_extract_field_brief(row, data, self.BRIEF_MAXLEN)

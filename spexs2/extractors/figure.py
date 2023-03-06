@@ -60,10 +60,10 @@ class FigureExtractor(ABC):
     def add_issue(self, code: Code, *,
                   fig: Optional[str] = None,
                   msg: str = "",
-                  row: Optional[str] = None) -> LintEntry:
+                  row_key: Optional[str] = None) -> LintEntry:
         return self.__linter.add_issue(code,
                                        fig if fig is not None else self.fig_id,
-                                       msg=msg, row=row)
+                                       msg=msg, row=row_key)
 
     def row_iter(self) -> Iterator[Element]:
         # select first td where parent is a tr

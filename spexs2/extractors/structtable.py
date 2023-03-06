@@ -25,14 +25,14 @@ class StructTableExtractor(FigureExtractor, ABC):
             if val_cleaned == "…":
                 # skip these filler rows
                 continue
-            if isinstance(val_cleaned, dict):  # is range
-                override_key = (self.fig_id, str(val_cleaned["low"]))
-            else:
-                override_key = (self.fig_id, val_cleaned)
+            row_key = str(val_cleaned["low"]) if isinstance(val_cleaned, dict) else val_cleaned
+            override_key = (self.fig_id, row_key)
 
             label = self.doc_parser.label_overrides.get(override_key, None)
             if label is None:
-                label = self.data_extract_field_label(row, data)
+                label = self.data_extract_field_label(row, row_key, data)
+            else:
+                self.add_issue(Code.L1003, row_key=row_key)
 
             sfield: StructField = {
                 "range": val_cleaned,
@@ -41,15 +41,14 @@ class StructTableExtractor(FigureExtractor, ABC):
 
             brief = self.doc_parser.brief_overrides.get(override_key, None)
             if brief is None:
-                brief = self.data_extract_field_brief(row, data)
+                brief = self.data_extract_field_brief(row, row_key, data)
 
             # no brief override, no brief extracted from table cell
             if brief is not None:
                 sfield["brief"] = brief
 
             subtbl_ent: "EntityMeta" = {
-                # TODO: change to use value offset instead of field name
-                "fig_id": f"""{self.fig_id}_{sfield["label"]}""",
+                "fig_id": f"""{self.fig_id}_{row_key}""",
                 "parent_fig_id": self.fig_id
             }
 
@@ -73,19 +72,19 @@ class StructTableExtractor(FigureExtractor, ABC):
         if not m:  # cannot parse into a range, sadly
             # elided rows are simply skipped.
             if val != "…":
-                self.add_issue(Code.V1002, row=val)
+                self.add_issue(Code.V1002, row_key=val)
             return val
         high = int(m.group("high"))
         _low = m.group("low")
         low = int(_low) if _low is not None else high
         if low > high:
-            self.add_issue(Code.V1003, row=val)
+            self.add_issue(Code.V1003, row_key=val)
         return {"low": low, "high": high}
 
     def data_extract(self, row: Element) -> Element:
         return Xpath.elem_first_req(row, "./td[2]")
 
-    def data_extract_field_label(self, row: Element, data: Element) -> str:
+    def data_extract_field_label(self, row: Element, row_key: str, data: Element) -> str:
         try:
             p1 = Xpath.elem_first_req(data, "./p[1]")
             txt = "".join(
@@ -101,12 +100,13 @@ class StructTableExtractor(FigureExtractor, ABC):
             # TODO: improve, replace certain words/sentences by certain abbreviations
             #       namespace -> ns, pointer -> ptr
             gen_name = "".join(w[0] for w in txt_parts[0].split()).lower()
+            self.add_issue(Code.L1006, row_key=row_key)
             return gen_name
         except Exception as e:
             breakpoint()
             raise e
 
-    def data_extract_field_brief(self, row: Element, data: Element) -> Optional[str]:
+    def data_extract_field_brief(self, row: Element, row_key: str, data: Element) -> Optional[str]:
         return data_extract_field_brief(row, data, self.BRIEF_MAXLEN)
 
 

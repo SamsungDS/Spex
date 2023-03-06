@@ -17,6 +17,7 @@ class Code(Enum):
     L1003 = "cannot infer label"
     L1004 = "label contained invalid characters"
     L1005 = "label cannot start with a number"
+    L1006 = "missing field name"
 
     V1000 = "error extracting value"
     V1001 = "empty value"
