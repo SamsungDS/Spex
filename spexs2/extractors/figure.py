@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from enum import Enum
 from typing import TYPE_CHECKING, Optional, Iterator, Tuple
 from spexs2.xml import Element, Xpath
 from spexs2.lint import Linter, LintEntry, Code
@@ -11,6 +12,12 @@ if TYPE_CHECKING:
 
 
 RowResult = Tuple[Element, Element, Element]
+
+
+class RowErrPolicy:
+    Stop = 0
+    Continue = 1
+    Raise = 2
 
 
 class FigureExtractor(ABC):
@@ -26,7 +33,7 @@ class FigureExtractor(ABC):
         self.doc_parser = doc_parser
         self.__entity_meta = entity_meta
         self.__tbl = tbl
-        self.__parse = parse_fn
+        self._parse = parse_fn
         self.__linter = linter
         self.__post_init__()
 
@@ -71,39 +78,13 @@ class FigureExtractor(ABC):
         # -> filters out header (th) rows
         yield from Xpath.elems(self.tbl, "./tr/td[1]/parent::tr")
 
-    def rows_on_err(self, row, err: Exception) -> Optional[RowResult]:
-        row_txt = "".join(row.itertext()).lstrip().lower()
-        if row_txt.startswith("…"):
-            return None  # SKIP
-        elif row_txt.startswith("notes:"):
-            raise StopIteration  # abort further processing
-        else:
-            raise err  # propagate actual error
-
-    def rows(self) -> Iterator[RowResult]:
-        for row in self.row_iter():
-            try:
-                yield row, self.val_extract(row), self.data_extract(row)
-            except StopIteration:
-                return
-            except Exception as e:
-                try:
-                    return self.rows_on_err(row, e)
-                except StopIteration:
-                    return
-                except Exception as err:
-                    if err != e:
-                        raise err from e
-                    else:
-                        raise e
-
     def extract_data_subtbls(self, entity_base: "EntityMeta", data: Element) -> Iterator["Entity"]:
         tbls = Xpath.elems(data, "./table")
         assert len(tbls) <= 1, "invariant broken - expected each field to have at most 1 sub-table"
         if len(tbls) == 0:
             return
         else:
-            yield from self.__parse(entity_base, tbls[0])
+            yield from self._parse(entity_base, tbls[0])
 
     @abstractmethod
     def __call__(self) -> Iterator["Entity"]:

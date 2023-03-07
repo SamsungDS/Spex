@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
 from re import compile as re_compile
-from typing import Iterator, Union, List, Optional
-from spexs2.extractors.figure import FigureExtractor
+from typing import Iterator, Union, List, Optional, Generator
+from spexs2.extractors.figure import FigureExtractor, RowErrPolicy
 from spexs2.extractors.helpers import data_extract_field_brief
 from spexs2.xml import Element, Xpath
-from spexs2.defs import RESERVED, ELLIPSIS, Entity, EntityMeta, Range, StructField, StructTable
+from spexs2.defs import RESERVED, ELLIPSIS, Entity, EntityMeta, Range, StructField
 from spexs2.lint import Code
 from spexs2 import xml  # TODO: for debugging
 
@@ -21,20 +21,51 @@ class StructTableExtractor(FigureExtractor, ABC):
     def _range_to_rowkey(self, val: Union[str, Range]) -> str:
         return str(val["low"]) if isinstance(val, dict) else val
 
-    def __call__(self) -> Iterator["Entity"]:
-        fields: List[Union[StructTable, StructField]] = []
+    def row_err_handler(self, row_it: Iterator[Element], row: Element,
+                        fields: List[StructField], err: Exception) -> Generator["Entity", None, RowErrPolicy]:
+        """hook called for unhandled errors from extracting a row's value and data fields.
 
-        for row, val, data in self.rows():
-            val_cleaned: Union[str, Range] = self.val_clean(row, val)
-            if val_cleaned == ELLIPSIS:  # TODO: remove, we need to retain this row.
-                # skip these filler rows
+        This hook is useful only for individual table overrides to catch special cases."""
+        yield from ()  # To turn method into a generator
+        return RowErrPolicy.Raise
+
+    def __call__(self) -> Iterator["Entity"]:
+        fields: List[StructField] = []
+        row_it = self.row_iter()
+        for row in row_it:
+            row_val: Element
+            row_data: Element
+            try:
+                row_val = self.val_extract(row)
+                row_data = self.data_extract(row)
+            except Exception as e:
+                row_txt = "".join(row.itertext()).lstrip().lower()
+                if row_txt.startswith(ELLIPSIS):
+                    # revisit ranges here once we have normalized field order
+                    # (bits fields are in desc order, bytes are in asc)
+                    fields.append({"range": {"low": -1, "high": -1}, "label": ELLIPSIS})
+                    continue
+                elif row_txt.startswith("notes:"):
+                    break
+                else:
+                    yield from self.row_err_handler(row_it, row, fields, e)
+                    # TODO: have to observe the return value
+                    continue
+
+            val_cleaned = self.val_clean(row, row_val)
+            if val_cleaned == ELLIPSIS:
+                fields.append({
+                    "range": {"low": -1, "high": -1},
+                    "label": ELLIPSIS
+                })
                 continue
+
             row_key = self._range_to_rowkey(val_cleaned)
             override_key = (self.fig_id, row_key)
 
             label = self.doc_parser.label_overrides.get(override_key, None)
             if label is None:
-                label = self.data_extract_field_label(row, row_key, data)
+                label = self.data_extract_field_label(row, row_key, row_data)
             else:
                 self.add_issue(Code.L1003, row_key=row_key)
 
@@ -45,7 +76,7 @@ class StructTableExtractor(FigureExtractor, ABC):
 
             brief = self.doc_parser.brief_overrides.get(override_key, None)
             if brief is None:
-                brief = self.data_extract_field_brief(row, row_key, data)
+                brief = self.data_extract_field_brief(row, row_key, row_data)
 
             # no brief override, no brief extracted from table cell
             if brief is not None:
@@ -56,9 +87,14 @@ class StructTableExtractor(FigureExtractor, ABC):
                 "parent_fig_id": self.fig_id
             }
 
-            yield from self.extract_data_subtbls(subtbl_ent, data)
+            yield from self.extract_data_subtbls(subtbl_ent, row_data)
             fields.append(sfield)
 
+        # bits tables have their rows in descending order, bytes tables show rows in ascending order
+        # this step ensures we are always processing fields sorted by their range in ascending order
+        fields = list(reversed(fields)) if self.type == "bits" else fields
+
+        # TODO: patch '...' row ranges to fit surrounding fields.
         self.validate_fields(fields)
 
         yield {
@@ -70,10 +106,6 @@ class StructTableExtractor(FigureExtractor, ABC):
     def validate_fields(self, fields: List[StructField]):
         if len(fields) < 2:
             return
-
-        # bits tables have their rows in descending order, bytes tables show rows in ascending order
-        # this step ensures we are always processing fields sorted by their range in ascending order
-        fields = list(reversed(fields)) if self.type == "bits" else fields
 
         # Check whether row order is wrong for the table
         prev_range = fields[0]["range"]

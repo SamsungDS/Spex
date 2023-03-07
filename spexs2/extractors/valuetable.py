@@ -1,5 +1,5 @@
-from typing import TYPE_CHECKING, Iterator, List, Optional, Union
-from spexs2.extractors.figure import FigureExtractor
+from typing import TYPE_CHECKING, Iterator, List, Optional, Union, Generator
+from spexs2.extractors.figure import FigureExtractor, RowErrPolicy
 from spexs2.extractors.helpers import data_extract_field_brief
 from spexs2.xml import Xpath, Element
 from spexs2.defs import RESERVED, ELLIPSIS, ValueField
@@ -13,17 +13,38 @@ if TYPE_CHECKING:
 class ValueTableExtractor(FigureExtractor):
     def __call__(self) -> Iterator["Entity"]:
         fields: List[ValueField] = []
-        for row, val, data in self.rows():
-            val_cleaned: Union[str, int] = self.val_clean(row, val)
-            row_key = str(val_cleaned)
-            if val_cleaned == ELLIPSIS:  # TODO: remove, we need to retain this row
-                # skip these filler rows
+        row_it = self.row_iter()
+        for row in row_it:
+            row_val: Element
+            row_data: Element
+            try:
+                row_val = self.val_extract(row)
+                row_data = self.data_extract(row)
+            except Exception as e:
+                row_txt = "".join(row.itertext()).lstrip().lower()
+                if row_txt.startswith(ELLIPSIS):
+                    # revisit ranges here once we have normalized field order
+                    # (bits fields are in desc order, bytes are in asc)
+                    fields.append({"val": ELLIPSIS, "label": ELLIPSIS})
+                    continue
+                elif row_txt.startswith("notes:"):
+                    break
+                else:
+                    yield from self.row_err_handler(row_it, row, fields, e)
+                    # TODO: have to observe the return value
+                    continue
+
+            val_cleaned = self.val_clean(row, row_val)
+            if val_cleaned == ELLIPSIS:
+                fields.append({"val": ELLIPSIS, "label": ELLIPSIS})
                 continue
+
+            row_key = str(val_cleaned)
 
             override_key = (self.fig_id, val_cleaned)
             label = self.doc_parser.label_overrides.get(override_key, None)
             if label is None:
-                label = self.data_extract_field_label(row, row_key, data)
+                label = self.data_extract_field_label(row, row_key, row_data)
             else:
                 self.add_issue(Code.L1003, row_key=val_cleaned)
 
@@ -32,7 +53,7 @@ class ValueTableExtractor(FigureExtractor):
                 "label": label,
             }
 
-            brief = self.data_extract_field_brief(row, row_key, data)
+            brief = self.data_extract_field_brief(row, row_key, row_data)
             if brief is not None:
                 value_field["brief"] = brief
 
@@ -40,7 +61,7 @@ class ValueTableExtractor(FigureExtractor):
                 "fig_id": f"""{self.fig_id}_{str(val_cleaned)}""",
                 "parent_fig_id": self.fig_id
             }
-            yield from self.extract_data_subtbls(subtbl_ent, data)
+            yield from self.extract_data_subtbls(subtbl_ent, row_data)
 
             fields.append(value_field)
 
@@ -51,6 +72,14 @@ class ValueTableExtractor(FigureExtractor):
             "type": "values",
             "fields": fields
         }
+
+    def row_err_handler(self, row_it: Iterator[Element], row: Element,
+                        fields: List[ValueField], err: Exception) -> Generator["Entity", None, RowErrPolicy]:
+        """hook called for unhandled errors from extracting a row's value and data fields.
+
+        This hook is useful only for individual table overrides to catch special cases."""
+        yield from ()  # To turn method into a generator
+        return RowErrPolicy.Raise
 
     def _val_to_rowkey(self, val: Union[str, int]) -> str:
         return str(val)
