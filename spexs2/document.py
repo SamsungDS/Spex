@@ -83,22 +83,15 @@ class DocumentParser:
     def linter(self) -> Linter:
         return self.__linter
 
-    def _on_extract_figure_title(self, tbl: "Element") -> Optional[str]:
+    def _on_extract_figure_title(self, fig_tr: "Element") -> Optional[str]:
         """Extract title from figure table."""
-        # title = "".join(Xpath.elem_first_req(tbl, "./tr[1]").itertext()).strip()
-        fig_tr = Xpath.elem_first(tbl, "./tr[1]")
         assert fig_tr is not None
         title = "".join(
             e.decode("utf-8") if isinstance(e, bytes) else e
             for e in fig_tr.itertext()).strip()
-        # remove entire tr to simplify downstream processing between top-level and
-        # nested figures.
-        parent = fig_tr.getparent()
-        assert parent is not None
-        parent.remove(fig_tr)
         return title if "Figure" in title else None
 
-    def _on_extract_figure_id(self, tbl: "Element", figure_title: str) -> str:
+    def _on_extract_figure_id(self, figure_title: str) -> str:
         """Extract figure ID from its title."""
         # Extract figure ID, all figures should have one
         m = self.rgx_fig_id.match(figure_title)
@@ -113,11 +106,17 @@ class DocumentParser:
             if inner_tbl is not None and inner_tbl.tag == "table":
                 tbl = inner_tbl
 
-            figure_title = self._on_extract_figure_title(tbl)
+            fig_tr = Xpath.elem_first(tbl, "./tr[1]")
+            # remove entire tr to simplify downstream processing between top-level and
+            # nested figures.
+            parent = fig_tr.getparent()
+            assert parent is not None
+            parent.remove(fig_tr)
+            figure_title = self._on_extract_figure_title(fig_tr)
             if figure_title is None:
                 continue
 
-            figure_id = self._on_extract_figure_id(tbl, figure_title)
+            figure_id = self._on_extract_figure_id(figure_title)
             yield {
                 "title": figure_title,
                 "fig_id": figure_id,
