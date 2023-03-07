@@ -37,6 +37,7 @@ FigureId = str
 ValStr = str
 
 RESERVED = "RESERVED"
+ELLIPSIS = "…"
 
 
 class ValueField(TypedDict):

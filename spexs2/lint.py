@@ -8,6 +8,11 @@ class Code(Enum):
     O1000 = "general error"
 
     T1000 = "error parsing table"
+    T1001 = "field overlaps with range of prior field"
+    T1002 = "gap between this and the prior field"
+    T1003 = "duplicate field name"
+    T1004 = "row order wrong, bits should be in desc order, bytes in asc order"
+    T1005 = "duplicate value"
 
     R1000 = "error parsing row"
 

@@ -4,7 +4,7 @@ from typing import Iterator, Union, List, Optional
 from spexs2.extractors.figure import FigureExtractor
 from spexs2.extractors.helpers import data_extract_field_brief
 from spexs2.xml import Element, Xpath
-from spexs2.defs import RESERVED, Entity, EntityMeta, Range, StructField, StructTable
+from spexs2.defs import RESERVED, ELLIPSIS, Entity, EntityMeta, Range, StructField, StructTable
 from spexs2.lint import Code
 from spexs2 import xml  # TODO: for debugging
 
@@ -18,14 +18,18 @@ class StructTableExtractor(FigureExtractor, ABC):
     def type(self) -> str:
         ...
 
+    def _range_to_rowkey(self, val: Union[str, Range]) -> str:
+        return str(val["low"]) if isinstance(val, dict) else val
+
     def __call__(self) -> Iterator["Entity"]:
         fields: List[Union[StructTable, StructField]] = []
+
         for row, val, data in self.rows():
             val_cleaned: Union[str, Range] = self.val_clean(row, val)
-            if val_cleaned == "…":
+            if val_cleaned == ELLIPSIS:  # TODO: remove, we need to retain this row.
                 # skip these filler rows
                 continue
-            row_key = str(val_cleaned["low"]) if isinstance(val_cleaned, dict) else val_cleaned
+            row_key = self._range_to_rowkey(val_cleaned)
             override_key = (self.fig_id, row_key)
 
             label = self.doc_parser.label_overrides.get(override_key, None)
@@ -55,11 +59,57 @@ class StructTableExtractor(FigureExtractor, ABC):
             yield from self.extract_data_subtbls(subtbl_ent, data)
             fields.append(sfield)
 
+        self.validate_fields(fields)
+
         yield {
             **self.entity_meta,
             "type": self.type,
             "fields": fields
         }
+
+    def validate_fields(self, fields: List[StructField]):
+        if len(fields) < 2:
+            return
+
+        # bits tables have their rows in descending order, bytes tables show rows in ascending order
+        # this step ensures we are always processing fields sorted by their range in ascending order
+        fields = list(reversed(fields)) if self.type == "bits" else fields
+
+        # Check whether row order is wrong for the table
+        prev_range = fields[0]["range"]
+        for field_range in (f["range"] for f in fields):
+            if not isinstance(field_range, dict):
+                prev_range = None
+                continue
+            elif isinstance(prev_range, dict):
+                if prev_range["low"] > field_range["low"]:
+                    self.add_issue(Code.T1004)
+                    return
+
+        lbls = {fields[0]["label"]}
+        prev_range = fields[0]["range"] if isinstance(fields[0]["range"], dict) else None
+
+        for field in fields[1:]:
+            flbl = field["label"]
+            if flbl not in {RESERVED, ELLIPSIS}:
+                if flbl in lbls:
+                    self.add_issue(Code.T1003, row_key=self._range_to_rowkey(field["range"]))
+                lbls.add(flbl)
+
+            if flbl == "…":
+                prev_range = None
+                continue
+
+            if isinstance(field_range := field["range"], dict):
+                if prev_range is not None:
+                    if prev_range["high"] >= field_range["low"]:
+                        self.add_issue(Code.T1001, row_key=self._range_to_rowkey(field_range))
+                    elif prev_range["high"] + 1 != field_range["low"]:
+                        self.add_issue(Code.T1002, row_key=self._range_to_rowkey(field_range))
+                prev_range = field_range
+            else:
+                # skip next range check
+                prev_range = None
 
     def val_extract(self, row: Element) -> Element:
         return Xpath.elem_first_req(row, "./td[1]")
