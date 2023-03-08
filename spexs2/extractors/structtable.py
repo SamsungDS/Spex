@@ -94,7 +94,6 @@ class StructTableExtractor(FigureExtractor, ABC):
         # this step ensures we are always processing fields sorted by their range in ascending order
         fields = list(reversed(fields)) if self.type == "bits" else fields
 
-        # TODO: patch '...' row ranges to fit surrounding fields.
         self.validate_fields(fields)
 
         yield {
@@ -107,19 +106,30 @@ class StructTableExtractor(FigureExtractor, ABC):
         if len(fields) < 2:
             return
 
+        def range_field(f):
+            return (
+                f["label"] != ELLIPSIS
+                and isinstance(f["range"], dict)
+            )
+
         # Check whether row order is wrong for the table
-        prev_range = fields[0]["range"]
-        for field_range in (f["range"] for f in fields):
-            if not isinstance(field_range, dict):
+        prev_range = fields[0]["range"] if range_field(fields[0]) else None
+        for field in fields:
+            field_range = field["range"]
+            if not range_field(field):
                 prev_range = None
                 continue
-            elif isinstance(prev_range, dict):
+            elif prev_range is not None:
                 if prev_range["low"] > field_range["low"]:
+                    if self.fig_id == "94":
+                        breakpoint()
                     self.add_issue(Code.T1004)
                     return
+            else:
+                prev_range = field_range
 
         lbls = {fields[0]["label"]}
-        prev_range = fields[0]["range"] if isinstance(fields[0]["range"], dict) else None
+        prev_range = fields[0]["range"] if range_field(fields[0]) else None
 
         for field in fields[1:]:
             flbl = field["label"]
@@ -132,7 +142,8 @@ class StructTableExtractor(FigureExtractor, ABC):
                 prev_range = None
                 continue
 
-            if isinstance(field_range := field["range"], dict):
+            field_range = field["range"]
+            if range_field(field):
                 if prev_range is not None:
                     if prev_range["high"] >= field_range["low"]:
                         self.add_issue(Code.T1001, row_key=self._range_to_rowkey(field_range))
