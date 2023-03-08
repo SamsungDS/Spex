@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import TYPE_CHECKING, Optional, Iterator, Tuple
+from typing import TYPE_CHECKING, Optional, Iterator, Tuple, List
 from spexs2.xml import Element, Xpath
 from spexs2.lint import Linter, LintEntry, Code
 from spexs2 import xml  # TODO: for debugging
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 RowResult = Tuple[Element, Element, Element]
 
 
-class RowErrPolicy:
+class RowErrPolicy(Enum):
     Stop = 0
     Continue = 1
     Raise = 2
@@ -24,15 +24,17 @@ class FigureExtractor(ABC):
     BRIEF_MAXLEN: int = 60
     __linter: Linter
 
-    def __init__(self,
+    def __init__(self, *,
                  doc_parser: "DocumentParser",
                  entity_meta: "EntityMeta",
                  tbl: Element,
+                 tbl_hdrs: List[str],
                  parse_fn: "ParseFn",
                  linter: Linter):
         self.doc_parser = doc_parser
         self.__entity_meta = entity_meta
         self.__tbl = tbl
+        self.__tbl_hdrs = tbl_hdrs
         self._parse = parse_fn
         self.__linter = linter
         self.__post_init__()
@@ -51,6 +53,10 @@ class FigureExtractor(ABC):
     @property
     def tbl(self) -> Element:
         return self.__tbl
+
+    @property
+    def tbl_hdrs(self) -> List[str]:
+        return self.__tbl_hdrs
 
     @property
     def parent_fig_id(self) -> Optional[str]:

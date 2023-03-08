@@ -23,6 +23,12 @@ def spit(path: str, elem: Element) -> None:
         fh.write(fmt(elem))
 
 
+def to_text(element: Element) -> str:
+    return "".join(
+        e.decode("utf-8") if isinstance(e, bytes) else e for e in element.itertext()
+    ).strip()
+
+
 class Xpath:
     @classmethod
     def elems(cls, e: Union[ElementTree, Element], query: str) -> List[Element]:

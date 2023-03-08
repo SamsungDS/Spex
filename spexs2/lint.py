@@ -13,6 +13,7 @@ class Code(Enum):
     T1003 = "duplicate field name"
     T1004 = "row order wrong, bits should be in desc order, bytes in asc order"
     T1005 = "duplicate value"
+    T1006 = "non-standard table header"
 
     R1000 = "error parsing row"
 
@@ -59,4 +60,5 @@ class LintEntry:
 class Linter(Protocol):
     def add_issue(self, c: Code, fig: str, *,
                   msg: Optional[str] = None,
-                  row: Optional[str] = None) -> LintEntry: ...
+                  row: Optional[str] = None,
+                  ctx: Optional[Dict[str, JSON]] = None) -> LintEntry: ...

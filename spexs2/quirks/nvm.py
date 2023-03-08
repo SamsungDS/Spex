@@ -2,6 +2,7 @@ from typing import Iterator, List, Optional, Generator
 from spexs2.document import DocumentParser
 from spexs2.extractors.figure import RowErrPolicy
 from spexs2.extractors.structtable import StructTableExtractor, StructField
+from spexs2.extractors.skiptable import SkipTable
 from spexs2.defs import Entity, EntityMeta
 from spexs2.xml import Element, Xpath
 from lxml import etree
@@ -73,4 +74,9 @@ class NvmCmdSet1c(DocumentParser):
         "23": NvmFig23,
         "97": NvmFig97,
         "100": NvmFig100,
+        # all have a 'Bit' column, all missing a description
+        "114": SkipTable,
+        "115": SkipTable,
+        "116": SkipTable,
+        "118": SkipTable,
     }
