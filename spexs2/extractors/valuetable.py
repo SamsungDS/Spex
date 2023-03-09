@@ -54,7 +54,7 @@ class ValueTableExtractor(FigureExtractor):
             row_val: Element
             row_data: Element
             try:
-                row_val = self.val_extract(row)
+                row_val = self.val_elem(row)
                 row_data = self.content_extract(row)
             except Exception as e:
                 row_txt = "".join(row.itertext()).lstrip().lower()
@@ -157,7 +157,7 @@ class ValueTableExtractor(FigureExtractor):
                 self.add_issue(Code.T1005, row_key=self._val_to_rowkey(fval))
             vals.add(fval)
 
-    def val_extract(self, row: Element) -> Element:
+    def val_elem(self, row: Element) -> Element:
         return Xpath.elem_first_req(row, f"./td[{self._col_ndx_value + 1}]")
 
     def val_clean(self, row: Element, val_cell: Element) -> Union[str, int]:
