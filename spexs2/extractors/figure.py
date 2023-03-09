@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import TYPE_CHECKING, Optional, Iterator, Tuple, List
+from typing import TYPE_CHECKING, Optional, Iterator, Tuple, List, NoReturn
 from spexs2.xml import Element, Xpath
-from spexs2.lint import Linter, LintEntry, Code
+from spexs2.lint import Linter, LintEntry, Code, LintErr
 from spexs2 import xml  # TODO: for debugging
 
 
@@ -70,13 +70,13 @@ class FigureExtractor(ABC):
     def linter(self) -> Linter:
         return self.__linter
 
-    def add_issue(self, code: Code, *,
+    def add_issue(self, err: LintErr, *,
                   fig: Optional[str] = None,
                   msg: str = "",
-                  row_key: Optional[str] = None) -> LintEntry:
-        return self.__linter.add_issue(code,
-                                       fig if fig is not None else self.fig_id,
-                                       msg=msg, row=row_key)
+                  row_key: Optional[str] = None) -> NoReturn:
+        self.__linter.add_issue(err,
+                                fig if fig is not None else self.fig_id,
+                                msg=msg, row=row_key)
 
     def row_iter(self) -> Iterator[Element]:
         # select first td where parent is a tr

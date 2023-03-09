@@ -5,7 +5,7 @@ from spexs2.extractors.figure import FigureExtractor, RowErrPolicy
 from spexs2.extractors.helpers import content_extract_brief
 from spexs2.xml import Element, Xpath
 from spexs2.defs import RESERVED, ELLIPSIS, Entity, EntityMeta, Range, StructField
-from spexs2.lint import Code
+from spexs2.lint import LintErr
 from spexs2 import xml  # TODO: for debugging
 
 
@@ -119,7 +119,7 @@ class StructTableExtractor(FigureExtractor, ABC):
             if label is None:
                 label = self._extract_label(row, row_key, row_data)
             else:
-                self.add_issue(Code.L1003, row_key=row_key)
+                self.add_issue(LintErr.LBL_IMPUTED, row_key=row_key)
 
             sfield: StructField = {
                 "range": range,
@@ -175,7 +175,7 @@ class StructTableExtractor(FigureExtractor, ABC):
                 if prev_range["low"] > field_range["low"]:
                     if self.fig_id == "94":
                         breakpoint()
-                    self.add_issue(Code.T1004)
+                    self.add_issue(LintErr.TBL_ROW_ORDER_REVERSED)
                     return
             else:
                 prev_range = field_range
@@ -187,7 +187,7 @@ class StructTableExtractor(FigureExtractor, ABC):
             flbl = field["label"]
             if flbl not in {RESERVED, ELLIPSIS}:
                 if flbl in lbls:
-                    self.add_issue(Code.T1003, row_key=self._range_to_rowkey(field["range"]))
+                    self.add_issue(LintErr.LBL_DUPLICATE, row_key=self._range_to_rowkey(field["range"]))
                 lbls.add(flbl)
 
             if flbl == "…":
@@ -198,9 +198,9 @@ class StructTableExtractor(FigureExtractor, ABC):
             if range_field(field):
                 if prev_range is not None:
                     if prev_range["high"] >= field_range["low"]:
-                        self.add_issue(Code.T1001, row_key=self._range_to_rowkey(field_range))
+                        self.add_issue(LintErr.TBL_FIELD_OVERLAP, row_key=self._range_to_rowkey(field_range))
                     elif prev_range["high"] + 1 != field_range["low"]:
-                        self.add_issue(Code.T1002, row_key=self._range_to_rowkey(field_range))
+                        self.add_issue(LintErr.TBL_FIELD_GAP, row_key=self._range_to_rowkey(field_range))
                 prev_range = field_range
             else:
                 # skip next range check
@@ -217,13 +217,13 @@ class StructTableExtractor(FigureExtractor, ABC):
         if not m:  # cannot parse into a range, sadly
             # elided rows are simply skipped.
             if val != "…":
-                self.add_issue(Code.V1002, row_key=val)
+                self.add_issue(LintErr.RANGE_INVALID, row_key=val)
             return val
         high = int(m.group("high"))
         _low = m.group("low")
         low = int(_low) if _low is not None else high
         if low > high:
-            self.add_issue(Code.V1003, row_key=val)
+            self.add_issue(LintErr.RANGE_REVERSED, row_key=val)
         return {"low": low, "high": high}
 
     def content_elem(self, row: Element) -> Element:
@@ -241,14 +241,14 @@ class StructTableExtractor(FigureExtractor, ABC):
         if len(txt_parts) == 1:
             # no explicit name, forced to infer it
             self.add_issue(
-                Code.L1006,
+                LintErr.LBL_IMPUTED,
                 fig=self.fig_id,
                 row_key=row_key
             )
             return "".join(w[0] for w in txt_parts[0].split())
         else:
             if " " in txt_parts[0]:
-                self.add_issue(Code.L1004, fig=self.fig_id, row_key=row_key)
+                self.add_issue(LintErr.LBL_INVALID_CHRS, fig=self.fig_id, row_key=row_key)
             return txt_parts[0]
 
     def _extract_label(self, row: Element, row_key: str, data: Element) -> str:
@@ -267,7 +267,7 @@ class StructTableExtractor(FigureExtractor, ABC):
             # TODO: improve, replace certain words/sentences by certain abbreviations
             #       namespace -> ns, pointer -> ptr
             gen_name = "".join(w[0] for w in txt_parts[0].split()).lower()
-            self.add_issue(Code.L1006, row_key=row_key)
+            self.add_issue(LintErr.LBL_IMPUTED, row_key=row_key)
             return gen_name
         except Exception as e:
             breakpoint()

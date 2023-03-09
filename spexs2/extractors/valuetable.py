@@ -3,7 +3,7 @@ from spexs2.extractors.figure import FigureExtractor, RowErrPolicy
 from spexs2.extractors.helpers import content_extract_brief
 from spexs2.xml import Xpath, Element
 from spexs2.defs import RESERVED, ELLIPSIS, ValueField
-from spexs2.lint import Code
+from spexs2.lint import LintErr
 from spexs2 import xml  # TODO: for debugging
 
 if TYPE_CHECKING:
@@ -80,9 +80,9 @@ class ValueTableExtractor(FigureExtractor):
             override_key = (self.fig_id, val_cleaned)
             label = self.doc_parser.label_overrides.get(override_key, None)
             if label is None:
-                label = self._content_extract_label(row, row_key, row_data)
+                label = self._extract_label(row, row_key, row_data)
             else:
-                self.add_issue(Code.L1003, row_key=val_cleaned)
+                self.add_issue(LintErr.LBL_OVERRIDDEN, row_key=val_cleaned)
 
             value_field: ValueField = {
                 "val": val_cleaned,
@@ -150,11 +150,11 @@ class ValueTableExtractor(FigureExtractor):
                 continue
 
             if flbl in lbls:
-                self.add_issue(Code.T1003, row_key=self._val_to_rowkey(fval))
+                self.add_issue(LintErr.LBL_DUPLICATE, row_key=self._val_to_rowkey(fval))
             lbls.add(flbl)
 
             if fval in vals:
-                self.add_issue(Code.T1005, row_key=self._val_to_rowkey(fval))
+                self.add_issue(LintErr.VAL_DUPLICATE, row_key=self._val_to_rowkey(fval))
             vals.add(fval)
 
     def val_elem(self, row: Element) -> Element:
@@ -170,7 +170,33 @@ class ValueTableExtractor(FigureExtractor):
     def content_elem(self, row: Element) -> Element:
         return Xpath.elem_first_req(row, f"./td[{self._col_ndx_content + 1}]")
 
-    def _content_extract_label(self, row: Element, row_key: str, data: Element) -> str:
+    def _extract_label_dedicated_col(self, row: Element, row_key: str) -> str:
+        # if we hit this, some document actually has a value table with a dedicated 'attribute' column
+        breakpoint()
+        p1 = Xpath.elem_first_req(
+            row,
+            f"./td[{self._col_ndx_label + 1}]/p[1]")
+        txt = xml.to_text(p1).lower()
+        if txt == "reserved":
+            return RESERVED
+
+        txt_parts = txt.split(":", 1)
+        if len(txt_parts) == 1:
+            # no explicit name, forced to infer it
+            self.add_issue(
+                LintErr.LBL_IMPUTED,
+                fig=self.fig_id,
+                row_key=row_key
+            )
+        else:
+            # if we hit this, some figure actually has a dedicated attribute
+            # column where the text contains a an explicitly-given short-hand/label
+            breakpoint()
+        return txt_parts[0].replace(" ", "_").upper()
+
+    def _extract_label(self, row: Element, row_key: str, data: Element) -> str:
+        if self._col_ndx_content != self._col_ndx_label:
+            return self._extract_label_dedicated_col(row, row_key)
         p1 = Xpath.elem_first_req(data, "./p[1]")
         txt = "".join(
             e.decode("utf-8") if isinstance(e, bytes) else e for e in p1.itertext()).strip()
@@ -182,7 +208,7 @@ class ValueTableExtractor(FigureExtractor):
             # 'Foo Bar Baz: lorem ipsum...' - if no colon is found, this is
             # not the case, ergo we cannot reliably extract a label.
             # TODO: fix, must have the cleaned value here, for reporting
-            self.add_issue(Code.L1003, row_key=row_key)
+            self.add_issue(LintErr.LBL_IMPUTED, row_key=row_key)
         # generic naming strategy
         return txt_parts[0].replace(" ", "_").upper()
 

@@ -1,9 +1,9 @@
 from re import compile as re_compile
-from typing import TYPE_CHECKING, Dict, Tuple, Type, Optional, Iterator, List, TypeAlias
+from typing import TYPE_CHECKING, Dict, Tuple, Type, Optional, Iterator, List, TypeAlias, NoReturn
 from spexs2.xml import Xpath
 from spexs2.extractors.valuetable import ValueTableExtractor
 from spexs2.extractors.structtable import BitsTableExtractor, BytesTableExtractor
-from spexs2.lint import LintEntry, Code, Linter
+from spexs2.lint import LintEntry, Code, Linter, LintErr
 from spexs2.defs import JSON, Entity, EntityMeta
 
 from spexs2 import xml  # TODO: for debugging
@@ -26,20 +26,19 @@ class DocLinter:
     def __init__(self):
         self._lint_issues = []
 
-    def add_issue(self, code: Code, fig: str, *,
+    def add_issue(self, err: LintErr, fig: str, *,
                   msg: Optional[str] = None,
                   row: Optional[str] = None,
-                  ctx: Optional[Dict[str, JSON]] = None) -> LintEntry:
+                  ctx: Optional[Dict[str, JSON]] = None) -> NoReturn:
 
         l_entry = LintEntry(
-            code=code,
+            err=err,
             fig=fig,
             msg="" if msg is None else msg,
             row=row,
             ctx=dict() if ctx is None else ctx,
         )
         self._lint_issues.append(l_entry)
-        return l_entry
 
     def to_json(self) -> JSON:
         return [l_entry.to_json() for l_entry in self._lint_issues]
@@ -176,8 +175,9 @@ class DocumentParser:
         def normalize_hdr(hdr: str) -> str:
             replacement = self.tbl_normalize_mappings.get(hdr, None)
             if replacement is not None:
-                self.linter.add_issue(Code.T1006, fig_id, ctx={
-                    "header": hdr
+                self.linter.add_issue(LintErr.TBL_HDR_ERR, fig_id, ctx={
+                    "got": hdr,
+                    "expected": replacement,
                 })
                 return replacement
             else:
@@ -205,11 +205,9 @@ class DocumentParser:
                     extractor_cls = ecls
                     break
             if extractor_cls is None:
-                self.linter.add_issue(Code.T1007, fig_id, ctx={
+                self.linter.add_issue(LintErr.TBL_SKIPPED, fig_id, ctx={
                     "columns": tbl_hdrs
                 })
-                print(f"SKIP {fig_id}")
-                print(repr(tbl_hdrs))
                 return
 
         e = extractor_cls(
