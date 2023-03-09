@@ -85,10 +85,10 @@ class StructTableExtractor(FigureExtractor, ABC):
         fields: List[StructField] = []
         row_it = self.row_iter()
         for row in row_it:
-            row_val: Element
+            row_range: Element
             row_data: Element
             try:
-                row_val = self.val_extract(row)
+                row_range = self.range_elem(row)
                 row_data = self.content_extract(row)
             except Exception as e:
                 row_txt = "".join(row.itertext()).lstrip().lower()
@@ -104,15 +104,15 @@ class StructTableExtractor(FigureExtractor, ABC):
                     # TODO: have to observe the return value
                     continue
 
-            val_cleaned = self.val_clean(row, row_val)
-            if val_cleaned == ELLIPSIS:
+            range = self.range_clean(row, row_range)
+            if range == ELLIPSIS:
                 fields.append({
                     "range": {"low": -1, "high": -1},
                     "label": ELLIPSIS
                 })
                 continue
 
-            row_key = self._range_to_rowkey(val_cleaned)
+            row_key = self._range_to_rowkey(range)
             override_key = (self.fig_id, row_key)
 
             label = self.doc_parser.label_overrides.get(override_key, None)
@@ -122,7 +122,7 @@ class StructTableExtractor(FigureExtractor, ABC):
                 self.add_issue(Code.L1003, row_key=row_key)
 
             sfield: StructField = {
-                "range": val_cleaned,
+                "range": range,
                 "label": label
             }
 
@@ -206,10 +206,10 @@ class StructTableExtractor(FigureExtractor, ABC):
                 # skip next range check
                 prev_range = None
 
-    def val_extract(self, row: Element) -> Element:
+    def range_elem(self, row: Element) -> Element:
         return Xpath.elem_first_req(row, "./td[1]")
 
-    def val_clean(self, row: Element, val_cell: Element) -> Union[str, "Range"]:
+    def range_clean(self, row: Element, val_cell: Element) -> Union[str, "Range"]:
         val = "".join(
             e.decode("utf-8") if isinstance(e, bytes) else e
             for e in val_cell.itertext()).strip().lower()
