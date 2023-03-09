@@ -28,14 +28,14 @@ class DocLinter:
 
     def add_issue(self, err: LintErr, fig: str, *,
                   msg: Optional[str] = None,
-                  row: Optional[str] = None,
+                  row_key: Optional[str] = None,
                   ctx: Optional[Dict[str, JSON]] = None) -> NoReturn:
 
         l_entry = LintEntry(
             err=err,
             fig=fig,
             msg="" if msg is None else msg,
-            row=row,
+            row=row_key,
             ctx=dict() if ctx is None else ctx,
         )
         self._lint_issues.append(l_entry)

@@ -3,6 +3,7 @@ from spexs2.document import DocumentParser
 from spexs2.extractors.figure import RowErrPolicy
 from spexs2.extractors.structtable import BitsTableExtractor, BytesTableExtractor, StructField
 from spexs2.extractors.valuetable import ValueTableExtractor
+from spexs2.extractors.skiptable import SkipTable
 from spexs2.defs import Entity, EntityMeta
 from spexs2.xml import Element, Xpath
 from lxml import etree
@@ -75,9 +76,23 @@ class NvmFig41(BytesTableExtractor):
 
 
 class NvmCmdSet1c(DocumentParser):
+    label_overrides = {
+        ("42_al: access latency", "00b"): "none",
+        ("42_al: access latency", "01b"): "idle",
+        ("42_al: access latency", "10b"): "normal",
+        ("42_al: access latency", "11b"): "low",
+        ("49_0_4", "00b"): "none",
+        ("42_0_4", "01b"): "idle",
+        ("49_0_4", "10b"): "normal",
+        ("49_0_4", "11b"): "low",
+        ("64_0_4", "00b"): "none",
+        ("64_0_4", "01b"): "idle",
+        ("64_0_4", "10b"): "normal",
+        ("64_0_4", "11b"): "low",
+    }
     fig_extractor_overrides = {
         "23": NvmFig23,
-        "41": NvmFig41,
+        "41": SkipTable,
         # "97": NvmFig97,  # TODO: should be inferred
         # "100": NvmFig100,  # TODO: should be inferred
     }

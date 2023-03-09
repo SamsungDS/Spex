@@ -86,5 +86,5 @@ class LintEntry:
 class Linter(Protocol):
     def add_issue(self, err: LintErr, fig: str, *,
                   msg: Optional[str] = None,
-                  row: Optional[str] = None,
+                  row_key: Optional[str] = None,
                   ctx: Optional[Dict[str, JSON]] = None) -> None: ...

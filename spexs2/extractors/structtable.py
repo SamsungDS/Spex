@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from re import compile as re_compile
 from typing import Iterator, Union, List, Optional, Generator, Dict
 from spexs2.extractors.figure import FigureExtractor, RowErrPolicy
-from spexs2.extractors.helpers import content_extract_brief
+from spexs2.extractors.helpers import content_extract_brief, validate_label
 from spexs2.xml import Element, Xpath
 from spexs2.defs import RESERVED, ELLIPSIS, Entity, EntityMeta, Range, StructField
 from spexs2.lint import LintErr
@@ -187,7 +187,11 @@ class StructTableExtractor(FigureExtractor, ABC):
             flbl = field["label"]
             if flbl not in {RESERVED, ELLIPSIS}:
                 if flbl in lbls:
-                    self.add_issue(LintErr.LBL_DUPLICATE, row_key=self._range_to_rowkey(field["range"]))
+                    self.add_issue(
+                        LintErr.LBL_DUPLICATE,
+                        row_key=self._range_to_rowkey(field["range"]),
+                        ctx={"label": flbl},
+                    )
                 lbls.add(flbl)
 
             if flbl == "…":
@@ -253,25 +257,28 @@ class StructTableExtractor(FigureExtractor, ABC):
 
     def _extract_label(self, row: Element, row_key: str, data: Element) -> str:
         if self._col_ndx_content != self._col_ndx_label:
-            return self._extract_label_separate_col(row, row_key)
-        try:
+            lbl = self._extract_label_separate_col(row, row_key)
+            if lbl == RESERVED:
+                return RESERVED
+        else:
             p1 = Xpath.elem_first_req(data, "./p[1]")
             txt = xml.to_text(p1)
             if txt.lower() == "reserved":
                 return RESERVED
             m = self.rgx_field_lbl.match(txt)
             if m is not None:
-                return m.group("lbl").replace(" ", "").lower()
+                lbl = m.group("lbl").replace(" ", "").lower()
+                validate_label(lbl, self.fig_id, row_key, self.linter)
+                return lbl
             txt_parts = txt.split(":", 1)
             # generic naming strategy
             # TODO: improve, replace certain words/sentences by certain abbreviations
             #       namespace -> ns, pointer -> ptr
             gen_name = "".join(w[0] for w in txt_parts[0].split()).lower()
             self.add_issue(LintErr.LBL_IMPUTED, row_key=row_key)
-            return gen_name
-        except Exception as e:
-            breakpoint()
-            raise e
+            lbl = gen_name
+        validate_label(lbl, self.fig_id, row_key, self.linter)
+        return lbl
 
     def _content_extract_brief(self, row: Element, row_key: str, data: Element) -> Optional[str]:
         return content_extract_brief(row, data, self.BRIEF_MAXLEN)

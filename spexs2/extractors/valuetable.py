@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, Iterator, List, Optional, Union, Generator, Dict
 from spexs2.extractors.figure import FigureExtractor, RowErrPolicy
-from spexs2.extractors.helpers import content_extract_brief
+from spexs2.extractors.helpers import content_extract_brief, validate_label
 from spexs2.xml import Xpath, Element
 from spexs2.defs import RESERVED, ELLIPSIS, ValueField
 from spexs2.lint import LintErr
@@ -150,7 +150,11 @@ class ValueTableExtractor(FigureExtractor):
                 continue
 
             if flbl in lbls:
-                self.add_issue(LintErr.LBL_DUPLICATE, row_key=self._val_to_rowkey(fval))
+                self.add_issue(
+                    LintErr.LBL_DUPLICATE,
+                    row_key=self._val_to_rowkey(fval),
+                    ctx={"label": flbl}
+                )
             lbls.add(flbl)
 
             if fval in vals:
@@ -196,21 +200,26 @@ class ValueTableExtractor(FigureExtractor):
 
     def _extract_label(self, row: Element, row_key: str, data: Element) -> str:
         if self._col_ndx_content != self._col_ndx_label:
-            return self._extract_label_dedicated_col(row, row_key)
-        p1 = Xpath.elem_first_req(data, "./p[1]")
-        txt = "".join(
-            e.decode("utf-8") if isinstance(e, bytes) else e for e in p1.itertext()).strip()
-        if txt.lower() == "reserved":
-            return RESERVED
-        txt_parts = txt.split(":", 1)
-        if txt_parts[0] == txt_parts:
-            # to infer labels, we need the text to be of the form
-            # 'Foo Bar Baz: lorem ipsum...' - if no colon is found, this is
-            # not the case, ergo we cannot reliably extract a label.
-            # TODO: fix, must have the cleaned value here, for reporting
-            self.add_issue(LintErr.LBL_IMPUTED, row_key=row_key)
-        # generic naming strategy
-        return txt_parts[0].replace(" ", "_").upper()
+            lbl = self._extract_label_dedicated_col(row, row_key)
+            if lbl.lower() == "reserved":
+                return RESERVED
+        else:
+            p1 = Xpath.elem_first_req(data, "./p[1]")
+            txt = "".join(
+                e.decode("utf-8") if isinstance(e, bytes) else e for e in p1.itertext()).strip()
+            if txt.lower() == "reserved":
+                return RESERVED
+            txt_parts = txt.split(":", 1)
+            if txt_parts[0] == txt_parts:
+                # to infer labels, we need the text to be of the form
+                # 'Foo Bar Baz: lorem ipsum...' - if no colon is found, this is
+                # not the case, ergo we cannot reliably extract a label.
+                # TODO: fix, must have the cleaned value here, for reporting
+                self.add_issue(LintErr.LBL_IMPUTED, row_key=row_key)
+            # generic naming strategy
+            lbl = txt_parts[0].replace(" ", "_").upper()
+        validate_label(lbl, self.fig_id, row_key, self.linter)
+        return lbl
 
     def _content_extract_brief(self, row: Element, row_key: str, data: Element) -> Optional[str]:
         return content_extract_brief(row, data, self.BRIEF_MAXLEN)
