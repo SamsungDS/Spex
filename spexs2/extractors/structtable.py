@@ -89,7 +89,7 @@ class StructTableExtractor(FigureExtractor, ABC):
             row_data: Element
             try:
                 row_range = self.range_elem(row)
-                row_data = self.content_extract(row)
+                row_data = self.content_elem(row)
             except Exception as e:
                 row_txt = "".join(row.itertext()).lstrip().lower()
                 if row_txt.startswith(ELLIPSIS):
@@ -226,7 +226,7 @@ class StructTableExtractor(FigureExtractor, ABC):
             self.add_issue(Code.V1003, row_key=val)
         return {"low": low, "high": high}
 
-    def content_extract(self, row: Element) -> Element:
+    def content_elem(self, row: Element) -> Element:
         return Xpath.elem_first_req(row, f"./td[{self._col_ndx_content + 1}]")
 
     def _extract_label_separate_col(self, row: Element, row_key: str) -> str:

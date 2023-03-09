@@ -55,7 +55,7 @@ class ValueTableExtractor(FigureExtractor):
             row_data: Element
             try:
                 row_val = self.val_elem(row)
-                row_data = self.content_extract(row)
+                row_data = self.content_elem(row)
             except Exception as e:
                 row_txt = "".join(row.itertext()).lstrip().lower()
                 if row_txt.startswith(ELLIPSIS):
@@ -167,7 +167,7 @@ class ValueTableExtractor(FigureExtractor):
             e.decode("utf-8") if isinstance(e, bytes) else e
             for e in val_cell.itertext()).strip().lower()
 
-    def content_extract(self, row: Element) -> Element:
+    def content_elem(self, row: Element) -> Element:
         return Xpath.elem_first_req(row, f"./td[{self._col_ndx_content + 1}]")
 
     def _content_extract_label(self, row: Element, row_key: str, data: Element) -> str:
