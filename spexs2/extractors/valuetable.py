@@ -11,6 +11,14 @@ if TYPE_CHECKING:
 
 
 class ValueTableExtractor(FigureExtractor):
+    @classmethod
+    def can_apply(cls, tbl_col_hdrs: List[str]) -> bool:
+        return (
+            len(set(cls.value_column_hdrs()).intersection(tbl_col_hdrs)) > 0
+            and len(set(cls.content_column_hdrs()).intersection(tbl_col_hdrs)) > 0
+            and (len(set(cls.label_column_hdrs()).intersection(tbl_col_hdrs))) > 0
+        )
+
     def __call__(self) -> Iterator["Entity"]:
         fields: List[ValueField] = []
         row_it = self.row_iter()
@@ -72,6 +80,21 @@ class ValueTableExtractor(FigureExtractor):
             "type": "values",
             "fields": fields
         }
+
+    @staticmethod
+    def value_column_hdrs() -> List[str]:
+        """Return prioritized list of column headers where extractor should extract the row's value.
+
+        The value row is where the extractor will extract the row's value - loosely equivalent to
+        the enum value of the entry.
+
+        Note:
+            First match found in figure's actual table headers is used.
+
+            This is intended to be overridden for specialized extractors where the value
+            column is using a non-standard heading.
+        """
+        return ["value"]
 
     def row_err_handler(self, row_it: Iterator[Element], row: Element,
                         fields: List[ValueField], err: Exception) -> Generator["Entity", None, RowErrPolicy]:

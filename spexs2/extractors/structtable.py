@@ -204,12 +204,28 @@ class StructTableExtractor(FigureExtractor, ABC):
 
 
 class BitsTableExtractor(StructTableExtractor):
+    @classmethod
+    def can_apply(cls, tbl_col_hdrs: List[str]) -> bool:
+        return (
+                "bits" in tbl_col_hdrs
+                and len(set(cls.content_column_hdrs()).intersection(tbl_col_hdrs)) > 0
+                and (len(set(cls.label_column_hdrs()).intersection(tbl_col_hdrs))) > 0
+        )
+
     @property
     def type(self) -> str:
         return "bits"
 
 
 class BytesTableExtractor(StructTableExtractor):
+    @classmethod
+    def can_apply(cls, tbl_col_hdrs: List[str]) -> bool:
+        return (
+                "bytes" in tbl_col_hdrs
+                and len(set(cls.content_column_hdrs()).intersection(tbl_col_hdrs)) > 0
+                and (len(set(cls.label_column_hdrs()).intersection(tbl_col_hdrs))) > 0
+        )
+
     @property
     def type(self) -> str:
         return "bytes"

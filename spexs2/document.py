@@ -60,6 +60,33 @@ class DocumentParser:
         ...
 
     @property
+    def tbl_normalize_mappings(self) -> Dict[str, str]:
+        return {
+            "code": "value",
+            "definition": "description",
+            "bit": "bits",
+            "byte": "bytes"
+        }
+
+    @property
+    def extractors(self) -> List[Type["FigureExtractor"]]:
+        """Return list of Figure extractors to try applying to figures found in document.
+
+        Note:
+            Each extractor's `can_apply` function is called in turn to determine if
+            the extractor can be used for a given figure. Note that the first matching
+            extractor is used, so order matters.
+
+            Override in custom document extractors to add new "default" extrators to
+            attempt applying for each figure found in the document.
+            """
+        return [
+            BytesTableExtractor,
+            ValueTableExtractor,
+            BitsTableExtractor,
+        ]
+
+    @property
     def label_overrides(self) -> Dict[Tuple[FigId, FigRow], str]:
         """Provide names for fields where none can be extracted/inferred."""
         return {}
@@ -124,86 +151,65 @@ class DocumentParser:
                 "fig_id": figure_id,
             }, tbl
 
-    def extract_tbl_headers(self, tbl: "Element") -> List[str]:
+    def extract_tbl_headers(self, fig_id: str, tbl: "Element") -> List[str]:
         """Extracts a textual value for each column in the header.
 
         E.g. ['Range', 'Bit', 'Definition']. This can then be used to infer
         from which fields the value/range, label and data(brief and sub-tables)
         should be extracted.
 
-        Note: empty strings are retained, this means each element's offset directly
-              corresponds to the offset of the actual column."""
-        thdrs = Xpath.elems(tbl, "./tr[1]/*")
-        return [
-            xml.to_text(thdr) for thdr in thdrs
-        ]
+        Note:
+            column headers match one-to-one with the table's columns, this means
+            empty strings are also included.
 
-    def normalize_tbl_headers(self, fig_id: str, thdrs: List[str]) -> List[str]:
-        """Normalizes table headers
+            column headers are lightly normalized - they are lower-cased, stripped
+            of surrounding white-space and matches in `tbl_normalize_mappings`
+            are replaced.
 
-        NOTE: raises lint issues when encountering non-standard variants of established column
-              names ('bit' instead of 'bits', 'definition' instead of 'description')."""
-        thdrs = [thdr.lower().strip() for thdr in thdrs]
+            If a column header matches an entry in `tbl_normalize_mappings`, it
+            is replaced and a linting error is raised, indicating that a common
+            variant of the standard table heading for that type was used.
+            Some classic examples would be 'bit' instead of 'bits', 'code' instead
+            of 'value' or 'definition' instead of 'description'.
+        """
 
         def normalize_hdr(hdr: str) -> str:
-            if hdr == "byte":
+            replacement = self.tbl_normalize_mappings.get(hdr, None)
+            if replacement is not None:
                 self.linter.add_issue(Code.T1006, fig_id, ctx={
-                    f"{Code.T1006.name}.header": "byte"
+                    f"{Code.T1006.name}.header": replacement
                 })
-                return "bytes"
-            elif hdr == "bit":
-                self.linter.add_issue(Code.T1006, fig_id, ctx={
-                    f"{Code.T1006.name}.header": "byte"
-                })
-                return "bits"
-            elif hdr == "code":
-                self.linter.add_issue(Code.T1006, fig_id, ctx={
-                    f"{Code.T1006.name}.header": "byte"
-                })
-                return "value"
-            elif hdr == "definition":
-                self.linter.add_issue(Code.T1006, fig_id, ctx={
-                    f"{Code.T1006.name}.header": "byte"
-                })
-                return "description"
-            return hdr
+                return replacement
+            else:
+                return hdr
 
         return [
-            normalize_hdr(hdr)
-            for hdr in thdrs
+            normalize_hdr(xml.to_text(thdr).lower().strip())
+            for thdr in Xpath.elems(tbl, "./tr[1]/*")
         ]
-
-    def _infer_extractor_from_hdrs(self, hdrs: List[str]) -> Optional[Type["FigureExtractor"]]:
-        """Examines header headings and determines which extractor to use.
-
-        NOTE: this is consulted after specific overrides given in `fig_extractor_overrides`.
-              Typically, you want to set specific overrides, not re-implement this method.
-        NOTE: If you re-implement this method, take care to create linting issues for non-standard
-              column names (like 'bit' instead of 'bits)..
-        """
-        if "bytes" in hdrs:
-            return BytesTableExtractor
-        elif "bits" in hdrs:
-            return BitsTableExtractor
-        elif "value" in hdrs:
-            return ValueTableExtractor
-        else:
-            # no idea what to do with this table. And this might well be OK, many tables are one-off
-            # and not relevant for this model.
-            return None
 
     def _on_parse_fig(self, entity: EntityMeta, tbl: "Element") -> Iterator[Entity]:
         """Parse figure, emitting one or more entities.
 
-        NOTE: a figure table may contain nested tables which themselves
-              become separate entities. Hence calling this produces an
-              iterator of entities."""
+        Note:
+            a figure table may contain nested tables which themselves
+            become separate entities. Hence calling this produces an
+            iterator of entities.
+        """
         fig_id = entity["fig_id"]
-        tbl_hdrs = self.normalize_tbl_headers(fig_id, self.extract_tbl_headers(tbl))
+        tbl_hdrs = self.extract_tbl_headers(fig_id, tbl)
         extractor_cls = self.fig_extractor_overrides.get(fig_id, None)
         if extractor_cls is None:
-            extractor_cls = self._infer_extractor_from_hdrs(tbl_hdrs)
+            for ecls in self.extractors:
+                if ecls.can_apply(tbl_hdrs):
+                    extractor_cls = ecls
+                    break
             if extractor_cls is None:
+                self.linter.add_issue(Code.T1007, fig_id, ctx={
+                    "columns": tbl_hdrs
+                })
+                print(f"SKIP {fig_id}")
+                print(repr(tbl_hdrs))
                 return
 
         e = extractor_cls(

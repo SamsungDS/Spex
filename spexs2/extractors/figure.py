@@ -97,6 +97,51 @@ class FigureExtractor(ABC):
         # must drive the process from this fn
         ...
 
+    @classmethod
+    @abstractmethod
+    def can_apply(cls, tbl_col_hdrs: List[str]) -> bool:
+        """determine if extractor can be used given the table's column headers.
+
+        Note:
+            this function is not called when extractor is provided explicitly
+            as an override for some figure.
+
+        Args:
+            tbl_col_hdrs: the table's column headers, lower-cased and stripped.
+
+        Returns:
+            True iff. extractor is applicable, False otherwise.
+        """
+        ...
+
+    @staticmethod
+    def content_column_hdrs() -> List[str]:
+        """Return prioritized list of column headers where extractor should extract the row's content.
+
+        The content row is where the extractor will extract a brief (short documentation string)
+        for the row and any sub-tables, if present.
+        Also, if there is no dedicated column for row names, these too will be extracted from this column.
+
+        Note:
+            First match found in figure's actual table headers is used.
+
+            This is intended to be overridden for specialized extractors where the content
+            column is using a non-standard heading.
+        """
+        return ["description"]
+
+    @staticmethod
+    def label_column_hdrs() -> List[str]:
+        """Return prioritized list of column headers where extractor should extract the row's name.
+
+        Note:
+            First match found in figure's actual table headers is used.
+
+            This is intended to be overridden for specialized extractors where the label
+            column is using a non-standard heading.
+        """
+        return ["attribute", "description"]
+
     @abstractmethod
     def val_extract(self, row: Element) -> Element:
         ...

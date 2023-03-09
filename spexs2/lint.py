@@ -14,6 +14,7 @@ class Code(Enum):
     T1004 = "row order wrong, bits should be in desc order, bytes in asc order"
     T1005 = "duplicate value"
     T1006 = "non-standard table header"
+    T1007 = "table skipped"
 
     R1000 = "error parsing row"
 
