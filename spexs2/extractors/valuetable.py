@@ -1,6 +1,6 @@
-from typing import TYPE_CHECKING, Iterator, List, Optional, Union, Generator
+from typing import TYPE_CHECKING, Iterator, List, Optional, Union, Generator, Dict
 from spexs2.extractors.figure import FigureExtractor, RowErrPolicy
-from spexs2.extractors.helpers import data_extract_field_brief
+from spexs2.extractors.helpers import content_extract_brief
 from spexs2.xml import Xpath, Element
 from spexs2.defs import RESERVED, ELLIPSIS, ValueField
 from spexs2.lint import Code
@@ -11,6 +11,10 @@ if TYPE_CHECKING:
 
 
 class ValueTableExtractor(FigureExtractor):
+    _col_ndx_value: int
+    _col_ndx_content: int
+    _col_ndx_label: int
+
     @classmethod
     def can_apply(cls, tbl_col_hdrs: List[str]) -> bool:
         return (
@@ -18,6 +22,30 @@ class ValueTableExtractor(FigureExtractor):
             and len(set(cls.content_column_hdrs()).intersection(tbl_col_hdrs)) > 0
             and (len(set(cls.label_column_hdrs()).intersection(tbl_col_hdrs))) > 0
         )
+
+    def _get_col_ndx(self, col_hdrs: List[str], tbl_cols_ndxs: Dict[str, int]) -> Optional[int]:
+        for colname in col_hdrs:
+            ndx = tbl_cols_ndxs.get(colname, None)
+            if ndx is not None:
+                return ndx
+        return None
+
+    def __post_init__(self) -> None:
+        col_ndxs = {
+            hdr: ndx
+            for ndx, hdr in enumerate(self.tbl_hdrs)
+        }
+        self._col_ndx_value = self._get_col_ndx(self.value_column_hdrs(), col_ndxs)
+        if self._col_ndx_value is None:
+            raise RuntimeError("failed to find column to extract values from")
+
+        self._col_ndx_content = self._get_col_ndx(self.content_column_hdrs(), col_ndxs)
+        if self._col_ndx_content is None:
+            raise RuntimeError("failed to find column to extract content from")
+
+        self._col_ndx_label = self._get_col_ndx(self.label_column_hdrs(), col_ndxs)
+        if self._col_ndx_label is None:
+            raise RuntimeError("failed to find column to extract labels from")
 
     def __call__(self) -> Iterator["Entity"]:
         fields: List[ValueField] = []
@@ -27,7 +55,7 @@ class ValueTableExtractor(FigureExtractor):
             row_data: Element
             try:
                 row_val = self.val_extract(row)
-                row_data = self.data_extract(row)
+                row_data = self.content_extract(row)
             except Exception as e:
                 row_txt = "".join(row.itertext()).lstrip().lower()
                 if row_txt.startswith(ELLIPSIS):
@@ -52,7 +80,7 @@ class ValueTableExtractor(FigureExtractor):
             override_key = (self.fig_id, val_cleaned)
             label = self.doc_parser.label_overrides.get(override_key, None)
             if label is None:
-                label = self.data_extract_field_label(row, row_key, row_data)
+                label = self._content_extract_label(row, row_key, row_data)
             else:
                 self.add_issue(Code.L1003, row_key=val_cleaned)
 
@@ -61,7 +89,7 @@ class ValueTableExtractor(FigureExtractor):
                 "label": label,
             }
 
-            brief = self.data_extract_field_brief(row, row_key, row_data)
+            brief = self._content_extract_brief(row, row_key, row_data)
             if brief is not None:
                 value_field["brief"] = brief
 
@@ -130,18 +158,19 @@ class ValueTableExtractor(FigureExtractor):
             vals.add(fval)
 
     def val_extract(self, row: Element) -> Element:
-        return Xpath.elem_first_req(row, "./td[1]")
+        return Xpath.elem_first_req(row, f"./td[{self._col_ndx_value + 1}]")
 
     def val_clean(self, row: Element, val_cell: Element) -> Union[str, int]:
         # TODO: read as number if possible, complain if not a hex value using the 'h' suffix
+        # TODO: there are also tables using b suffix, is there always a suffix or..?
         return "".join(
             e.decode("utf-8") if isinstance(e, bytes) else e
             for e in val_cell.itertext()).strip().lower()
 
-    def data_extract(self, row: Element) -> Element:
-        return Xpath.elem_first_req(row, "./td[2]")
+    def content_extract(self, row: Element) -> Element:
+        return Xpath.elem_first_req(row, f"./td[{self._col_ndx_content + 1}]")
 
-    def data_extract_field_label(self, row: Element, row_key: str, data: Element) -> str:
+    def _content_extract_label(self, row: Element, row_key: str, data: Element) -> str:
         p1 = Xpath.elem_first_req(data, "./p[1]")
         txt = "".join(
             e.decode("utf-8") if isinstance(e, bytes) else e for e in p1.itertext()).strip()
@@ -157,5 +186,5 @@ class ValueTableExtractor(FigureExtractor):
         # generic naming strategy
         return txt_parts[0].replace(" ", "_").upper()
 
-    def data_extract_field_brief(self, row: Element, row_key: str, data: Element) -> Optional[str]:
-        return data_extract_field_brief(row, data, self.BRIEF_MAXLEN)
+    def _content_extract_brief(self, row: Element, row_key: str, data: Element) -> Optional[str]:
+        return content_extract_brief(row, data, self.BRIEF_MAXLEN)

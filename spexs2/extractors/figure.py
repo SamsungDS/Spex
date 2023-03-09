@@ -141,11 +141,3 @@ class FigureExtractor(ABC):
             column is using a non-standard heading.
         """
         return ["attribute", "description"]
-
-    @abstractmethod
-    def val_extract(self, row: Element) -> Element:
-        ...
-
-    @abstractmethod
-    def data_extract(self, row: Element) -> Element:
-        ...

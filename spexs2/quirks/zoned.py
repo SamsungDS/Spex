@@ -8,14 +8,14 @@ if TYPE_CHECKING:
     from spexs2.xml import Element
 
 
-class ZndFig48(BytesTableExtractor):
-    def data_extract(self, row: "Element") -> "Element":
-        return Xpath.elem_first_req(row, "./td[3]")
-
-
-class ZndFig50(BytesTableExtractor):
-    def data_extract(self, row: "Element") -> "Element":
-        return Xpath.elem_first_req(row, "./td[3]")
+# class ZndFig48(BytesTableExtractor):
+#     def data_extract(self, row: "Element") -> "Element":
+#         return Xpath.elem_first_req(row, "./td[3]")
+#
+#
+# class ZndFig50(BytesTableExtractor):
+#     def data_extract(self, row: "Element") -> "Element":
+#         return Xpath.elem_first_req(row, "./td[3]")
 
 
 class NvmCsZoned11c(DocumentParser):
@@ -27,6 +27,6 @@ class NvmCsZoned11c(DocumentParser):
     }
 
     fig_extractor_overrides = {
-        "48": ZndFig48,
-        "50": ZndFig50,
+        # "48": ZndFig48,
+        # "50": ZndFig50,
     }

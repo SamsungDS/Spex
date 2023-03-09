@@ -6,7 +6,7 @@ if TYPE_CHECKING:
     from spexs2.xml import Element
 
 
-def data_extract_field_brief(row: "Element", data: "Element", brief_maxlen=60) -> Optional[str]:
+def content_extract_brief(row: "Element", data: "Element", brief_maxlen=60) -> Optional[str]:
     p1_opt = Xpath.elem_first(data, "./p[1]")
     if p1_opt is None:
         return None

@@ -2,6 +2,7 @@ from typing import Iterator, List, Optional, Generator
 from spexs2.document import DocumentParser
 from spexs2.extractors.figure import RowErrPolicy
 from spexs2.extractors.structtable import BitsTableExtractor, BytesTableExtractor, StructField
+from spexs2.extractors.valuetable import ValueTableExtractor
 from spexs2.defs import Entity, EntityMeta
 from spexs2.xml import Element, Xpath
 from lxml import etree
@@ -53,38 +54,30 @@ class NvmFig23(BitsTableExtractor):
             yield from self._parse(self._fig24_meta, self._fig24)
 
 
-class NvmFig97(BytesTableExtractor):
-    def data_extract(self, row: Element) -> Element:
-        return Xpath.elem_first_req(row, "./td[3]")
-
-
-class NvmFig100(BytesTableExtractor):
-    def data_extract(self, row: "Element") -> "Element":
-        return Xpath.elem_first_req(row, "./td[3]")
-
-
-class NvmFig9_3(BytesTableExtractor):
-    @staticmethod
-    def value_column_hdrs() -> List[str]:
-        return ["pract value"]
+# class NvmFig97(BytesTableExtractor):
+#     def data_extract(self, row: Element) -> Element:
+#         return Xpath.elem_first_req(row, "./td[3]")
+#
+#
+# class NvmFig100(BytesTableExtractor):
+#     def data_extract(self, row: "Element") -> "Element":
+#         return Xpath.elem_first_req(row, "./td[3]")
 
 
 class NvmFig41(BytesTableExtractor):
+    @staticmethod
+    def content_column_hdrs() -> List[str]:
+        return ["field"]
+
     @staticmethod
     def label_column_hdrs() -> List[str]:
         return ["field"]
 
 
 class NvmCmdSet1c(DocumentParser):
-    # fig_extractor_overrides = {
-    #     "23": NvmFig23,
-    #     "97": NvmFig97,
-    #     "100": NvmFig100,
-    # }
     fig_extractor_overrides = {
-        "9_3": NvmFig9_3,
         "23": NvmFig23,
         "41": NvmFig41,
-        "97": NvmFig97,  # TODO: should be inferred
-        "100": NvmFig100,  # TODO: should be inferred
+        # "97": NvmFig97,  # TODO: should be inferred
+        # "100": NvmFig100,  # TODO: should be inferred
     }

@@ -177,7 +177,7 @@ class DocumentParser:
             replacement = self.tbl_normalize_mappings.get(hdr, None)
             if replacement is not None:
                 self.linter.add_issue(Code.T1006, fig_id, ctx={
-                    f"{Code.T1006.name}.header": replacement
+                    "header": hdr
                 })
                 return replacement
             else:

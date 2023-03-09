@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from re import compile as re_compile
-from typing import Iterator, Union, List, Optional, Generator
+from typing import Iterator, Union, List, Optional, Generator, Dict
 from spexs2.extractors.figure import FigureExtractor, RowErrPolicy
-from spexs2.extractors.helpers import data_extract_field_brief
+from spexs2.extractors.helpers import content_extract_brief
 from spexs2.xml import Element, Xpath
 from spexs2.defs import RESERVED, ELLIPSIS, Entity, EntityMeta, Range, StructField
 from spexs2.lint import Code
@@ -10,8 +10,60 @@ from spexs2 import xml  # TODO: for debugging
 
 
 class StructTableExtractor(FigureExtractor, ABC):
+    _col_ndx_range: int
+    _col_ndx_content: int
+    _col_ndx_label: int
+
     rgx_range = re_compile(r"(?P<high>\d+)\s*(:\s*(?P<low>\d+))?")
     rgx_field_lbl = re_compile(r"^.*\s+(\((?P<lbl>[^\)]*)\)\s*:)")
+
+    @staticmethod
+    @abstractmethod
+    def range_column_hdrs() -> List[str]:
+        """Return prioritized list of column headers where extractor should extract the row's range.
+
+        The value row is where the extractor will extract the row's range, equivalent to the field's
+        offset and width in a C struct.
+
+        Note:
+            First match found in figure's actual table headers is used.
+
+            This is intended to be overridden for specialized extractors where the range
+            column is using a non-standard heading.
+        """
+        ...
+
+    def _get_col_ndx(self, col_hdrs: List[str], tbl_cols_ndxs: Dict[str, int]) -> Optional[int]:
+        for colname in col_hdrs:
+            ndx = tbl_cols_ndxs.get(colname, None)
+            if ndx is not None:
+                return ndx
+        return None
+
+    def __post_init__(self) -> None:
+        col_ndxs = {
+            hdr: ndx
+            for ndx, hdr in enumerate(self.tbl_hdrs)
+        }
+        self._col_ndx_range = self._get_col_ndx(self.range_column_hdrs(), col_ndxs)
+        if self._col_ndx_range is None:
+            raise RuntimeError("failed to find column to extract ranges from")
+
+        self._col_ndx_content = self._get_col_ndx(self.content_column_hdrs(), col_ndxs)
+        if self._col_ndx_content is None:
+            raise RuntimeError("failed to find column to extract content from")
+
+        self._col_ndx_label = self._get_col_ndx(self.label_column_hdrs(), col_ndxs)
+        if self._col_ndx_label is None:
+            raise RuntimeError("failed to find column to extract labels from")
+
+    @classmethod
+    def can_apply(cls, tbl_col_hdrs: List[str]) -> bool:
+        return (
+                len(set(cls.range_column_hdrs()).intersection(tbl_col_hdrs)) > 0
+                and len(set(cls.content_column_hdrs()).intersection(tbl_col_hdrs)) > 0
+                and (len(set(cls.label_column_hdrs()).intersection(tbl_col_hdrs))) > 0
+        )
 
     @property
     @abstractmethod
@@ -37,7 +89,7 @@ class StructTableExtractor(FigureExtractor, ABC):
             row_data: Element
             try:
                 row_val = self.val_extract(row)
-                row_data = self.data_extract(row)
+                row_data = self.content_extract(row)
             except Exception as e:
                 row_txt = "".join(row.itertext()).lstrip().lower()
                 if row_txt.startswith(ELLIPSIS):
@@ -65,7 +117,7 @@ class StructTableExtractor(FigureExtractor, ABC):
 
             label = self.doc_parser.label_overrides.get(override_key, None)
             if label is None:
-                label = self.data_extract_field_label(row, row_key, row_data)
+                label = self._extract_label(row, row_key, row_data)
             else:
                 self.add_issue(Code.L1003, row_key=row_key)
 
@@ -76,7 +128,7 @@ class StructTableExtractor(FigureExtractor, ABC):
 
             brief = self.doc_parser.brief_overrides.get(override_key, None)
             if brief is None:
-                brief = self.data_extract_field_brief(row, row_key, row_data)
+                brief = self._content_extract_brief(row, row_key, row_data)
 
             # no brief override, no brief extracted from table cell
             if brief is not None:
@@ -174,15 +226,37 @@ class StructTableExtractor(FigureExtractor, ABC):
             self.add_issue(Code.V1003, row_key=val)
         return {"low": low, "high": high}
 
-    def data_extract(self, row: Element) -> Element:
-        return Xpath.elem_first_req(row, "./td[2]")
+    def content_extract(self, row: Element) -> Element:
+        return Xpath.elem_first_req(row, f"./td[{self._col_ndx_content + 1}]")
 
-    def data_extract_field_label(self, row: Element, row_key: str, data: Element) -> str:
+    def _extract_label_separate_col(self, row: Element, row_key: str) -> str:
+        p1 = Xpath.elem_first_req(
+            row,
+            f"./td[{self._col_ndx_label + 1}]/p[1]")
+        txt = xml.to_text(p1).lower()
+        if txt == "reserved":
+            return RESERVED
+
+        txt_parts = txt.split(":", 1)
+        if len(txt_parts) == 1:
+            # no explicit name, forced to infer it
+            self.add_issue(
+                Code.L1006,
+                fig=self.fig_id,
+                row_key=row_key
+            )
+            return "".join(w[0] for w in txt_parts[0].split())
+        else:
+            if " " in txt_parts[0]:
+                self.add_issue(Code.L1004, fig=self.fig_id, row_key=row_key)
+            return txt_parts[0]
+
+    def _extract_label(self, row: Element, row_key: str, data: Element) -> str:
+        if self._col_ndx_content != self._col_ndx_label:
+            return self._extract_label_separate_col(row, row_key)
         try:
             p1 = Xpath.elem_first_req(data, "./p[1]")
-            txt = "".join(
-                e.decode("utf-8") if isinstance(e, bytes) else e
-                for e in p1.itertext()).strip()
+            txt = xml.to_text(p1)
             if txt.lower() == "reserved":
                 return RESERVED
             m = self.rgx_field_lbl.match(txt)
@@ -199,18 +273,14 @@ class StructTableExtractor(FigureExtractor, ABC):
             breakpoint()
             raise e
 
-    def data_extract_field_brief(self, row: Element, row_key: str, data: Element) -> Optional[str]:
-        return data_extract_field_brief(row, data, self.BRIEF_MAXLEN)
+    def _content_extract_brief(self, row: Element, row_key: str, data: Element) -> Optional[str]:
+        return content_extract_brief(row, data, self.BRIEF_MAXLEN)
 
 
 class BitsTableExtractor(StructTableExtractor):
-    @classmethod
-    def can_apply(cls, tbl_col_hdrs: List[str]) -> bool:
-        return (
-                "bits" in tbl_col_hdrs
-                and len(set(cls.content_column_hdrs()).intersection(tbl_col_hdrs)) > 0
-                and (len(set(cls.label_column_hdrs()).intersection(tbl_col_hdrs))) > 0
-        )
+    @staticmethod
+    def range_column_hdrs() -> List[str]:
+        return ["bits"]
 
     @property
     def type(self) -> str:
@@ -218,13 +288,9 @@ class BitsTableExtractor(StructTableExtractor):
 
 
 class BytesTableExtractor(StructTableExtractor):
-    @classmethod
-    def can_apply(cls, tbl_col_hdrs: List[str]) -> bool:
-        return (
-                "bytes" in tbl_col_hdrs
-                and len(set(cls.content_column_hdrs()).intersection(tbl_col_hdrs)) > 0
-                and (len(set(cls.label_column_hdrs()).intersection(tbl_col_hdrs))) > 0
-        )
+    @staticmethod
+    def range_column_hdrs() -> List[str]:
+        return ["bytes"]
 
     @property
     def type(self) -> str:
