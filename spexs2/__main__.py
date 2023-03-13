@@ -122,7 +122,7 @@ def main():
         help="path to directory where the output JSON file(s) should be stored."
     )
     parser.add_argument(
-        "--lint-ignore", type=arg_lintcode
+        "--lint-ignore", type=arg_lintcode, default=[]
     )
 
     args = parser.parse_args()
