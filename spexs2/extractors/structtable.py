@@ -211,7 +211,7 @@ class StructTableExtractor(FigureExtractor, ABC):
                 prev_range = None
 
     def range_elem(self, row: Element) -> Element:
-        return Xpath.elem_first_req(row, "./td[1]")
+        return Xpath.elem_first_req(row, f"./td[{self._col_ndx_range + 1}]")
 
     def range_clean(self, row: Element, val_cell: Element) -> Union[str, "Range"]:
         val = "".join(
