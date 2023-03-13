@@ -77,10 +77,10 @@ class NvmFig41(BytesTableExtractor):
 
 class NvmCmdSet1c(DocumentParser):
     label_overrides = {
-        ("42_al: access latency", "00b"): "none",
-        ("42_al: access latency", "01b"): "idle",
-        ("42_al: access latency", "10b"): "normal",
-        ("42_al: access latency", "11b"): "low",
+        ("42_4", "00b"): "none",
+        ("42_4", "01b"): "idle",
+        ("42_4", "10b"): "normal",
+        ("42_4", "11b"): "low",
         ("49_0_4", "00b"): "none",
         ("42_0_4", "01b"): "idle",
         ("49_0_4", "10b"): "normal",
