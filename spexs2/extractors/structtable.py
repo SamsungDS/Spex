@@ -101,9 +101,13 @@ class StructTableExtractor(FigureExtractor, ABC):
                 elif row_txt.startswith("notes:"):
                     break
                 else:
-                    yield from self.row_err_handler(row_it, row, fields, e)
-                    # TODO: have to observe the return value
-                    continue
+                    out = yield from self.row_err_handler(row_it, row, fields, e)
+                    if out == RowErrPolicy.Stop:
+                        break
+                    elif out == RowErrPolicy.Raise:
+                        raise e
+                    else:
+                        continue
 
             range = self.range_clean(row, row_range)
             if range == ELLIPSIS:
