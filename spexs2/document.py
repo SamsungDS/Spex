@@ -76,7 +76,7 @@ class DocumentParser:
             the extractor can be used for a given figure. Note that the first matching
             extractor is used, so order matters.
 
-            Override in custom document extractors to add new "default" extrators to
+            Override in custom document extractors to add new "default" extractors to
             attempt applying for each figure found in the document.
             """
         return [
