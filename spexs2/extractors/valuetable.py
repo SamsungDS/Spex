@@ -30,7 +30,8 @@ class ValueTableExtractor(FigureExtractor):
                 return ndx
         return None
 
-    def __post_init__(self) -> None:
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
         col_ndxs = {
             hdr: ndx
             for ndx, hdr in enumerate(self.tbl_hdrs)
