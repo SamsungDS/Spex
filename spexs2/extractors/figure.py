@@ -5,6 +5,7 @@ from spexs2.xml import Element, Xpath
 from spexs2.lint import Linter, LintErr
 from spexs2.defs import JSON
 from spexs2 import xml  # TODO: for debugging
+from spexs2.rowiter import row_iter
 
 
 if TYPE_CHECKING:
@@ -84,7 +85,7 @@ class FigureExtractor(ABC):
         # select first td where parent is a tr
         # ... then select the parent (tr) again
         # -> filters out header (th) rows
-        yield from Xpath.elems(self.tbl, "./tr/td[1]/parent::tr")
+        yield from row_iter(self.tbl)
 
     def extract_data_subtbls(self, entity_base: "EntityMeta", data: Element) -> Iterator["Entity"]:
         tbls = Xpath.elems(data, "./table")
