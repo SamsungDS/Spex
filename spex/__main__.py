@@ -3,9 +3,9 @@ import json
 from pathlib import Path
 import textwrap
 from typing import Protocol, Dict, TypedDict, List
-from spexs2 import parse
-from spexs2.defs import JSON
-from spexs2.lint import Code
+from model import parse
+from model.defs import JSON
+from model.lint import Code
 
 
 class S2Model(TypedDict):

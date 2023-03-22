@@ -1,11 +1,11 @@
 from typing import TYPE_CHECKING, Optional
 from re import compile as re_compile
-from spexs2.xml import Xpath
-from spexs2.lint import Linter, LintErr
+from model.xml import Xpath
+from model.lint import Linter, LintErr
 
 
 if TYPE_CHECKING:
-    from spexs2.xml import Element
+    from model.xml import Element
 
 rgx_lbl = re_compile(r"""^[a-zA-Z_][\w]*$""")
 

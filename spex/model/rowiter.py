@@ -18,7 +18,7 @@ This is complicated by two facts:
 """
 import copy
 from lxml import etree
-from spexs2.xml import Xpath
+from model.xml import Xpath
 
 
 def repr_elem(elem):

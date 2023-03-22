@@ -2,8 +2,8 @@ from typing import TYPE_CHECKING, Dict, Iterator, TypedDict, NotRequired, Protoc
 
 
 if TYPE_CHECKING:
-    from spexs2.xml import Element
-    from spexs2.extractors.figure import FigureExtractor
+    from model.xml import Element
+    from model.extractors.figure import FigureExtractor
 
 
 JSON = Union[None, bool, str, float, int, List['JSON'], Dict[str, 'JSON']]

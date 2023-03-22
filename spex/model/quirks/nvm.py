@@ -1,11 +1,11 @@
 from typing import Iterator, List, Optional, Generator
-from spexs2.document import DocumentParser
-from spexs2.extractors.figure import RowErrPolicy
-from spexs2.extractors.structtable import BitsTableExtractor, BytesTableExtractor, StructField
-from spexs2.extractors.valuetable import ValueTableExtractor
-from spexs2.extractors.skiptable import SkipTable
-from spexs2.defs import Entity, EntityMeta
-from spexs2.xml import Element, Xpath
+from model.document import DocumentParser
+from model.extractors.figure import RowErrPolicy
+from model.extractors.structtable import BitsTableExtractor, BytesTableExtractor, StructField
+from model.extractors.valuetable import ValueTableExtractor
+from model.extractors.skiptable import SkipTable
+from model.defs import Entity, EntityMeta
+from model.xml import Element, Xpath
 from lxml import etree
 
 

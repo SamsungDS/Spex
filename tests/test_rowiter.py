@@ -1,7 +1,7 @@
 from lxml import etree
-from spexs2.xml import Xpath
-from spexs2 import xml
-from spexs2.rowiter import row_iter
+from xml import Xpath
+import xml
+from rowiter import row_iter
 import pytest
 
 

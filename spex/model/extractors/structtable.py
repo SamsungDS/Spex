@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
 from re import compile as re_compile
 from typing import Iterator, Union, List, Optional, Generator, Dict
-from spexs2.extractors.figure import FigureExtractor, RowErrPolicy
-from spexs2.extractors.helpers import content_extract_brief, validate_label
-from spexs2.xml import Element, Xpath
-from spexs2.defs import RESERVED, ELLIPSIS, Entity, EntityMeta, Range, StructField
-from spexs2.lint import LintErr
-from spexs2 import xml  # TODO: for debugging
+from model.extractors.figure import FigureExtractor, RowErrPolicy
+from model.extractors.helpers import content_extract_brief, validate_label
+from model.xml import Element, Xpath
+from model.defs import RESERVED, ELLIPSIS, Entity, EntityMeta, Range, StructField
+from model.lint import LintErr
+from model import xml  # TODO: for debugging
 
 
 class StructTableExtractor(FigureExtractor, ABC):

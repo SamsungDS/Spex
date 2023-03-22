@@ -1,13 +1,13 @@
 from typing import TYPE_CHECKING, Iterator, List, Optional, Union, Generator, Dict
-from spexs2.extractors.figure import FigureExtractor, RowErrPolicy
-from spexs2.extractors.helpers import content_extract_brief, validate_label
-from spexs2.xml import Xpath, Element
-from spexs2.defs import RESERVED, ELLIPSIS, ValueField
-from spexs2.lint import LintErr
-from spexs2 import xml  # TODO: for debugging
+from model.extractors.figure import FigureExtractor, RowErrPolicy
+from model.extractors.helpers import content_extract_brief, validate_label
+from model.xml import Xpath, Element
+from model.defs import RESERVED, ELLIPSIS, ValueField
+from model.lint import LintErr
+from model import xml  # TODO: for debugging
 
 if TYPE_CHECKING:
-    from spexs2.defs import Entity, EntityMeta
+    from model.defs import Entity, EntityMeta
 
 
 class ValueTableExtractor(FigureExtractor):

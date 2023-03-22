@@ -1,16 +1,16 @@
 from re import compile as re_compile
 from typing import TYPE_CHECKING, Dict, Tuple, Type, Optional, Iterator, List, TypeAlias, NoReturn
-from spexs2.xml import Xpath
-from spexs2.extractors.valuetable import ValueTableExtractor
-from spexs2.extractors.structtable import BitsTableExtractor, BytesTableExtractor
-from spexs2.lint import LintEntry, Code, Linter, LintErr
-from spexs2.defs import JSON, Entity, EntityMeta
+from model.xml import Xpath
+from model.extractors.valuetable import ValueTableExtractor
+from model.extractors.structtable import BitsTableExtractor, BytesTableExtractor
+from model.lint import LintEntry, Linter, LintErr
+from model.defs import JSON, Entity, EntityMeta
 
-from spexs2 import xml  # TODO: for debugging
+from model import xml  # TODO: for debugging
 
 if TYPE_CHECKING:
-    from spexs2.xml import ElementTree, Element
-    from spexs2.extractors.figure import FigureExtractor
+    from model.xml import ElementTree, Element
+    from model.extractors.figure import FigureExtractor
 
 
 FigId: TypeAlias = str
