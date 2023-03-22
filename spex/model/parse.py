@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 from typing import Optional, Iterator, Generator
-from model.xml import etree, Xpath, ElementTree
-from model.document import DocumentParser
-from model.lint import Linter
+from spex.model.xml import etree, Xpath, ElementTree
+from spex.model.document import DocumentParser
+from spex.model.lint import Linter
 from pathlib import Path
-from model.defs import Entity
-from model.quirks import QuirksMap, QUIRKS_MAP
+from spex.model.defs import Entity
+from spex.model.quirks import QuirksMap, QUIRKS_MAP
 
 
 @dataclass(frozen=True)

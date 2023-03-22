@@ -1,11 +1,11 @@
 from typing import TYPE_CHECKING
-from model.document import DocumentParser
-from model.extractors.structtable import BytesTableExtractor
-from model.xml import Xpath
+from spex.model.document import DocumentParser
+from spex.model.extractors.structtable import BytesTableExtractor
+from spex.model.xml import Xpath
 
 
 if TYPE_CHECKING:
-    from model.xml import Element
+    from spex.model.xml import Element
 
 
 # class ZndFig48(BytesTableExtractor):

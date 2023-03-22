@@ -1,16 +1,16 @@
 from abc import ABC, abstractmethod
 from enum import Enum
 from typing import TYPE_CHECKING, Optional, Iterator, Tuple, List, Dict
-from model.xml import Element, Xpath
-from model.lint import Linter, LintErr
-from model.defs import JSON
-from model import xml  # TODO: for debugging
-from model.rowiter import row_iter
+from spex.model.xml import Element, Xpath
+from spex.model.lint import Linter, LintErr
+from spex.model.defs import JSON
+from spex.model import xml  # TODO: for debugging
+from spex.model.rowiter import row_iter
 
 
 if TYPE_CHECKING:
-    from model.defs import EntityMeta, ParseFn, Entity
-    from model.document import DocumentParser
+    from spex.model.defs import EntityMeta, ParseFn, Entity
+    from spex.model.document import DocumentParser
 
 
 RowResult = Tuple[Element, Element, Element]

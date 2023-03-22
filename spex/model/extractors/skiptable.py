@@ -1,6 +1,6 @@
 from typing import Iterator, List
-from model.extractors.figure import FigureExtractor
-from model.defs import Entity
+from spex.model.extractors.figure import FigureExtractor
+from spex.model.defs import Entity
 
 
 class SkipTable(FigureExtractor):

@@ -1,7 +1,7 @@
 from enum import Enum
 from dataclasses import dataclass, field
 from typing import Optional, Dict, Protocol
-from model.defs import JSON, ToJson
+from spex.model.defs import JSON, ToJson
 
 
 class Code(Enum):
