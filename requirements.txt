@@ -1,1 +1,3 @@
 lxml
+lxml-stubs
+gcgen
