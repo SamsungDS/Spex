@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import List, Dict, Union, Iterator, Type, Any, Callable, TypeVar
 from spex.htmlmodel.docx import xml
 from spex.htmlmodel.docx.xml import Xpath
+from spex.htmlmodel.docx.docxutils import docx_extract_contents
 
 
 @dataclass(frozen=True)
@@ -80,7 +81,7 @@ class NumberingDocument:
     _num_to_abs_num: Dict[int, int]
 
     def __init__(self, doc_path: Path):
-        self._elem = xml.docx_extract_contents(doc_path, "word/numbering.xml")
+        self._elem = docx_extract_contents(doc_path, "word/numbering.xml")
         self._path = doc_path
         self.__parse_absnum()
 

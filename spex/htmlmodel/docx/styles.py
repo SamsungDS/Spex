@@ -2,7 +2,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Dict, Optional
 from lxml.etree import _Element
-from spex.htmlmodel.docx import xml
+from spex.htmlmodel.docx.docxutils import docx_extract_contents
 from spex.htmlmodel.docx.xml import Xpath
 from spex.htmlmodel.docx.runproperties import RunProperties
 
@@ -54,7 +54,7 @@ class StyleResolver:
 
 class StylesDocument:
     def __init__(self, doc_path: Path):
-        self._elem = xml.docx_extract_contents(doc_path, "word/styles.xml")
+        self._elem = docx_extract_contents(doc_path, "word/styles.xml")
         self._path = doc_path
         self._pstyles = StyleResolver(self._elem, "paragraph")
         self._cstyles = StyleResolver(self._elem, "character")

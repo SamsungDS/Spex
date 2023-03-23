@@ -1,17 +1,13 @@
-from pathlib import Path
-import zipfile
-from typing import Optional, List, IO, Iterable, Callable
+from typing import Optional, List, Iterable, Callable, Union
 from lxml import etree
-from lxml.etree import _Element
+from lxml.etree import _Element, _ElementTree
 from spex.htmlmodel.docx.types import NsMap
 from typing import Mapping, cast
 
 
-def docx_extract_contents(docx_path: Path, file: str = "word/document.xml") -> _Element:
-    with zipfile.ZipFile(docx_path, "r") as zfile:
-        fh: IO[bytes]
-        with zfile.open(file) as fh:
-            return etree.fromstring(fh.read())
+Element = _Element
+ElementTree = _ElementTree
+XmlElem = Union[_Element, _ElementTree]
 
 
 def fmt(elem: _Element) -> str:

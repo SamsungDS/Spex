@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Optional, List
 from lxml.etree import _Element
 from spex.htmlmodel.docx import xml
+from spex.htmlmodel.docx.docxutils import docx_extract_contents
 from spex.htmlmodel.docx.numbering import NumberingDocument
 from spex.htmlmodel.docx.header import Header
 from spex.htmlmodel.docx.styles import StylesDocument
@@ -15,7 +16,7 @@ class Document:
 
     def __init__(self, doc_path: Path):
         assert doc_path.exists(), "provided document does not exist"
-        self._elem = xml.docx_extract_contents(doc_path, "word/document.xml")
+        self._elem = docx_extract_contents(doc_path, "word/document.xml")
         self.__path = doc_path
         try:
             self.__numbering_xml = NumberingDocument(doc_path)
