@@ -11,7 +11,6 @@ class SupportsNext(Protocol[_T_co]):
 
 
 class Stream(Generic[_T_co]):
-
     def __init__(self, iterable: SupportsNext[_T_co]):
         self.__iter = iterable
         self.__end_of_iter = object()

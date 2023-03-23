@@ -4,7 +4,9 @@ import zipfile
 from lxml import etree
 
 
-def docx_extract_contents(docx_path: Path, file: str = "word/document.xml") -> etree._Element:
+def docx_extract_contents(
+    docx_path: Path, file: str = "word/document.xml"
+) -> etree._Element:
     with zipfile.ZipFile(docx_path, "r") as zfile:
         fh: IO[bytes]
         with zfile.open(file) as fh:

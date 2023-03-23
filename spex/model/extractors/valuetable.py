@@ -31,10 +31,7 @@ class ValueTableExtractor(FigureExtractor):
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        col_ndxs = {
-            hdr: ndx
-            for ndx, hdr in enumerate(self.tbl_hdrs)
-        }
+        col_ndxs = {hdr: ndx for ndx, hdr in enumerate(self.tbl_hdrs)}
         self._col_ndx_value = self._get_col_ndx(self.value_column_hdrs(), col_ndxs)
         self._col_ndx_content = self._get_col_ndx(self.content_column_hdrs(), col_ndxs)
         self._col_ndx_label = self._get_col_ndx(self.label_column_hdrs(), col_ndxs)
@@ -87,7 +84,7 @@ class ValueTableExtractor(FigureExtractor):
 
             subtbl_ent: "EntityMeta" = {
                 "fig_id": f"""{self.fig_id}_{str(val_cleaned)}""",
-                "parent_fig_id": self.fig_id
+                "parent_fig_id": self.fig_id,
             }
             yield from self.extract_data_subtbls(subtbl_ent, row_data)
 
@@ -99,7 +96,7 @@ class ValueTableExtractor(FigureExtractor):
             # https://github.com/python/mypy/issues/4122#issuecomment-336924377
             **self.entity_meta,  # type: ignore
             "type": "values",
-            "fields": fields
+            "fields": fields,
         }
 
     @staticmethod
@@ -117,11 +114,17 @@ class ValueTableExtractor(FigureExtractor):
         """
         return ["value"]
 
-    def row_err_handler(self, row_it: Iterator[Element], row: Element,
-                        fields: List[ValueField], err: Exception) -> Generator["Entity", None, RowErrPolicy]:
+    def row_err_handler(
+        self,
+        row_it: Iterator[Element],
+        row: Element,
+        fields: List[ValueField],
+        err: Exception,
+    ) -> Generator["Entity", None, RowErrPolicy]:
         """hook called for unhandled errors from extracting a row's value and data fields.
 
-        This hook is useful only for individual table overrides to catch special cases."""
+        This hook is useful only for individual table overrides to catch special cases.
+        """
         yield from ()  # To turn method into a generator
         return RowErrPolicy.Raise
 
@@ -146,7 +149,7 @@ class ValueTableExtractor(FigureExtractor):
                 self.add_issue(
                     LintErr.LBL_DUPLICATE,
                     row_key=self._val_to_rowkey(fval),
-                    ctx={"label": flbl}
+                    ctx={"label": flbl},
                 )
             lbls.add(flbl)
 
@@ -160,9 +163,14 @@ class ValueTableExtractor(FigureExtractor):
     def val_clean(self, row: Element, val_cell: Element) -> Union[str, int]:
         # TODO: read as number if possible, complain if not a hex value using the 'h' suffix
         # TODO: there are also tables using b suffix, is there always a suffix or..?
-        return "".join(
-            e.decode("utf-8") if isinstance(e, bytes) else e
-            for e in val_cell.itertext()).strip().lower()
+        return (
+            "".join(
+                e.decode("utf-8") if isinstance(e, bytes) else e
+                for e in val_cell.itertext()
+            )
+            .strip()
+            .lower()
+        )
 
     def content_elem(self, row: Element) -> Element:
         return Xpath.elem_first_req(row, f"./td[{self._col_ndx_content + 1}]")
@@ -170,9 +178,7 @@ class ValueTableExtractor(FigureExtractor):
     def _extract_label_dedicated_col(self, row: Element, row_key: str) -> str:
         # if we hit this, some document actually has a value table with a dedicated 'attribute' column
         breakpoint()
-        p1 = Xpath.elem_first_req(
-            row,
-            f"./td[{self._col_ndx_label + 1}]/p[1]")
+        p1 = Xpath.elem_first_req(row, f"./td[{self._col_ndx_label + 1}]/p[1]")
         txt = XmlUtils.to_text(p1).lower()
         if txt == "reserved":
             return RESERVED
@@ -180,11 +186,7 @@ class ValueTableExtractor(FigureExtractor):
         txt_parts = txt.split(":", 1)
         if len(txt_parts) == 1:
             # no explicit name, forced to infer it
-            self.add_issue(
-                LintErr.LBL_IMPUTED,
-                fig=self.fig_id,
-                row_key=row_key
-            )
+            self.add_issue(LintErr.LBL_IMPUTED, fig=self.fig_id, row_key=row_key)
         else:
             # if we hit this, some figure actually has a dedicated attribute
             # column where the text contains a an explicitly-given short-hand/label
@@ -199,7 +201,8 @@ class ValueTableExtractor(FigureExtractor):
         else:
             p1 = Xpath.elem_first_req(data, "./p[1]")
             txt = "".join(
-                e.decode("utf-8") if isinstance(e, bytes) else e for e in p1.itertext()).strip()
+                e.decode("utf-8") if isinstance(e, bytes) else e for e in p1.itertext()
+            ).strip()
             if txt.lower() == "reserved":
                 return RESERVED
             txt_parts = txt.split(":", 1)
@@ -214,5 +217,7 @@ class ValueTableExtractor(FigureExtractor):
         validate_label(lbl, self.fig_id, row_key, self.linter)
         return lbl
 
-    def _content_extract_brief(self, row: Element, row_key: str, data: Element) -> Optional[str]:
+    def _content_extract_brief(
+        self, row: Element, row_key: str, data: Element
+    ) -> Optional[str]:
         return content_extract_brief(row, data, self.BRIEF_MAXLEN)

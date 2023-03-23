@@ -41,10 +41,7 @@ class StructTableExtractor(FigureExtractor, ABC):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        col_ndxs = {
-            hdr: ndx
-            for ndx, hdr in enumerate(self.tbl_hdrs)
-        }
+        col_ndxs = {hdr: ndx for ndx, hdr in enumerate(self.tbl_hdrs)}
         self._col_ndx_range = self._get_col_ndx(self.range_column_hdrs(), col_ndxs)
         self._col_ndx_content = self._get_col_ndx(self.content_column_hdrs(), col_ndxs)
         self._col_ndx_label = self._get_col_ndx(self.label_column_hdrs(), col_ndxs)
@@ -52,9 +49,9 @@ class StructTableExtractor(FigureExtractor, ABC):
     @classmethod
     def can_apply(cls, tbl_col_hdrs: List[str]) -> bool:
         return (
-                len(set(cls.range_column_hdrs()).intersection(tbl_col_hdrs)) > 0
-                and len(set(cls.content_column_hdrs()).intersection(tbl_col_hdrs)) > 0
-                and (len(set(cls.label_column_hdrs()).intersection(tbl_col_hdrs))) > 0
+            len(set(cls.range_column_hdrs()).intersection(tbl_col_hdrs)) > 0
+            and len(set(cls.content_column_hdrs()).intersection(tbl_col_hdrs)) > 0
+            and (len(set(cls.label_column_hdrs()).intersection(tbl_col_hdrs))) > 0
         )
 
     @property
@@ -65,11 +62,17 @@ class StructTableExtractor(FigureExtractor, ABC):
     def _range_to_rowkey(self, val: Union[str, Range]) -> str:
         return str(val["low"]) if isinstance(val, dict) else val
 
-    def row_err_handler(self, row_it: Iterator[Element], row: Element,
-                        fields: List[StructField], err: Exception) -> Generator["Entity", None, RowErrPolicy]:
+    def row_err_handler(
+        self,
+        row_it: Iterator[Element],
+        row: Element,
+        fields: List[StructField],
+        err: Exception,
+    ) -> Generator["Entity", None, RowErrPolicy]:
         """hook called for unhandled errors from extracting a row's value and data fields.
 
-        This hook is useful only for individual table overrides to catch special cases."""
+        This hook is useful only for individual table overrides to catch special cases.
+        """
         yield from ()  # To turn method into a generator
         return RowErrPolicy.Raise
 
@@ -102,10 +105,7 @@ class StructTableExtractor(FigureExtractor, ABC):
 
             range = self.range_clean(row, row_range)
             if range == ELLIPSIS:
-                fields.append({
-                    "range": {"low": -1, "high": -1},
-                    "label": ELLIPSIS
-                })
+                fields.append({"range": {"low": -1, "high": -1}, "label": ELLIPSIS})
                 continue
 
             row_key = self._range_to_rowkey(range)
@@ -117,10 +117,7 @@ class StructTableExtractor(FigureExtractor, ABC):
             else:
                 self.add_issue(LintErr.LBL_IMPUTED, row_key=row_key)
 
-            sfield: StructField = {
-                "range": range,
-                "label": label
-            }
+            sfield: StructField = {"range": range, "label": label}
 
             brief = self.doc_parser.brief_overrides.get(override_key, None)
             if brief is None:
@@ -132,7 +129,7 @@ class StructTableExtractor(FigureExtractor, ABC):
 
             subtbl_ent: "EntityMeta" = {
                 "fig_id": f"""{self.fig_id}_{row_key}""",
-                "parent_fig_id": self.fig_id
+                "parent_fig_id": self.fig_id,
             }
 
             yield from self.extract_data_subtbls(subtbl_ent, row_data)
@@ -148,7 +145,7 @@ class StructTableExtractor(FigureExtractor, ABC):
             # https://github.com/python/mypy/issues/4122#issuecomment-336924377
             **self.entity_meta,  # type: ignore
             "type": self.type,
-            "fields": fields
+            "fields": fields,
         }
 
     def validate_fields(self, fields: List[StructField]):
@@ -198,9 +195,15 @@ class StructTableExtractor(FigureExtractor, ABC):
             if field_range is not None:
                 if prev_range is not None:
                     if prev_range["high"] >= field_range["low"]:
-                        self.add_issue(LintErr.TBL_FIELD_OVERLAP, row_key=self._range_to_rowkey(field_range))
+                        self.add_issue(
+                            LintErr.TBL_FIELD_OVERLAP,
+                            row_key=self._range_to_rowkey(field_range),
+                        )
                     elif prev_range["high"] + 1 != field_range["low"]:
-                        self.add_issue(LintErr.TBL_FIELD_GAP, row_key=self._range_to_rowkey(field_range))
+                        self.add_issue(
+                            LintErr.TBL_FIELD_GAP,
+                            row_key=self._range_to_rowkey(field_range),
+                        )
                 prev_range = field_range
             else:
                 # skip next range check
@@ -210,9 +213,14 @@ class StructTableExtractor(FigureExtractor, ABC):
         return Xpath.elem_first_req(row, f"./td[{self._col_ndx_range + 1}]")
 
     def range_clean(self, row: Element, val_cell: Element) -> Union[str, "Range"]:
-        val = "".join(
-            e.decode("utf-8") if isinstance(e, bytes) else e
-            for e in val_cell.itertext()).strip().lower()
+        val = (
+            "".join(
+                e.decode("utf-8") if isinstance(e, bytes) else e
+                for e in val_cell.itertext()
+            )
+            .strip()
+            .lower()
+        )
         m = self.rgx_range.match(val)
         if not m:  # cannot parse into a range, sadly
             # elided rows are simply skipped.
@@ -230,9 +238,7 @@ class StructTableExtractor(FigureExtractor, ABC):
         return Xpath.elem_first_req(row, f"./td[{self._col_ndx_content + 1}]")
 
     def _extract_label_separate_col(self, row: Element, row_key: str) -> str:
-        p1 = Xpath.elem_first_req(
-            row,
-            f"./td[{self._col_ndx_label + 1}]/p[1]")
+        p1 = Xpath.elem_first_req(row, f"./td[{self._col_ndx_label + 1}]/p[1]")
         txt = XmlUtils.to_text(p1).lower()
         if txt == "reserved":
             return RESERVED
@@ -240,15 +246,13 @@ class StructTableExtractor(FigureExtractor, ABC):
         txt_parts = txt.split(":", 1)
         if len(txt_parts) == 1:
             # no explicit name, forced to infer it
-            self.add_issue(
-                LintErr.LBL_IMPUTED,
-                fig=self.fig_id,
-                row_key=row_key
-            )
+            self.add_issue(LintErr.LBL_IMPUTED, fig=self.fig_id, row_key=row_key)
             return "".join(w[0] for w in txt_parts[0].split())
         else:
             if " " in txt_parts[0]:
-                self.add_issue(LintErr.LBL_INVALID_CHRS, fig=self.fig_id, row_key=row_key)
+                self.add_issue(
+                    LintErr.LBL_INVALID_CHRS, fig=self.fig_id, row_key=row_key
+                )
             return txt_parts[0]
 
     def _extract_label(self, row: Element, row_key: str, data: Element) -> str:
@@ -276,7 +280,9 @@ class StructTableExtractor(FigureExtractor, ABC):
         validate_label(lbl, self.fig_id, row_key, self.linter)
         return lbl
 
-    def _content_extract_brief(self, row: Element, row_key: str, data: Element) -> Optional[str]:
+    def _content_extract_brief(
+        self, row: Element, row_key: str, data: Element
+    ) -> Optional[str]:
         return content_extract_brief(row, data, self.BRIEF_MAXLEN)
 
 

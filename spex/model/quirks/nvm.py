@@ -1,7 +1,11 @@
 from typing import Iterator, List, Optional, Generator
 from spex.model.document import DocumentParser
 from spex.model.extractors.figure import RowErrPolicy
-from spex.model.extractors.structtable import BitsTableExtractor, BytesTableExtractor, StructField
+from spex.model.extractors.structtable import (
+    BitsTableExtractor,
+    BytesTableExtractor,
+    StructField,
+)
 from spex.model.extractors.skiptable import SkipTable
 from spex.model.defs import Entity, EntityMeta
 from spex.xml import Element
@@ -16,8 +20,13 @@ class NvmFig23(BitsTableExtractor):
         self._fig24_meta = None
         self._fig24 = None
 
-    def row_err_handler(self, row_it: Iterator[Element], row: Element,
-                        fields: List[StructField], err: Exception) -> Generator["Entity", None, RowErrPolicy]:
+    def row_err_handler(
+        self,
+        row_it: Iterator[Element],
+        row: Element,
+        fields: List[StructField],
+        err: Exception,
+    ) -> Generator["Entity", None, RowErrPolicy]:
         # TODO: raise lint error
 
         # Figure 24 is unfortunately part of Figure 23 in the original Docx
@@ -27,9 +36,14 @@ class NvmFig23(BitsTableExtractor):
         # From there, we construct a table and meta element, save both and override
         # the normal __call__ implementation to first process the (figure 23) struct
         # table as usual, then yield Figure 24.
-        row_txt = "".join(
-            elem.decode("utf-8") if isinstance(elem, bytes) else elem
-            for elem in row.itertext()).lstrip().lower()
+        row_txt = (
+            "".join(
+                elem.decode("utf-8") if isinstance(elem, bytes) else elem
+                for elem in row.itertext()
+            )
+            .lstrip()
+            .lower()
+        )
         if not row_txt.startswith("figure 24"):
             return RowErrPolicy.Raise
 

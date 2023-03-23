@@ -216,11 +216,17 @@ class SpexParser:
                 # could check for a color with a regex, but not yet necessary.
                 # require hex code (filters out 'auto' which we can ignore).
                 if shd_fill and shd_fill.lower() and len(shd_fill) == 6:
-                    tcpr = TcPr(shd_fill=shd_fill) if shd_fill.lower() != "ffffff" else None
+                    tcpr = (
+                        TcPr(shd_fill=shd_fill)
+                        if shd_fill.lower() != "ffffff"
+                        else None
+                    )
                 else:
                     tcpr = None
-                if tcpr is not None and shd_fill is not None and (
-                    shd_fill[0:2] == shd_fill[2:4] == shd_fill[4:6]
+                if (
+                    tcpr is not None
+                    and shd_fill is not None
+                    and (shd_fill[0:2] == shd_fill[2:4] == shd_fill[4:6])
                 ):
                     # heuristic: specs uses various greytone colors to mark table headers
                     tag = "th"

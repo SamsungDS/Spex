@@ -11,5 +11,5 @@ QuirksMap = Dict[Tuple[str, str], Type["DocumentParser"]]
 
 QUIRKS_MAP: QuirksMap = {
     ("nvm express® nvm command set specification", "1.0c"): NvmCmdSet1c,
-    ("nvm express® zoned namespace command set specification", "1.1c"): NvmCsZoned11c
+    ("nvm express® zoned namespace command set specification", "1.1c"): NvmCsZoned11c,
 }

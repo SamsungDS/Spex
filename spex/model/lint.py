@@ -58,7 +58,6 @@ class LintErr(Enum):
     RANGE_REVERSED = Code.R1002
 
 
-
 @dataclass(frozen=True)
 class LintEntry:
     err: LintErr
@@ -70,21 +69,40 @@ class LintEntry:
     def __post_init__(self):
         if self.msg == "":
             object.__setattr__(self, "msg", self.err.value.value)
-        assert isinstance(self.fig, str) and self.fig != "", "invalid or empty figure value"
-        assert isinstance(self.msg, str), f"invalid msg, expected str, got {type(self.msg)}"
-        assert isinstance(self.err, LintErr), f"invalid code, expected {LintErr}, got {type(self.err)}"
+        assert (
+            isinstance(self.fig, str) and self.fig != ""
+        ), "invalid or empty figure value"
+        assert isinstance(
+            self.msg, str
+        ), f"invalid msg, expected str, got {type(self.msg)}"
+        assert isinstance(
+            self.err, LintErr
+        ), f"invalid code, expected {LintErr}, got {type(self.err)}"
         if self.err.value.name[0] in ("R", "L", "V"):
-            assert self.row is not None, "R|L|V codes point to a row or label/value within the row, row field must be set"
+            assert (
+                self.row is not None
+            ), "R|L|V codes point to a row or label/value within the row, row field must be set"
 
     def to_json(self) -> JSON:
-        ret: Dict[str, JSON] = {"code": self.err.value.name, "msg": self.msg, "fig": self.fig, "context": self.ctx}
+        ret: Dict[str, JSON] = {
+            "code": self.err.value.name,
+            "msg": self.msg,
+            "fig": self.fig,
+            "context": self.ctx,
+        }
         if self.row is not None:
             ret["row"] = self.row
         return ret
 
 
 class Linter(Protocol):
-    def add_issue(self, err: LintErr, fig: str, *,
-                  msg: Optional[str] = None,
-                  row_key: Optional[str] = None,
-                  ctx: Optional[Dict[str, JSON]] = None) -> None: ...
+    def add_issue(
+        self,
+        err: LintErr,
+        fig: str,
+        *,
+        msg: Optional[str] = None,
+        row_key: Optional[str] = None,
+        ctx: Optional[Dict[str, JSON]] = None,
+    ) -> None:
+        ...

@@ -39,10 +39,17 @@ def arg_lintcode(arg: str) -> List[Code]:
 
 
 class Writer(Protocol):
-    def __enter__(self) -> "Writer": ...
-    def __exit__(self, errtyp, errval, tb): ...
-    def write_meta(self, key: str, val: JSON) -> None: ...
-    def write_entity(self, entity: JSON) -> None: ...
+    def __enter__(self) -> "Writer":
+        ...
+
+    def __exit__(self, errtyp, errval, tb):
+        ...
+
+    def write_meta(self, key: str, val: JSON) -> None:
+        ...
+
+    def write_entity(self, entity: JSON) -> None:
+        ...
 
 
 class StdoutWriter(Writer):
@@ -74,7 +81,7 @@ class FileWriter:
     def __init__(self, output: Path, src: Path):
         self._output = output
         self._src = src
-        fname = src.name[:-len(src.suffix)]
+        fname = src.name[: -len(src.suffix)]
         _dst = output / f"{fname}.json"
         self._dst = open(_dst, "w")
         self._doc: S2Model = {
@@ -102,7 +109,8 @@ class FileWriter:
 
 
 def main():
-    epilog = textwrap.dedent("""
+    epilog = textwrap.dedent(
+        """
     Notes:
     ~~~~~~
     * output:
@@ -110,23 +118,27 @@ def main():
       (NVMe (JSON) models, HTML models, CSS files) will be placed in the
       specified directory. If `output` is omitted, files will be placed into the
       current working directory.
-    """)
+    """
+    )
     parser = argparse.ArgumentParser(
         description="Extract data-structures from .docx spec or HTML model",
         epilog=epilog,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument(
-        "input", nargs="+", type=arg_input,
-        help="One or more .docx specifications or HTML models to extract data-structures from"
+        "input",
+        nargs="+",
+        type=arg_input,
+        help="One or more .docx specifications or HTML models to extract data-structures from",
     )
     parser.add_argument(
-        "-o", "--output", type=arg_output, default=None,
-        help="path to directory where the resulting file(s) should be stored."
+        "-o",
+        "--output",
+        type=arg_output,
+        default=None,
+        help="path to directory where the resulting file(s) should be stored.",
     )
-    parser.add_argument(
-        "--lint-ignore", type=arg_lintcode, default=[]
-    )
+    parser.add_argument("--lint-ignore", type=arg_lintcode, default=[])
 
     args = parser.parse_args()
 
@@ -147,12 +159,16 @@ def main():
         if spec.suffix == ".json":
             # lint code filtering is applied at the point of writing the lint errors
             # into the resulting NVMe (JSON) model.
-            sys.stderr.write("cannot operate on NVMe model (JSON), requires the HTML model or docx spec as input\n")
+            sys.stderr.write(
+                "cannot operate on NVMe model (JSON), requires the HTML model or docx spec as input\n"
+            )
             sys.stderr.flush()
             sys.exit(1)
 
         if spec.suffix not in (".html", ".docx"):
-            sys.stderr.write(f"invalid input file ({spec!s}), requires a HTML model or the docx specification file\n")
+            sys.stderr.write(
+                f"invalid input file ({spec!s}), requires a HTML model or the docx specification file\n"
+            )
             sys.stderr.flush()
             sys.exit(1)
 
@@ -173,10 +189,14 @@ def main():
             for entity in dparser.parse():
                 w.write_entity(entity)
 
-            w.write_meta("lint", [
-                lint_err for lint_err in dparser.linter.to_json()
-                if lint_err["code"] not in ignore_lint_codes
-            ])
+            w.write_meta(
+                "lint",
+                [
+                    lint_err
+                    for lint_err in dparser.linter.to_json()
+                    if lint_err["code"] not in ignore_lint_codes
+                ],
+            )
 
 
 if __name__ == "__main__":

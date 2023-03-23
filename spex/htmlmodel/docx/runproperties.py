@@ -125,7 +125,7 @@ class RunProperties:
             strikethrough=self.__strikethrough,
             vert_align=self.__vert_align,
             size=self.__size,
-            color=self.__color
+            color=self.__color,
         )
 
     def merge(self, other: Optional["RunProperties"]) -> "RunProperties":

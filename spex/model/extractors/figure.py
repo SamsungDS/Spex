@@ -25,13 +25,16 @@ class FigureExtractor(ABC):
     BRIEF_MAXLEN: int = 60
     __linter: Linter
 
-    def __init__(self, *,
-                 doc_parser: "DocumentParser",
-                 entity_meta: "EntityMeta",
-                 tbl: Element,
-                 tbl_hdrs: List[str],
-                 parse_fn: "ParseFn",
-                 linter: Linter):
+    def __init__(
+        self,
+        *,
+        doc_parser: "DocumentParser",
+        entity_meta: "EntityMeta",
+        tbl: Element,
+        tbl_hdrs: List[str],
+        parse_fn: "ParseFn",
+        linter: Linter
+    ):
         self.doc_parser = doc_parser
         self.__entity_meta = entity_meta
         self.__tbl = tbl
@@ -71,14 +74,22 @@ class FigureExtractor(ABC):
     def linter(self) -> Linter:
         return self.__linter
 
-    def add_issue(self, err: LintErr, *,
-                  fig: Optional[str] = None,
-                  msg: str = "",
-                  row_key: Optional[str] = None,
-                  ctx: Optional[Dict[str, JSON]] = None) -> None:
-        self.__linter.add_issue(err,
-                                fig if fig is not None else self.fig_id,
-                                msg=msg, row_key=row_key, ctx=ctx)
+    def add_issue(
+        self,
+        err: LintErr,
+        *,
+        fig: Optional[str] = None,
+        msg: str = "",
+        row_key: Optional[str] = None,
+        ctx: Optional[Dict[str, JSON]] = None
+    ) -> None:
+        self.__linter.add_issue(
+            err,
+            fig if fig is not None else self.fig_id,
+            msg=msg,
+            row_key=row_key,
+            ctx=ctx,
+        )
 
     def row_iter(self) -> Iterator[Element]:
         # select first td where parent is a tr
@@ -86,9 +97,13 @@ class FigureExtractor(ABC):
         # -> filters out header (th) rows
         yield from row_iter(self.tbl)
 
-    def extract_data_subtbls(self, entity_base: "EntityMeta", data: Element) -> Iterator["Entity"]:
+    def extract_data_subtbls(
+        self, entity_base: "EntityMeta", data: Element
+    ) -> Iterator["Entity"]:
         tbls = Xpath.elems(data, "./table")
-        assert len(tbls) <= 1, "invariant broken - expected each field to have at most 1 sub-table"
+        assert (
+            len(tbls) <= 1
+        ), "invariant broken - expected each field to have at most 1 sub-table"
         if len(tbls) == 0:
             return
         else:

@@ -26,12 +26,7 @@ def repr_elem(elem):
 
 
 def alst_count_decr(alst):
-    res = [
-        (ndx, (elem, count - 1))
-        for ndx, (elem, count)
-        in alst
-        if count > 1
-    ]
+    res = [(ndx, (elem, count - 1)) for ndx, (elem, count) in alst if count > 1]
     return res
 
 
@@ -63,17 +58,16 @@ def sorted_row_children(row, alst):
     if elem_off is not None and elem_off == col_off:
         yield elem
     if rest:
-        yield from (
-            elem
-            for (_, (elem, __)) in rest
-        )
+        yield from (elem for (_, (elem, __)) in rest)
 
 
 def alst_repr(alst):
-    return repr([
-        (ndx, (etree.tostring(elem, encoding="unicode").strip(), count))
-        for (ndx, (elem, count)) in alst
-    ])
+    return repr(
+        [
+            (ndx, (etree.tostring(elem, encoding="unicode").strip(), count))
+            for (ndx, (elem, count)) in alst
+        ]
+    )
 
 
 def row_iter(tbl):
@@ -120,5 +114,7 @@ def get_cell_of(row: etree._Element, col: int) -> etree._Element:
             return td
         col_off += int(td.get("colspan", 1))
     if col > col_off:
-        raise IndexError(f"index out of range (requested {col} in row with columns [0;{col_off}])")
+        raise IndexError(
+            f"index out of range (requested {col} in row with columns [0;{col_off}])"
+        )
     raise KeyError(f"requested {col}, no element starting at this index")

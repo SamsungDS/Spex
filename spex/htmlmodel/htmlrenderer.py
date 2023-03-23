@@ -5,7 +5,15 @@ from lxml.etree import _Element
 from gcgen.api import Section, write_file
 from spex.htmlmodel.docx import Document
 from spex.htmlmodel import css
-from spex.htmlmodel.parser import Span, Paragraph, ListElem, List, Point, Table, SpexParser
+from spex.htmlmodel.parser import (
+    Span,
+    Paragraph,
+    ListElem,
+    List,
+    Point,
+    Table,
+    SpexParser,
+)
 
 
 # TODO: nicer way of using `write_file` ?

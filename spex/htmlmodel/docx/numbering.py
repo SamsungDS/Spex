@@ -16,12 +16,14 @@ class AbstractNumLvl:
         assert isinstance(self.abstract_num_id, int), "`num_id` should be an integer"
         assert isinstance(self.ilvl, int), "`ilvl` should be an integer"
 
-    __ol_styles: Dict[str, str] = field(default_factory=lambda:{
-        # TODO: plot in further values.
-        "decimal": "decimal",
-        "lowerLetter": "lower-alpha",
-        "lowerRoman": "lower-roman",
-    })
+    __ol_styles: Dict[str, str] = field(
+        default_factory=lambda: {
+            # TODO: plot in further values.
+            "decimal": "decimal",
+            "lowerLetter": "lower-alpha",
+            "lowerRoman": "lower-roman",
+        }
+    )
 
     @property
     def is_ordered(self) -> bool:

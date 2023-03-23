@@ -23,14 +23,19 @@ class DocLinter:
 
     Implements the `spexs2.lint.Linter` protocol.
     """
+
     def __init__(self):
         self._lint_issues = []
 
-    def add_issue(self, err: LintErr, fig: str, *,
-                  msg: Optional[str] = None,
-                  row_key: Optional[str] = None,
-                  ctx: Optional[Dict[str, JSON]] = None):
-
+    def add_issue(
+        self,
+        err: LintErr,
+        fig: str,
+        *,
+        msg: Optional[str] = None,
+        row_key: Optional[str] = None,
+        ctx: Optional[Dict[str, JSON]] = None,
+    ):
         l_entry = LintEntry(
             err=err,
             fig=fig,
@@ -64,7 +69,7 @@ class DocumentParser:
             "code": "value",
             "definition": "description",
             "bit": "bits",
-            "byte": "bytes"
+            "byte": "bytes",
         }
 
     @property
@@ -78,7 +83,7 @@ class DocumentParser:
 
             Override in custom document extractors to add new "default" extractors to
             attempt applying for each figure found in the document.
-            """
+        """
         return [
             BytesTableExtractor,
             ValueTableExtractor,
@@ -115,8 +120,8 @@ class DocumentParser:
         """Extract title from figure table."""
         assert fig_tr is not None
         title = "".join(
-            e.decode("utf-8") if isinstance(e, bytes) else e
-            for e in fig_tr.itertext()).strip()
+            e.decode("utf-8") if isinstance(e, bytes) else e for e in fig_tr.itertext()
+        ).strip()
         return title if "Figure" in title else None
 
     def _on_extract_figure_id(self, figure_title: str) -> str:
@@ -175,10 +180,14 @@ class DocumentParser:
         def normalize_hdr(hdr: str) -> str:
             replacement = self.tbl_normalize_mappings.get(hdr, None)
             if replacement is not None:
-                self.linter.add_issue(LintErr.TBL_HDR_ERR, fig_id, ctx={
-                    "got": hdr,
-                    "expected": replacement,
-                })
+                self.linter.add_issue(
+                    LintErr.TBL_HDR_ERR,
+                    fig_id,
+                    ctx={
+                        "got": hdr,
+                        "expected": replacement,
+                    },
+                )
                 return replacement
             else:
                 return hdr
@@ -205,9 +214,9 @@ class DocumentParser:
                     extractor_cls = ecls
                     break
             if extractor_cls is None:
-                self.linter.add_issue(LintErr.TBL_SKIPPED, fig_id, ctx={
-                    "columns": cast_json(tbl_hdrs)
-                })
+                self.linter.add_issue(
+                    LintErr.TBL_SKIPPED, fig_id, ctx={"columns": cast_json(tbl_hdrs)}
+                )
                 return
 
         e = extractor_cls(
@@ -216,7 +225,7 @@ class DocumentParser:
             tbl=tbl,
             tbl_hdrs=tbl_hdrs,
             parse_fn=self._on_parse_fig,
-            linter=self.__linter
+            linter=self.__linter,
         )
         yield from e()
 

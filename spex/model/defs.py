@@ -1,16 +1,30 @@
-from typing import TYPE_CHECKING, Dict, Iterator, TypedDict, NotRequired, Protocol, List, Union, runtime_checkable, TypeAlias, cast, Any
+from typing import (
+    TYPE_CHECKING,
+    Dict,
+    Iterator,
+    TypedDict,
+    NotRequired,
+    Protocol,
+    List,
+    Union,
+    runtime_checkable,
+    TypeAlias,
+    cast,
+    Any,
+)
 
 
 if TYPE_CHECKING:
     from spex.xml import Element
     from spex.model.extractors.figure import FigureExtractor
 
-JSON = Union[None, bool, str, float, int, List['JSON'], Dict[str, 'JSON']]
+JSON = Union[None, bool, str, float, int, List["JSON"], Dict[str, "JSON"]]
 
 
 @runtime_checkable
 class ToJson(Protocol):
-    def to_json(self) -> JSON: ...
+    def to_json(self) -> JSON:
+        ...
 
 
 def cast_json(val: Any) -> JSON:
@@ -45,7 +59,8 @@ class Entity(TypedDict):
 
 
 class ParseFn(Protocol):
-    def __call__(self, entity: EntityMeta, tbl: "Element") -> Iterator[Entity]: ...
+    def __call__(self, entity: EntityMeta, tbl: "Element") -> Iterator[Entity]:
+        ...
 
 
 ExtractorMap: TypeAlias = Dict[str, "FigureExtractor"]
