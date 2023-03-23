@@ -1,9 +1,7 @@
 import dataclasses as dc
 from enum import Enum
 from lxml.etree import _Element
-
-from spex.htmlmodel.docx import xml
-from spex.htmlmodel.docx.xml import Xpath
+from spex.xml import Xpath
 
 
 class VMerge(Enum):
@@ -35,15 +33,15 @@ class TableWrap:
 
     def grid(self):
         def tc_grid_span(tc: _Element) -> int:
-            ret = xml.Xpath.attr_first(tc, "./w:tcPr/w:gridSpan/@w:val")
+            ret = Xpath.attr_first(tc, "./w:tcPr/w:gridSpan/@w:val")
             return int(ret) if isinstance(ret, str) else 1
 
         def tc_vmerge(tc: _Element) -> VMerge:
-            vmerge_elem = xml.Xpath.elem_first(tc, "./w:tcPr/w:vMerge")
+            vmerge_elem = Xpath.elem_first(tc, "./w:tcPr/w:vMerge")
             if vmerge_elem is None:
                 return VMerge.NONE
             assert isinstance(vmerge_elem, _Element)
-            rval = xml.Xpath.attr_first(vmerge_elem, "@w:val")
+            rval = Xpath.attr_first(vmerge_elem, "@w:val")
             if rval:
                 assert rval == "restart"
                 return VMerge.RESTART

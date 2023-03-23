@@ -1,10 +1,9 @@
 from abc import ABC, abstractmethod
 from enum import Enum
 from typing import TYPE_CHECKING, Optional, Iterator, Tuple, List, Dict
-from spex.model.xml import Element, Xpath
+from spex.xml import Element, Xpath
 from spex.model.lint import Linter, LintErr
 from spex.model.defs import JSON
-from spex.model import xml  # TODO: for debugging
 from spex.model.rowiter import row_iter
 
 

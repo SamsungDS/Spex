@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Dict, Optional
 from lxml.etree import _Element
 from spex.htmlmodel.docx.docxutils import docx_extract_contents
-from spex.htmlmodel.docx.xml import Xpath
+from spex.xml import Xpath
 from spex.htmlmodel.docx.runproperties import RunProperties
 
 

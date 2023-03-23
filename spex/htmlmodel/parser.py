@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Optional, Union, List as TList, Iterator, Dict, Set
 from lxml.etree import _Element
 from spex.htmlmodel.docx import RunProperties, AbstractNumLvl, Tag, TableWrap, Document
-from spex.htmlmodel.docx.xml import Xpath
+from spex.xml import Xpath
 
 from spex.htmlmodel.stream import Stream
 

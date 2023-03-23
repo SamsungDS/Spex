@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING, Iterator, List, Optional, Union, Generator, Dict
 from spex.model.extractors.figure import FigureExtractor, RowErrPolicy
 from spex.model.extractors.helpers import content_extract_brief, validate_label
-from spex.model.xml import Xpath, Element, XmlUtils
+from spex.xml import Xpath, Element, XmlUtils
 from spex.model.defs import RESERVED, ELLIPSIS, ValueField
 from spex.model.lint import LintErr
 

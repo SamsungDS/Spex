@@ -1,6 +1,6 @@
 from re import compile as re_compile
 from typing import TYPE_CHECKING, Dict, Tuple, Type, Optional, Iterator, List, TypeAlias, NoReturn
-from spex.model.xml import Xpath, XmlUtils
+from spex.xml import Xpath, XmlUtils
 from spex.model.extractors.valuetable import ValueTableExtractor
 from spex.model.extractors.structtable import BitsTableExtractor, BytesTableExtractor
 from spex.model.lint import LintEntry, Linter, LintErr
@@ -8,7 +8,7 @@ from spex.model.defs import JSON, Entity, EntityMeta
 
 
 if TYPE_CHECKING:
-    from spex.model.xml import ElementTree, Element
+    from xml import ElementTree, Element
     from spex.model.extractors.figure import FigureExtractor
 
 

@@ -1,5 +1,5 @@
 from lxml import etree
-from spex.model.xml import Xpath, XmlUtils
+from spex.xml import Xpath, XmlUtils
 from spex.model.rowiter import row_iter
 import pytest
 

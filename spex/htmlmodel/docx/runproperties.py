@@ -2,7 +2,7 @@ import copy
 from enum import Enum
 from typing import Optional, Union, Dict
 from lxml.etree import _Element
-from spex.htmlmodel.docx.xml import Xpath
+from spex.xml import Xpath
 
 
 class VertAlign(Enum):

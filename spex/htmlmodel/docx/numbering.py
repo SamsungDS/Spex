@@ -1,8 +1,7 @@
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import List, Dict, Union, Iterator, Type, Any, Callable, TypeVar
-from spex.htmlmodel.docx import xml
-from spex.htmlmodel.docx.xml import Xpath
+from spex.xml import Xpath
 from spex.htmlmodel.docx.docxutils import docx_extract_contents
 
 
@@ -119,12 +118,12 @@ class NumberingDocument:
             abs_nums[num_id] = AbstractNum(abstract_num_id=num_id, ilvls=ilvls)
         self._abstract_nums = abs_nums
 
-        num_elems = xml.Xpath.elems(self._elem, "./w:num")
+        num_elems = Xpath.elems(self._elem, "./w:num")
         num_to_abs_num: Dict[int, int] = {}
         for num_elem in num_elems:
-            num_id = coerce(xml.Xpath.attr_first(num_elem, "@w:numId"), int, int)
+            num_id = coerce(Xpath.attr_first(num_elem, "@w:numId"), int, int)
             abs_num_id = coerce(
-                xml.Xpath.attr_first(num_elem, "./w:abstractNumId/@w:val"), int, int
+                Xpath.attr_first(num_elem, "./w:abstractNumId/@w:val"), int, int
             )
             num_to_abs_num[num_id] = abs_num_id
         self._num_to_abs_num = num_to_abs_num

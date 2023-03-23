@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Optional, List
 from lxml.etree import _Element
-from spex.htmlmodel.docx import xml
+from spex.xml import Xpath
 from spex.htmlmodel.docx.docxutils import docx_extract_contents
 from spex.htmlmodel.docx.numbering import NumberingDocument
 from spex.htmlmodel.docx.header import Header
@@ -41,7 +41,7 @@ class Document:
 
     @property
     def tables(self) -> List[_Element]:
-        return xml.Xpath.elems(self._elem, ".//w:tbl")
+        return Xpath.elems(self._elem, ".//w:tbl")
 
     @property
     def numbering_xml(self) -> Optional[NumberingDocument]:
@@ -59,9 +59,9 @@ class Document:
               In other words, don't use the properties derived from this for
               styling the text runs themselves."""
         assert elem.tag == Tag.p.value, f"expected paragraph (w:p) tag, got: {elem.tag}"
-        style_id = xml.Xpath.attr_first(elem, "./w:pPr/w:pStyle/@w:val")
+        style_id = Xpath.attr_first(elem, "./w:pPr/w:pStyle/@w:val")
         pstyle = self.styles.get_pstyle(style_id) if style_id is not None else None
-        p_rpr_elem = xml.Xpath.elem_first(elem, "./w:pPr/w:rPr")
+        p_rpr_elem = Xpath.elem_first(elem, "./w:pPr/w:rPr")
         rpr = RunProperties.from_rpr_elem(p_rpr_elem)
         if pstyle is None:
             return rpr
@@ -69,11 +69,11 @@ class Document:
 
     def extract_r_rpr(self, elem: _Element) -> Optional[RunProperties]:
         assert elem.tag == Tag.r.value, f"expected run (w:r) tag, got: {elem.tag}"
-        r_rpr_elem = xml.Xpath.elem_first(elem, "./w:rPr")
+        r_rpr_elem = Xpath.elem_first(elem, "./w:rPr")
         if r_rpr_elem is None:
             return None
         r_rpr = RunProperties.from_rpr_elem(r_rpr_elem)
-        rstyle_id = xml.Xpath.attr_first(r_rpr_elem, "./w:rStyle/@w:val")
+        rstyle_id = Xpath.attr_first(r_rpr_elem, "./w:rStyle/@w:val")
         rstyle = self.styles.get_cstyle(rstyle_id) if rstyle_id is not None else None
         if rstyle is None:
             return r_rpr

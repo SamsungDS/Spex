@@ -1,4 +1,4 @@
-from typing import TypeVar, Protocol, Union, Optional, Generic, cast
+from typing import TypeVar, Protocol, Union, Generic, cast
 
 
 _T_co = TypeVar("_T_co", covariant=True)
