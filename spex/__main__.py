@@ -1,3 +1,4 @@
+import sys
 import argparse
 import json
 from pathlib import Path
@@ -6,6 +7,7 @@ from typing import Protocol, Dict, TypedDict, List
 from spex.model import parse
 from spex.model.defs import JSON
 from spex.model.lint import Code
+from spex.htmlmodel.htmlrenderer import SpexHtmlRenderer
 
 
 class S2Model(TypedDict):
@@ -104,22 +106,23 @@ def main():
     Notes:
     ~~~~~~
     * output:
-      if `output` is a directory, a correspondingly named JSON file is
-      created for every input given.
-      If `output` is omitted, the JSON output is pretty-printed to stdout.
+      if `output` is a directory, then any output(s) generated from processing
+      (NVMe (JSON) models, HTML models, CSS files) will be placed in the
+      specified directory. If `output` is omitted, files will be placed into the
+      current working directory.
     """)
     parser = argparse.ArgumentParser(
-        description="Extract data-structures from HTML spec",
+        description="Extract data-structures from .docx spec or HTML model",
         epilog=epilog,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument(
         "input", nargs="+", type=arg_input,
-        help="One or more specification HTML files to extract data-structures from"
+        help="One or more .docx specifications or HTML models to extract data-structures from"
     )
     parser.add_argument(
         "-o", "--output", type=arg_output, default=None,
-        help="path to directory where the output JSON file(s) should be stored."
+        help="path to directory where the resulting file(s) should be stored."
     )
     parser.add_argument(
         "--lint-ignore", type=arg_lintcode, default=[]
@@ -132,9 +135,36 @@ def main():
             return FileWriter(args.output, src)
         return StdoutWriter(src)
 
+    # if no explicit output directory is specified, use the current working directory
+    if args.output is None:
+        args.output = Path.cwd()
+
+    ignore_lint_codes = set(c.name for c in args.lint_ignore)
+
     for spec in args.input:
+        print(f"Parsing '{spec}'...")
+
+        if spec.suffix == ".json":
+            # lint code filtering is applied at the point of writing the lint errors
+            # into the resulting NVMe (JSON) model.
+            sys.stderr.write("cannot operate on NVMe model (JSON), requires the HTML model or docx spec as input\n")
+            sys.stderr.flush()
+            sys.exit(1)
+
+        if spec.suffix not in (".html", ".docx"):
+            sys.stderr.write(f"invalid input file ({spec!s}), requires a HTML model or the docx specification file\n")
+            sys.stderr.flush()
+            sys.exit(1)
+
+        if spec.suffix == ".docx":
+            sp = SpexHtmlRenderer(docx_path=spec, out_dir=args.output)
+            spec = sp.html_path
+            try:
+                sp.generate()
+            finally:
+                del sp
+
         with get_writer(spec) as w:
-            print(f"Parsing '{spec}'...")
             sdoc = parse.open_doc(spec)
             w.write_meta("specification", sdoc.key)
             w.write_meta("revision", sdoc.rev)
@@ -143,7 +173,6 @@ def main():
             for entity in dparser.parse():
                 w.write_entity(entity)
 
-            ignore_lint_codes = set(c.name for c in args.lint_ignore)
             w.write_meta("lint", [
                 lint_err for lint_err in dparser.linter.to_json()
                 if lint_err["code"] not in ignore_lint_codes

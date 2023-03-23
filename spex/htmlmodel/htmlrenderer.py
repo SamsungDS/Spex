@@ -1,6 +1,6 @@
 from html import escape as html_escape
 from pathlib import Path
-from typing import Set, Any
+from typing import Set, Any, Optional
 from lxml.etree import _Element
 from gcgen.api import Section, write_file
 from spex.htmlmodel.docx import Document
@@ -10,19 +10,22 @@ from spex.htmlmodel.parser import Span, Paragraph, ListElem, List, Point, Table,
 
 # TODO: nicer way of using `write_file` ?
 class SpexHtmlRenderer:
-    def __init__(self, docx_path: Path):
+    def __init__(self, docx_path: Path, out_dir: Optional[Path] = None):
         self._fname = docx_path.name[: -len(docx_path.suffix)]
         self._docx_path = docx_path = docx_path.resolve()
         self._document = Document(docx_path)
         self._parser = SpexParser(self._document)
 
-        self._html_path = docx_path.parent / f"{self._fname}.html"
+        if out_dir is None:
+            out_dir = docx_path.parent
+
+        self._html_path = out_dir / f"{self._fname}.html"
         self._html_writer = write_file(self._html_path)
         self._html_head = Section()
         self._html_body = Section()
         self._html_doc: Section = self._html_writer.__enter__()
 
-        self._css_path = docx_path.parent / f"{self._fname}.css"
+        self._css_path = out_dir / f"{self._fname}.css"
         self._css_writer = write_file(self._css_path)
         self._css_doc: Section = self._css_writer.__enter__()
         # from props -> name
@@ -203,6 +206,14 @@ class SpexHtmlRenderer:
             self._render_table(s, o)
         else:
             raise RuntimeError(f"render got element of type {type(o)} - cannot render")
+
+    @property
+    def html_path(self) -> Path:
+        return self._html_path
+
+    @property
+    def css_path(self) -> Path:
+        return self._css_path
 
     def __del__(self):
         if self._destroyed:
