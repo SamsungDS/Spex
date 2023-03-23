@@ -109,10 +109,24 @@ class FileWriter:
 
 
 def main():
+    lint_codes = "\n".join(f"      * {entry.name}  - {entry.value}" for entry in Code)
     epilog = textwrap.dedent(
-        """
+        f"""
     Notes:
     ~~~~~~
+    * Linting:
+      During production of the NVMe-model, a number of linting codes are raised.
+      These signify potential and definite issues encountered when parsing the
+      source HTML model, in turn derived from the docx specification document.
+
+      You may choose to ignore classes of errors during processing. 
+      For instance, to ignore lint errors of code T1000 and T1001, add the
+      following to your command: `--lint-ignore=T1000,T1001`.
+
+      The linting codes, and their general meaning, are as follows:
+      ---
+{lint_codes}
+      ---
     * output:
       if `output` is a directory, then any output(s) generated from processing
       (NVMe (JSON) models, HTML models, CSS files) will be placed in the
