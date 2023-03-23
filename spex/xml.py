@@ -1,4 +1,4 @@
-from typing import Optional, cast, List, Union
+from typing import cast, List, Union, Mapping, Optional
 from lxml.etree import _Element, _ElementTree
 from lxml import etree
 
@@ -26,6 +26,8 @@ class XmlUtils:
 
     @staticmethod
     def to_text(elem: XmlElem) -> str:
+        if isinstance(elem, _ElementTree):
+            elem = elem.getroot()
         return "".join(
             e.decode("utf-8") if isinstance(e, bytes) else e for e in elem.itertext()
         ).strip()
@@ -36,7 +38,7 @@ class Xpath:
     def elems(cls, e: XmlElem, query: str) -> List[Element]:
         if isinstance(e, _ElementTree):
             e = e.getroot()
-        res = e.xpath(query, namespaces=e.nsmap)
+        res = e.xpath(query, namespaces=cast(Mapping[str, str], e.nsmap))
         assert isinstance(res, list)
         # cannot use type Element with isinstance
         if len(res) > 0 and not isinstance(res[0], (_Element, _ElementTree)):
@@ -66,7 +68,7 @@ class Xpath:
     def attrs(cls, e: XmlElem, query: str) -> List[str]:
         if isinstance(e, _ElementTree):
             e = e.getroot()
-        res = e.xpath(query, namespaces=e.nsmap)
+        res = e.xpath(query, namespaces=cast(Mapping[str, str], e.nsmap))
         assert isinstance(res, list)
         if len(res) > 0 and not isinstance(res[0], str):
             raise RuntimeError(

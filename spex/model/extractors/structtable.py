@@ -32,12 +32,12 @@ class StructTableExtractor(FigureExtractor, ABC):
         """
         ...
 
-    def _get_col_ndx(self, col_hdrs: List[str], tbl_cols_ndxs: Dict[str, int]) -> Optional[int]:
+    def _get_col_ndx(self, col_hdrs: List[str], tbl_cols_ndxs: Dict[str, int]) -> int:
         for colname in col_hdrs:
             ndx = tbl_cols_ndxs.get(colname, None)
             if ndx is not None:
                 return ndx
-        return None
+        raise RuntimeError("failed to find column to extract ranges from")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -46,16 +46,8 @@ class StructTableExtractor(FigureExtractor, ABC):
             for ndx, hdr in enumerate(self.tbl_hdrs)
         }
         self._col_ndx_range = self._get_col_ndx(self.range_column_hdrs(), col_ndxs)
-        if self._col_ndx_range is None:
-            raise RuntimeError("failed to find column to extract ranges from")
-
         self._col_ndx_content = self._get_col_ndx(self.content_column_hdrs(), col_ndxs)
-        if self._col_ndx_content is None:
-            raise RuntimeError("failed to find column to extract content from")
-
         self._col_ndx_label = self._get_col_ndx(self.label_column_hdrs(), col_ndxs)
-        if self._col_ndx_label is None:
-            raise RuntimeError("failed to find column to extract labels from")
 
     @classmethod
     def can_apply(cls, tbl_col_hdrs: List[str]) -> bool:
@@ -91,7 +83,7 @@ class StructTableExtractor(FigureExtractor, ABC):
                 row_range = self.range_elem(row)
                 row_data = self.content_elem(row)
             except Exception as e:
-                row_txt = "".join(row.itertext()).lstrip().lower()
+                row_txt = XmlUtils.to_text(row).lower()
                 if row_txt.startswith(ELLIPSIS):
                     # revisit ranges here once we have normalized field order
                     # (bits fields are in desc order, bytes are in asc)
@@ -153,7 +145,8 @@ class StructTableExtractor(FigureExtractor, ABC):
         self.validate_fields(fields)
 
         yield {
-            **self.entity_meta,
+            # https://github.com/python/mypy/issues/4122#issuecomment-336924377
+            **self.entity_meta,  # type: ignore
             "type": self.type,
             "fields": fields
         }
@@ -162,17 +155,16 @@ class StructTableExtractor(FigureExtractor, ABC):
         if len(fields) < 2:
             return
 
-        def range_field(f):
-            return (
-                f["label"] != ELLIPSIS
-                and isinstance(f["range"], dict)
-            )
+        def field_get_range(f: StructField) -> Optional[Range]:
+            if f["label"] == ELLIPSIS or isinstance(f["range"], str):
+                return None
+            return f["range"]
 
         # Check whether row order is wrong for the table
-        prev_range = fields[0]["range"] if range_field(fields[0]) else None
+        prev_range: Optional[Range] = field_get_range(fields[0])
         for field in fields:
-            field_range = field["range"]
-            if not range_field(field):
+            field_range = field_get_range(field)
+            if field_range is None:
                 prev_range = None
                 continue
             elif prev_range is not None:
@@ -185,7 +177,7 @@ class StructTableExtractor(FigureExtractor, ABC):
                 prev_range = field_range
 
         lbls = {fields[0]["label"]}
-        prev_range = fields[0]["range"] if range_field(fields[0]) else None
+        prev_range = field_get_range(fields[0])
 
         for field in fields[1:]:
             flbl = field["label"]
@@ -202,8 +194,8 @@ class StructTableExtractor(FigureExtractor, ABC):
                 prev_range = None
                 continue
 
-            field_range = field["range"]
-            if range_field(field):
+            field_range = field_get_range(field)
+            if field_range is not None:
                 if prev_range is not None:
                     if prev_range["high"] >= field_range["low"]:
                         self.add_issue(LintErr.TBL_FIELD_OVERLAP, row_key=self._range_to_rowkey(field_range))

@@ -1,8 +1,9 @@
-from typing import TYPE_CHECKING, Dict, Iterator, TypedDict, NotRequired, Protocol, List, Union, runtime_checkable
+from typing import TYPE_CHECKING, Dict, Iterator, TypedDict, NotRequired, Protocol, List, Union, runtime_checkable, TypeAlias, cast, Any
 
 
 if TYPE_CHECKING:
     from spex.xml import Element
+    from spex.model.extractors.figure import FigureExtractor
 
 JSON = Union[None, bool, str, float, int, List['JSON'], Dict[str, 'JSON']]
 
@@ -10,6 +11,23 @@ JSON = Union[None, bool, str, float, int, List['JSON'], Dict[str, 'JSON']]
 @runtime_checkable
 class ToJson(Protocol):
     def to_json(self) -> JSON: ...
+
+
+def cast_json(val: Any) -> JSON:
+    """
+
+    MyPy type-checker cannot determine that e.g. List[str] is a JSON value.
+    Use this call to:
+    1) satisfy type-checker
+    2) clearly mark areas where this is an issue
+
+    Args:
+        val: supposedly JSON value
+
+    Returns:
+        same value, cast as a JSON value
+    """
+    return cast(JSON, val)
 
 
 class EntityMeta(TypedDict):
@@ -30,9 +48,9 @@ class ParseFn(Protocol):
     def __call__(self, entity: EntityMeta, tbl: "Element") -> Iterator[Entity]: ...
 
 
-ExtractorMap = Dict[str, "FigureExtractor"]
-FigureId = str
-ValStr = str
+ExtractorMap: TypeAlias = Dict[str, "FigureExtractor"]
+FigureId: TypeAlias = str
+ValStr: TypeAlias = str
 
 RESERVED = "RESERVED"
 ELLIPSIS = "…"

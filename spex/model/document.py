@@ -1,6 +1,7 @@
 from re import compile as re_compile
-from typing import TYPE_CHECKING, Dict, Tuple, Type, Optional, Iterator, List, TypeAlias, NoReturn
+from typing import TYPE_CHECKING, Dict, Tuple, Type, Optional, Iterator, List, TypeAlias
 from spex.xml import Xpath, XmlUtils
+from spex.model.defs import cast_json
 from spex.model.extractors.valuetable import ValueTableExtractor
 from spex.model.extractors.structtable import BitsTableExtractor, BytesTableExtractor
 from spex.model.lint import LintEntry, Linter, LintErr
@@ -8,7 +9,7 @@ from spex.model.defs import JSON, Entity, EntityMeta
 
 
 if TYPE_CHECKING:
-    from xml import ElementTree, Element
+    from spex.xml import ElementTree, Element
     from spex.model.extractors.figure import FigureExtractor
 
 
@@ -28,7 +29,7 @@ class DocLinter:
     def add_issue(self, err: LintErr, fig: str, *,
                   msg: Optional[str] = None,
                   row_key: Optional[str] = None,
-                  ctx: Optional[Dict[str, JSON]] = None) -> NoReturn:
+                  ctx: Optional[Dict[str, JSON]] = None):
 
         l_entry = LintEntry(
             err=err,
@@ -133,7 +134,7 @@ class DocumentParser:
             if inner_tbl is not None and inner_tbl.tag == "table":
                 tbl = inner_tbl
 
-            fig_tr = Xpath.elem_first(tbl, "./tr[1]")
+            fig_tr = Xpath.elem_first_req(tbl, "./tr[1]")
             # remove entire tr to simplify downstream processing between top-level and
             # nested figures.
             parent = fig_tr.getparent()
@@ -205,7 +206,7 @@ class DocumentParser:
                     break
             if extractor_cls is None:
                 self.linter.add_issue(LintErr.TBL_SKIPPED, fig_id, ctx={
-                    "columns": tbl_hdrs
+                    "columns": cast_json(tbl_hdrs)
                 })
                 return
 

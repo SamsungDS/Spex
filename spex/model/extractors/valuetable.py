@@ -22,12 +22,12 @@ class ValueTableExtractor(FigureExtractor):
             and (len(set(cls.label_column_hdrs()).intersection(tbl_col_hdrs))) > 0
         )
 
-    def _get_col_ndx(self, col_hdrs: List[str], tbl_cols_ndxs: Dict[str, int]) -> Optional[int]:
+    def _get_col_ndx(self, col_hdrs: List[str], tbl_cols_ndxs: Dict[str, int]) -> int:
         for colname in col_hdrs:
             ndx = tbl_cols_ndxs.get(colname, None)
             if ndx is not None:
                 return ndx
-        return None
+        raise RuntimeError("failed to find column to extract values from")
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
@@ -36,16 +36,8 @@ class ValueTableExtractor(FigureExtractor):
             for ndx, hdr in enumerate(self.tbl_hdrs)
         }
         self._col_ndx_value = self._get_col_ndx(self.value_column_hdrs(), col_ndxs)
-        if self._col_ndx_value is None:
-            raise RuntimeError("failed to find column to extract values from")
-
         self._col_ndx_content = self._get_col_ndx(self.content_column_hdrs(), col_ndxs)
-        if self._col_ndx_content is None:
-            raise RuntimeError("failed to find column to extract content from")
-
         self._col_ndx_label = self._get_col_ndx(self.label_column_hdrs(), col_ndxs)
-        if self._col_ndx_label is None:
-            raise RuntimeError("failed to find column to extract labels from")
 
     def __call__(self) -> Iterator["Entity"]:
         fields: List[ValueField] = []
@@ -57,7 +49,7 @@ class ValueTableExtractor(FigureExtractor):
                 row_val = self.val_elem(row)
                 row_data = self.content_elem(row)
             except Exception as e:
-                row_txt = "".join(row.itertext()).lstrip().lower()
+                row_txt = XmlUtils.to_text(row).lower()
                 if row_txt.startswith(ELLIPSIS):
                     # revisit ranges here once we have normalized field order
                     # (bits fields are in desc order, bytes are in asc)
@@ -77,12 +69,12 @@ class ValueTableExtractor(FigureExtractor):
 
             row_key = str(val_cleaned)
 
-            override_key = (self.fig_id, val_cleaned)
+            override_key = (self.fig_id, str(val_cleaned))
             label = self.doc_parser.label_overrides.get(override_key, None)
             if label is None:
                 label = self._extract_label(row, row_key, row_data)
             else:
-                self.add_issue(LintErr.LBL_OVERRIDDEN, row_key=val_cleaned)
+                self.add_issue(LintErr.LBL_OVERRIDDEN, row_key=str(val_cleaned))
 
             value_field: ValueField = {
                 "val": val_cleaned,
@@ -104,7 +96,8 @@ class ValueTableExtractor(FigureExtractor):
         self.validate_fields(fields)
 
         yield {
-            **self.entity_meta,
+            # https://github.com/python/mypy/issues/4122#issuecomment-336924377
+            **self.entity_meta,  # type: ignore
             "type": "values",
             "fields": fields
         }
