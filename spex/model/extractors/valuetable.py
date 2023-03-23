@@ -1,10 +1,9 @@
 from typing import TYPE_CHECKING, Iterator, List, Optional, Union, Generator, Dict
 from spex.model.extractors.figure import FigureExtractor, RowErrPolicy
 from spex.model.extractors.helpers import content_extract_brief, validate_label
-from spex.model.xml import Xpath, Element
+from spex.model.xml import Xpath, Element, XmlUtils
 from spex.model.defs import RESERVED, ELLIPSIS, ValueField
 from spex.model.lint import LintErr
-from spex.model import xml  # TODO: for debugging
 
 if TYPE_CHECKING:
     from spex.model.defs import Entity, EntityMeta
@@ -181,7 +180,7 @@ class ValueTableExtractor(FigureExtractor):
         p1 = Xpath.elem_first_req(
             row,
             f"./td[{self._col_ndx_label + 1}]/p[1]")
-        txt = xml.to_text(p1).lower()
+        txt = XmlUtils.to_text(p1).lower()
         if txt == "reserved":
             return RESERVED
 

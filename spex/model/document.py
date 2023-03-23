@@ -1,12 +1,11 @@
 from re import compile as re_compile
 from typing import TYPE_CHECKING, Dict, Tuple, Type, Optional, Iterator, List, TypeAlias, NoReturn
-from spex.model.xml import Xpath
+from spex.model.xml import Xpath, XmlUtils
 from spex.model.extractors.valuetable import ValueTableExtractor
 from spex.model.extractors.structtable import BitsTableExtractor, BytesTableExtractor
 from spex.model.lint import LintEntry, Linter, LintErr
 from spex.model.defs import JSON, Entity, EntityMeta
 
-from spex.model import xml  # TODO: for debugging
 
 if TYPE_CHECKING:
     from spex.model.xml import ElementTree, Element
@@ -184,7 +183,7 @@ class DocumentParser:
                 return hdr
 
         return [
-            normalize_hdr(xml.to_text(thdr).lower().strip())
+            normalize_hdr(XmlUtils.to_text(thdr).lower().strip())
             for thdr in Xpath.elems(tbl, "./tr[1]/*")
         ]
 

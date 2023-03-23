@@ -7,32 +7,36 @@ ElementTree = _ElementTree
 XmlElem = Union[_Element, _ElementTree]
 
 
-def fmt(elem: XmlElem) -> str:
-    """render XML element into a formatted string."""
-    return etree.tostring(elem, pretty_print=True, encoding="unicode")
+class XmlUtils:
+    @staticmethod
+    def fmt(elem: XmlElem) -> str:
+        """render XML element into a formatted string."""
+        return etree.tostring(elem, pretty_print=True, encoding="unicode")
 
+    @staticmethod
+    def pp(elem: XmlElem) -> None:
+        """pretty-print XML element."""
+        print(XmlUtils.fmt(elem))
 
-def pp(elem: XmlElem) -> None:
-    """pretty-print XML element."""
-    print(fmt(elem))
+    @staticmethod
+    def spit(path: str, elem: XmlElem) -> None:
+        """spit XML element out into a file."""
+        with open(path, "w") as fh:
+            fh.write(XmlUtils.fmt(elem))
 
-
-def spit(path: str, elem: XmlElem) -> None:
-    """spit XML element out into a file."""
-    with open(path, "w") as fh:
-        fh.write(fmt(elem))
-
-
-def to_text(element: XmlElem) -> str:
-    return "".join(
-        e.decode("utf-8") if isinstance(e, bytes) else e for e in element.itertext()
-    ).strip()
+    @staticmethod
+    def to_text(elem: XmlElem) -> str:
+        return "".join(
+            e.decode("utf-8") if isinstance(e, bytes) else e for e in elem.itertext()
+        ).strip()
 
 
 class Xpath:
     @classmethod
     def elems(cls, e: XmlElem, query: str) -> List[Element]:
-        res = e.xpath(query)
+        if isinstance(e, _ElementTree):
+            e = e.getroot()
+        res = e.xpath(query, namespaces=e.nsmap)
         assert isinstance(res, list)
         # cannot use type Element with isinstance
         if len(res) > 0 and not isinstance(res[0], (_Element, _ElementTree)):
@@ -60,7 +64,9 @@ class Xpath:
 
     @classmethod
     def attrs(cls, e: XmlElem, query: str) -> List[str]:
-        res = e.xpath(query)
+        if isinstance(e, _ElementTree):
+            e = e.getroot()
+        res = e.xpath(query, namespaces=e.nsmap)
         assert isinstance(res, list)
         if len(res) > 0 and not isinstance(res[0], str):
             raise RuntimeError(
@@ -85,4 +91,4 @@ class Xpath:
         return res[0]
 
 
-__all__ = ["fmt", "pp", "spit", "etree", "Element", "ElementTree", "XmlElem", "Xpath"]
+__all__ = ["etree", "Element", "ElementTree", "XmlElem", "Xpath", "XmlUtils"]

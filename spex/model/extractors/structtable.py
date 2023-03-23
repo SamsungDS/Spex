@@ -3,10 +3,9 @@ from re import compile as re_compile
 from typing import Iterator, Union, List, Optional, Generator, Dict
 from spex.model.extractors.figure import FigureExtractor, RowErrPolicy
 from spex.model.extractors.helpers import content_extract_brief, validate_label
-from spex.model.xml import Element, Xpath
+from spex.model.xml import Element, Xpath, XmlUtils
 from spex.model.defs import RESERVED, ELLIPSIS, Entity, EntityMeta, Range, StructField
 from spex.model.lint import LintErr
-from spex.model import xml  # TODO: for debugging
 
 
 class StructTableExtractor(FigureExtractor, ABC):
@@ -242,7 +241,7 @@ class StructTableExtractor(FigureExtractor, ABC):
         p1 = Xpath.elem_first_req(
             row,
             f"./td[{self._col_ndx_label + 1}]/p[1]")
-        txt = xml.to_text(p1).lower()
+        txt = XmlUtils.to_text(p1).lower()
         if txt == "reserved":
             return RESERVED
 
@@ -267,7 +266,7 @@ class StructTableExtractor(FigureExtractor, ABC):
                 return RESERVED
         else:
             p1 = Xpath.elem_first_req(data, "./p[1]")
-            txt = xml.to_text(p1)
+            txt = XmlUtils.to_text(p1)
             if txt.lower() == "reserved":
                 return RESERVED
             m = self.rgx_field_lbl.match(txt)

@@ -1,6 +1,5 @@
 from lxml import etree
-from spex.model.xml import Xpath
-from spex.model import xml
+from spex.model.xml import Xpath, XmlUtils
 from spex.model.rowiter import row_iter
 import pytest
 
@@ -106,6 +105,6 @@ def test_row_contents(tbl, tbl_txts_expected):
     for row in row_iter(tbl):
         row_txts = []
         for td in Xpath.elems(row, "./td"):
-            row_txts.append(xml.to_text(td))
+            row_txts.append(XmlUtils.to_text(td))
         tbl_txts.append(row_txts)
     assert tbl_txts == tbl_txts_expected
