@@ -3,3 +3,7 @@ __pycache__
 .venv
 venv
 .idea
+build
+*.egg-info
+.pytest_cache
+.mypy_cache
