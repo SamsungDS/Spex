@@ -1,4 +1,7 @@
 *.pyc
+*.docx
+builddir/
+output
 dist/
 __pycache__
 .venv
