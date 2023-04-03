@@ -59,6 +59,7 @@ class DocumentParser:
         self.__revision = revision
         self.__linter = DocLinter()
         self.__post_init__()
+        self._unwind_parse_error = False
 
     def __post_init__(self) -> None:
         ...
@@ -205,6 +206,7 @@ class DocumentParser:
             become separate entities. Hence calling this produces an
             iterator of entities.
         """
+        self._unwind_parse_error = False
         fig_id = entity["fig_id"]
         tbl_hdrs = self.extract_tbl_headers(fig_id, tbl)
         extractor_cls = self.fig_extractor_overrides.get(fig_id, None)
@@ -227,7 +229,16 @@ class DocumentParser:
             parse_fn=self._on_parse_fig,
             linter=self.__linter,
         )
-        yield from e()
+        try:
+            yield from e()
+        except Exception as err:
+            if not self._unwind_parse_error:
+                print(f"!! Error Parsing Figure\n\t -> {entity!r}")
+                self._unwind_parse_error = True
+            else:
+                print(f"\t in {entity!r}")
+            raise err
+
 
     def parse(self) -> Iterator[EntityMeta]:
         # for each eligible top-level figure
