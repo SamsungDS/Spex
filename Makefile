@@ -1,13 +1,13 @@
-all: clean uninstall sdist install
+all: install
 
+.PHONY: clean
 clean:
-	rm -r dist || true
+	@echo "clean :)"
 
-sdist:
-	python3 setup.py sdist
+.PHONY: install
+install: clean
+	pipx install .
 
-install:
-	pipx install dist/spex*.tar.gz
-
+.PHONY: uninstall
 uninstall:
 	pipx uninstall spex || true
