@@ -1,16 +1,16 @@
 from re import compile as re_compile
 from typing import TYPE_CHECKING, Dict, Tuple, Type, Optional, Iterator, List, TypeAlias
 from spex.xml import Xpath, XmlUtils
-from spex.model.defs import cast_json
-from spex.model.extractors.valuetable import ValueTableExtractor
-from spex.model.extractors.structtable import BitsTableExtractor, BytesTableExtractor
-from spex.model.lint import LintEntry, Linter, LintErr
-from spex.model.defs import JSON, Entity, EntityMeta
+from spex.jsonspec.defs import cast_json
+from spex.jsonspec.extractors.valuetable import ValueTableExtractor
+from spex.jsonspec.extractors.structtable import BitsTableExtractor, BytesTableExtractor
+from spex.jsonspec.lint import LintEntry, Linter, LintErr
+from spex.jsonspec.defs import JSON, Entity, EntityMeta
 
 
 if TYPE_CHECKING:
     from spex.xml import ElementTree, Element
-    from spex.model.extractors.figure import FigureExtractor
+    from spex.jsonspec.extractors.figure import FigureExtractor
 
 
 FigId: TypeAlias = str

@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING, Optional
 from re import compile as re_compile
 from spex.xml import Xpath
-from spex.model.lint import Linter, LintErr
+from spex.jsonspec.lint import Linter, LintErr
 
 
 if TYPE_CHECKING:

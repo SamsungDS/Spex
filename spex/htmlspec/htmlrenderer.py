@@ -3,9 +3,9 @@ from pathlib import Path
 from typing import Set, Any, Optional
 from lxml.etree import _Element
 from gcgen.api import Section, write_file
-from spex.htmlmodel.docx import Document
-from spex.htmlmodel import css
-from spex.htmlmodel.parser import (
+from spex.htmlspec.docx import Document
+from spex.htmlspec import css
+from spex.htmlspec.parser import (
     Span,
     Paragraph,
     ListElem,

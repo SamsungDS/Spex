@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 from typing import Optional
 from spex.xml import etree, Xpath, ElementTree
-from spex.model.document import DocumentParser
+from spex.jsonspec.document import DocumentParser
 from pathlib import Path
-from spex.model.quirks import QuirksMap, QUIRKS_MAP
+from spex.jsonspec.quirks import QuirksMap, QUIRKS_MAP
 
 
 @dataclass(frozen=True)

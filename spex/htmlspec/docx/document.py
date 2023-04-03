@@ -2,12 +2,12 @@ from pathlib import Path
 from typing import Optional, List
 from lxml.etree import _Element
 from spex.xml import Xpath
-from spex.htmlmodel.docx.docxutils import docx_extract_contents
-from spex.htmlmodel.docx.numbering import NumberingDocument
-from spex.htmlmodel.docx.header import Header
-from spex.htmlmodel.docx.styles import StylesDocument
-from spex.htmlmodel.docx.runproperties import RunProperties
-from spex.htmlmodel.docx.tags import Tag
+from spex.htmlspec.docx.docxutils import docx_extract_contents
+from spex.htmlspec.docx.numbering import NumberingDocument
+from spex.htmlspec.docx.header import Header
+from spex.htmlspec.docx.styles import StylesDocument
+from spex.htmlspec.docx.runproperties import RunProperties
+from spex.htmlspec.docx.tags import Tag
 
 
 class Document:

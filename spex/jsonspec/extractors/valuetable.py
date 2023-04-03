@@ -1,12 +1,12 @@
 from typing import TYPE_CHECKING, Iterator, List, Optional, Union, Generator, Dict
-from spex.model.extractors.figure import FigureExtractor, RowErrPolicy
-from spex.model.extractors.helpers import content_extract_brief, validate_label
+from spex.jsonspec.extractors.figure import FigureExtractor, RowErrPolicy
+from spex.jsonspec.extractors.helpers import content_extract_brief, validate_label
 from spex.xml import Xpath, Element, XmlUtils
-from spex.model.defs import RESERVED, ELLIPSIS, ValueField
-from spex.model.lint import LintErr
+from spex.jsonspec.defs import RESERVED, ELLIPSIS, ValueField
+from spex.jsonspec.lint import LintErr
 
 if TYPE_CHECKING:
-    from spex.model.defs import Entity, EntityMeta
+    from spex.jsonspec.defs import Entity, EntityMeta
 
 
 class ValueTableExtractor(FigureExtractor):

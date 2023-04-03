@@ -16,7 +16,7 @@ from typing import (
 
 if TYPE_CHECKING:
     from spex.xml import Element
-    from spex.model.extractors.figure import FigureExtractor
+    from spex.jsonspec.extractors.figure import FigureExtractor
 
 JSON = Union[None, bool, str, float, int, List["JSON"], Dict[str, "JSON"]]
 

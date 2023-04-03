@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
 from re import compile as re_compile
 from typing import Iterator, Union, List, Optional, Generator, Dict
-from spex.model.extractors.figure import FigureExtractor, RowErrPolicy
-from spex.model.extractors.helpers import content_extract_brief, validate_label
+from spex.jsonspec.extractors.figure import FigureExtractor, RowErrPolicy
+from spex.jsonspec.extractors.helpers import content_extract_brief, validate_label
 from spex.xml import Element, Xpath, XmlUtils
-from spex.model.defs import RESERVED, ELLIPSIS, Entity, EntityMeta, Range, StructField
-from spex.model.lint import LintErr
+from spex.jsonspec.defs import RESERVED, ELLIPSIS, Entity, EntityMeta, Range, StructField
+from spex.jsonspec.lint import LintErr
 
 
 class StructTableExtractor(FigureExtractor, ABC):

@@ -2,7 +2,7 @@ from pathlib import Path
 from re import compile as re_compile
 from typing import Optional
 from spex.xml import Xpath
-from spex.htmlmodel.docx.docxutils import docx_extract_contents
+from spex.htmlspec.docx.docxutils import docx_extract_contents
 
 _rgx_revision = re_compile(r".*[Rr]evision\s+(?P<rev>\S+).*")
 

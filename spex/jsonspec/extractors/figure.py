@@ -2,14 +2,14 @@ from abc import ABC, abstractmethod
 from enum import Enum
 from typing import TYPE_CHECKING, Optional, Iterator, Tuple, List, Dict
 from spex.xml import Element, Xpath
-from spex.model.lint import Linter, LintErr
-from spex.model.defs import JSON
-from spex.model.rowiter import row_iter
+from spex.jsonspec.lint import Linter, LintErr
+from spex.jsonspec.defs import JSON
+from spex.jsonspec.rowiter import row_iter
 
 
 if TYPE_CHECKING:
-    from spex.model.defs import EntityMeta, ParseFn, Entity
-    from spex.model.document import DocumentParser
+    from spex.jsonspec.defs import EntityMeta, ParseFn, Entity
+    from spex.jsonspec.document import DocumentParser
 
 
 RowResult = Tuple[Element, Element, Element]

@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import List, Dict, Union, Iterator, Type, Any, Callable, TypeVar
 from spex.xml import Xpath
-from spex.htmlmodel.docx.docxutils import docx_extract_contents
+from spex.htmlspec.docx.docxutils import docx_extract_contents
 
 
 @dataclass(frozen=True)

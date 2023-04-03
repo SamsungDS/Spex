@@ -1,4 +1,4 @@
-from spex.model.document import DocumentParser
+from spex.jsonspec.document import DocumentParser
 
 
 # class ZndFig48(BytesTableExtractor):

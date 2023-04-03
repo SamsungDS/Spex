@@ -4,10 +4,10 @@ import json
 from pathlib import Path
 import textwrap
 from typing import Protocol, Dict, TypedDict, List
-from spex.model import parse
-from spex.model.defs import JSON
-from spex.model.lint import Code
-from spex.htmlmodel.htmlrenderer import SpexHtmlRenderer
+from spex.jsonspec import parse
+from spex.jsonspec.defs import JSON
+from spex.jsonspec.lint import Code
+from spex.htmlspec.htmlrenderer import SpexHtmlRenderer
 
 
 class S2Model(TypedDict):

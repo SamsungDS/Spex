@@ -1,6 +1,6 @@
 from lxml import etree
 from spex.xml import Xpath, XmlUtils
-from spex.model.rowiter import row_iter
+from spex.jsonspec.rowiter import row_iter
 import pytest
 
 

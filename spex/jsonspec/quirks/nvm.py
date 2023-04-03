@@ -1,13 +1,13 @@
 from typing import Iterator, List, Optional, Generator
-from spex.model.document import DocumentParser
-from spex.model.extractors.figure import RowErrPolicy
-from spex.model.extractors.structtable import (
+from spex.jsonspec.document import DocumentParser
+from spex.jsonspec.extractors.figure import RowErrPolicy
+from spex.jsonspec.extractors.structtable import (
     BitsTableExtractor,
     BytesTableExtractor,
     StructField,
 )
-from spex.model.extractors.skiptable import SkipTable
-from spex.model.defs import Entity, EntityMeta
+from spex.jsonspec.extractors.skiptable import SkipTable
+from spex.jsonspec.defs import Entity, EntityMeta
 from spex.xml import Element
 from lxml import etree
 

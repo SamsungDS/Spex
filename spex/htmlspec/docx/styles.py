@@ -2,9 +2,9 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Dict, Optional
 from lxml.etree import _Element
-from spex.htmlmodel.docx.docxutils import docx_extract_contents
+from spex.htmlspec.docx.docxutils import docx_extract_contents
 from spex.xml import Xpath
-from spex.htmlmodel.docx.runproperties import RunProperties
+from spex.htmlspec.docx.runproperties import RunProperties
 
 
 class StyleResolver:

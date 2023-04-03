@@ -1,10 +1,10 @@
 from typing import TYPE_CHECKING, Dict, Tuple, Type
-from spex.model.quirks.zoned import NvmCsZoned11c
-from spex.model.quirks.nvm import NvmCmdSet1c
+from spex.jsonspec.quirks.zoned import NvmCsZoned11c
+from spex.jsonspec.quirks.nvm import NvmCmdSet1c
 
 
 if TYPE_CHECKING:
-    from spex.model.document import DocumentParser
+    from spex.jsonspec.document import DocumentParser
 
 
 QuirksMap = Dict[Tuple[str, str], Type["DocumentParser"]]
