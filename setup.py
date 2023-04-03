@@ -12,7 +12,11 @@ setup(
     author_email="j.devantier@samsung.com",
     # url=""  # TODO: to be determined.
     packages=find_packages(exclude=["tests"]),
-    install_requires=["lxml", "lxml-stubs", "gcgen"],
+    install_requires=[
+        "lxml>=4.9.2,<5.0",
+        "lxml-stubs>=0.4.0,<0.5",
+        "gcgen>=0.1.0,<0.2.0"
+    ],
     entry_points={"console_scripts": ["spex = spex.__main__:main"]},
     license="MIT",
     options={"bdist_wheel": {"universal": True}},

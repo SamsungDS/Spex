@@ -1,4 +1,4 @@
 # NOTE: when changed here, then also change setup.py
-lxml
-lxml-stubs
-gcgen
+lxml>=4.9.2,<5.0
+lxml-stubs>=0.4.0,<0.5
+gcgen>=0.1.0,<0.2.0
