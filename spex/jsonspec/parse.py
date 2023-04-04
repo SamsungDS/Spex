@@ -13,12 +13,16 @@ class SpecDocument:
     key: str
     rev: str
 
-    def get_parser(self, args: Namespace, quirks_map: Optional[QuirksMap] = None) -> DocumentParser:
+    def get_parser(
+        self, args: Namespace, quirks_map: Optional[QuirksMap] = None
+    ) -> DocumentParser:
         if quirks_map is None:
             quirks_map = QUIRKS_MAP
 
         quirks_key = (self.key, self.rev)
-        dp = quirks_map.get(quirks_key, DocumentParser)(args, self.tree, self.key, self.rev)
+        dp = quirks_map.get(quirks_key, DocumentParser)(
+            args, self.tree, self.key, self.rev
+        )
         return dp
 
 

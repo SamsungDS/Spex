@@ -44,12 +44,15 @@ def jsonify_exc(exc):
     exc_json = {
         "type": type(exc).__qualname__,
         "msg": str(exc),
-        "frames": [{
-            "name": frame.name,
-            "file": frame.filename,
-            "lineno": frame.lineno,
-            "line": frame.line
-        } for frame in ss]
+        "frames": [
+            {
+                "name": frame.name,
+                "file": frame.filename,
+                "lineno": frame.lineno,
+                "line": frame.line,
+            }
+            for frame in ss
+        ],
     }
     if hasattr(exc, "__cause__") and exc.__cause__:
         print("CAUSE")
@@ -85,6 +88,7 @@ class ULog:
     This permits us to filter lower (or all) regular log levels while still
     having several user-specific log levels with which to differentiate messages.
     """
+
     INFO = "U_INFO"
     SUCCESS = "U_SUCCESS"
     WARNING = "U_WARNING"
@@ -114,9 +118,7 @@ logger.add(
     colorize=True,
     backtrace=True if DEBUG else False,
     diagnose=True if DEBUG else False,
-    format=(
-        "<level>{level}</level> {message}"
-        if DEBUG else fmt_no_stacktrace),
+    format=("<level>{level}</level> {message}" if DEBUG else fmt_no_stacktrace),
     level="DEBUG" if DEBUG else ULog.INFO,
 )
 
@@ -152,5 +154,5 @@ logger.add(
     serialize=True,
     backtrace=True,
     diagnose=True,
-    level="DEBUG"
+    level="DEBUG",
 )

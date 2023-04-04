@@ -238,10 +238,11 @@ class DocumentParser:
             parse_fn=self._on_parse_fig,
             linter=self.__linter,
         )
-        with logger.contextualize(entity=entity, doc={
-            "spec": self.spec,
-            "revision": self.revision
-        }, extractor_cls=extractor_cls.__qualname__):
+        with logger.contextualize(
+            entity=entity,
+            doc={"spec": self.spec, "revision": self.revision},
+            extractor_cls=extractor_cls.__qualname__,
+        ):
             gen = e()
             while True:
                 try:
@@ -255,7 +256,10 @@ class DocumentParser:
                     else:
                         logger.log(ULog.ERROR, f"  in {entity!r}")
 
-                    if "parent_fig_id" in entity or self.args.skip_fig_on_error is False:
+                    if (
+                        "parent_fig_id" in entity
+                        or self.args.skip_fig_on_error is False
+                    ):
                         raise err
 
     def parse(self) -> Iterator[EntityMeta]:

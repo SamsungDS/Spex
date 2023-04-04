@@ -4,7 +4,14 @@ from typing import Iterator, Union, List, Optional, Generator, Dict
 from spex.jsonspec.extractors.figure import FigureExtractor, RowErrPolicy
 from spex.jsonspec.extractors.helpers import content_extract_brief, validate_label
 from spex.xml import Element, Xpath, XmlUtils
-from spex.jsonspec.defs import RESERVED, ELLIPSIS, Entity, EntityMeta, Range, StructField
+from spex.jsonspec.defs import (
+    RESERVED,
+    ELLIPSIS,
+    Entity,
+    EntityMeta,
+    Range,
+    StructField,
+)
 from spex.jsonspec.lint import LintErr
 from spex.logging import logger
 
@@ -100,7 +107,9 @@ class StructTableExtractor(FigureExtractor, ABC):
                     if out == RowErrPolicy.Stop:
                         break
                     elif out == RowErrPolicy.Raise:
-                        logger.bind(range=XmlUtils.to_text(row).lower()).exception("failed to parse row")
+                        logger.bind(range=XmlUtils.to_text(row).lower()).exception(
+                            "failed to parse row"
+                        )
                         raise e
                     else:
                         continue

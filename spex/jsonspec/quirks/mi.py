@@ -16,11 +16,11 @@ class MiFig64(BitsTableExtractor):
         self._extra_fig = None
 
     def row_err_handler(
-            self,
-            row_it: Iterator[Element],
-            row: Element,
-            fields: List[StructField],
-            err: Exception,
+        self,
+        row_it: Iterator[Element],
+        row: Element,
+        fields: List[StructField],
+        err: Exception,
     ) -> Generator["Entity", None, RowErrPolicy]:
         # TODO: raise lint error
 

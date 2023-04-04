@@ -227,19 +227,24 @@ def main():
     except:
         logger.exception("unhandled exception bubbled up to top-level")
 
-        logger.log(ULog.ERROR, "\n  ".join([
-            "Program exited in error!",
-            "",
-            "This typically happens if spex failed to parse one or more figures.",
-            "Check the log messages above to see which figures are causing errors.",
-            "",
-            "If you believe Spex *should* be able to parse this figure - and that",
-            "it is not simply a matter of changing to the figure to follow conventions",
-            "then perhaps a bug report for Spex is in order.",
-            "When filing the bug report, please attach the `spex.log` file which resides",
-            "in this directory.",
-            "Note that the `spex.log` file is rewritten on each execution"
-        ]))
+        logger.log(
+            ULog.ERROR,
+            "\n  ".join(
+                [
+                    "Program exited in error!",
+                    "",
+                    "This typically happens if spex failed to parse one or more figures.",
+                    "Check the log messages above to see which figures are causing errors.",
+                    "",
+                    "If you believe Spex *should* be able to parse this figure - and that",
+                    "it is not simply a matter of changing to the figure to follow conventions",
+                    "then perhaps a bug report for Spex is in order.",
+                    "When filing the bug report, please attach the `spex.log` file which resides",
+                    "in this directory.",
+                    "Note that the `spex.log` file is rewritten on each execution",
+                ]
+            ),
+        )
         sys.exit(1)
 
 

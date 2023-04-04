@@ -9,9 +9,13 @@ from spex.jsonspec.defs import Entity
 
 
 class KvFig41(BytesTableExtractor):
-
-    def row_err_handler(self, row_it: Iterator[Element], row: Element, fields: List[StructField], err: Exception) -> \
-    Generator["Entity", None, RowErrPolicy]:
+    def row_err_handler(
+        self,
+        row_it: Iterator[Element],
+        row: Element,
+        fields: List[StructField],
+        err: Exception,
+    ) -> Generator["Entity", None, RowErrPolicy]:
         # Figure has a row spanning all columns with a comment which we can ignore
         yield from ()
         row_txt = XmlUtils.to_text(row)
@@ -21,8 +25,7 @@ class KvFig41(BytesTableExtractor):
 
 
 class NvmKv1_0c(DocumentParser):
-    label_overrides = {
-    }
+    label_overrides = {}
 
     fig_extractor_overrides = {
         "41": KvFig41,
