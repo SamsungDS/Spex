@@ -4,7 +4,7 @@ from pathlib import Path
 import textwrap
 import json
 from typing import Protocol, Dict, TypedDict, List, Optional
-from spex.logging import ulogger, logger
+from spex.logging import logger, ULog
 from spex.jsonspec import parse
 from spex.jsonspec.defs import JSON
 from spex.jsonspec.lint import Code
@@ -116,7 +116,7 @@ def get_writer(src: Path, out_path: Optional[Path]) -> Writer:
 
 
 def parse_spec(spec, args):
-    print(f"Parsing '{spec}'...")
+    logger.log(ULog.INFO, f"parsing '{spec}'...")
     ignore_lint_codes = set(c.name for c in args.lint_ignore)
 
     if spec.suffix == ".json":
@@ -227,7 +227,7 @@ def main():
     except:
         logger.exception("unhandled exception bubbled up to top-level")
 
-        ulogger.error([
+        logger.log(ULog.ERROR, "\n  ".join([
             "Program exited in error!",
             "",
             "This typically happens if spex failed to parse one or more figures.",
@@ -239,7 +239,7 @@ def main():
             "When filing the bug report, please attach the `spex.log` file which resides",
             "in this directory.",
             "Note that the `spex.log` file is rewritten on each execution"
-        ])
+        ]))
         sys.exit(1)
 
 
