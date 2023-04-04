@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, Dict, Tuple, Type, Optional, Iterator, List, T
 from argparse import Namespace
 from loguru import logger
 from spex.xml import Xpath, XmlUtils
-from spex.logging import ulogger
+from spex.logging import ulogger, ULog
 from spex.jsonspec.defs import cast_json
 from spex.jsonspec.extractors.valuetable import ValueTableExtractor
 from spex.jsonspec.extractors.structtable import BitsTableExtractor, BytesTableExtractor
@@ -238,7 +238,10 @@ class DocumentParser:
             parse_fn=self._on_parse_fig,
             linter=self.__linter,
         )
-        with logger.contextualize(meta=entity):
+        with logger.contextualize(entity=entity, doc={
+            "spec": self.spec,
+            "revision": self.revision
+        }):
             gen = e()
             while True:
                 try:
@@ -246,10 +249,11 @@ class DocumentParser:
                     break
                 except Exception as err:
                     if not self._unwind_parse_error:
-                        ulogger.error(f"Failed parsing figure {entity!r}")
+                        logger.log(ULog.ERROR, f"failed parsing figure {entity!r}")
+                        logger.exception(f"exception when parsing figure")
                         self._unwind_parse_error = True
                     else:
-                        ulogger.error(f"  in {entity}")
+                        logger.log(ULog.ERROR, f"  in {entity!r}")
 
                     if "parent_fig_id" in entity or self.args.skip_fig_on_error is False:
                         raise err

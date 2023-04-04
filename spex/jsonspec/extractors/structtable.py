@@ -6,6 +6,7 @@ from spex.jsonspec.extractors.helpers import content_extract_brief, validate_lab
 from spex.xml import Element, Xpath, XmlUtils
 from spex.jsonspec.defs import RESERVED, ELLIPSIS, Entity, EntityMeta, Range, StructField
 from spex.jsonspec.lint import LintErr
+from spex.logging import logger
 
 
 class StructTableExtractor(FigureExtractor, ABC):
@@ -80,7 +81,7 @@ class StructTableExtractor(FigureExtractor, ABC):
         fields: List[StructField] = []
         row_it = self.row_iter()
         for row in row_it:
-            row_range: Element
+            row_range: Optional[Element] = None
             row_data: Element
             try:
                 row_range = self.range_elem(row)
@@ -99,6 +100,7 @@ class StructTableExtractor(FigureExtractor, ABC):
                     if out == RowErrPolicy.Stop:
                         break
                     elif out == RowErrPolicy.Raise:
+                        logger.bind(range=XmlUtils.to_text(row).lower()).exception("failed to parse row")
                         raise e
                     else:
                         continue
@@ -256,29 +258,33 @@ class StructTableExtractor(FigureExtractor, ABC):
             return txt_parts[0]
 
     def _extract_label(self, row: Element, row_key: str, data: Element) -> str:
-        if self._col_ndx_content != self._col_ndx_label:
-            lbl = self._extract_label_separate_col(row, row_key)
-            if lbl == RESERVED:
-                return RESERVED
-        else:
-            p1 = Xpath.elem_first_req(data, "./p[1]")
-            txt = XmlUtils.to_text(p1)
-            if txt.lower() == "reserved":
-                return RESERVED
-            m = self.rgx_field_lbl.match(txt)
-            if m is not None:
-                lbl = m.group("lbl").replace(" ", "").lower()
-                validate_label(lbl, self.fig_id, row_key, self.linter)
-                return lbl
-            txt_parts = txt.split(":", 1)
-            # generic naming strategy
-            # TODO: improve, replace certain words/sentences by certain abbreviations
-            #       namespace -> ns, pointer -> ptr
-            gen_name = "".join(w[0] for w in txt_parts[0].split()).lower()
-            self.add_issue(LintErr.LBL_IMPUTED, row_key=row_key)
-            lbl = gen_name
-        validate_label(lbl, self.fig_id, row_key, self.linter)
-        return lbl
+        try:
+            if self._col_ndx_content != self._col_ndx_label:
+                lbl = self._extract_label_separate_col(row, row_key)
+                if lbl == RESERVED:
+                    return RESERVED
+            else:
+                p1 = Xpath.elem_first_req(data, "./p[1]")
+                txt = XmlUtils.to_text(p1)
+                if txt.lower() == "reserved":
+                    return RESERVED
+                m = self.rgx_field_lbl.match(txt)
+                if m is not None:
+                    lbl = m.group("lbl").replace(" ", "").lower()
+                    validate_label(lbl, self.fig_id, row_key, self.linter)
+                    return lbl
+                txt_parts = txt.split(":", 1)
+                # generic naming strategy
+                # TODO: improve, replace certain words/sentences by certain abbreviations
+                #       namespace -> ns, pointer -> ptr
+                gen_name = "".join(w[0] for w in txt_parts[0].split()).lower()
+                self.add_issue(LintErr.LBL_IMPUTED, row_key=row_key)
+                lbl = gen_name
+            validate_label(lbl, self.fig_id, row_key, self.linter)
+            return lbl
+        except Exception as e:
+            logger.bind(row=row_key).exception("error extracting label for row")
+            raise e
 
     def _content_extract_brief(
         self, row: Element, row_key: str, data: Element

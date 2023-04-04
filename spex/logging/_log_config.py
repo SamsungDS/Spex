@@ -74,7 +74,7 @@ logger.remove()  # remove all loggers
 
 
 # define specific log levels for user-oriented logging messages
-class UserLogLevels:
+class ULog:
     """Log-levels for logging messages intended for the end-user
 
     Levels loosely follow standard log level definitions
@@ -100,12 +100,12 @@ class UserLogLevels:
         raise AttributeError("cannot modify values in this class")
 
 
-logger.level(UserLogLevels.INFO, no=70)
-logger.level(UserLogLevels.SUCCESS, no=75, color="<green>")
-logger.level(UserLogLevels.WARNING, no=80, color="<yellow>")
-logger.level(UserLogLevels.ERROR, no=90, color="<red>")
-logger.level(UserLogLevels.LINT, no=95, color="<blue>")
-logger.level(UserLogLevels.CRITICAL, no=100, color="<red>")
+logger.level(ULog.INFO, no=70)
+logger.level(ULog.SUCCESS, no=75, color="<green>")
+logger.level(ULog.WARNING, no=80, color="<yellow>")
+logger.level(ULog.ERROR, no=90, color="<red>")
+logger.level(ULog.LINT, no=95, color="<blue>")
+logger.level(ULog.CRITICAL, no=100, color="<red>")
 
 
 # add console logger, don't log stack traces (they flood output)
@@ -117,7 +117,7 @@ logger.add(
     format=(
         "<level>{level}</level> {message}"
         if DEBUG else fmt_no_stacktrace),
-    level="DEBUG" if DEBUG else UserLogLevels.INFO,
+    level="DEBUG" if DEBUG else ULog.INFO,
 )
 
 

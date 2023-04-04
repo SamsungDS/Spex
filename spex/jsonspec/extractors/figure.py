@@ -101,13 +101,10 @@ class FigureExtractor(ABC):
         self, entity_base: "EntityMeta", data: Element
     ) -> Iterator["Entity"]:
         tbls = Xpath.elems(data, "./table")
-        assert (
-            len(tbls) <= 1
-        ), "invariant broken - expected each field to have at most 1 sub-table"
         if len(tbls) == 0:
             return
-        else:
-            yield from self._parse(entity_base, tbls[0])
+        for tbl in tbls:
+            yield from self._parse(entity_base, tbl)
 
     @abstractmethod
     def __call__(self) -> Iterator["Entity"]:
