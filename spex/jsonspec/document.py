@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, Dict, Tuple, Type, Optional, Iterator, List, T
 from argparse import Namespace
 from loguru import logger
 from spex.xml import Xpath, XmlUtils
-from spex.logging import ulogger, ULog
+from spex.logging import ULog
 from spex.jsonspec.defs import cast_json
 from spex.jsonspec.extractors.valuetable import ValueTableExtractor
 from spex.jsonspec.extractors.structtable import BitsTableExtractor, BytesTableExtractor
