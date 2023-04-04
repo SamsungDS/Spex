@@ -1,9 +1,10 @@
 import sys
 import argparse
-import json
 from pathlib import Path
 import textwrap
-from typing import Protocol, Dict, TypedDict, List
+import json
+from typing import Protocol, Dict, TypedDict, List, Optional
+from spex.logging import ulogger, logger
 from spex.jsonspec import parse
 from spex.jsonspec.defs import JSON
 from spex.jsonspec.lint import Code
@@ -108,6 +109,59 @@ class FileWriter:
             raise errval
 
 
+def get_writer(src: Path, out_path: Optional[Path]) -> Writer:
+    if out_path:
+        return FileWriter(out_path, src)
+    return StdoutWriter(src)
+
+
+def parse_spec(spec, args):
+    print(f"Parsing '{spec}'...")
+    ignore_lint_codes = set(c.name for c in args.lint_ignore)
+
+    if spec.suffix == ".json":
+        # lint code filtering is applied at the point of writing the lint errors
+        # into the resulting NVMe (JSON) model.
+        sys.stderr.write(
+            "cannot operate on NVMe model (JSON), requires the HTML model or docx spec as input\n"
+        )
+        sys.stderr.flush()
+        sys.exit(1)
+
+    if spec.suffix not in (".html", ".docx"):
+        sys.stderr.write(
+            f"invalid input file ({spec!s}), requires a HTML model or the docx specification file\n"
+        )
+        sys.stderr.flush()
+        sys.exit(1)
+
+    if spec.suffix == ".docx":
+        sp = SpexHtmlRenderer(docx_path=spec, out_dir=args.output)
+        spec = sp.html_path
+        try:
+            sp.generate()
+        finally:
+            del sp
+
+    with get_writer(spec, args.output) as w:
+        sdoc = parse.open_doc(spec)
+        w.write_meta("specification", sdoc.key)
+        w.write_meta("revision", sdoc.rev)
+        w.write_meta("format version", 1)  # TODO define elsewhere
+        dparser = sdoc.get_parser(args)
+        for entity in dparser.parse():
+            w.write_entity(entity)
+
+        w.write_meta(
+            "lint",
+            [
+                lint_err
+                for lint_err in dparser.linter.to_json()
+                if lint_err["code"] not in ignore_lint_codes
+            ],
+        )
+
+
 def main():
     lint_codes = "\n".join(f"      * {entry.name}  - {entry.value}" for entry in Code)
     epilog = textwrap.dedent(
@@ -140,6 +194,13 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument(
+        "-s",
+        "--skip-figure-on-error",
+        default=False,
+        dest="skip_fig_on_error",
+        action="store_true",
+    )
+    parser.add_argument(
         "input",
         nargs="+",
         type=arg_input,
@@ -156,61 +217,30 @@ def main():
 
     args = parser.parse_args()
 
-    def get_writer(src: Path) -> Writer:
-        if args.output:
-            return FileWriter(args.output, src)
-        return StdoutWriter(src)
-
     # if no explicit output directory is specified, use the current working directory
     if args.output is None:
         args.output = Path.cwd()
 
-    ignore_lint_codes = set(c.name for c in args.lint_ignore)
+    try:
+        for spec in args.input:
+            parse_spec(spec, args)
+    except:
+        logger.exception("unhandled exception bubbled up to top-level")
 
-    for spec in args.input:
-        print(f"Parsing '{spec}'...")
-
-        if spec.suffix == ".json":
-            # lint code filtering is applied at the point of writing the lint errors
-            # into the resulting NVMe (JSON) model.
-            sys.stderr.write(
-                "cannot operate on NVMe model (JSON), requires the HTML model or docx spec as input\n"
-            )
-            sys.stderr.flush()
-            sys.exit(1)
-
-        if spec.suffix not in (".html", ".docx"):
-            sys.stderr.write(
-                f"invalid input file ({spec!s}), requires a HTML model or the docx specification file\n"
-            )
-            sys.stderr.flush()
-            sys.exit(1)
-
-        if spec.suffix == ".docx":
-            sp = SpexHtmlRenderer(docx_path=spec, out_dir=args.output)
-            spec = sp.html_path
-            try:
-                sp.generate()
-            finally:
-                del sp
-
-        with get_writer(spec) as w:
-            sdoc = parse.open_doc(spec)
-            w.write_meta("specification", sdoc.key)
-            w.write_meta("revision", sdoc.rev)
-            w.write_meta("format version", 1)  # TODO define elsewhere
-            dparser = sdoc.get_parser()
-            for entity in dparser.parse():
-                w.write_entity(entity)
-
-            w.write_meta(
-                "lint",
-                [
-                    lint_err
-                    for lint_err in dparser.linter.to_json()
-                    if lint_err["code"] not in ignore_lint_codes
-                ],
-            )
+        ulogger.error([
+            "Program exited in error!",
+            "",
+            "This typically happens if spex failed to parse one or more figures.",
+            "Check the log messages above to see which figures are causing errors.",
+            "",
+            "If you believe Spex *should* be able to parse this figure - and that",
+            "it is not simply a matter of changing to the figure to follow conventions",
+            "then perhaps a bug report for Spex is in order.",
+            "When filing the bug report, please attach the `spex.log` file which resides",
+            "in this directory.",
+            "Note that the `spex.log` file is rewritten on each execution"
+        ])
+        sys.exit(1)
 
 
 if __name__ == "__main__":

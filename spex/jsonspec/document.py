@@ -1,6 +1,9 @@
 from re import compile as re_compile
 from typing import TYPE_CHECKING, Dict, Tuple, Type, Optional, Iterator, List, TypeAlias
+from argparse import Namespace
+from loguru import logger
 from spex.xml import Xpath, XmlUtils
+from spex.logging import ulogger
 from spex.jsonspec.defs import cast_json
 from spex.jsonspec.extractors.valuetable import ValueTableExtractor
 from spex.jsonspec.extractors.structtable import BitsTableExtractor, BytesTableExtractor
@@ -53,7 +56,8 @@ class DocumentParser:
     rgx_fig_id = re_compile(r"Figure\s+(?P<figid>[^\s^:]+).*")
     fig_extractor_overrides: Dict[str, Type["FigureExtractor"]] = {}
 
-    def __init__(self, doc: "ElementTree", spec: str, revision: str):
+    def __init__(self, args: Namespace, doc: "ElementTree", spec: str, revision: str):
+        self.__args = args
         self.__doc = doc
         self.__spec = spec
         self.__revision = revision
@@ -63,6 +67,11 @@ class DocumentParser:
 
     def __post_init__(self) -> None:
         ...
+
+    @property
+    def args(self) -> Namespace:
+        """Return CLI args."""
+        return self.__args
 
     @property
     def tbl_normalize_mappings(self) -> Dict[str, str]:
@@ -229,16 +238,21 @@ class DocumentParser:
             parse_fn=self._on_parse_fig,
             linter=self.__linter,
         )
-        try:
-            yield from e()
-        except Exception as err:
-            if not self._unwind_parse_error:
-                print(f"!! Error Parsing Figure\n\t -> {entity!r}")
-                self._unwind_parse_error = True
-            else:
-                print(f"\t in {entity!r}")
-            raise err
+        with logger.contextualize(meta=entity):
+            gen = e()
+            while True:
+                try:
+                    yield from gen
+                    break
+                except Exception as err:
+                    if not self._unwind_parse_error:
+                        ulogger.error(f"Failed parsing figure {entity!r}")
+                        self._unwind_parse_error = True
+                    else:
+                        ulogger.error(f"  in {entity}")
 
+                    if "parent_fig_id" in entity or self.args.skip_fig_on_error is False:
+                        raise err
 
     def parse(self) -> Iterator[EntityMeta]:
         # for each eligible top-level figure
