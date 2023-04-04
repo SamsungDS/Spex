@@ -5,6 +5,7 @@ from spex.jsonspec.extractors.figure import RowErrPolicy
 from spex.jsonspec.document import DocumentParser
 from spex.jsonspec.extractors.structtable import BytesTableExtractor
 from spex.xml import Element, XmlUtils
+from spex.jsonspec.defs import Entity
 
 
 class KvFig41(BytesTableExtractor):
