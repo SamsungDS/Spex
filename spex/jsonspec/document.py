@@ -241,7 +241,7 @@ class DocumentParser:
         with logger.contextualize(entity=entity, doc={
             "spec": self.spec,
             "revision": self.revision
-        }):
+        }, extractor_cls=extractor_cls.__qualname__):
             gen = e()
             while True:
                 try:
