@@ -1,16 +1,6 @@
 from spex.jsonspec.document import DocumentParser
 
 
-# class ZndFig48(BytesTableExtractor):
-#     def data_extract(self, row: "Element") -> "Element":
-#         return Xpath.elem_first_req(row, "./td[3]")
-#
-#
-# class ZndFig50(BytesTableExtractor):
-#     def data_extract(self, row: "Element") -> "Element":
-#         return Xpath.elem_first_req(row, "./td[3]")
-
-
 class NvmCsZoned11c(DocumentParser):
     label_overrides = {
         ("37", "0"): "zt",
@@ -19,6 +9,4 @@ class NvmCsZoned11c(DocumentParser):
     }
 
     fig_extractor_overrides = {
-        # "48": ZndFig48,
-        # "50": ZndFig50,
     }
