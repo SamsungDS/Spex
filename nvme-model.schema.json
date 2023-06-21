@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "A NVMe model",
+  "description": "a model of data-structures derived from a given NVMe specification document",
+  "type": "object",
+  "properties": {
+    "meta": {
+      "description": "model metadata",
+      "type": "object",
+      "properties": {
+        "specification": {
+          "description": "ss",
+          "type": "string"
+        },
+        "revision": {
+          "description": "ss",
+          "type": "string"
+        },
+        "format version": {
+          "description": "version of the NVMe model format",
+          "type": "number",
+          "minimum": 1
+        },
+        "lint": {
+          "description": "linting issues encountered during parsing",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "description": "unique code identifying the type of linting error",
+                "type": "string"
+              },
+              "msg": {
+                "description": "error message",
+                "type": "string"
+              },
+              "fig": {
+                "description": "id of figure in which the issue was encountered",
+                "type": "string"
+              },
+              "context": {
+                "description": "optional, additional information",
+                "type": "object"
+              },
+              "row": {
+                "description": "ID of the row, if relevant. Is the value/code or lower-bound of range",
+                "type": "string"
+              }
+            },
+            "required": ["code", "msg", "fig", "context"]
+          }
+        }
+      },
+      "required": [
+        "specification",
+        "revision",
+        "format version"
+      ]
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "title": {
+                "description": "figure title",
+                "type": "string"
+              },
+              "fig_id": {
+                "description": "unique ID of figure",
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": ["values"]
+              },
+              "fields": {
+                "description": "individual codes/values of the value table",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "val": {
+                      "description": "value of value/code, suffix usually identifies the base",
+                      "type": "string"
+                    },
+                    "label": {
+                      "description": "label of value/code",
+                      "type": "string"
+                    },
+                    "brief": {
+                      "description": "single line summarizing what the value/code signifies",
+                      "type": "string"
+                    }
+                  },
+                  "required": ["val", "label"]
+                },
+                "minItems": 1
+              }
+            },
+            "required": [
+              "fig_id",
+              "type"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "title": {
+                "description": "figure title",
+                "type": "string"
+              },
+              "fig_id": {
+                "description": "unique ID of figure",
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": ["bits", "bytes"]
+              },
+              "fields": {
+                "description": "fields in bit/byte data-structure",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "range": {
+                      "anyOf": [
+                        {
+                          "description": "a range which could not be parsed, typically because it is a formula",
+                          "type": "string"
+                        },
+                        {
+                          "description": "a regular (inclusive) range",
+                          "type": "object",
+                          "properties": {
+                            "low": {
+                              "type": "integer",
+                              "minimum": 0
+                            },
+                            "high": {
+                              "type": "integer"
+                            }
+                          }
+                        },
+                        {
+                          "description": "special range signifying a gap in the data-structure's definition",
+                          "type": "object",
+                          "properties": {
+                            "low": {
+                              "type": "integer",
+                              "minimum": -1,
+                              "maximum": -1
+                            },
+                            "high": {
+                              "type": "integer",
+                              "minimum": -1,
+                              "maximum": -1
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "label": {
+                      "description": "name of field in data-structure",
+                      "type": "string"
+                    },
+                    "brief": {
+                      "description": "single line summarizing what the field describes",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "range",
+                    "label"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "fig_id",
+              "type"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "required": ["meta", "entities"]
+}
