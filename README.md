@@ -33,3 +33,25 @@ In doing so, multiple linting errors will be raised, indicating potential or
 active issues with the source material.
 You can ignore some classes of errors by adding `--lint-ignore=...` to the
 command. See `spex --help` for details.
+
+
+## Building the docker image
+
+```
+nix build #.dockerImage
+```
+
+Provided the command succeeds, `result` will be symlinked to the generated image, residing in the Nix store.
+To load the image into docker, run the following command:
+
+```
+docker load < result
+```
+
+You should see some output describing the various layers loaded in. Then look for the spex image
+using `docker images`:
+```
+$ docker images
+REPOSITORY   TAG                    IMAGE ID       CREATED        SIZE
+spex         20230621221410-dirty   80953550b7dd   53 years ago   212MB
+```
