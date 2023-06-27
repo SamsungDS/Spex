@@ -1,33 +1,43 @@
-# To see which hosted runners are available, visit:
-#  https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
-
+---
 name: build
 
 on:
   push:
-    branches: [ main, staging ]
-  pull_request:
-    branches: [ main, staging ]
+    branches:
+    - '*'
+    tags:
+    - '*'
 
+defaults:
+  run:
+    shell: bash
 
 jobs:
-  check_nix:
-    name: check code quality
+  build-using-nix:
+    name: Build using nix environment
     runs-on: self-hosted
+
     steps:
       - name: git checkout
         uses: actions/checkout@v3
 
-      # Prepare (& check, & cache) nix environment
-      - name: install nix
+      - name: nix, install
         uses: DeterminateSystems/nix-installer-action@main
 
-      #- name: Check Nixpkgs inputs
-      #  uses: DeterminateSystems/flake-checker-action@v4
-      #  with:
-      #    fail-mode: true
-
-      - uses: DeterminateSystems/magic-nix-cache-action@v1
+      - name: nix, cache
+        uses: DeterminateSystems/magic-nix-cache-action@v1
 
       - name: check code integrity
         run:  nix develop --command make check
+
+  build-using-docker:
+    name: Build using docker environment
+    runs-on: self-hosted
+    container: ghcr.io/openmpdk/spex/spex-env:latest
+
+    steps:
+    - name: git checkout
+      uses: actions/checkout@v3
+
+    - name: install
+      run: make
