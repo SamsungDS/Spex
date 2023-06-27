@@ -7,14 +7,15 @@ Welcome to Spex's documentation!
 ================================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 1
+   :hidden:
+
+   what_is_spex.rst
+   setup/index.rst
 
 
+Welcome to the documentation for Spex, a tool for extracting information
+on data-structures in the NVMe specification documents.
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+To read more about what Spex does, see :ref:`sec-what-is-spex`.
+For help on setting up Spex on your system, see :ref:`sec-setup`.

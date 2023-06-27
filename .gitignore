@@ -9,3 +9,8 @@ build
 .mypy_cache
 *.log
 dist
+*.css
+*.html
+*.json
+result
+*.build

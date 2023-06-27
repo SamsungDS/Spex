@@ -9,11 +9,11 @@
       "type": "object",
       "properties": {
         "specification": {
-          "description": "ss",
+          "description": "title of the specification",
           "type": "string"
         },
         "revision": {
-          "description": "ss",
+          "description": "revision of the specification",
           "type": "string"
         },
         "format version": {
