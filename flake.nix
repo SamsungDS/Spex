@@ -74,6 +74,13 @@
               spex
             ];
           };
+          spexDev = pkgs.dockerTools.buildLayeredImage {
+            name = "spex-dev";
+            tag = revision;
+            contents = [
+              spex
+            ] + (with pkgs.python311Packages; [mypy isort black flake8]);
+          };
       });
 
       # nix develop <flake-ref>#<name>
