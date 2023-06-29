@@ -22,7 +22,7 @@ Using Spex
 This project provides a "Nix flake" which, broadly speaking, describes how to build
 some software and how to configure a development environment. 
 
-From within the Spex source directory, run ``nix develop #.`` to enter a
+From within the Spex source directory, run ``nix develop .#`` to enter a
 environment fully configured to run Spex.
 
 From here, you may run spex using the command ``python -m spex`` and any arguments
