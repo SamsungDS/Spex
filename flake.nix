@@ -85,7 +85,7 @@
           upstream = with pkgs; [
             gcc-unwrapped
             (python311.withPackages (pypkgs: with pypkgs; [
-              virtualenv pip venvShellHook lxml jsonschema mypy isort black flake8
+              lxml jsonschema mypy isort black flake8
             ]))];
           custom = with self.packages.${pkgs.system}; [
             gcgen lxml-stubs loguru
@@ -93,13 +93,10 @@
         in {
         default = pkgs.mkShell {
           name = "default";
-          venvDir = "./.venv";
           nativeBuildInputs =  upstream ++ custom;
-          postVenv = ''
-            unset SOURCE_DATA_EPOCH
-          '';
           postShellHook = ''
-            PYTHONPATH=$PWD/$venvDir/${pkgs.python311.sitePackages}:$PYTHONPATH
+            unset SOURCE_DATA_EPOCH
+            export NIX_DEV_ENV_SPEX=1
           '';
         };
       });
