@@ -1,14 +1,14 @@
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import TYPE_CHECKING, Optional, Iterator, Tuple, List, Dict
-from spex.xml import Element, Xpath
-from spex.jsonspec.lint import Linter, LintErr
-from spex.jsonspec.defs import JSON
-from spex.jsonspec.rowiter import row_iter
+from typing import TYPE_CHECKING, Dict, Iterator, List, Optional, Tuple
 
+from spex.jsonspec.defs import JSON
+from spex.jsonspec.lint import Linter, LintErr
+from spex.jsonspec.rowiter import row_iter
+from spex.xml import Element, Xpath
 
 if TYPE_CHECKING:
-    from spex.jsonspec.defs import EntityMeta, ParseFn, Entity
+    from spex.jsonspec.defs import Entity, EntityMeta, ParseFn
     from spex.jsonspec.document import DocumentParser
 
 

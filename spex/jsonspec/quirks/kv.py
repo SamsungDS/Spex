@@ -1,11 +1,10 @@
-from typing import Iterator, List, Generator
+from typing import Generator, Iterator, List
 
-from spex.jsonspec.defs import StructField
-from spex.jsonspec.extractors.figure import RowErrPolicy
+from spex.jsonspec.defs import Entity, StructField
 from spex.jsonspec.document import DocumentParser
+from spex.jsonspec.extractors.figure import RowErrPolicy
 from spex.jsonspec.extractors.structtable import BytesTableExtractor
 from spex.xml import Element, XmlUtils
-from spex.jsonspec.defs import Entity
 
 
 class KvFig41(BytesTableExtractor):

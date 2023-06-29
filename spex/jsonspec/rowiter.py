@@ -17,7 +17,9 @@ This is complicated by two facts:
   corresponding to the requested offset.
 """
 import copy
+
 from lxml import etree
+
 from spex.xml import Xpath
 
 

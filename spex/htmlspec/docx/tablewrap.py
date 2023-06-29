@@ -1,6 +1,8 @@
 import dataclasses as dc
 from enum import Enum
+
 from lxml.etree import _Element
+
 from spex.xml import Xpath
 
 

@@ -1,10 +1,11 @@
-from dataclasses import dataclass
-from typing import Optional
 from argparse import Namespace
-from spex.xml import etree, Xpath, ElementTree
-from spex.jsonspec.document import DocumentParser
+from dataclasses import dataclass
 from pathlib import Path
-from spex.jsonspec.quirks import QuirksMap, QUIRKS_MAP
+from typing import Optional
+
+from spex.jsonspec.document import DocumentParser
+from spex.jsonspec.quirks import QUIRKS_MAP, QuirksMap
+from spex.xml import ElementTree, Xpath, etree
 
 
 @dataclass(frozen=True)

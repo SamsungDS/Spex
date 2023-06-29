@@ -1,19 +1,14 @@
 from html import escape as html_escape
 from pathlib import Path
-from typing import Set, Any, Optional
-from lxml.etree import _Element
+from typing import Any, Optional, Set
+
 from gcgen.api import Section, write_file
-from spex.htmlspec.docx import Document
+from lxml.etree import _Element
+
 from spex.htmlspec import css
-from spex.htmlspec.parser import (
-    Span,
-    Paragraph,
-    ListElem,
-    List,
-    Point,
-    Table,
-    SpexParser,
-)
+from spex.htmlspec.docx import Document
+from spex.htmlspec.parser import (List, ListElem, Paragraph, Point, Span,
+                                  SpexParser, Table)
 
 
 # TODO: nicer way of using `write_file` ?

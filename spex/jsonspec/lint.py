@@ -1,6 +1,7 @@
-from enum import Enum
 from dataclasses import dataclass, field
-from typing import Optional, Dict, Protocol
+from enum import Enum
+from typing import Dict, Optional, Protocol
+
 from spex.jsonspec.defs import JSON, ToJson
 
 

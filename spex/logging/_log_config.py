@@ -17,12 +17,12 @@ called, then the entry contains an `exception` key containing a JSON object
 representing the exception, nested exception(s) and their stack traces.
 """
 import json
-import traceback
-import sys
 import os
+import sys
+import traceback
 from pathlib import Path
-from loguru import logger
 
+from loguru import logger
 
 # If `SPEX_DEBUG` is true then the console logger includes program-specific
 # log message levels and formatted stack traces

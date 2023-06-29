@@ -8,5 +8,4 @@ class NvmCsZoned11c(DocumentParser):
         ("37", "2"): "za",
     }
 
-    fig_extractor_overrides = {
-    }
+    fig_extractor_overrides = {}

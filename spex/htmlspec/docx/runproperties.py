@@ -1,7 +1,9 @@
 import copy
 from enum import Enum
-from typing import Optional, Union, Dict
+from typing import Dict, Optional, Union
+
 from lxml.etree import _Element
+
 from spex.xml import Xpath
 
 

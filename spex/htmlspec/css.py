@@ -1,4 +1,5 @@
-from typing import Dict, Protocol, Union, List, Optional
+from typing import Dict, List, Optional, Protocol, Union
+
 from gcgen.api import Section
 
 

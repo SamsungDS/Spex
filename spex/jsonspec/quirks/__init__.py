@@ -1,8 +1,9 @@
 from typing import TYPE_CHECKING, Dict, Tuple, Type
-from spex.jsonspec.quirks.zoned import NvmCsZoned11c
-from spex.jsonspec.quirks.nvm import NvmCmdSet1c
-from spex.jsonspec.quirks.mi import NvmMi1_2c
+
 from spex.jsonspec.quirks.kv import NvmKv1_0c
+from spex.jsonspec.quirks.mi import NvmMi1_2c
+from spex.jsonspec.quirks.nvm import NvmCmdSet1c
+from spex.jsonspec.quirks.zoned import NvmCsZoned11c
 
 if TYPE_CHECKING:
     from spex.jsonspec.document import DocumentParser

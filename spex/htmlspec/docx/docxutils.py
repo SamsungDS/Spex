@@ -1,6 +1,7 @@
+import zipfile
 from pathlib import Path
 from typing import IO
-import zipfile
+
 from lxml import etree
 
 

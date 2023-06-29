@@ -1,6 +1,7 @@
-from typing import cast, List, Union, Mapping, Optional
-from lxml.etree import _Element, _ElementTree
+from typing import List, Mapping, Optional, Union, cast
+
 from lxml import etree
+from lxml.etree import _Element, _ElementTree
 
 Element = _Element
 ElementTree = _ElementTree

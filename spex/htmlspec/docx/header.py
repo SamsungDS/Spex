@@ -1,8 +1,9 @@
 from pathlib import Path
 from re import compile as re_compile
 from typing import Optional
-from spex.xml import Xpath
+
 from spex.htmlspec.docx.docxutils import docx_extract_contents
+from spex.xml import Xpath
 
 _rgx_revision = re_compile(r".*[Rr]evision\s+(?P<rev>\S+).*")
 

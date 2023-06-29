@@ -1,19 +1,15 @@
 from abc import ABC, abstractmethod
 from re import compile as re_compile
-from typing import Iterator, Union, List, Optional, Generator, Dict
+from typing import Dict, Generator, Iterator, List, Optional, Union
+
+from spex.jsonspec.defs import (ELLIPSIS, RESERVED, Entity, EntityMeta, Range,
+                                StructField)
 from spex.jsonspec.extractors.figure import FigureExtractor, RowErrPolicy
-from spex.jsonspec.extractors.helpers import content_extract_brief, validate_label
-from spex.xml import Element, Xpath, XmlUtils
-from spex.jsonspec.defs import (
-    RESERVED,
-    ELLIPSIS,
-    Entity,
-    EntityMeta,
-    Range,
-    StructField,
-)
+from spex.jsonspec.extractors.helpers import (content_extract_brief,
+                                              validate_label)
 from spex.jsonspec.lint import LintErr
 from spex.logging import logger
+from spex.xml import Element, XmlUtils, Xpath
 
 
 class StructTableExtractor(FigureExtractor, ABC):

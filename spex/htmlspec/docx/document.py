@@ -1,13 +1,15 @@
 from pathlib import Path
-from typing import Optional, List
+from typing import List, Optional
+
 from lxml.etree import _Element
-from spex.xml import Xpath
+
 from spex.htmlspec.docx.docxutils import docx_extract_contents
-from spex.htmlspec.docx.numbering import NumberingDocument
 from spex.htmlspec.docx.header import Header
-from spex.htmlspec.docx.styles import StylesDocument
+from spex.htmlspec.docx.numbering import NumberingDocument
 from spex.htmlspec.docx.runproperties import RunProperties
+from spex.htmlspec.docx.styles import StylesDocument
 from spex.htmlspec.docx.tags import Tag
+from spex.xml import Xpath
 
 
 class Document:

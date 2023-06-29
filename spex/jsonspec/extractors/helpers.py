@@ -1,8 +1,8 @@
-from typing import TYPE_CHECKING, Optional
 from re import compile as re_compile
-from spex.xml import Xpath
-from spex.jsonspec.lint import Linter, LintErr
+from typing import TYPE_CHECKING, Optional
 
+from spex.jsonspec.lint import Linter, LintErr
+from spex.xml import Xpath
 
 if TYPE_CHECKING:
     from spex.xml import Element

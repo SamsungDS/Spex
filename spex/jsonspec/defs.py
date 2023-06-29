@@ -1,22 +1,10 @@
-from typing import (
-    TYPE_CHECKING,
-    Dict,
-    Iterator,
-    TypedDict,
-    NotRequired,
-    Protocol,
-    List,
-    Union,
-    runtime_checkable,
-    TypeAlias,
-    cast,
-    Any,
-)
-
+from typing import (TYPE_CHECKING, Any, Dict, Iterator, List, NotRequired,
+                    Protocol, TypeAlias, TypedDict, Union, cast,
+                    runtime_checkable)
 
 if TYPE_CHECKING:
-    from spex.xml import Element
     from spex.jsonspec.extractors.figure import FigureExtractor
+    from spex.xml import Element
 
 JSON = Union[None, bool, str, float, int, List["JSON"], Dict[str, "JSON"]]
 

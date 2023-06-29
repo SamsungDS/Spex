@@ -1,10 +1,14 @@
 from dataclasses import dataclass
-from typing import Optional, Union, List as TList, Iterator, Dict, Set
-from lxml.etree import _Element
-from spex.htmlspec.docx import RunProperties, AbstractNumLvl, Tag, TableWrap, Document
-from spex.xml import Xpath
+from typing import Dict, Iterator
+from typing import List as TList
+from typing import Optional, Set, Union
 
+from lxml.etree import _Element
+
+from spex.htmlspec.docx import (AbstractNumLvl, Document, RunProperties,
+                                TableWrap, Tag)
 from spex.htmlspec.stream import Stream
+from spex.xml import Xpath
 
 
 @dataclass(frozen=True)

@@ -1,6 +1,7 @@
 from typing import Iterator, List
-from spex.jsonspec.extractors.figure import FigureExtractor
+
 from spex.jsonspec.defs import Entity
+from spex.jsonspec.extractors.figure import FigureExtractor
 
 
 class SkipTable(FigureExtractor):

@@ -1,14 +1,15 @@
-import sys
 import argparse
-from pathlib import Path
-import textwrap
 import json
-from typing import Protocol, Dict, TypedDict, List, Optional
-from spex.logging import logger, ULog
+import sys
+import textwrap
+from pathlib import Path
+from typing import Dict, List, Optional, Protocol, TypedDict
+
+from spex.htmlspec.htmlrenderer import SpexHtmlRenderer
 from spex.jsonspec import parse
 from spex.jsonspec.defs import JSON
 from spex.jsonspec.lint import Code
-from spex.htmlspec.htmlrenderer import SpexHtmlRenderer
+from spex.logging import ULog, logger
 
 
 class S2Model(TypedDict):

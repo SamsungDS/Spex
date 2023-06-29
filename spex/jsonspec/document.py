@@ -1,19 +1,21 @@
-from re import compile as re_compile
-from typing import TYPE_CHECKING, Dict, Tuple, Type, Optional, Iterator, List, TypeAlias
 from argparse import Namespace
-from loguru import logger
-from spex.xml import Xpath, XmlUtils
-from spex.logging import ULog
-from spex.jsonspec.defs import cast_json
-from spex.jsonspec.extractors.valuetable import ValueTableExtractor
-from spex.jsonspec.extractors.structtable import BitsTableExtractor, BytesTableExtractor
-from spex.jsonspec.lint import LintEntry, Linter, LintErr
-from spex.jsonspec.defs import JSON, Entity, EntityMeta
+from re import compile as re_compile
+from typing import (TYPE_CHECKING, Dict, Iterator, List, Optional, Tuple, Type,
+                    TypeAlias)
 
+from loguru import logger
+
+from spex.jsonspec.defs import JSON, Entity, EntityMeta, cast_json
+from spex.jsonspec.extractors.structtable import (BitsTableExtractor,
+                                                  BytesTableExtractor)
+from spex.jsonspec.extractors.valuetable import ValueTableExtractor
+from spex.jsonspec.lint import LintEntry, Linter, LintErr
+from spex.logging import ULog
+from spex.xml import XmlUtils, Xpath
 
 if TYPE_CHECKING:
-    from spex.xml import ElementTree, Element
     from spex.jsonspec.extractors.figure import FigureExtractor
+    from spex.xml import Element, ElementTree
 
 
 FigId: TypeAlias = str
