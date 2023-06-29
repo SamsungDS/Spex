@@ -94,9 +94,9 @@
         default = pkgs.mkShell {
           name = "default";
           nativeBuildInputs =  upstream ++ custom;
-          postShellHook = ''
+          shellHook = ''
             unset SOURCE_DATA_EPOCH
-            export NIX_DEV_ENV_SPEX=1
+            export SPEX_NIX_ENV=1
           '';
         };
       });
