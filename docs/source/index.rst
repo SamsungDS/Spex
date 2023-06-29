@@ -12,6 +12,8 @@ Welcome to Spex's documentation!
 
    what_is_spex.rst
    setup/index.rst
+   user_guide/stages.rst
+   user_guide/using_spex.rst
 
 
 Welcome to the documentation for Spex, a tool for extracting information
