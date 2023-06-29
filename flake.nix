@@ -85,7 +85,7 @@
           upstream = with pkgs; [
             gcc-unwrapped
             (python311.withPackages (pypkgs: with pypkgs; [
-              virtualenv pip venvShellHook lxml jsonschema mypy isort black
+              virtualenv pip venvShellHook lxml jsonschema mypy isort black flake8
             ]))];
           custom = with self.packages.${pkgs.system}; [
             gcgen lxml-stubs loguru
