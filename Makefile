@@ -11,3 +11,11 @@ install: clean
 .PHONY: uninstall
 uninstall:
 	pipx uninstall spex || true
+
+.PHONY: check
+check:
+	./scripts/check.sh
+
+.PHONY: format
+format:
+	./scripts/format.sh
