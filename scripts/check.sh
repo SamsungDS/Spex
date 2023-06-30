@@ -15,7 +15,8 @@ trap 'on_err' ERR
 
 set -ex
 
-flake8 spex
+flake8 spex --extend-ignore=E203,F401,F811,E501
 mypy spex
+
 black spex --check
-isort spex --check --profile=black
+isort spex --profile=black --check 

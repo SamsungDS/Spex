@@ -12,8 +12,7 @@ on_err() {
 }
 trap 'on_err' ERR
 
-
 set -ex
 
 black spex
-isort --profile=black spex 
+isort spex --profile=black
