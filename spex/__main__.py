@@ -153,14 +153,18 @@ def parse_spec(spec, args):
         for entity in dparser.parse():
             w.write_entity(entity)
 
-        w.write_meta(
-            "lint",
-            [
-                lint_err
-                for lint_err in dparser.linter.to_json()
-                if lint_err["code"] not in ignore_lint_codes
-            ],
-        )
+        reported_lint_errs = [
+            lint_err
+            for lint_err in dparser.linter.to_json()
+            if lint_err["code"] not in ignore_lint_codes
+        ]
+
+        if reported_lint_errs:
+            logger.log(
+                ULog.ERROR,
+                f"Encountered {len(reported_lint_errs)} linting errors during processing, see output",
+            )
+        w.write_meta("lint", reported_lint_errs)
 
 
 def main():
