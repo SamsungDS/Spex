@@ -29,22 +29,8 @@ jobs:
 
       - uses: DeterminateSystems/magic-nix-cache-action@v1
 
-      - name: mypy type check
-        run: |
-          nix develop --command \
-            mypy spex
+      - name: check code format
+        run:  nix develop --command make format
 
-      - name: flake8 style check
-        run: |
-          nix develop --command \
-            flake8 spex
-
-      - name: black formatting check
-        run: |
-          nix develop --command \
-            black spex
-
-      - name: isort import ordering check
-        run: |
-          nix develop --command \
-            isort --profile=black spex
+      - name: check code integrity
+        run:  nix develop --command make check
