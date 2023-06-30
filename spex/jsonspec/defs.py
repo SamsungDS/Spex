@@ -1,6 +1,17 @@
-from typing import (TYPE_CHECKING, Any, Dict, Iterator, List, NotRequired,
-                    Protocol, TypeAlias, TypedDict, Union, cast,
-                    runtime_checkable)
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Dict,
+    Iterator,
+    List,
+    NotRequired,
+    Protocol,
+    TypeAlias,
+    TypedDict,
+    Union,
+    cast,
+    runtime_checkable,
+)
 
 if TYPE_CHECKING:
     from spex.jsonspec.extractors.figure import FigureExtractor

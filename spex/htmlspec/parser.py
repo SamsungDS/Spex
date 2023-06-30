@@ -5,8 +5,7 @@ from typing import Optional, Set, Union
 
 from lxml.etree import _Element
 
-from spex.htmlspec.docx import (AbstractNumLvl, Document, RunProperties,
-                                TableWrap, Tag)
+from spex.htmlspec.docx import AbstractNumLvl, Document, RunProperties, TableWrap, Tag
 from spex.htmlspec.stream import Stream
 from spex.xml import Xpath
 

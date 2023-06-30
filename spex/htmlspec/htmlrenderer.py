@@ -7,8 +7,15 @@ from lxml.etree import _Element
 
 from spex.htmlspec import css
 from spex.htmlspec.docx import Document
-from spex.htmlspec.parser import (List, ListElem, Paragraph, Point, Span,
-                                  SpexParser, Table)
+from spex.htmlspec.parser import (
+    List,
+    ListElem,
+    Paragraph,
+    Point,
+    Span,
+    SpexParser,
+    Table,
+)
 
 
 # TODO: nicer way of using `write_file` ?

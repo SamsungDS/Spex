@@ -1,10 +1,8 @@
-from typing import (TYPE_CHECKING, Dict, Generator, Iterator, List, Optional,
-                    Union)
+from typing import TYPE_CHECKING, Dict, Generator, Iterator, List, Optional, Union
 
 from spex.jsonspec.defs import ELLIPSIS, RESERVED, ValueField
 from spex.jsonspec.extractors.figure import FigureExtractor, RowErrPolicy
-from spex.jsonspec.extractors.helpers import (content_extract_brief,
-                                              validate_label)
+from spex.jsonspec.extractors.helpers import content_extract_brief, validate_label
 from spex.jsonspec.lint import LintErr
 from spex.xml import Element, XmlUtils, Xpath
 

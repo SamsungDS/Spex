@@ -1,13 +1,11 @@
 from argparse import Namespace
 from re import compile as re_compile
-from typing import (TYPE_CHECKING, Dict, Iterator, List, Optional, Tuple, Type,
-                    TypeAlias)
+from typing import TYPE_CHECKING, Dict, Iterator, List, Optional, Tuple, Type, TypeAlias
 
 from loguru import logger
 
 from spex.jsonspec.defs import JSON, Entity, EntityMeta, cast_json
-from spex.jsonspec.extractors.structtable import (BitsTableExtractor,
-                                                  BytesTableExtractor)
+from spex.jsonspec.extractors.structtable import BitsTableExtractor, BytesTableExtractor
 from spex.jsonspec.extractors.valuetable import ValueTableExtractor
 from spex.jsonspec.lint import LintEntry, Linter, LintErr
 from spex.logging import ULog
