@@ -31,7 +31,7 @@ def arg_output(arg: str) -> Path:
     if not p.exists():
         p.mkdir(parents=True, exist_ok=True)
     if not p.is_dir():
-        raise RuntimeError(f"output must be a directory (or omitted)")
+        raise RuntimeError("output must be a directory (or omitted)")
 
     return p
 
@@ -174,7 +174,7 @@ def main():
       These signify potential and definite issues encountered when parsing the
       source HTML model, in turn derived from the docx specification document.
 
-      You may choose to ignore classes of errors during processing. 
+      You may choose to ignore classes of errors during processing.
       For instance, to ignore lint errors of code T1000 and T1001, add the
       following to your command: `--lint-ignore=T1000,T1001`.
 
@@ -225,7 +225,7 @@ def main():
     try:
         for spec in args.input:
             parse_spec(spec, args)
-    except:
+    except Exception:
         logger.exception("unhandled exception bubbled up to top-level")
 
         logger.log(

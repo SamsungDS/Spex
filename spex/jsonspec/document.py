@@ -253,7 +253,7 @@ class DocumentParser:
                 except Exception as err:
                     if not self._unwind_parse_error:
                         logger.log(ULog.ERROR, f"failed parsing figure {entity!r}")
-                        logger.exception(f"exception when parsing figure")
+                        logger.exception("exception when parsing figure")
                         self._unwind_parse_error = True
                     else:
                         logger.log(ULog.ERROR, f"  in {entity!r}")
