@@ -17,3 +17,5 @@ set -ex
 
 flake8 spex
 mypy spex
+black spex --check
+isort spex --check --profile=black
