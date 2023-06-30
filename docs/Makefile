@@ -23,8 +23,7 @@ venv:
 
 .PHONY: open
 open:
-	@open $(BUILDDIR)/html/index.html || echo "View via 'open' failed ==> OK"
-	@xdg-open $(BUILDDIR)/html/index.html || echo "View via 'xdg-open' failed ==> OK"
+	@open $(BUILDDIR)/html/index.html || xdg-open $(BUILDDIR)/html/index.html || echo "!! Open $(BUILDDIR)/html/index.html in your browser to see the docs"
 
 .PHONY: all
 all: venv html open

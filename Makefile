@@ -19,3 +19,7 @@ check:
 .PHONY: format
 format:
 	./scripts/format.sh
+
+.PHONY: docs
+docs:
+	cd docs && make all
