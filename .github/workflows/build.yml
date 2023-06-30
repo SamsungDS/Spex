@@ -1,0 +1,50 @@
+# To see which hosted runners are available, visit:
+#  https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
+
+name: build
+
+on:
+  push:
+    branches: [ main, staging ]
+  pull_request:
+    branches: [ main, staging ]
+
+
+jobs:
+  check_nix:
+    name: check code quality
+    runs-on: ubuntu-22.04
+    steps:
+      - name: git checkout
+        uses: actions/checkout@v3
+
+      # Prepare (& check, & cache) nix environment
+      - name: install nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Check Nixpkgs inputs
+        uses: DeterminateSystems/flake-checker-action@v4
+        with:
+          fail-mode: true
+
+      - uses: DeterminateSystems/magic-nix-cache-action@v1
+
+      - name: mypy type check
+        run: |
+          nix develop --command \
+            mypy spex
+
+      - name: flake8 style check
+        run: |
+          nix develop --command \
+            flake8 spex
+
+      - name: black formatting check
+        run: |
+          nix develop --command \
+            black spex
+
+      - name: isort import ordering check
+        run: |
+          nix develop --command \
+            isort --profile=black spex
