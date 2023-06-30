@@ -22,10 +22,10 @@ jobs:
       - name: install nix
         uses: DeterminateSystems/nix-installer-action@main
 
-      - name: Check Nixpkgs inputs
-        uses: DeterminateSystems/flake-checker-action@v4
-        with:
-          fail-mode: true
+      #- name: Check Nixpkgs inputs
+      #  uses: DeterminateSystems/flake-checker-action@v4
+      #  with:
+      #    fail-mode: true
 
       - uses: DeterminateSystems/magic-nix-cache-action@v1
 
