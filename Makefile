@@ -1,4 +1,4 @@
-all: install
+all: uninstall install
 
 .PHONY: clean
 clean:
