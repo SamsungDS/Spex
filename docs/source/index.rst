@@ -1,7 +1,4 @@
-.. Spex documentation master file, created by
-   sphinx-quickstart on Fri Mar 24 09:26:40 2023.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. _sec-welcome:
 
 Welcome to Spex's documentation!
 ================================
@@ -16,8 +13,8 @@ Welcome to Spex's documentation!
    user_guide/using_spex.rst
 
 
-Welcome to the documentation for Spex, a tool for extracting information
+Welcome to the documentation for **Spex**, a tool for extracting information
 on data-structures in the NVMe specification documents.
 
-To read more about what Spex does, see :ref:`sec-what-is-spex`.
-For help on setting up Spex on your system, see :ref:`sec-setup`.
+To read more about what **Spex** does, see :ref:`sec-what-is-spex`.
+For help on setting up **Spex** on your system, see :ref:`sec-setup`.

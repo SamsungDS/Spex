@@ -1,12 +1,14 @@
 .. _sec-guide-stages:
 
 Stages
-========================
+======
+
 Spex is deliberately designed to break processing into a series of
 discrete and individually verifiable stages.
 
 Stage artifacts
 ~~~~~~~~~~~~~~~
+
 Each stage generate one or more files as its output. These files are referred
 to by their stage elsewhere in documentation. Each stage's output is presently
 a file of a different file type, but this may change in the future, as possibly
@@ -19,6 +21,7 @@ document by its stage than file type.
 
 Why organize the program into stages?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 Breaking the program into distinct stages is beneficial to development and
 testing/verifying the output produced. However, it also has an important benefit to
 users: the ability to opt-out at any point of processing.
@@ -30,5 +33,3 @@ HTML, spex throws away every graphic and text between the tables.
 In producing the stage 2 output, the data-structure model, Spex discards supplementary
 text, figure headers, table section headers and so on.
 Each stage further refines the data, but discards other data in the process.
-
-
