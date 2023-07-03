@@ -1,7 +1,4 @@
 PROJECT_NAME = spex
-DOCKER_IMAGE_NAME = $(PROJECT_NAME)-debenv
-DOCKER_IMAGE_TAG = latest
-DOCKER_IMAGE_ID = ghcr.io/openmpdk/spex/$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)
 
 all: uninstall install
 
