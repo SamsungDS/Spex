@@ -12,7 +12,7 @@ on:
 
 jobs:
   check_nix:
-    name: check code quality
+    name: build docker image
     runs-on: self-hosted
     steps:
       - name: git checkout
