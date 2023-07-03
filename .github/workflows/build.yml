@@ -30,6 +30,9 @@ jobs:
       - name: check code integrity
         run:  nix develop --command make check
 
+      - name: check docs
+        run:  nix develop --command make docs
+
   build-using-docker:
     name: Build using docker environment
     runs-on: self-hosted
