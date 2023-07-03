@@ -2,40 +2,41 @@
 
 Setting up Spex manually
 ========================
-
-If you are reasonably comfortable with Python virtual environments and
-installing system libraries and alternative copies of Python, then manually
-setting up Spex is just fine.
-
-The benefit of this approach is needing neither Nix or Docker. But there is no
-hand-holding with this approach. You will be required to infer the dependencies
-needed from skimming the ``nix.flake`` and ``setup.cfg`` files, and to install
-the required components.
-
-This is likely to be a sufficiently recent copy of the Python interpreter, C
-libraries such as ``libxml2`` and the Python packages listed in the above
-files.
-
-Please note that dependencies may change and the only full, canonical
-specification of what is required is described in the ``nix.flake`` file.
-
+.. note::
+    In doubt as to which method to use when setting up Spex? See :ref:`sec-setup`.
 
 .. warning::
-    As mentioned above - Spex reserves the right to update dependencies if it
+    Spex reserves the right to update dependencies if it
     helps development or enables new features or better performance.
     
     If you choose the manual route, it is up to *you* to update your system
     accordingly.
 
 
+**Spex** is implemented in Python and distributed via :pypi:`Pypi <>` and thus
+installable via ``pip``::
+
+  pip install spex
+
+And then run it::
+
+  spex --help
+
+For this to run then the following runtime requirements must be met:
+
+1. Python >= 3.11
+    * **spex** relies on Python features for types introduced in Python 3.11
+
+2. Python packages
+    * For details, then have a look at the **Spex** flake (``setup.cfg``)
+
+3. C libraries used by the Python packages
+    * Specificaly, then **Spex** uses the Python package ``lxml`` which in turn
+      requires the ``libxml2`` C library to be present on the system.
+    * This may change and more dependencies may be added, see the ``flake.nix`` file for full details.
+
+
 .. note::
-    In doubt as to which method to use when setting up Spex? See :ref:`sec-setup`.
-
-
-.. warning::
-    Manually setting up Spex means *you* are responsible for installing the
-    C libraries and Python packages that Spex needs, and that the version of
-    Python used is recent enough.
-
-    This page is a place-holder -- if you choose this option, you should know
-    what to do. If you don't, use the Nix or Docker methods.
+    The setup of the above requirements is specific to the environment that you are
+    using. The only supported environment is the reference environment, managed by
+    :ref:`sec-setup-nix`
