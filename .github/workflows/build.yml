@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: git checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3.1.0
 
       - name: nix, install
         uses: DeterminateSystems/nix-installer-action@main
@@ -37,7 +37,7 @@ jobs:
 
     steps:
     - name: git checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v3.1.0
 
     - name: install
       run: make
