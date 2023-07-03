@@ -1,0 +1,28 @@
+# To see which hosted runners are available, visit:
+#  https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
+
+name: build docker image
+
+on:
+  push:
+    branches: [ main, staging ]
+  pull_request:
+    branches: [ main, staging ]
+
+
+jobs:
+  check_nix:
+    name: check code quality
+    runs-on: self-hosted
+    steps:
+      - name: git checkout
+        uses: actions/checkout@v3
+
+      # Prepare (& check, & cache) nix environment
+      - name: install nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - uses: DeterminateSystems/magic-nix-cache-action@v1
+
+      - name: build docker image
+        run:  nix build .#dockerImage
