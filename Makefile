@@ -24,4 +24,4 @@ format:
 
 .PHONY: docs
 docs:
-	cd docs && make all
+	./scripts/mkdocs.sh
