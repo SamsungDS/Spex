@@ -167,6 +167,13 @@ def parse_spec(spec, args):
         w.write_meta("lint", reported_lint_errs)
 
 
+class CliParser(argparse.ArgumentParser):
+    def error(self, message):
+        sys.stderr.write(f"error: {message}\n")
+        self.print_help()
+        sys.exit(2)
+
+
 def main():
     lint_codes = "\n".join(f"      * {entry.name}  - {entry.value}" for entry in Code)
     epilog = textwrap.dedent(
@@ -193,9 +200,10 @@ def main():
       current working directory.
     """
     )
-    parser = argparse.ArgumentParser(
+    parser = CliParser(
         description="Extract data-structures from .docx spec or HTML model",
         epilog=epilog,
+        prog="spex",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument(
@@ -204,6 +212,7 @@ def main():
         default=False,
         dest="skip_fig_on_error",
         action="store_true",
+        help="If processing a figure fails, do not abort, but skip it and continue processing the remaining figures",
     )
     parser.add_argument(
         "input",
