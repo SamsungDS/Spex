@@ -88,11 +88,6 @@
             tag = revision;
             contents = [ spex ];
           };
-          dockerDevImage = pkgs.dockerTools.buildLayeredImage {
-            name = "spex-dev";
-            tag = revision;
-            contents = [ spex ] ++ (devPackages pkgs);
-          };
         });
 
       # nix develop <flake-ref>#<name>
@@ -101,16 +96,6 @@
       # $ nix develop <flake-ref>#yellow
       devShells = forAllSystems ({ pkgs }:
         let
-          upstream = with pkgs;
-            [
-              (python311.withPackages
-                (pypkgs: with pypkgs; [ lxml jsonschema ]))
-            ];
-          custom = with self.packages.${pkgs.system}; [
-            gcgen
-            lxml-stubs
-            loguru
-          ];
         in {
           default = pkgs.mkShell {
             name = "default";
