@@ -5,7 +5,7 @@ PROJECT_NAME = spex
 .PHONY: help
 help:
 	@echo -e "\033[33mAvailable targets, for more information, see \033[36mREADME.md\033[0m"
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: check
 check:  ## (CI) run format-/lint-/import checks
