@@ -18,3 +18,8 @@ format: ## run formatters on code
 .PHONY: docs
 docs: ## build documentation
 	./scripts/mkdocs.sh
+
+.PHONY: dev
+dev: ## enter development environment (requires Nix)
+	nix develop .#
+
