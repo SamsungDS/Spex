@@ -20,7 +20,8 @@
 
       # packages only necessary for a development/CI environment
       devPackages = pkgs:
-        (with pkgs.python311Packages; [
+      (with pkgs.python311Packages; [
+          pip
           jsonschema
           mypy
           isort
