@@ -15,7 +15,7 @@ defaults:
 jobs:
   build-using-nix:
     name: Build using nix environment
-    runs-on: self-hosted
+    runs-on: ubuntu-22.04
 
     steps:
       - name: git checkout
@@ -35,7 +35,7 @@ jobs:
 
   build-using-docker:
     name: Build using docker environment
-    runs-on: self-hosted
+    runs-on: ubuntu-22.04
     container: ghcr.io/openmpdk/spex/spex-env:latest
 
     steps:
