@@ -1,0 +1,37 @@
+name: Build & deploy documentation
+
+on:
+  push:
+    branches:
+      - master
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: git checkout
+      uses: actions/checkout@v3.1.0
+
+    - name: nix, install
+      uses: DeterminateSystems/nix-installer-action@main
+
+    - name: nix, cache
+      uses: DeterminateSystems/magic-nix-cache-action@v1
+    
+    - name: build docs
+      run:  nix develop --command make docs
+
+    - name: Publish docs
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/_build/html
+        user_name: 'github-actions[bot]'
+        user_email: 'github-actions[bot]@users.noreply.github.com'
+        force_orphan: true
+        publish_branch: gh-pages
