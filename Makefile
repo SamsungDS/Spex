@@ -3,8 +3,14 @@ DOCKER_IMAGE_NAME = $(PROJECT_NAME)-nixenv
 DOCKER_IMAGE_TAG = latest
 DOCKER_IMAGE_ID = ghcr.io/openmpdk/spex/$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)
 
-# 'make' will list all documented targets
-.DEFAULT_GOAL := build
+all:
+	@ $(MAKE) --no-print-directory all-msg
+	@ $(MAKE) build
+
+.PHONY: all-msg
+all-msg:
+	@echo -e "\033[33mmake invoked without any arguments, see \`\033[36mmake help\033[33m\` for a list of options\033[0m"
+
 .PHONY: help
 help:
 	@echo -e "\033[33mAvailable targets, for more information, see \033[36mREADME.md\033[0m"
