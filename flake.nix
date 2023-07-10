@@ -16,7 +16,7 @@
         nixpkgs.lib.genAttrs allSystems
         (system: fn { pkgs = import nixpkgs { inherit system; }; });
 
-      revision = "${self.lastModifiedDate}-${self.shortRev or "dirty"}";
+      revision = "${self.shortRev or "dirty"}";
 
       # packages only necessary for a development/CI environment
       devPackages = pkgs:
