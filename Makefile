@@ -1,7 +1,7 @@
 PROJECT_NAME = spex
-DOCKER_IMAGE_NAME = $(PROJECT_NAME)-nixenv
-DOCKER_IMAGE_TAG = latest
-DOCKER_IMAGE_ID = ghcr.io/openmpdk/spex/$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)
+DOCKER_IMAGE_NAME = $(PROJECT_NAME)-devenv
+DOCKER_IMAGE_TAG ?= manual
+DOCKER_IMAGE_ID = ghcr.io/openmpdk/$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)
 
 all:
 	@ $(MAKE) --no-print-directory all-msg
