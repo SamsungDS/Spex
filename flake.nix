@@ -80,6 +80,7 @@
           spex = (buildPythonPackage rec {
             pname = "spex";
             version = revision;
+            format = "setuptools";
             src = ./.;
             doCheck = false;
             propagatedBuildInputs = (spexDeps pkgs);
