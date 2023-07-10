@@ -30,7 +30,7 @@ install: build ## Install Spex using pipx and the source package (sdist)
 
 .PHONY: uninstall
 uninstall: ## Uninstall Spex using pipx
-	@pipx uninstall spex || echo "Nothing to uninstall, that is ok."
+	@pipx uninstall $(PROJECT_NAME) || echo "Nothing to uninstall, that is ok."
 
 .PHONY: check
 check:  ## (CI) run format-/lint-/import checks
