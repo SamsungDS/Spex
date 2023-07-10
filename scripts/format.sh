@@ -4,5 +4,5 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 set -ex
 
-black spex
-isort spex --profile=black
+black src/spex
+isort src/spex --profile=black
