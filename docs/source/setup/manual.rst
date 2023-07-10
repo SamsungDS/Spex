@@ -2,8 +2,10 @@
 
 Setting up Spex manually
 ========================
+
 .. note::
     In doubt as to which method to use when setting up Spex? See :ref:`sec-setup`.
+
 
 .. warning::
     Spex reserves the right to update dependencies if it
@@ -12,11 +14,10 @@ Setting up Spex manually
     If you choose the manual route, it is up to *you* to update your system
     accordingly.
 
-
 **Spex** is implemented in Python and distributed via :pypi:`Pypi <>` and thus
-installable via ``pip``::
+installable via ``pip`` / ``pipx``::
 
-  pip install spex
+  pipx install nvme-spex
 
 And then run it::
 
