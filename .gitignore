@@ -5,6 +5,7 @@ venv
 .idea
 build
 *.egg-info
+.eggs
 .pytest_cache
 .mypy_cache
 *.log
