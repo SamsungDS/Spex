@@ -52,7 +52,7 @@ dev: ## enter development environment (requires Nix)
 dev-docker-build:  ## build development environment as a docker container
 	docker build \
 	. \
-	-f docker/nixenv/Dockerfile \
+	-f docker/Dockerfile \
 	-t $(DOCKER_IMAGE_ID)
 
 .PHONY: dev-docker
