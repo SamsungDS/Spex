@@ -16,3 +16,4 @@ dist
 result
 *.build
 *.tar.gz
+scratch/
