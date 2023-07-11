@@ -113,7 +113,7 @@
             name = "default";
             nativeBuildInputs = (spexDeps pkgs) ++ (devPackages pkgs);
             shellHook = ''
-              unset SOURCE_DATA_EPOCH
+              unset SOURCE_DATE_EPOCH
               export SPEX_NIX_ENV=1
             '';
           };
