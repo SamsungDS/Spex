@@ -43,3 +43,4 @@ html_static_path = ['_static']
 
 html_css_files = ["css/custom.css"]
 html_js_files = ["scripts/custom.js"]
+html_extra_path = ["_static/spex.py"]
