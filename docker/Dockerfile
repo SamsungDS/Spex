@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Samsung Electronics Co., Ltd
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 FROM nixos/nix:2.13.3
 # These files, see the spex-repos, define the environment
 RUN mkdir -p ~/.config/nix \

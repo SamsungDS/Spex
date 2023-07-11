@@ -1,0 +1,20 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: nvme-spex
+Upstream-Contact: Jesper Wendel Devantier <j.devantier@samsung.com>
+Source: https://openmpdk.github.io/Spex/
+
+Files: .github/workflows/*.yml
+Copyright: Samsung Electronics Co., Ltd
+License: BSD-3-Clause
+
+Files: docs/*
+Copyright: Samsung Electronics Co., Ltd
+License: BSD-3-Clause
+
+Files: stage2.schema.json setup.cfg
+Copyright: Samsung Electronics Co., Ltd
+License: BSD-3-Clause
+
+Files: flake.lock
+Copyright: Samsung Electronics Co., Ltd
+License: BSD-3-Clause

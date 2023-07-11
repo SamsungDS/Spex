@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Samsung Electronics Co., Ltd
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 PROJECT_NAME = spex
 DOCKER_IMAGE_NAME = $(PROJECT_NAME)-devenv
 DOCKER_IMAGE_TAG ?= manual

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Samsung Electronics Co., Ltd
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 from abc import ABC, abstractmethod
 from re import compile as re_compile
 from typing import Dict, Generator, Iterator, List, Optional, Union
