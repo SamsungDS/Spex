@@ -34,66 +34,27 @@ def call(*args, **kwargs) -> sp.CompletedProcess:
 
 
 parser = argparse.ArgumentParser(
-    description="build Spex docker image",
+    description="run spex using docker",
+    add_help=False
 )
 
 
 SPEX_DOCKER_DIR = Path(__file__).parent
 SPEX_ROOT = SPEX_DOCKER_DIR.parent
+SPEX_IMG_NAME = "ghcr.io/openmpdk/spex"
 
 
-cmd = parser.add_subparsers(dest="cmd")
-build = cmd.add_parser("build")
-build.add_argument("--skip-load", action="store_true", default=False)
-clean = cmd.add_parser("build-clean")
-run = cmd.add_parser("run", add_help=False)
-run.add_argument("--image", required=True)
-run.add_argument("-h", "--help", action="store_true")
-run.add_argument("rest", nargs=argparse.REMAINDER)
+parser.add_argument("--tag", default="main")
+parser.add_argument("-h", "--help", action="store_true")
 
 
-
-def cmd_build(args: argparse.Namespace):
-    with cwd(SPEX_ROOT):
-        call("docker", "build", "-t", "spex-builder:latest", str(SPEX_DOCKER_DIR.absolute()))
-        spex_root_str = str(SPEX_ROOT.absolute())
-        call("docker", "run", "--rm", "-it",
-             "--mount", "type=volume,source=spex-builder-store,target=/nix/store",
-             "--mount", "type=volume,source=spex-builder-db,target=/nix/var/nix/db",
-             "--mount", f"type=bind,source={spex_root_str},target=/spex-dir",
-             "spex-builder:latest")
-
-    print("")
-    print("Build completed, the output image is saved to 'spex-docker.image.tar.gz'")
-    print("")
-    
-    if args.skip_load:
-        return
-    
-    print("Loading image into docker daemon...")
-    with cwd(SPEX_ROOT):
-        img = str((SPEX_ROOT / "spex-docker.image.tar.gz").absolute())
-        call("docker", "load", "-i", img)
-    
-
-
-def cmd_clean():
-    with cwd(SPEX_ROOT):
-        for vol_suffix in {"db", "store"}:
-            vol = f"spex-builder-{vol_suffix}"
-            print(f"removing volume {vol}...")
-            try:
-                call("docker", "volume", "rm", vol)
-            except sp.CalledProcessError as e:
-                pass
-
-
-def cmd_run(args: argparse.Namespace):
-    run_args = args.rest
+def cmd_run(args: argparse.Namespace, run_args: list[str]):
     vol_map = {}
 
+    img = f"{SPEX_IMG_NAME}:{args.tag}"
+
     if args.help:
-        call("docker", "run", "--rm", "-it", args.image, "spex", "-h")
+        call("docker", "run", "--rm", "-it", img, "spex", "-h")
         return
 
     def map_fn(arg):
@@ -115,7 +76,7 @@ def cmd_run(args: argparse.Namespace):
         spex_args.extend(["--mount", f"type=bind,source={src},target={dst}"])
 
 
-    spex_args.extend([args.image, "spex"])
+    spex_args.extend([img, "spex"])
     spex_args.extend(spex_cli_args)
     
     try:
@@ -125,17 +86,28 @@ def cmd_run(args: argparse.Namespace):
 
 
 def main():
-    args = parser.parse_args()
-    cmd = args.cmd
-    
-    if cmd == "build":
-        cmd_build(args)
-    elif cmd == "build-clean":
-        cmd_clean()
-    elif cmd == "run":
-        cmd_run(args)
-    else:
-        parser.print_help(sys.stderr)
+    args, run_args = parser.parse_known_args()
+    if args.help:
+        print("!! NOTE: Spex running via docker")
+        print()
+        print("The Spex command-line options are described below, but you also")
+        print("must decide which version of Spex to use.")
+        print()
+        print("1) Visit https://github.com/OpenMPDK/Spex/pkgs/container/spex/versions")
+        print("2) Next to each release will be a series of tags such as 'v1.0' or '700ae3c'.")
+        print("   Select one corresponding to the version of Spex you wish to run.")
+        print("")
+        print(f"USAGE: {Path(__file__).name} --tag=v1.0 [SPEX command-line arguments]")
+
+        print("\n\n")
+        print("Spex command help:")
+
+        img = f"{SPEX_IMG_NAME}:{args.tag}"
+        call("docker", "run", "--rm", "-it", img, "spex", "-h")
+        return
+
+    cmd_run(args, run_args)
+    # parser.print_help(sys.stderr)
 
 
 if __name__ == "__main__":
