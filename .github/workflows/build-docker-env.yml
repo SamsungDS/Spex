@@ -117,7 +117,19 @@ jobs:
         echo "sha_short=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
 
     - name: check
-      run: docker run --rm ${{ env.image_name }}:${{ env.sha_short }} make check
+      run: >
+        docker run --rm
+        -w /tmp/spex
+        --mount type=bind,source="${{ github.workspace}}",target=/tmp/spex
+        ${{ env.image_name }}:${{ env.sha_short }}
+        nix develop .# --command
+        make check
 
     - name: docs
-      run: docker run --rm ${{ env.image_name }}:${{ env.sha_short }} make docs
+      run: >
+        docker run --rm
+        -w /tmp/spex
+        --mount type=bind,source="${{ github.workspace}}",target=/tmp/spex
+        ${{ env.image_name }}:${{ env.sha_short }}
+        nix develop .# --command
+        make docs

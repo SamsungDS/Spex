@@ -20,7 +20,7 @@
 
       # packages only necessary for a development/CI environment
       devPackages = pkgs:
-      (with pkgs.python311Packages; [
+        (with pkgs.python311Packages; [
           pip
           jsonschema
           mypy
@@ -30,6 +30,12 @@
           sphinx
           sphinx-copybutton
           furo
+        ]) ++ (with pkgs; [
+          # tools needed directly or indirectly by Makefile and ./scripts
+          gnugrep
+          gnumake
+          gawk
+          bash
         ]);
 
       # package necessary for Spex to run
