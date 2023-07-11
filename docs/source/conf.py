@@ -7,8 +7,8 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'Spex'
-copyright = '2023, NVMe Working Group'
-author = 'NVMe Working Group'
+copyright = '2023 Samsung Electronics Co., Ltd'
+author = 'Jesper Wendel Devantier'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
