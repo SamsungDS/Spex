@@ -3,13 +3,7 @@ DOCKER_IMAGE_NAME = $(PROJECT_NAME)-devenv
 DOCKER_IMAGE_TAG ?= manual
 DOCKER_IMAGE_ID = ghcr.io/openmpdk/$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)
 
-all:
-	@ $(MAKE) --no-print-directory all-msg
-	@ $(MAKE) build
-
-.PHONY: all-msg
-all-msg:
-	@echo -e "\033[33mmake invoked without any arguments, see \`\033[36mmake help\033[33m\` for a list of options\033[0m"
+.DEFAULT_GOAL := help
 
 .PHONY: help
 help:
