@@ -35,15 +35,3 @@ jobs:
 
       - name: check REUSE compliance
         run:  nix-shell -p reuse --run "reuse lint"
-
-  build-using-docker:
-    name: Build using docker environment
-    runs-on: ubuntu-22.04
-    container: ghcr.io/openmpdk/spex/spex-env:latest
-
-    steps:
-    - name: git checkout
-      uses: actions/checkout@v3.1.0
-
-    - name: install
-      run: make

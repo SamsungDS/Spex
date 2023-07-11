@@ -131,3 +131,12 @@ jobs:
         ${{ env.image_name }}:${{ env.sha_short }}
         nix develop .# --command
         make docs
+
+    - name: build source package
+      run: >
+        docker run --rm
+        -w /tmp/spex
+        --mount type=bind,source="${{ github.workspace}}",target=/tmp/spex
+        ${{ env.image_name }}:${{ env.sha_short }}
+        nix develop .# --command
+        make build
