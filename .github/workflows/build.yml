@@ -33,6 +33,9 @@ jobs:
       - name: check docs
         run:  nix develop --command make docs
 
+      - name: check REUSE compliance
+        run:  nix-shell -p reuse --run "reuse lint"
+
   build-using-docker:
     name: Build using docker environment
     runs-on: ubuntu-22.04

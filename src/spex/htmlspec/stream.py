@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Samsung Electronics Co., Ltd
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 from typing import Generic, Protocol, TypeVar, Union, cast
 
 _T_co = TypeVar("_T_co", covariant=True)

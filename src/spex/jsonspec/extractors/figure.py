@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Samsung Electronics Co., Ltd
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 from abc import ABC, abstractmethod
 from enum import Enum
 from typing import TYPE_CHECKING, Dict, Iterator, List, Optional, Tuple

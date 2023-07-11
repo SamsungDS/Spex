@@ -15,7 +15,6 @@ defaults:
     shell: bash
 
 jobs:
-  # image: "spex"
   build-docker-spex:
     runs-on: ubuntu-22.04
 
@@ -61,7 +60,6 @@ jobs:
         docker push ${{ env.image_name }}:${{ env.sha_short }}
         docker push ${{ env.image_name }}:${{ github.ref_name }}
 
-  # image: "spex-devenv"
   build-docker-spex-devenv:
     runs-on: ubuntu-22.04
     env:

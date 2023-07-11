@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Samsung Electronics Co., Ltd
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 from typing import TYPE_CHECKING, Dict, Generator, Iterator, List, Optional, Union
 
 from spex.jsonspec.defs import ELLIPSIS, RESERVED, ValueField

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Samsung Electronics Co., Ltd
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Callable, Dict, Iterator, List, Type, TypeVar, Union
