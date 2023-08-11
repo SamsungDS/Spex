@@ -35,3 +35,15 @@ jobs:
 
       - name: check REUSE compliance
         run:  nix-shell -p reuse --run "reuse lint"
+
+      - name: Build Release Package
+        if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+        run: |
+          echo "Building packge"
+          nix develop --command python -m build
+
+      - name: Upload Release to PyPI
+        if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+        run: |
+          echo "Uploading source code"
+          nix develop --command python -m twine upload --verbose --non-interactive --skip-existing -u '__token__' -p ${{ secrets.PYPI_API_TOKEN }} dist/*

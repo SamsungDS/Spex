@@ -34,6 +34,9 @@
           sphinx
           sphinx-copybutton
           furo
+          twine
+          wheel
+          build
         ]) ++ (with pkgs; [
           # tools needed directly or indirectly by Makefile and ./scripts
           gnugrep
