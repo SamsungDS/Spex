@@ -118,6 +118,8 @@
             shellHook = ''
               unset SOURCE_DATE_EPOCH
               export SPEX_NIX_ENV=1
+              # run spex from module in src dir
+              alias spex="PYTHONPATH=./src:$PYTHONPATH python -m spex"
             '';
           };
         });
