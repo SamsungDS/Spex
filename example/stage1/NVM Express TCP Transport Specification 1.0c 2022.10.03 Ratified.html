@@ -1,0 +1,3445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8" data-spec="NVM Express® TCP Transport Specification" data-revision="1.0c"/>
+ <title>NVM Express TCP Transport Specification 1.0c 2022.10.03 Ratified</title>
+ <link rel="stylesheet" href="NVM Express TCP Transport Specification 1.0c 2022.10.03 Ratified.css"/>
+</head>
+<body>
+ <table>
+  <tr>
+   <td colspan="3">
+    <p>
+     <span>Figure </span><span>2</span><span>: NVMe/TCP Acronym Descriptions</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Term</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>Definition</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>CH</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>PDU Common Header</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>CPDA</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Controller PDU Data Alignment</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>C2H</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Controller to Host Direction</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>C2HTermReq</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Controller to Host Terminate Connection Request</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>DATA</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>PDU Data</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>DATAL</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>H2CData and C2HData PDU Data Length</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>DATAO</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>H2CData and C2HData PDU Data Offset</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>DDGST</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>PDU Data Digest</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>HDGST</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>PDU Header Digest</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>HDR</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>PDU Header</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>HPDA</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Host PDU Data Alignment</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>H2C</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Host to Controller Direction</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>H2CTermReq</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Host to Controller Terminate Connection Request</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>ICReq</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Initialize Connection Request</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>ICResp</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Initialize Connection Response</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>PAD</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>PDU padding bytes (before DATA starts)</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>PDU</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Protocol Data Unit</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>PFV</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Protocol Format Version</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>PSH</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>PDU Specific Header</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>R2T</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Ready to Transfer (PDU)</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>R2TO</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Ready to Transfer PDU Data Offset</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>R2TL</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Ready to Transfer PDU Data Length</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>TTAG</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Transfer Tag</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="7">
+    <p>
+     <span>Figure </span><span>10</span><span>: NVMe/TCP PDU Types</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th rowspan="2" class="tcell0">
+    <p>
+     <span>PDU Name</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>Opcode by field</span>
+    </p>
+   </th>
+   <th rowspan="2" class="tcell0">
+    <p>
+     <span>Combined Opcode </span><span class="txtfmt0">2</span>
+    </p>
+   </th>
+   <th rowspan="2" class="tcell0">
+    <p>
+     <span>Section</span>
+    </p>
+   </th>
+   <th colspan="2" rowspan="2" class="tcell0">
+    <p>
+     <span>PDU Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Function (07:01)</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>PDU Direction </span><span class="txtfmt0">1</span><span> (00)</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>ICReq</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0000000b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>00h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>3.6.2.2</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Initialize Connection Request:</span><span> A PDU sent from a host to a controller to communicate NVMe/TCP connection parameters and establish an NVMe/TCP connection</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>ICResp</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0000000b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>1b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>01h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>3.6.2.3</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Initialize Connection Response:</span><span> A PDU sent from a controller to a host to accept a connection request and communicate NVMe/TCP connection parameters</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>H2CTermReq</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0000001b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>02h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>3.6.2.4</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Host to Controller Terminate Connection Request:</span><span> A PDU sent from a host to a controller in response to a fatal transport error</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>C2HTermReq</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0000001b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>1b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>03h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>3.6.2.5</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Controller to Host Terminate Connection Request:</span><span> A PDU sent from a controller to a host in response to a fatal transport error</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>CapsuleCmd</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0000010b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>04h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>3.6.2.6</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Command Capsule:</span><span> A PDU sent from a host to a controller to transfer an NVMe over </span><span>F</span><span>abrics </span><span>C</span><span>ommand </span><span>C</span><span>apsule</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>CapsuleResp</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0000010b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>1b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>05h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>3.6.2.7</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Response Capsule:</span><span> A PDU sent from a controller to a host to transfer an NVMe over </span><span>F</span><span>abrics </span><span>R</span><span>esponse </span><span>Capsule</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>H2CData</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0000011b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>06h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>3.6.2.8</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Host to Controller Data:</span><span> A PDU sent from a host to a controller to transfer data to the controller</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>C2HData</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0000011b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>1b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>07h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>3.6.2.9</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Controller to Host Data:</span><span> A PDU sent from a controller to a host to transfer data to the host</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>R2T</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0000100b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>1b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>09h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>3.6.2.10</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Ready to Transfer:</span><span> A PDU sent from a controller to a host to indicate that the controller is ready to accept data</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="7">
+    <p>
+     <span>Notes</span><span>:</span>
+    </p>
+    <ol class="ol27">
+     <li>
+      <span>Indicates the opcode encoded direction of the PDU. All PDUs shall follow this convention: </span><ol class="ol27">
+       <li>
+        <span>0b = Host to Controller (H2C); and</span>
+       </li>
+       <li>
+        <span>1b = Controller to Host (C2H).</span>
+       </li>
+      </ol>
+     </li>
+     <li>
+      <span>Opcodes not listed are reserved.</span>
+     </li>
+    </ol>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Figure </span><span>11</span><span>: NVMe/TCP Capsule Size</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Capsule Type</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>In-Capsule Data Not Supported</span>
+    </p>
+    <p>
+     <span>(bytes)</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>In-Capsule Data Supported</span>
+    </p>
+    <p>
+     <span>(bytes)</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Fabrics and Admin Commands</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>N/A </span><span class="txtfmt0">1</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>64 to 8,256</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Fabrics and Admin Responses</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>16</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>N/A </span><span class="txtfmt0">2</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>I/O Queue Command</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>64</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>64 to (IOCCSZ × 16)</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>I/O Queue Response</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>16</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>N/A </span><span class="txtfmt0">2</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Notes</span><span>:</span>
+    </p>
+    <ol class="ol28">
+     <li>
+      <span>NVMe/TCP controllers must support in-capsule data for Fabrics and Admin </span><span>C</span><span>ommand </span><span>C</span><span>apsules.</span>
+     </li>
+     <li>
+      <span>In-capsule data is not supported in </span><span>R</span><span>esponse </span><span>C</span><span>apsules.</span>
+     </li>
+    </ol>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="3">
+    <p>
+     <span>Figure </span><span>17</span><span>: Transport Specific Address Subtype Definition for NVMe/TCP Transport</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>00</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Security Type (SECTYPE):</span><span> Specifies the type of security used by the NVMe/TCP port. If SECTYPE is a value of </span><span>0h</span><span> </span><span>(No Security), then the host shall set up a normal TCP connection.</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell0">
+       <p>
+        <span>Value</span>
+       </p>
+      </th>
+      <th class="tcell0">
+       <p>
+        <span>Definition</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>00</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>No Security</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>01</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Transport Layer Security (TLS) version 1.2 (refer to </span><span>NVMe</span><span> over Fabrics Specification</span><span>)</span><span>.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>02</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Transport Layer Security (TLS) version 1.3 (refer to RFC 8446</span><span>) or a subsequent version. The TLS protocol negotiates the version and ciper suite for each TCP connection.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>255:0</span><span>3</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>255:01</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="3">
+    <p>
+     <span>Figure </span><span>19</span><span>: PDU Common Header (CH)</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>00</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PDU-Type:</span><span> Specifies the type of PDU. This value is also referred to as the PDU opcode. Refer to </span><span>Figure </span><span>10</span><span> for PDU opcodes.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>01</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">FLAGS:</span><span> PDU-TYPE specific flags</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>02</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Header Length (HLEN):</span><span> Length of </span><span>PDU Header</span><span> (not including the </span><span>HDGST</span><span>) in bytes.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>03</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PDU Data Offset (PDO):</span><span> PDU Data Offset from the start of the PDU in bytes.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>07:04</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PDU Length (PLEN):</span><span> Total length of PDU (includes CH, PSH, HDGST, PAD, DATA, and DDGST) in bytes.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Figure </span><span>20</span><span>: Initialize Connection Request PDU (ICReq)</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>PDU Section</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>00</span>
+    </p>
+   </td>
+   <td rowspan="5">
+    <p>
+     <span>CH</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PDU-Type:</span><span> 00h</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>01</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">FLAGS:</span><span> Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>02</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">HLEN:</span><span> Fixed length of 128 bytes (80h).</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>03</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PDO:</span><span> Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>07:04</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PLEN:</span><span> Fixed length of 128 bytes (80h).</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>09:08</span>
+    </p>
+   </td>
+   <td rowspan="5">
+    <p>
+     <span>PSH</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PDU Format Version (PFV):</span><span> Specifies the format version of NVMe/TCP PDUs. The format of the record specified in this definition shall be cleared to 0h.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>10</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Host PDU Data Alignment (HPDA):</span><span> Specifies the data alignment for all PDUs transferred from the controller to the host that contain data. This value is 0’s based value in units of dwords in the range 0 to 31 (e.g., values 0, 1, and 2 correspond to 4 byte, 8 byte, and 12 byte alignment).</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>11</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">DGST:</span><span> Host </span><span>PDU header</span><span> and </span><span>d</span><span>ata digest enable options.</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell0">
+       <p>
+        <span>Bits</span>
+       </p>
+      </th>
+      <th class="tcell0">
+       <p>
+        <span>Definition</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>7:2</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>1</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">DDGST_ENABLE:</span><span> If set to ‘1’, the use of data digest is requested by the host for the connection. If cleared to ‘0’, data digest shall not be used for the connection.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>0</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">HDGST_ENABLE:</span><span> If set to ‘1’, the use of header digest is requested by the host for the connection. If cleared to ‘0’, header digest shall not be used for the connection.</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>15:12</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Maximum Number of Outstanding R2T (MAXR2T):</span><span> Specifies the maximum number of outstanding R2T PDUs for a command at any point in time on the connection. This is a 0’s based value.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>127:16</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Figure </span><span>21</span><span>: Initialize Connection Response PDU (ICResp)</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>PDU Section</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>00</span>
+    </p>
+   </td>
+   <td rowspan="5">
+    <p>
+     <span>CH</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PDU-Type:</span><span> 01h</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>01</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">FLAGS:</span><span> Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>02</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">HLEN:</span><span> Fixed length of 128 bytes (80h).</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>03</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PDO:</span><span> Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>07:04</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PLEN:</span><span> Fixed length of 128 bytes (80h).</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>09:08</span>
+    </p>
+   </td>
+   <td rowspan="5">
+    <p>
+     <span>PSH</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PDU Format Version (PFV):</span><span> Specifies the format version of NVMe/TCP PDUs. The format of the record specified in this definition shall be cleared to 0h.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>10</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Controller PDU Data Alignment (CPDA):</span><span> Specifies the data alignment for all PDUs that </span><span>transfer </span><span>data</span><span> in addiion to the </span><span>P</span><span>D</span><span>U </span><span>Header (refer to section </span><span>2</span><span>)</span><span>. This is</span><span> a</span><span> 0’s based value in units of dwords in the range 0 to 31 (e.g., values 0, 1, and 2 correspond to 4 byte, 8 byte, and 12 byte alignment).</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>11</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">DGST:</span><span> </span><span>Controller </span><span>PDU</span><span> </span><span>h</span><span>eader</span><span> and </span><span>d</span><span>ata </span><span>d</span><span>igest enable options.</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell0">
+       <p>
+        <span>Bits</span>
+       </p>
+      </th>
+      <th class="tcell0">
+       <p>
+        <span>Definition</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>7:2</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>1</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">DDGST_ENABLE:</span><span> If set to ‘1’, data digest is used for the connection. If cleared to ‘0’, data digest is not used for the connection.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>0</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">HDGST_ENABLE:</span><span> If set to ‘1’, header digest is used for the connection. If cleared to ‘0’, header digest is not used for the connection.</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>15:12</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Maximum Host to Controller Data length (MAXH2CDATA):</span><span> Specifies the maximum number of PDU-Data bytes per </span><span>H2CData </span><span>PDU in bytes. This value is a multiple of dwords and should be no less than 4,096.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>127:16</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Figure </span><span>22</span><span>: Host to Controller Terminate Connection Request PDU (H2CTermReq)</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>PDU Section</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>00</span>
+    </p>
+   </td>
+   <td rowspan="5">
+    <p>
+     <span>CH</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PDU-Type:</span><span> 02h</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>01</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">FLAGS:</span><span> Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>02</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">HLEN:</span><span> Fixed length of 24 bytes (18h).</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>03</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PDO:</span><span> Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>07:04</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PLEN:</span><span> Total length of PDU (including </span><span>PDU Header</span><span> and DATA) in bytes. This value shall not exceed a limit of 152 bytes.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>09:08</span>
+    </p>
+   </td>
+   <td rowspan="3">
+    <p>
+     <span>PSH</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Fatal Error Status (FES):</span><span> Indicates the fatal error information.</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell0">
+       <p>
+        <span>Value</span>
+       </p>
+      </th>
+      <th class="tcell0">
+       <p>
+        <span>Description</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>00h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>01h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">Invalid PDU Header Field:</span><span> An </span><span>i</span><span>nvalid </span><span>f</span><span>ield in the </span><span>t</span><span>ransport </span><span>h</span><span>eader was detected by the host.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>02h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">PDU Sequence Error:</span><span> An unexpected </span><span>p</span><span>rotocol sequence was detected by the host.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>03h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">Header Digest Error:</span><span> A</span><span>n</span><span> HDGST error was detected by the host.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>04h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">Data Transfer Out of Range:</span><span> A C2HData</span><span> PDU</span><span> with data offset or data offset plus data length is out of its associated </span><span>Command Data Buffer</span><span> range.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>05h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">R2T Limit Exceeded:</span><span> An R2T PDU that exceeds MAXR2T was received by the host.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>06h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">Unsupported Parameter:</span><span> An unsupported parameter was received by the host.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>07h to FFFFh</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>13:10</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Fatal Error Information (FEI):</span><span> Provides additional information based on the Fatal Error Status field.</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell0">
+       <p>
+        <span>Fatal Error Status</span>
+       </p>
+      </th>
+      <th class="tcell0">
+       <p>
+        <span>Contents of Error Specific Information</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>00</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>01h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">PDU Header Field Offset:</span><span> This field indicates the offset in bytes from the start of the PDU Header to the start of the field that </span><span>has</span><span> an </span><span>error. If multiple errors exist, then this field indicates the lowest offset that </span><span>has an </span><span>error.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>02h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>03h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">PDU Header Digest:</span><span> This field indicates the </span><span>HDGST </span><span>that was received by the host caused a header digest verification error.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>04h to 05h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>06h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">Unsupported Parameter Field Offset:</span><span> This field indicates the offset in bytes from the start of the PDU Header to the start of the field that </span><span>has an </span><span>error. If multiple errors exist, then this field indicates the lowest offset that </span><span>has an </span><span>error.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>07h to FFFFh</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>23:14</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>N - 1:24</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>DATA</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Data:</span><span> This field contains the </span><span>PDU Header</span><span> that was being processed by the host while the fatal error was detected.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Figure </span><span>23</span><span>: Controller to Host Terminate Connection Request PDU (C2HTermReq)</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>PDU Section</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>00</span>
+    </p>
+   </td>
+   <td rowspan="5">
+    <p>
+     <span>CH</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PDU-Type:</span><span> 03h</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>01</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">FLAGS:</span><span> Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>02</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">HLEN:</span><span> Fixed length of 24 bytes (18h).</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>03</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PDO:</span><span> Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>07:04</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PLEN:</span><span> Total length of PDU (including </span><span>PDU Header</span><span> and DATA) in bytes. This value shall not exceed a limit of 152 bytes.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>09:08</span>
+    </p>
+   </td>
+   <td rowspan="3">
+    <p>
+     <span>PSH</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Fatal Error Status (FES):</span><span> Indicates the fatal error information.</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell0">
+       <p>
+        <span>Value</span>
+       </p>
+      </th>
+      <th class="tcell0">
+       <p>
+        <span>Description</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>00h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>01h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">Invalid PDU Header Field:</span><span> An </span><span>invalid field in the transport header </span><span>was detected by the controller.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>02h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">PDU Sequence Error:</span><span> An unexpected protocol sequence was detected by the controller.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>03h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">Header Digest Error:</span><span> A</span><span>n</span><span> </span><span>HDGST </span><span>error was detected by the controller.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>04h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">Data Transfer Out of Range:</span><span> A</span><span>n</span><span> H2CData </span><span>PDU </span><span>with data offset or data offset plus data length is out of its associated R2T range.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>05h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">Data Transfer Limit Exceeded:</span><span> A</span><span>n</span><span> H2CData PDU with data length that exceeds MAXH2CDATA was received by the controller.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>06h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">Unsupported Parameter:</span><span> An unsupported parameter was received by the controller.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>07h to FFFFh</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>13:10</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Fatal Error Information (FEI):</span><span> Provides additional information based on the Fatal Error Status field.</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell0">
+       <p>
+        <span>Fatal Error Status</span>
+       </p>
+      </th>
+      <th class="tcell0">
+       <p>
+        <span>Contents of Error Specific Information</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>00h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>01h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">PDU Header Field Offset:</span><span> This field indicates the offset in bytes from the start of the </span><span>PDU </span><span>Header to the start of the field that </span><span>has an</span><span> error. If multiple errors exist, then this field indicates the lowest offset that </span><span>has an </span><span>error.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>02h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>03h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">PDU Header Digest:</span><span> This field indicates the </span><span>HDGST </span><span>that was received by the controller caused a header digest verification error.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>04h to 05h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>06h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">Unsupported Parameter Field Offset:</span><span> This field indicates the offset in bytes from the start of the PDU Header to the start of the field that </span><span>has an </span><span>error. If multiple errors exist, then this field indicates the lowest offset that </span><span>has an </span><span>error.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>07h to FFFFh</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>23:14</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>N – 1:24</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>DATA</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Data:</span><span> This field contains the </span><span>PDU Header</span><span> that </span><span>was being processed by the controller while the fatal error was detected</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="5">
+    <p>
+     <span>Figure </span><span>24</span><span>: Command Capsule PDU (CapsuleCmd)</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>PDU Section</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>00</span>
+    </p>
+   </td>
+   <td rowspan="5">
+    <p>
+     <span>CH</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PDU-Type:</span><span> 04h</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>01</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">FLAGS:</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell0">
+       <p>
+        <span>Bits</span>
+       </p>
+      </th>
+      <th class="tcell0">
+       <p>
+        <span>Description</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>7:2</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>1</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">DDGSTF:</span><span> If set to ‘1’, then </span><span>the </span><span>DDGST </span><span>field </span><span>follows the PDU Data</span><span> and contains a valid value. If cleared to ‘0’, then the DDGST field is not present</span><span>.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>0</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">HDGSTF:</span><span> If set to ‘1’, then </span><span>the </span><span>HDGST </span><span>field </span><span>follows the </span><span>PDU Header</span><span> </span><span>and contians a valid value. If cleared to ‘0’, then the HDGST field is not present.</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>02</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">HLEN:</span><span> Fixed length of 72 bytes (</span><span>i.e., </span><span>48h).</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>03</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PDO:</span><span> Data </span><span>o</span><span>ffset within PDU</span><span> </span><span>(i.e., the offset from byte 0 to the CCICD field; the value of ‘N’)</span><span>. </span><span>This value shall be a multiple of the data alignment specified by the CPDA field in the ICResp PDU </span><span>(refer to section </span><span>3.6.2.3</span><span>‎)</span><span> </span><span>that was previously sent by the controller on this TCP connection</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>07:04</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PLEN:</span><span> Total length of PDU (including</span><span> </span><span>CH, PSH</span><span>, HDGST, PAD, DATA, and DDGST) in bytes.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>71:08</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>PSH</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">NVMe-oF Command Capsule SQE (CCSQE):</span><span> Command Capsule SQE.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>HDGSTF=1</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>HDGSTF=0</span>
+    </p>
+   </th>
+   <th colspan="3" class="tcell1">
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>75:72</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Not present</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>HDGST</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">HDGST:</span><span> If </span><span>the </span><span>HDGSTF </span><span>bit </span><span>is set </span><span>to ‘1’ </span><span>in the FLAGS field, this field is present and contains </span><span>a valid </span><span>header digest (refer to section </span><span>3.3.1.1</span><span>).</span><span> </span><span>If the HDGSTF bit is cleared to ‘0’, then this field is not present.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>N - 1:76</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>N - 1:72</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>PAD</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PAD:</span><span> If in-capsule data is present, the length of this </span><span>field </span><span>shall be the necessary number of bytes required to achieve the alignment specified by</span><span> the</span><span> CPDA </span><span>field </span><span>(refer to section </span><span>3.6.2.3</span><span>‎).</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>M - 1:N</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>DATA</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">NVMe-oF In-Capsule Data (CCICD):</span><span> This field contains the in-capsule data, if any, of the NVMe-oF Command Capsule.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>DDGSTF=1</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>DDGSTF=0</span>
+    </p>
+   </th>
+   <th colspan="3" class="tcell1">
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>M + 3:M</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Not present</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>DDGST</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Data Digest (DDGST):</span><span> If </span><span>the </span><span>DDGSTF </span><span>bit </span><span>is set</span><span> to ‘1’</span><span> in the FLAGS field, and the CCICD field is present, then this field contains the data digest (refer to section </span><span>3.3.1.1</span><span>) of the CCICD field (</span><span>i.e., the </span><span>in-capsule data).</span><span> If the DDGSTF bit is cleared to ‘0’, then this field is not present.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="5">
+    <p>
+     <span>Figure </span><span>25</span><span>: Response Capsule PDU (CapsuleResp)</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>PDU Section</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>00</span>
+    </p>
+   </td>
+   <td rowspan="5">
+    <p>
+     <span>CH</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PDU-Type:</span><span> 05h</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>01</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">FLAGS:</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell0">
+       <p>
+        <span>Bits</span>
+       </p>
+      </th>
+      <th class="tcell0">
+       <p>
+        <span>Description</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>7:1</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>0</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">HDGSTF:</span><span> If set to ‘1’, then a valid </span><span>HDGST </span><span>value follows the </span><span>PDU Header</span><span>.</span><span> </span><span>If cleared to ‘0’, then the HDGST field is not present.</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>02</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">HLEN:</span><span> Fixed length of 24 bytes (</span><span>i.e., </span><span>18h).</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>03</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PDO:</span><span> Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>07:04</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PLEN:</span><span> Length of </span><span>CH, PSH, </span><span>and HDGST</span><span>, </span><span>if present</span><span>,</span><span> in bytes.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>23:08</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>PSH</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">NVMe-oF Response Capsule CQE (RCCQE):</span><span> Response Capsule CQE.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>HDGSTF=1</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>HDGSTF=0</span>
+    </p>
+   </th>
+   <th colspan="3" class="tcell1">
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>27:24</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Not present</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>HDGST</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">HDGST:</span><span> If </span><span>the </span><span>HDGSTF </span><span>bit </span><span>is set </span><span>to ‘1’ </span><span>in the FLAGS field, this field is present and contains </span><span>a valid </span><span>header digest (refer to section </span><span>3.3.1.1</span><span>).</span><span> </span><span>If the HDGSTF bit is cleared to ‘0’, then this field is not present.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="5">
+    <p>
+     <span>Figure </span><span>26</span><span>: Host To Controller Data Transfer PDU (H2CData)</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>PDU Section</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>00</span>
+    </p>
+   </td>
+   <td rowspan="5">
+    <p>
+     <span>CH</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PDU-Type:</span><span> 06h</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>01</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">FLAGS:</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell0">
+       <p>
+        <span>Bits</span>
+       </p>
+      </th>
+      <th class="tcell0">
+       <p>
+        <span>Description</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>7:3</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>2</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">LAST_PDU:</span><span> If set to ‘1’, indicates the PDU is the last in the set of H2CData PDUs that correspond to the same R2T PDU.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>1</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">DDGSTF:</span><span> If set to ‘1’, then </span><span>the</span><span> </span><span>DDGST </span><span>field </span><span>follows the PDU Data</span><span> </span><span>and contains a valid value. If cleared to ‘0’, then the DDGST field is not present.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>0</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">HDGSTF:</span><span> If set to ‘1’, then </span><span>the</span><span> </span><span>HDGST </span><span>field </span><span>follows the </span><span>PDU Header</span><span> </span><span>and contains a valid value</span><span>. If cleared to ‘0’, then the HDGST field is not present</span><span>.</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>02</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">HLEN:</span><span> Fixed length of 24 bytes (</span><span>i.e., </span><span>18h).</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>03</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PDO:</span><span> Data Offset within PDU</span><span> </span><span>(i.e., the offset from byte 0 to the PDU-Data field; the value of ‘N’)</span><span>. </span><span>This value shall be a multiple of the data alignment specified by the CPDA field in the ICResp PDU </span><span>(refer to section </span><span>3.6.2.3</span><span>‎</span><span>)</span><span> that was previously sent by the controller on this TCP connection</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>07:04</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PLEN:</span><span> Total length of PDU (including </span><span>CH, PSH</span><span>, HDGST, PAD, DATA, and DDGST) in bytes.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>09:08</span>
+    </p>
+   </td>
+   <td rowspan="5">
+    <p>
+     <span>PSH</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Command Capsule CID (CCCID):</span><span> This field contains the SQE.CID value of the Command Capsule </span><span>PDU </span><span>associated with the </span><span>Command Data Buffer</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>11:10</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Transfer Tag (TTAG):</span><span> This field contains the Transfer Tag of the corresponding R2T received by the </span><span>host</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>15:12</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Data Offset (DATAO):</span><span> Byte offset from start of Command </span><span>D</span><span>ata </span><span>B</span><span>uffer</span><span> to the first byte to transfer</span><span>. This value shall be a multiple of dwords.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>19:16</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Data Length (DATAL):</span><span> PDU</span><span>-</span><span>Data</span><span> field length in bytes</span><span> (i.e., the value of M-N)</span><span>. This value shall be a multiple of dwords.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>23:20</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>HDGSTF=1</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>HDGSTF=0</span>
+    </p>
+   </th>
+   <th colspan="3" class="tcell1">
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>27:24</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Not present</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>HDGST</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">HDGST:</span><span> If </span><span>the </span><span>HDGSTF </span><span>bit </span><span>is set </span><span>to ‘1’ </span><span>in the FLAGS field, this field is present and contains </span><span>a valid</span><span> </span><span>header digest (refer to section </span><span>3.3.1.1</span><span>).</span><span> </span><span>If the HDGSTF bit is cleared to ‘0’, then this field is not present.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>N - 1:</span><span>28</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>N - 1:24</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>PAD</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PAD:</span><span> The length of this field shall be the necessary number of bytes required to achieve the alignment specified by </span><span>the </span><span>CPDA </span><span>field </span><span>(refer to section </span><span>3.6.2.3</span><span>‎).</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>M - 1:N</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>DATA</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PDU-Data</span><span class="txtfmt1">: </span><span>This field contains the contents of the Command Data Buffer being transferred.  The length of this field is a multiple of dwords.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>DDGSTF=1</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>DDGSTF=0</span>
+    </p>
+   </th>
+   <th colspan="3" class="tcell1">
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>M + 3:M</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Not present</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>DDGST</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Data Digest (DDGST):</span><span> If </span><span>the </span><span>DDGSTF </span><span>bit </span><span>is set </span><span>to ‘1’ </span><span>in the FLAGS field, this field is present and contains </span><span>a valid </span><span>data digest (refer to section </span><span>3.3.1.1</span><span>).</span><span> </span><span>If the DDGSTF bit is cleared to ‘0’, then this field is not present.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Figure </span><span>27</span><span>: Controller To Host Data Transfer PDU (C2HData)</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>PDU Section</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>00</span>
+    </p>
+   </td>
+   <td rowspan="5">
+    <p>
+     <span>CH</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">PDU-Type:</span><span> 07h</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>01</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">FLAGS:</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell0">
+       <p>
+        <span>Bits</span>
+       </p>
+      </th>
+      <th class="tcell0">
+       <p>
+        <span>Description</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>7:4</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>3</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">SUCCESS:</span><span> If set to ‘1’, indicates that the command referenced by CCCID was completed successfully with no other information and that no </span><span>R</span><span>esponse </span><span>Capsule </span><span>PDU is sent by the Controller.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>2</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">LAST_PDU:</span><span> If set to ‘1’, indicates the PDU is the last </span><span>C2HData PDU sent in response to a Command Capsule</span><span> PDU</span><span>.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>1</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">DDGSTF:</span><span> If set to ‘1’, then </span><span>the</span><span> </span><span>DDGST </span><span>field </span><span>follows the PDU Da</span><span>ta</span><span> </span><span>and contains a valid value. If cleared to ‘0’, then the DDGST field is not present.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>0</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">HDGSTF:</span><span> If set to ‘1’, then </span><span>the</span><span> </span><span>HDGST </span><span>field </span><span>follows the </span><span>PDU Header</span><span> </span><span>and contains a valid value. If cleared to ‘0’, then the HDGST field is not present.</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>02</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">HLEN:</span><span> Fixed length of 24 bytes (</span><span>i.e., </span><span>18h).</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>03</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">PDO:</span><span> Data </span><span>o</span><span>ffset within PDU</span><span> </span><span>(i.e., the offset from byte 0 to the PDU-Data field; the value of ‘N’</span><span>)</span><span>. </span><span>This value shall be a multiple of the data alignment specified by the HPDA field in the ICReq PDU </span><span>(refer to section </span><span>3.6.2.2</span><span>‎)</span><span> that was previously sent by the host on this TCP connection</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>07:04</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">PLEN:</span><span> Total length of PDU (</span><span>i.e., </span><span>including </span><span>CH, PSH</span><span>, HDGST, PAD, DATA, and DDGST) in bytes.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>09:08</span>
+    </p>
+   </td>
+   <td rowspan="5">
+    <p>
+     <span>PSH</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">Command Capsule CID (CCCID):</span><span> This field contains the SQE.CID value of the Command Capsule</span><span> PDU</span><span> associated with the host</span><span>-</span><span>resident data.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>11:10</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>15:12</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">Data Offset (DATAO):</span><span> Byte offset from start of host</span><span>-</span><span>resident data</span><span> to the first byte to transfer</span><span>. This value shall be dword aligned.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>19:16</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">Data Length (DATAL):</span><span> PDU</span><span>-</span><span>D</span><span>ata</span><span> field length in bytes</span><span> </span><span>(i.e., the value of M-N)</span><span>. This value shall be dword aligned.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>23:20</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>HDGSTF=1</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>HDGSTF=0</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell1">
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>27:24</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Not present</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>HDGST</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">HDGST:</span><span> If </span><span>the </span><span>HDGSTF </span><span>bit </span><span>is set </span><span>to ‘1’ </span><span>in the FLAGS field, this field is present and contains </span><span>a valid </span><span>header digest (refer to section </span><span>3.3.1.1</span><span>).</span><span> </span><span>If the HDGSTF bit is cleared to ‘0’, then this field is not present.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>N - 1:</span><span>28</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>N - 1:24</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>PAD</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">PAD:</span><span> If </span><span>the </span><span>HPDA </span><span>field (refer to section </span><span>3.6.2.2</span><span>) </span><span>is set to a non-zero value, then </span><span>the length of this field shall be the necessary number of bytes required to achieve the alignment specified by the HPDA field.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>M - 1:N</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>DATA</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">PDU-Data</span><span class="txtfmt1">: </span><span>This field contains the host-resident data being transferred.  The length of this field is a multiple of dwords.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>DDGSTF=1</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>DDGSTF=0</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell1">
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>M + 3:M</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Not present</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>DDGST</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">Data Digest (DDGST):</span><span> </span><span>If the DDGSTF bit is set to ‘1’ in the FLAGS field, this field is present and contains a valid </span><span>d</span><span>ata digest (refer to section </span><span>3.3.1.1</span><span>) of the PDU-Data field.</span><span> </span><span>If the DDGSTF bit is cleared to ‘0’, then this field is not present.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="5">
+    <p>
+     <span>Figure </span><span>28</span><span>: Ready to Transfer PDU (R2T)</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>PDU Section</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>00</span>
+    </p>
+   </td>
+   <td rowspan="5">
+    <p>
+     <span>CH</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PDU-Type:</span><span> 09h</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>01</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">FLAGS:</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell0">
+       <p>
+        <span>Bits</span>
+       </p>
+      </th>
+      <th class="tcell0">
+       <p>
+        <span>Description</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>7:1</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>0</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">HDGSTF:</span><span> If set to ‘1’, then </span><span>the</span><span> </span><span>HDGST</span><span> </span><span>field </span><span>follows the </span><span>PDU Header</span><span> </span><span>and contains a valid value. If cleared to ‘0’, then the HDGST field is not present.</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>02</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">HLEN:</span><span> Fixed length of 24 bytes (</span><span>i.e., </span><span>18h).</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>03</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PDO:</span><span> Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>07:04</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">PLEN:</span><span> Length of </span><span>CH, PSH,</span><span> and HDGST</span><span>,</span><span> if present</span><span>,</span><span> in bytes.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>09:08</span>
+    </p>
+   </td>
+   <td rowspan="5">
+    <p>
+     <span>PSH</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Command Capsule CID (CCCID):</span><span> This field contains the SQE.CID value of the Command Capsule </span><span>PDU </span><span>associated with the host</span><span>-</span><span>resident data.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>11:10</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Transfer Tag (TTAG):</span><span> This field contains a controller generated tag. The rules of the tag generation are </span><span>outside the scope of this specification</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>15:12</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Requested Data Offset (R2TO):</span><span> Byte offset from the start of the host-resident data</span><span> to the first byte to transfer</span><span>. This value shall be dword aligned.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>19:16</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">Requested Data Length (R2TL):</span><span> Number of bytes of </span><span>Command Data Buffer</span><span> requested by the controller. This value shall be dword aligned.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>23:20</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>HDGSTF=1</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>HDGSTF=0</span>
+    </p>
+   </th>
+   <th colspan="3" class="tcell1">
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>27:24</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Not present</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>HDGST</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span class="txtfmt1">HDGST:</span><span> If</span><span> the</span><span> HDGSTF </span><span>bit </span><span>is set </span><span>to ‘1’ </span><span>in the FLAGS field, this field is present and contains </span><span>a valid </span><span>header digest (refer to section </span><span>3.3.1.1</span><span>).</span><span> </span><span>If the HDGSTF bit is cleared to ‘0’, then this field is not present.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+</body>
+</html>

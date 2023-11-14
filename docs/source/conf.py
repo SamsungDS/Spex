@@ -33,6 +33,7 @@ extlinks = {
     "pipx": ("https://pypa.github.io/pipx/%s", None),
     "pypi": ("https://pypi.org/%s", None),
     "repos-blob": ("https://github.com/OpenMPDK/Spex/blob/main/%s", None),
+    "repos-actions": ("https://github.com/OpenMPDK/Spex/actions/workflows/example.yml%s", None)
 }
 
 # -- Optins for HTML output -------------------------------------------------

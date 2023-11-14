@@ -3,18 +3,46 @@
 Using Spex
 ==========
 
-.. warning::
-    **What are stages?**
+**Spex** takes one or more **stage 0** or **stage 1** documents and produce for
+each a **stage 2** document. For details on these so-called **stages** and
+their associated **document format**, see the **Stages**
+:ref:`sec-guide-stages`.
 
-    This section will frequently mention documents by the stage they are
-    produced. See :ref:`sec-guide-stages` to read more.
+An example of how to do so is provided here. The example is split in two, the
+first is for NVMe workgroup members and the second for the public. The reason
+being that NVMe workgroup members has access to **stage 0** (DOCX)
+specification documents, the public does not.
 
+For NVMe members
+~~~~~~~~~~~~~~~~
 
-**Spex** can take one or more stage 0 or stage 1 documents and produce for
-each a stage 2 document, which describes the data-structures found in a
-format convenient for further processing.
-See the :ref:`introduction <sec-what-is-spex>` for more information.
+Place the **stage 0** (DOCX) documents in the ``stage0/`` folder of the
+**spex** repository, and then run::
 
+  spex stage0/*.docx --skip-figure-on-error --output output/
+
+When doing so, ``spex`` will convert the **stage 0** documents and store
+**stage 1** and **stage 2** versions of the files in the ``output`` folder.
+
+For public
+~~~~~~~~~~
+
+In the repository, at ``example/stage1``, specification documents are provided
+in **stage 1** (HTML) format::
+
+  spex stage1/*.html --skip-figure-on-error --output stage2/
+
+Consult the directory ``stage2`` to see the **stage 2** specification documents.
+
+.. note::
+   See ``spex.log`` for any issues arrising when running the above.
+
+The public example is executed on public infrastructure and the generated
+documents and log-files are available at the GitHUB Repository
+:repos-actions:`Actions <>`.
+
+A detailed description of the ``spex`` command-line interface is provided in
+the following sections.
 
 Getting help
 ------------
@@ -45,13 +73,13 @@ of appearance. If **Spex** fails to process a figure, processing is aborted
 
 You can provide this flag change that, causing **Spex** to skip any figure
 it cannot process rather than aborting processing outright.
-This will produce faulty stage 2 documents, but is useful when developing
+This will produce faulty **stage 2** documents, but is useful when developing
 Spex or updating/authoring a new specification document where you want to
 determine how many/which figures **Spex** has trouble processing.
 
 ``-o`` / ``--output``
 ~~~~~~~~~~~~~~~~~~~~~
-By default, **Spex** writes the stage 2 document and any error log to the
+By default, **Spex** writes the **stage 2** document and any error log to the
 current directory. This flag can be provided to cause the document(s) to
 be written elsewhere.
 

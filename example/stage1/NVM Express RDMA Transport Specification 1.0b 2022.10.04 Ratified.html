@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8" data-spec="NVM Express® RDMA Transport Specification" data-revision="1.0b"/>
+ <title>NVM Express RDMA Transport Specification 1.0b 2022.10.04 Ratified</title>
+ <link rel="stylesheet" href="NVM Express RDMA Transport Specification 1.0b 2022.10.04 Ratified.css"/>
+</head>
+<body>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>3</span><span>: Transport Specific Address Subtype Definition for RDMA Transport</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt0">RDMA QP Service Type: (RDMA_QPTYPE): </span><span>Specifies the type of RDMA Queue Pair. Valid values are shown in the following table:</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell0">
+       <p>
+        <span>Value</span>
+       </p>
+      </th>
+      <th class="tcell0">
+       <p>
+        <span>Definition</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>00</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>01</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reliable Connected</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>02</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reliable Datagram</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>03 to 255</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>01</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt0">RDMA Provider Type: (RDMA_PRTYPE):</span><span> Specifies the type of RDMA provider. Valid values are shown in the following table:</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell0">
+       <p>
+        <span>Value</span>
+       </p>
+      </th>
+      <th class="tcell0">
+       <p>
+        <span>Definition</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>00</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>01</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>No provider specified</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>02</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>InfiniBand </span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>03</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>RoCE (v1)</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>04</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>RoCE (v2)</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>05</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>iWARP</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>06 to 255</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>02</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt0">RDMA Connection Management Service: (RDMA_CMS):</span><span> Specifies the type of RDMA </span><span>IP </span><span>Connection Management Service. Valid values are shown in the following table:</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell0">
+       <p>
+        <span>Value</span>
+       </p>
+      </th>
+      <th class="tcell0">
+       <p>
+        <span>Definition</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>00</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>01</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>RDMA_IP_CM. Sockets based endpoint addressing. For details on the RDMA IP CM Service, refer to the InfiniBand Trade Association specification Annex A11 or the iWARP specification.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>02 to 255</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>07:03</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>09:08</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt0">RDMA_PKEY: </span><span>Specifies the Partition Key when AF_IB (InfiniBand) address family type is used. Otherw</span><span>i</span><span>se this field is reserved</span><span>.</span><span> </span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>255:10</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Figure </span><span>4</span><span>: RDMA Transport Discovery Log Page Entry Usage by RDMA_CMS Value</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>RDMA_CMS Value</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Discovery Log Page Entry Field</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>Discover</span><span>y</span><span> Log Page Entry Field Values</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td rowspan="4">
+    <p>
+     <span>RDMA_</span><span>IP_</span><span>CM</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>TRTYPE</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>RDMA Transport</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>ADRFAM</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>AF_INET (IPV4), AF_INET6 (IPV6), AF_IB</span><span> (refer to the </span><span>Discovery Log Page Entry in the </span><span>NVM Express </span><span>Base Specification)</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>TRADDR</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>The value of this field is dependent on the value of the ADRFAM </span><span>f</span><span>ield. IPv4 and IPv6 address format is described in </span><span>the Discovery Log Page Entry in the </span><span>NVM Express </span><span>Base Specificaton</span><span>. AF_IB address format is an InfiniBand™ GUID in ASCII string format.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>TRSVCID</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>The value of this field is dependent on the value of the TRADDR field as shown.</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell0">
+       <p>
+        <span>TRADDR Value</span>
+       </p>
+      </th>
+      <th class="tcell0">
+       <p>
+        <span>TRSVCID Value (ASCII string)</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>IPv4 or IPv6</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>TCP or UDP port number: decimal number represented as an ASCII string with no leading zeroes.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>AF_IB</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>InfiniBand™ Service ID represented as 16 case insensitive ASCII hexadecimal digits (‘0’-‘9’, ‘a’-‘f’, ‘A-F</span><span>’</span><span>) in groups of 4 separated by hyphens (‘-‘), </span><span>(</span><span>e.g., dead-beef-0123-3210</span><span>).</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>5</span><span>: RDMA_CM_REQUEST Private Data Format</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>01:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt0">Record Format (RECFMT): </span><span>Specifies the format of the RDMA Private Data. If a new format is defined, this value is incremented by one. The format of the record specified in this definition shall be 0h.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>03:02</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt0">Queue ID (QID): </span><span>Refer to the Queue ID definition in the Connect </span><span>C</span><span>ommand</span><span> and Response section</span><span> in </span><span>the </span><span>NVM Express </span><span>Base Specification</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>05:04</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt0">RDMA QP Host Receive Queue Size (HRQSIZE): </span><span>This field indicates the number of RDMA QP receive queue entries allocated by the host’s RDMA Transport for capsule reception.</span><span> </span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>07:06</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt0">RDMA QP Host Send Queue Size (HSQSIZE): </span><span>This field indicates the number of RDMA QP send queue entries allocated by the host’s RDMA transport for capsule transmission. The value shall be set to the Submission Queue Size (SQSIZE). Refer to the SQSIZE definition in the Connect </span><span>Command and Response section in the </span><span>NVM Express </span><span>Base Specification</span><span>. This is a 0’s based value.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>09:08</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt0">Controller ID (CNTLID):</span><span> This field is used to indicate the Controller ID if the RDMA QP is for an I/O Queue. If the QID field is cleared to 0h (i.e., the RDMA QP is for an Admin Queue), this field shall be cleared to 0h. If the QID field is non-zero, this field should be set to the value of the Controller ID associated with the creation of this queue.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>31:10</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>6</span><span>: RDMA_CM_ACCEPT Private Data Format</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>01:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt0">Record Format (RECFMT): </span><span>Specifies the format of the RDMA Private Data. If a new format is defined, this value is incremented by one. The format of the record specified in this definition shall be 0h.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>03:02</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt0">RDMA QP Controller Receive Queue Size (CRQSIZE): </span><span>This field indicates the number of RDMA QP receive queue entries allocated by the controller’s RDMA Transport for capsule reception</span><span> as a 1’s based value</span><span>.</span>
+    </p>
+    <p>
+     <span>RDMA Transports that use RNR_RETRY</span><span>_COUNT</span><span> flow control may set this </span><span>field</span><span> to be less than or equal to the value </span><span>represented by the 0’s based value in the </span><span> HSQSIZE </span><span>field </span><span>specified in </span><span>Figure </span><span>5</span><span> (e.g., </span><span>if HSQSIZE is set to 3, then this field is set to a value less than or equal to 4)</span><span>.</span>
+    </p>
+    <p>
+     <span>RDMA Transports that do not use RNR_RETRY</span><span>_COUNT</span><span> shall set this value to be equal to the value </span><span>represented by the 0’s based value in the </span><span>HSQSIZE</span><span> field</span><span> specified in </span><span>Figure </span><span>5</span><span> (</span><span>e.g., if HSQSIZE is set to 4, then this field is set to 5)</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>31:04</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>7</span><span>: RDMA_CM_REJECT Private Data Format</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>01:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt0">Record Format (RECFMT): </span><span>Specifies the format of the RDMA Private Data. If a new format is defined, this value is incremented by one. The format of the record specified in this definition shall be 0h.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>03:02</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt0">Status (STS):</span><span> Specifies status for the associated RDMA_CM_REQUEST that is paired with this reject response. The valid status values are specified in </span><span>Figure </span><span>11</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>8</span><span>: Command Sequence Using RDMA Operations</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Data Transfer Direction</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Command Sequence Using RDMA Operations</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>No data to transfer</span>
+    </p>
+   </td>
+   <td>
+    <ul class="ul16">
+     <li>
+      <span>The host transmits the command capsule to the controller using an RDMA_SEND operation. </span>
+     </li>
+     <li>
+      <span>Command action completed by the controller.</span>
+     </li>
+     <li>
+      <span>The controller transmits the response capsule to the host using an RDMA_SEND operation. </span>
+     </li>
+     <li>
+      <span>The same RDMA QP shall be used for both RDMA_SEND operations.</span>
+     </li>
+    </ul>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Controller to host</span>
+    </p>
+   </td>
+   <td>
+    <ul class="ul16">
+     <li>
+      <span>The host transmits the command capsule to the controller using an RDMA_SEND operation. The capsule contains or points to SGL(s) required for the data transfer.</span>
+     </li>
+     <li>
+      <span>The controller uses RDMA_WRITE operation(s) to transfer data from the controller to the host. Each RDMA_WRITE </span><span>operation </span><span>is associated with one keyed remote host memory buffer (SGL) and one or more local controller memory buffer(s).</span>
+     </li>
+     <li>
+      <span>The controller transmits the response capsule to the host using an RDMA_SEND or (optionally) RDMA_SEND_INVALIDATE operation. </span>
+     </li>
+     <li>
+      <span>The same RDMA QP shall be used for the RDMA_WRITE operation(s) and the RDMA_SEND operation.</span>
+     </li>
+    </ul>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Host to controller</span>
+    </p>
+   </td>
+   <td>
+    <ul class="ul16">
+     <li>
+      <span>The host transmits the command capsule to the controller using an RDMA_SEND operation. The capsule contains or points to SGL(s) required for the data transfer. The capsule may contain in-capsule data, which is pointed to by an offset address in an SGL within the capsule.</span>
+     </li>
+     <li>
+      <span>For host-resident command data, the controller uses RDMA_READ operation</span><span>(</span><span>s</span><span>)</span><span> to transfer the data from the host to the controller. Each RDMA_READ is associated with one keyed remote memory buffer (SGL) and one or more local memory buffer(s).</span>
+     </li>
+     <li>
+      <span>The controller transmits the response capsule to the host using an RDMA_SEND or (optionally) RDMA_SEND_INVALIDATE operation.</span>
+     </li>
+     <li>
+      <span>The same RDMA QP shall be used for the RDMA_READ operation(s) and the RDMA_SEND operation.</span>
+     </li>
+    </ul>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Figure </span><span>9</span><span>: RDMA Capsule Size and SGL Mapping</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Capsule Type</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Capsule Size</span><span> (bytes)</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>SGL Type</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Fabrics and Admin Commands</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>64</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Host-resident data buffer only.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Fabrics and Admin Responses</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>16</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>n/a</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>I/O Queue Command</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>IOCCSZ * 16</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Host-resident data buffer or in-capsule data.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>I/O Queue Response</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>16</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>n/a</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="3">
+    <p>
+     <span>Figure </span><span>10</span><span>: SGL Sub Types Specific to RDMA</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>SGL </span><span>Descriptor Types</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Sub Type</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Sub Type Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>All</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Ah to Eh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>0</span><span>h, 1h, 2h, 3h, 5h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Fh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Keyed SGL Data Block (4h)</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Fh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt0">Invalidate Key: </span><span>The host uses this Sub Type to specify that the controller should remotely invalidate the RKEY. If the controller does not support remote invalidate, then this Sub Type is ignored.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>11</span><span>: RDMA Transport Errors</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Value</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>1h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt0">RDMA Invalid Private Data Length: </span><span>The host sent an incorrect </span><span>RDMA P</span><span>rivate </span><span>D</span><span>ata size.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>2h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt0">RDMA Invalid RECFMT:</span><span> The host sent an invalid RECFMT.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>3h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt0">RDMA Invalid QID: </span><span>The host sent an invalid QID.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>4h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt0">RDMA Invalid HSQSIZE</span><span>: The host sent an invalid HSQSIZE.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>5h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt0">RDMA Invalid HRQSIZE: </span><span>The</span><span class="txtfmt0"> </span><span>host sent an invalid HRQSIZE.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>6h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt0">RDMA No Resources</span><span>: The controller-side RDMA transport is unable to create the RDMA QP due to lack of resources.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>7h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt0">RDMA Invalid IRD:</span><span> The host sent an invalid IRD value. </span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>8h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt0">RDMA Invalid ORD: </span><span>The host sent an invalid ORD value.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>9h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt0">RDMA Invalid CNTLID:</span><span> The host sent an invalid CNTLID value.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Ah to FFh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+</body>
+</html>
