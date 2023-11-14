@@ -1,0 +1,6108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8" data-spec="NVM Express® Zoned Namespace Command Set Specification" data-revision="1.1c"/>
+ <title>NVM Express Zoned Namespace Command Set Specification 1.1c 2022.10.03 Ratified</title>
+ <link rel="stylesheet" href="NVM Express Zoned Namespace Command Set Specification 1.1c 2022.10.03 Ratified.css"/>
+</head>
+<body>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>3</span><span>: Summary of Zone Descriptor Attributes</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td class="tcell0">
+    <p>
+     <span>Attribute</span>
+    </p>
+   </td>
+   <td class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Zone Type</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>The zone type </span><span>attribute </span><span>defines the rules for reading and writing to a zone.</span>
+    </p>
+    <table>
+     <tr>
+      <td class="tcell0">
+       <p>
+        <span>Zone Type</span>
+       </p>
+      </td>
+      <td class="tcell0">
+       <p>
+        <span>Reference Section</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>Sequential Write Required</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>2.1.1.2.1</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Zone State</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Each zone has an associated state machine. That state machine has a set of states and each state, together with the zone type, defines the operational characteristics of that zone.</span>
+    </p>
+    <table>
+     <tr>
+      <td class="tcell0">
+       <p>
+        <span>Zone Type</span>
+       </p>
+      </td>
+      <td class="tcell0">
+       <p>
+        <span>Zone State</span>
+       </p>
+      </td>
+      <td class="tcell0">
+       <p>
+        <span>Reference Section</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td rowspan="7">
+       <p>
+        <span>Sequential Write Required</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>ZSE:Empty</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>2.1.1.3.1</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>ZSIO:Implicitly Opened</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>2.1.1.3.2</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>ZSEO:Explicitly Opened</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>2.1.1.3.3</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>ZSC:Closed</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>2.1.1.3.4</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>ZSF:Full</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>2.1.1.3.5</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>ZSRO:Read Only</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>2.1.1.3.6</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>ZSO:Offline</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>2.1.1.3.7</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Write Pointer</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>The Write Pointer </span><span>attribute </span><span>defines the</span><span> </span><span>lowest numbered</span><span> writeable logical block address in that zone. The validity of the write pointer is zone state specific and </span><span>is </span><span>defined per zone type (refer to section </span><span>2.1.1.2</span><span>). </span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Zone Start Logical Block Address</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>The Zone Start Logical Block Address (ZSLBA) </span><span>attribute </span><span>defines the lowest logical block address for that zone.</span><span> </span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Zone Capacity</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>The Zone Capacity </span><span>attribute </span><span>defines the writ</span><span>e</span><span>able capacity of that zone.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Zone Descriptor Extension Valid</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>The Zone Descriptor Extension </span><span>Valid</span><span> </span><span>attribute </span><span>defines the validity of the Zone Descriptor Extension data of that zone. Refer to section </span><span>5.3</span><span>.</span><span> </span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Reset Zone Recommended</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>The Reset Zone Recommended </span><span>attribute </span><span>indicates that the controller recommends that the host resets that zone. Refer to sectio</span><span>n </span><span>5.4</span><span>.</span><span> </span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Finish Zone Recommended</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>The Finish Zone Recommended </span><span>attribute </span><span>indicates that the controller recommends that the host finishes that zone. Refer to section </span><span>5.5</span><span>.</span><span> </span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Zone Finished by Controller</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>The Zone Finished by Controller </span><span>attribute </span><span>indicates that the controller finished that zone due to a Zone Active Excursion. Refer to section </span><span>5.6</span><span>.</span><span> </span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Figure </span><span>4</span><span>: Zone Characteristics</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td rowspan="2" class="tcell0">
+    <p>
+     <span>State</span>
+    </p>
+   </td>
+   <td colspan="3" class="tcell0">
+    <p>
+     <span>Zone Characteristics</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td class="tcell0">
+    <p>
+     <span>Valid Write Pointer</span><span class="txtfmt0"> </span><span class="txtfmt0">1</span>
+    </p>
+   </td>
+   <td class="tcell0">
+    <p>
+     <span>Active Resources</span><span class="txtfmt0"> </span><span class="txtfmt0">2</span>
+    </p>
+   </td>
+   <td class="tcell0">
+    <p>
+     <span>Open Resources </span><span class="txtfmt0">2</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>ZSE:Empty</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Yes</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>No</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>No</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>ZSIO:Implicitly Opened</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Yes</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Yes</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Yes</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>ZSEO:Explicitly Opened</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Yes</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Yes</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Yes</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>ZSC:Closed</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Yes</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Yes</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>No</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>ZSF:Full</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>No</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>No</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>No</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>ZSRO:Read Only</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>No</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>No</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>No</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>ZSO:Offline</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>No</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>No</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>No</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Notes</span><span>:</span>
+    </p>
+    <ol class="ol32">
+     <li>
+      <span>A valid write pointer (i.e., Yes) indicates that the write pointer zone attribute within that zone contains a valid logical block address. An invalid write pointer (i.e., No) provides no information.</span>
+     </li>
+     <li>
+      <span>Resources associated with a zone are defined in section </span><span>2.1.1.4</span><span>.</span>
+     </li>
+    </ol>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="3">
+    <p>
+     <span>Figure </span><span>8</span><span>: </span><span>Zone Resources</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td class="tcell0">
+    <p>
+     <span>Resource</span>
+    </p>
+   </td>
+   <td class="tcell0">
+    <p>
+     <span>States</span>
+    </p>
+   </td>
+   <td class="tcell0">
+    <p>
+     <span>Comment</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Active</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>ZSIO:Implicitly Opened, ZSEO:Explicitly Opened, ZSC:Closed</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Zones in zone states associated with this resource are limited by the Maximum Active Resources field.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Open</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>ZSIO:Implicitly Opened, ZSEO:Explicitly Opened</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Zones in zone states associated with this resource are limited by the Maximum Open Resources field.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="3">
+    <p>
+     <span>Figure </span><span>9</span><span>: I/O Controller – </span><span>Zoned Namespace Command Set</span><span> </span><span>Support</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Command</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell1">
+    <p>
+     <span>Command Support Requirements </span><span class="txtfmt0">1</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Zone Management Send</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>M</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Zone Management Receive</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>M</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Zone Append</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="3">
+    <p>
+     <span>Notes</span><span>:</span>
+    </p>
+    <ol class="ol17">
+     <li>
+      <span>O = Optional, M = Mandatory, P = Prohibited</span>
+     </li>
+    </ol>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="3">
+    <p>
+     <span>Figure </span><span>10</span><span>: I/O Controller - </span><span>Zoned Namespace Command Set</span><span> Specific Log Page Support</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Log Page</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell1">
+    <p>
+     <span>Log Page</span><span> Support Requirements </span><span class="txtfmt0">1</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Changed Zone List</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="3">
+    <p>
+     <span>Notes</span><span>:</span>
+    </p>
+    <ol class="ol13">
+     <li>
+      <span>O = Optional, M = Mandatory, P = Prohibited</span>
+     </li>
+    </ol>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="3">
+    <p>
+     <span>Figure </span><span>11</span><span>: Status Code – Command Specific Status Values, </span><span>Zoned Namespace Command Set</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Value</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Commands Affected</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>B8h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Zone Boundary Error</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Compare</span><span class="txtfmt1">1</span><span>, Copy</span><span class="txtfmt1">1</span><span>, </span><span>Read</span><span class="txtfmt1">1</span><span>, Verify</span><span class="txtfmt1">1</span><span>, Write, Write Uncorrectable, Write Zeroes, Zone Append</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>B9h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Zone Is Full</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Copy, </span><span>Write, Write Uncorrectable, Write Zeroes, Zone Append</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>BAh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Zone Is Read Only</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Copy, </span><span>Write, Write Uncorrectable, Write Zeroes, Zone Append</span><span>, Zone Management Send</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>BBh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Zone Is Offline</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Compare, Copy, </span><span>Read, Verify, Write, Write Uncorrectable, Write Zeroes, Zone Append</span><span>, Zone Management Send</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>BCh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Zone Invalid Write</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Copy, </span><span>Write, Write Uncorrectable, Write Zeroes</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>BDh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Too Many Active Zones</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Copy, </span><span>Write, Write Uncorrectable, Write Zeroes, Zone Append, Zone Management Send</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>BEh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Too Many Open Zones</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Copy, </span><span>Write, Write Uncorrectable, Write Zeroes, Zone Append, Zone Management Send</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>BFh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Invalid Zone State Transition</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Zone Management Send</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="3">
+    <p>
+     <span>Notes</span><span>:</span>
+    </p>
+    <ol class="ol77">
+     <li>
+      <span>This command is affected if the Read Across Zone Boundaries bit in the </span><span>Zoned Namespace Command Set</span><span> specific Identify Namespace data structure</span><span> (refer to</span><span> section</span><span> </span><span>4.1.5.1</span><span>)</span><span> is cleared to ‘0’.</span>
+     </li>
+    </ol>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="6">
+    <p>
+     <span>Figure </span><span>12</span><span>: Opcodes for </span><span>Zoned Namespace Command Set</span><span> </span><span>I/O </span><span>Commands</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th colspan="3" class="tcell1">
+    <p>
+     <span>Opcode by Field</span>
+    </p>
+   </th>
+   <th rowspan="3" class="tcell1">
+    <p>
+     <span>Combined Opcode </span><span class="txtfmt0">1</span>
+    </p>
+   </th>
+   <th rowspan="3" class="tcell1">
+    <p>
+     <span>Command </span><span class="txtfmt0">2</span>
+    </p>
+   </th>
+   <th rowspan="3" class="tcell1">
+    <p>
+     <span>Reference</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>(07)</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>(06:02)</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>(01:00)</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Standard Command</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Function</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Data</span>
+    </p>
+    <p>
+     <span>Transfer</span><span> </span><span class="txtfmt0">3</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <th colspan="6" class="tcell1">
+    <p>
+     <span>NVM Express </span><span>Base Specification</span><span> </span><span>I/O c</span><span>ommands </span><span>implemented by </span><span>th</span><span>is specification</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Refer to the </span><span>NVM Express </span><span class="txtfmt2">Base Specification</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Flush </span><span class="txtfmt1">4</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>NVM Express </span><span class="txtfmt2">Base Specification</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Refer to the </span><span>NVM Express </span><span class="txtfmt2">Base Specification</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reservation Register</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>NVM Express </span><span class="txtfmt2">Base Specification</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Refer to the </span><span>NVM Express </span><span class="txtfmt2">Base Specification</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reservation Report</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>NVM Express </span><span class="txtfmt2">Base Specification</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Refer to the </span><span>NVM Express </span><span class="txtfmt2">Base Specification</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reservation Acquire</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>NVM Express </span><span class="txtfmt2">Base Specification</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Refer to the </span><span>NVM Express </span><span class="txtfmt2">Base Specification</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reservation Release</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>NVM Express </span><span class="txtfmt2">Base Specification</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th colspan="6" class="tcell1">
+    <p>
+     <span>NVM Command Set commands </span><span>implemented by </span><span>this specification</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Refer to </span><span>the </span><span>NVM Command Set Specification</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Dataset Management</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">NVM Command Set Specification</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th colspan="6" class="tcell1">
+    <p>
+     <span>NVM Command Set</span><span> commands modified by this specification</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Refer to the </span><span>NVM Command Set Specification</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Write</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">3.3.7</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Refer to the </span><span>NVM Command Set Specification</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Read</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">3.3.3</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Refer to the </span><span>NVM Command Set Specification</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Write Uncorrectable</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">3.3.8</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Refer to the </span><span>NVM Command Set Specification</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Compare</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">3.3.1</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Refer to the </span><span>NVM Command Set Specification</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Write Zeroes</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">3.3.9</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Refer to the </span><span>NVM Command Set Specification</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Verify</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">3.3.6</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Refer to the </span><span>NVM Command Set Specification</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Copy</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">3.3.2</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th colspan="6" class="tcell1">
+    <p>
+     <span>I/O c</span><span>ommands defined in this specification</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">0b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">111 10b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">01b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">79h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Zone Management</span><span class="txtfmt2"> Send</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">3.4.3</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">0b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">111 10b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">10b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">7Ah</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Zone Management Receive</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">3.4.2</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">0b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">111 11b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">01b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">7Dh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Zone Append</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">3.4.1</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="6">
+    <p>
+     <span>Notes</span><span>:</span>
+    </p>
+    <ol class="ol61">
+     <li>
+      <span>Opcodes not listed are defined in the </span><span>NVM Express </span><span>Base Specification</span><span> and </span><span>in </span><span>the </span><span>NVM Command Set Specification</span><span>.</span>
+     </li>
+     <li>
+      <span>All </span><span>Zoned </span><span>Namespace </span><span>Command Set</span><span> Commands use the Namespace Identifier (NSID) field. The value FFFFFFFFh is not supported in this field unless footnote </span><span>4</span><span> in this figure indicates that a specific command does support that value.</span>
+     </li>
+     <li>
+      <span>Indicates the data transfer direction of the command. All options to the command shall transfer data as specified or transfer no data. All commands, including vendor specific commands, shall follow this convention: 00b = no data transfer; 01b = host to controller; 10b = controller to host; 11b = bidirectional.</span>
+     </li>
+     <li>
+      <span>This command may support the use of the Namespace Identifier (NSID) field set to FFFFFFFFh.</span>
+     </li>
+    </ol>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>13</span><span>: </span><span>Compare</span><span> – Command Specific Status Values</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Value</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">B8h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Boundary Error:</span><span> </span><span>The command specifies logical blocks in more than one zone.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">B9h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Is Full:</span><span> The accessed zone is </span><span>in the ZS</span><span>F:Full state.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BAh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Is Read Only:</span><span> The accessed zone is </span><span>in the ZS</span><span>RO:Read Only state.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BBh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Is Offline:</span><span> The accessed zone is </span><span>in the ZS</span><span>O:Offline state.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BCh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Invalid Write:</span><span> </span><span>The write to </span><span>a </span><span>zone was not at the write pointer. </span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BDh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Too Many Active Zones:</span><span> The controller </span><span>does</span><span> not allow additional active zones.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BEh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Too Many Open Zones:</span><span> The controller </span><span>does</span><span> not allow additional open zones.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>14</span><span>: Copy – Command Specific Status Values</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Value</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">B8h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Boundary Error: </span><span>The command specifies a Source Range Entry that contains logical blocks in more than one zone or a destination LBA range that contains logical blocks in more than one zone.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">B9h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Is Full:</span><span> The zone </span><span>specified by the destination LBA range </span><span>is </span><span>in the ZS</span><span>F:Full state.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BAh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Is Read Only:</span><span> The zone </span><span>specified by the destination LBA range </span><span>is </span><span>in the ZS</span><span>RO:Read Only state.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BBh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Is Offline:</span><span> </span><span>A zone specified by a Source Range Entry or the</span><span> zone </span><span>specified by the destination LBA range </span><span>is </span><span>in the ZS</span><span>O:Offline state.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BCh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Invalid Write: </span><span>The write to </span><span>the </span><span>zone </span><span>was not at the write pointer. </span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BDh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Too Many Active Zones:</span><span> The controller </span><span>does</span><span> not allow additional active zones.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BEh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Too Many Open Zones:</span><span> The controller </span><span>does</span><span> not allow additional open zones.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>15</span><span>: Dataset Management</span><span> </span><span>– Command Specific Status Values</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Value</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BBh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Is Offline:</span><span> </span><span>A zone specified by a Source Range Entry or the</span><span> zone </span><span>specified by the destination LBA range </span><span>is </span><span>in the ZS</span><span>O:Offline state.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>16</span><span>: Flush</span><span> </span><span>– Command Specific Status Values</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Value</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BBh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Is Offline:</span><span> </span><span>A zone specified by a Source Range Entry or the</span><span> zone </span><span>specified by the destination LBA range </span><span>is </span><span>in the ZS</span><span>O:Offline state.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>17</span><span>: Read – Command Specific Status Values</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Value</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">B8h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Boundary Error:</span><span> </span><span>The command specifies logical blocks in more than one zone.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BBh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Is Offline:</span><span> The accessed zone is </span><span>in the ZS</span><span>O:Offline state.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>18</span><span>: Verify – Command Specific Status Values</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Value</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">B8h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Boundary Error:</span><span> </span><span>The command specifies logical blocks in more than one zone.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BBh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Is Offline:</span><span> The accessed zone is </span><span>in the ZS</span><span>O:Offline state.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>19</span><span>: Write – Command Specific Status Values</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Value</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">B8h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Boundary Error:</span><span> </span><span>The command specifies logical blocks in more than one zone.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">B9h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Is Full:</span><span> The accessed zone is </span><span>in the ZS</span><span>F:Full state.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BAh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Is Read Only:</span><span> The accessed zone is </span><span>in the ZS</span><span>RO:Read Only state.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BBh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Is Offline:</span><span> The accessed zone is </span><span>in the ZS</span><span>O:Offline state.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BCh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Invalid Write:</span><span> </span><span>The write to </span><span>a </span><span>zone was not at the write pointer. </span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BDh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Too Many Active Zones:</span><span> The controller </span><span>does</span><span> not allow additional active zones.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BEh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Too Many Open Zones:</span><span> The controller </span><span>does</span><span> not allow additional open zones.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>20</span><span>: Write Uncorrectable – Command Specific Status Values</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Value</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">B8h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Boundary Error:</span><span> </span><span>The command specifies logical blocks in more than one zone.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">B9h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Is Full:</span><span> The accessed zone is </span><span>in the ZS</span><span>F:Full state.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BAh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Is Read Only:</span><span> The accessed zone is </span><span>in the ZS</span><span>RO:Read Only state.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BBh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Is Offline:</span><span> The accessed zone is </span><span>in the ZS</span><span>O:Offline state.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BCh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Invalid Write:</span><span> </span><span>The write to </span><span>a </span><span>zone was not at the write pointer. </span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BDh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Too Many Active Zones:</span><span> The controller </span><span>does</span><span> not allow additional active zones.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BEh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Too Many Open Zones:</span><span> The controller </span><span>does</span><span> not allow additional open zones.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>21</span><span>: Write Zeroes – Command Specific Status Values</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Value</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">B8h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Boundary Error:</span><span> </span><span>The command specifies logical blocks in more than one zone.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">B9h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Is Full:</span><span> The accessed zone is </span><span>in the ZS</span><span>F:Full state.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BAh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Is Read Only:</span><span> The accessed zone is </span><span>in the ZS</span><span>RO:Read Only state.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BBh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Is Offline:</span><span> The accessed zone is </span><span>in the ZS</span><span>O:Offline state.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BCh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Invalid Write:</span><span> </span><span>The write to </span><span>a </span><span>zone was not at the write pointer. </span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BDh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Too Many Active Zones:</span><span> The controller </span><span>does</span><span> not allow additional active zones.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BEh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Too Many Open Zones:</span><span> The controller </span><span>does</span><span> not allow additional open zones.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>22</span><span>: Zone Append – Metadata Pointer</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Bits</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>63:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Metadata Pointer (MPTR):</span><span> This field contains the Metadata Pointer, if applicable. Refer to the </span><span>Common Command Format figure </span><span>in the </span><span>NVM Express </span><span>Base Specification</span><span> for the definition of this field. </span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>23</span><span>: Zone Append – Data Pointer</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Bits</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>127:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Data Pointer (DPTR):</span><span> This field specifies the location of a data buffer where data is transferred from. Refer to the </span><span>Common Command Format figure </span><span>in the </span><span>NVM Express </span><span>Base Specification</span><span> for the definition of this field.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>24</span><span>: </span><span>Zone Append – Command Dword 2 and Dword 3</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell2">
+    <p>
+     <span>Bits</span>
+    </p>
+   </th>
+   <th class="tcell2">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>63:48</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>47:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>T</span><span>his field and Command Dword 14 specify t</span><span>he variable sized Logical Block Storage Tag (LBST) and Initial Logical Block Reference Tag (ILBRT) fields</span><span>, which</span><span> are defined in </span><span>the </span><span>NVM Express </span><span>Base Specification</span><span>.</span><span> If the namespace is not formatted to use end-to-end protection information, then this field is ignored.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>25</span><span>: Zone Append – Command Dword 10 and Command Dword 11</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Bits</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>63:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Start Logical Block Address (ZSLBA):</span><span> This field indicates the 64-bit address of the </span><span>lowest</span><span> logical block of the zone</span><span> in which the data and metadata, if applicable, associated with this command is to be stored</span><span>. Command Dword 10 contains bits 31:00; Command Dword 11 contains bits 63:32.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>26</span><span>: Zone Append – Command Dword 12</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Bits</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>31</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Limited Retry (LR):</span><span> If set to ‘1’, the controller should apply limited retry efforts. If cleared to ‘0’, the controller should apply all available error recovery means to write the data to the NVM, as defined in the </span><span>NVM Command Set Specification</span><span>. </span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>30</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Force Unit Access (FUA):</span><span> If set to ‘1’, then for </span><span>data </span><span>and metadata, if any, associated with logical blocks specified by the Zone Append command, the controller </span><span>shall </span><span>write that data and metadata, if any,</span><span> </span><span>to non-volatile media before indicating command completion.</span>
+    </p>
+    <p>
+     <span>There is no implied ordering with other commands. If cleared to ‘0’, then this bit has no effect, as defined in the </span><span>NVM Command Set Specification</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>29:26</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Protection Information (PRINFO):</span><span> Specifies the Protection Information field, as defined in the </span><span>NVM Command Set Specification</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">25</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt4">Protection Information Remap </span><span class="txtfmt4">(</span><span class="txtfmt4">PIREMAP):</span><span class="txtfmt2"> </span><span class="txtfmt2">This bit determines the contents of the reference tag written to the media (refer</span><span class="txtfmt2"> to section</span><span class="txtfmt2"> </span><span class="txtfmt2">3.4.1.1</span><span class="txtfmt2">)</span><span class="txtfmt2">.</span>
+    </p>
+    <p>
+     <span>If the specified </span><span>zoned </span><span>namespace is formatted for</span><span class="txtfmt2"> </span><span class="txtfmt2">Type 1 protection, the controller shall abort the command with a status of Invalid Protection Information if this bit is cleared to &#x27;0&#x27;</span><span class="txtfmt2">.</span>
+    </p>
+    <p>
+     <span>If the specified </span><span>zoned </span><span>namespace is formatted for</span><span class="txtfmt2"> </span><span class="txtfmt2">Type 3 protection, the controller shall abort the command with a status of Invalid Protection Information if this bit is set to &#x27;1&#x27;</span><span class="txtfmt2">.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">24</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Storage Tag Check (STC): </span><span>This bit specifies </span><span>that </span><span>the Storage Tag </span><span>field </span><span>shall be checked as part of end-to-end </span><span>data protection</span><span> processing</span><span> as defined in </span><span>the </span><span>NVM Command Set Specification</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">23:20</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt4">Directive Type (DTYPE)</span><span class="txtfmt2">: Specifies the Directive Type associated with the Directive S</span><span class="txtfmt2">pecific field (refer to the </span><span>NVM Express </span><span class="txtfmt2">Base Specification</span><span class="txtfmt2">).</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">19</span><span>:16</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>15:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Number of Logical Blocks (NLB):</span><span> This field indicates the number of logical blocks to be written. This is a 0’s based value.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>27</span><span>: Zone Append – Command Dword 13</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Bits</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>31:16</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt4">Directive Specific (DSPEC)</span><span class="txtfmt2">: Specifies the Directive Specific value associated with the Directive Type field (refer to </span><span class="txtfmt2">the </span><span>NVM Express </span><span class="txtfmt2">Base Specification</span><span class="txtfmt2">).</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>15:0</span><span>0</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>28</span><span>: Zone Append – Command Dword 14</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Bit</span><span>s</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>31:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>T</span><span>his field and bits 47:00</span><span> of Command Dwor</span><span>d 2 and Dword 3 specify t</span><span>he variable sized Logical Block Storage Tag (LBST) and Initial Logical Block Reference Tag (ILBRT) fields</span><span>, which</span><span> are defined in </span><span>the </span><span>NVM Command Set Specification</span><span>.</span><span> If the namespace is not formatted to use end-to-end protection information, then this field is ignored.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>29</span><span>: Zone Append – Command Dword 15</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Bits</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>31:16</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Logical B</span><span class="txtfmt3">lock Application Tag Mask (LBATM):</span><span> This field specifies the Application Tag Mask value. This field is ignored if the </span><span>zoned </span><span>namespace is not formatted to use end-to-end protection information. Refer to the End-to-end Data Protection section in the </span><span>NVM Command Set Specification</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>15:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Logical Block Application Tag (LBAT):</span><span> This field specifies the Application Tag value. This field is ignored if the </span><span>zoned </span><span>namespace is not formatted to use end-to-end protection information. Refer to the End-to-end Data Protection section in the </span><span>NVM Command Set Specification</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>30</span><span>: Zone Append – Command Specific Status Values</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Value</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">8</span><span class="txtfmt2">1</span><span class="txtfmt2">h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Invalid Protection Information</span><span class="txtfmt3">:</span><span> </span><span>The </span><span>Protection Information (PRINFO) field settings specified in the command are invalid for the Protection Information with which the namespace was formatted or the ILBRT field is invalid (refer to section </span><span>3.4.1</span><span>).</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">B8h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Boundary Error:</span><span> </span><span>The command specifies logical blocks in more than one zone.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">B9h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Is Full:</span><span> The accessed zone is </span><span>in the ZS</span><span>F:Full state.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BAh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Is Read Only:</span><span> The accessed zone is </span><span>in the ZS</span><span>RO:Read Only state.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BBh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Is Offline:</span><span> The accessed zone is </span><span>in the ZS</span><span>O:Offline state.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BDh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Too Many Active Zones:</span><span> The controller </span><span>does</span><span> not allow additional active zones.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BEh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Too Many Open Zones:</span><span> The controller </span><span>does</span><span> not allow additional open zones.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>31</span><span>: Zone Management Receive – Data Pointer</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Bits</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>127:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Data Pointer (DPTR):</span><span> This field specifies the location of a data buffer where data is transferred from. Refer to the </span><span>NVM Express </span><span>Base Specification</span><span> for the definition of this field.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>32</span><span>: Zone Management Receive – Command Dword 10 and Command Dword 11</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Bits</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>63:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Starting LBA (SLBA):</span><span> This field specifies an LBA in the lowest numbered zone that the Zone Receive Action operates on. Command Dword 10 contains bits 31:00; Command Dword 11 contains bits 63:32.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>33</span><span>: Zone Management Receive – Command Dword 12</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Bits</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>31:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Number of Dwords:</span><span> </span><span>This field specifies the number of dwords to return. If host software specifies a size larger than</span><span> what </span><span>the </span><span>Zone Receive Action data structure returns</span><span>,</span><span> then</span><span> the controller </span><span>returns the complete result with undefined results for dwords beyond the end of the data of the Zone Receive Action data structure. </span><span>This is a 0’s based value.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>34</span><span>: Zone Management Receive – Command Dword 13</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Bits</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>31:17</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>16</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Receive Action Specific Features:</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell1">
+       <p>
+        <span>Zone Receive Action</span>
+       </p>
+      </th>
+      <th class="tcell1">
+       <p>
+        <span>Description</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>Report Zones</span>
+       </p>
+      </td>
+      <td rowspan="2">
+       <p>
+        <span class="txtfmt3">Partial Report:</span><span> </span><span>If this bit is cleared to ‘0’, then the value in the Number of Zones field</span><span>s</span><span> (refer to </span><span>Figure 35</span><span> and </span><span>Figure 36</span><span>) indicates the number of </span><span>Zone Descriptor</span><span>s that match the criteria in the Zone Receive Action Specific field.</span>
+       </p>
+       <p>
+        <span>If this bit is set to ‘1’, then the value in the Number of Zones field</span><span>s</span><span> indicates the number of fully transferred </span><span>Zone Descriptor</span><span>s in the data buffer.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>Extended Report Zones</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>All other values</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>15:08</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Receive Action Specific:</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell1">
+       <p>
+        <span>Zone Receive Action</span>
+       </p>
+      </th>
+      <th class="tcell1">
+       <p>
+        <span>Description</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>Report Zones</span>
+       </p>
+      </td>
+      <td rowspan="2">
+       <p>
+        <span class="txtfmt3">Reporting Options</span><span class="txtfmt3">:</span>
+       </p>
+       <table>
+        <tr>
+         <th class="tcell1">
+          <p>
+           <span>Value</span>
+          </p>
+         </th>
+         <th class="tcell1">
+          <p>
+           <span>Description</span>
+          </p>
+         </th>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>0h</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>List all zones.</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>1h</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>List the zones </span><span>in the</span><span> ZSE:Empty</span><span> state.</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>2h</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>List the zones in the ZSIO:Implicitly Opened state.</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>3h</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>List the zones in the ZSEO:Explicitly Opened state.</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>4h</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>List the zones </span><span>in the</span><span> ZSC:Closed</span><span> state.</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>5h</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>List the zones </span><span>in the </span><span>ZSF:Full</span><span> state.</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>6h</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>List the zones in the ZSRO:Read Only state.</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>7h</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>List the zones in the ZSO:Offline state.</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>8h</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>Reserved</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>9h</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>List all zones that have the zone attribute in the Zone Attribute field of the Zone Descriptor data structure (refer to </span><span>Figure 37</span><span>):</span>
+          </p>
+          <p>
+           <span>•</span><span>Reset Zone Recommended bit set to ‘1’;</span>
+          </p>
+          <p>
+           <span>•</span><span>Finish Zone Recommended bit set to ‘1’; or</span>
+          </p>
+          <p>
+           <span>•</span><span>Zone Finished by Controller bit set to ‘1’.</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>10h</span>
+          </p>
+         </td>
+         <td rowspan="3">
+          <p>
+           <span>Reserved</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>11h</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>3Fh</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>All other values</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>Reserved</span>
+          </p>
+         </td>
+        </tr>
+       </table>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>Extended Report Zones</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>All other values</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>07:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Receive Action (ZRA):</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell1">
+       <p>
+        <span>Value</span>
+       </p>
+      </th>
+      <th class="tcell1">
+       <p>
+        <span>Description</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>00h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt3">Report Zones:</span><span> Reports </span><span>Zone Descriptor</span><span> entries through the Report Zones data structure </span><span>(refer to </span><span>Figure 35</span><span>)</span><span>.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>01h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt3">Extended Report Zones</span><span class="txtfmt3">:</span><span> Reports </span><span>Zone Descriptor</span><span> entries through the Extended Report Zones data structure </span><span>(r</span><span>efer </span><span>to </span><span>Figure 36</span><span>)</span><span>. This value is supported if the </span><span>zoned </span><span>namespace is formatted with a non-zero Zone Descriptor Extension Size. Otherwise, </span><span>the </span><span>controller shall abort the command </span><span>with a status code of</span><span> Invalid Field in Command</span><span>.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>02h to FFh</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>35</span><span>: Report Zones Data Structure</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>07:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Number of Zones:</span><span> </span><span>If the Partial Report bit</span><span> (refer to </span><span>Figure 34</span><span>)</span><span> is cleared to ‘0’, then </span><span>this</span><span> field </span><span>indicates the number of</span><span> zone</span><span>s</span><span> that match</span><span> </span><span>the criteria </span><span>defined</span><span> in</span><span> section</span><span> </span><span>3.4.2.1.1</span><span>.</span>
+    </p>
+    <p>
+     <span>If the Partial Report </span><span>bit is set to ‘1’, then this field indicates the number of zones for which complete </span><span>Zone Descriptor</span><span>s were transferred to</span><span> the data buffer</span><span>.</span>
+    </p>
+    <p>
+     <span>Refer to section </span><span>3.4.2.1.1</span><span> for the content of the data buffer.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>63:08</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>127:64</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Descriptor 0:</span><span> Contains the Zone Descriptor for </span><span>the first zone reported, if any</span><span> (</span><span>r</span><span>efer to </span><span>Figure 37</span><span>).</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>191:128</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Descriptor 1:</span><span> Contains the Zone Descriptor for </span><span>the second zone reported, if any</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>…</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>…</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>((n+1)*64)+63</span><span>:(</span><span>n+1)*64</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Descriptor n:</span><span> Contains the Zone Descriptor for</span><span> the last zone reported, if any</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>36</span><span>: Extended Report Zones Data Structure</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Bytes</span><span> </span><span class="txtfmt0">1</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>07:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Number of Zones:</span><span> </span><span>If the Partial Report bit </span><span>(refer to </span><span>Figure 34</span><span>)</span><span> </span><span>is cleared to ‘0’, then </span><span>this</span><span> </span><span>field indicates the number of z</span><span>one</span><span>s </span><span>that match </span><span>the criteria </span><span>defined</span><span> in</span><span> section</span><span> </span><span>3.4.2.1.2</span><span>.</span>
+    </p>
+    <p>
+     <span>If the Partial Report bit is set to ‘1’, then </span><span>this field indicates the number of zones for which complete Zone Descriptors and complete Zone Descriptor Extensions were transferred to the data buffer.</span>
+    </p>
+    <p>
+     <span>Refer to section </span><span>3.4.2.1.2</span><span> for the content of the data buffer.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>63:08</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>127:64</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Descriptor 0:</span><span> Contains the Zone Descriptor for the first zone reported, if any (</span><span>r</span><span>efer to</span><span> </span><span>Figure 37</span><span>).</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>(ZDES</span><span>+127):128</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Descriptor Extension 0:</span><span> Contains the Zone Descriptor Extension for the first zone reported, if any. </span><span>If no </span><span>Zone Descriptor Extension</span><span> is associated </span><span>with</span><span> </span><span>the zone, then the contents of this field are undefined</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>(ZDES+191):(ZDES+128)</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Descriptor 1:</span><span> Contains the Zone Descriptor for the second zone reported, if any.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>((2*ZDES)+191):(ZDES+192)</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Descriptor Extension 1:</span><span> Contains the Zone Descriptor Extension for </span><span>the second zone reported, if any</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>…</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>…</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>((n*ZDES)+((n+2)*64)-1): ((n*ZDES)+((n+1)*64))</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Descriptor n:</span><span> Contains the Zone Descriptor for the last zone reported, if any.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>(((n+1)*ZDES)+((n+2)*64)-1): ((n*ZDES)+((n+2)*64))</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Descriptor Extension n:</span><span> Contains the Zone Descriptor Extension for the last zone reported, if any.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Notes</span><span>:</span>
+    </p>
+    <ol class="ol9">
+     <li>
+      <span>Z</span><span>D</span><span>ES corresponds to</span><span> the</span><span> </span><span>formatted </span><span>Zone Descriptor Extension Size field in bytes (i.e. value multiplied by 64) (</span><span>refer to </span><span>Figure 49</span><span>)</span><span>.</span>
+     </li>
+    </ol>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>37</span><span>: Zone Descriptor Data Structure</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>00</span>
+    </p>
+   </td>
+   <td>
+    <table>
+     <tr>
+      <th class="tcell1">
+       <p>
+        <span>Bits</span>
+       </p>
+      </th>
+      <th class="tcell1">
+       <p>
+        <span>Description</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>7:4</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>3:0</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt3">Zone Type (ZT):</span><span> This field indicates the type of the zone.</span>
+       </p>
+       <table>
+        <tr>
+         <th class="tcell1">
+          <p>
+           <span>Value</span>
+          </p>
+         </th>
+         <th class="tcell1">
+          <p>
+           <span class="txtfmt2">Definition</span>
+          </p>
+         </th>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>2h</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>Sequential Write Required</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>All other values</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>Reserved</span>
+          </p>
+         </td>
+        </tr>
+       </table>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>01</span>
+    </p>
+   </td>
+   <td>
+    <table>
+     <tr>
+      <th class="tcell1">
+       <p>
+        <span>Bits</span>
+       </p>
+      </th>
+      <th class="tcell1">
+       <p>
+        <span>Description</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>7:4</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt3">Zone State (ZS):</span><span> This field indicates the state of the zone.</span>
+       </p>
+       <table>
+        <tr>
+         <th class="tcell1">
+          <p>
+           <span>Value</span>
+          </p>
+         </th>
+         <th class="tcell1">
+          <p>
+           <span class="txtfmt2">Definition</span>
+          </p>
+         </th>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>0h</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>Reserved</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>1h</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>Empty</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>2h</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>Implicitly Opened</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>3h</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>Explicitly Opened</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>4h</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>Closed</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>5h to Ch</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>Reserved</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>Dh</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>Read Only</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>Eh</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>Full</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>Fh</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>Offline</span>
+          </p>
+         </td>
+        </tr>
+       </table>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>3:0</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>02</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Attributes (ZA):</span><span> Indicates attributes for the Zone:</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell1">
+       <p>
+        <span>Bits</span>
+       </p>
+      </th>
+      <th class="tcell1">
+       <p>
+        <span>Description</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>7</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt3">Zone Descriptor Extension Valid (ZDEV):</span><span> If this bit is set to ‘1’, then Zone Descriptor Extension data is associated with the zone. If this bit is cleared to ‘0’, then no Zone Descriptor Extension data is associated with the zone. Refer to section </span><span>5.1</span><span>.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>6:3</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>2</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt4">Reset Zone Recommended (RZR):</span><span class="txtfmt2"> If this bit is set to ‘1’, </span><span class="txtfmt2">then the controller recommends that this zone be reset. Refer </span><span class="txtfmt2">to section </span><span class="txtfmt2">5.4</span><span class="txtfmt2">.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>1</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt3">Finish Zone Recommended (FZR):</span><span> </span><span class="txtfmt2">If this bit is set to ‘1’, then </span><span class="txtfmt2">the controller recommends that this zone be finished. </span><span>Refer </span><span>to section </span><span>5.5</span><span>.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>0</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt3">Zone Finished by Controller (ZFC):</span><span> If this bit is set to ‘1’, then the controller finished this zone due to a Zone Active Excursion. Refer to section </span><span>5.6</span><span>.</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>03</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Attributes Information (ZAI):</span><span> Indicates additional information associated with attributes for the Zone:</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell3">
+       <p>
+        <span>Bits</span>
+       </p>
+      </th>
+      <th class="tcell3">
+       <p>
+        <span>Description</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>7:4</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>3:2</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt3">Reset Zone Recommended Time Limit</span><span class="txtfmt3"> </span><span class="txtfmt3">(RZRTL):</span><span> If the Reset Zone Recommended bit is set to ‘1’, then the value in this field selects a field in the I/O Command Set </span><span>s</span><span>pecific </span><span>Identify </span><span>N</span><span>amespace data structure for the Zoned Namespace Command Set that indicates amount of time before the NVM subsystem may perform a vendor specific action on a zone after the Reset Zone Recommended zone attribute is set to ‘1’ for that zone:</span>
+       </p>
+       <ul class="ul8">
+        <li>
+         <span>A 00b value indicates the Reset Recommended Limit (RRL) field;</span>
+        </li>
+        <li>
+         <span>A 01b value indicates the Reset Recommended Limit 1 (RRL1) field;</span>
+        </li>
+        <li>
+         <span>A 10b value indicates the Reset Recommended Limit 2 (RRL2) field; and</span>
+        </li>
+        <li>
+         <span>A 11b value indicates the Reset Recommended Limit 3 (RRL3) field.</span>
+        </li>
+       </ul>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>1:0</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt4">Finish Zone Recommended Time Limit (FZRTL):</span><span class="txtfmt2"> If the Finish Zone Recommended bit is set to ‘1’, then the value in this field selects a field in the I/O Command Set </span><span class="txtfmt2">s</span><span class="txtfmt2">pecific </span><span class="txtfmt2">Identify </span><span class="txtfmt2">N</span><span class="txtfmt2">amespace data structure for the Zoned Namespace Command Set that indicates the amount of time before the NVM subsystem may perform a vendor specific action on a zone after the Finish Zone Recommended zone attribute is set to ‘1’ for that zone:</span>
+       </p>
+       <p>
+        <span class="txtfmt2">•</span><span class="txtfmt2">A 00b value indicates the Finish Recommended Limit (FRL) field;</span>
+       </p>
+       <p>
+        <span class="txtfmt2">•</span><span class="txtfmt2">A 01b value indicates the Finish Recommended Limit 1 (FRL1) field;</span>
+       </p>
+       <p>
+        <span class="txtfmt2">•</span><span class="txtfmt2">A 10b value indicates the Finish Recommended Limit 2 (FRL2) field; and</span>
+       </p>
+       <p>
+        <span class="txtfmt2">•</span><span class="txtfmt2">A 11b value indicates the Finish Recommended Limit 3 (FRL3) field.</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>07:0</span><span>4</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>15:08</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Capacity (ZCAP):</span><span> </span><span>This field contains the maximum number of logical blocks that are available to be written with user data when the zone is in the ZSE:Empty state. This value shall be less than or equal to the Zone Size field (refer to </span><span>Figure 49</span><span>).</span>
+    </p>
+    <p>
+     <span>If the Variable Zone Capacity bit is cleared to ‘0’ in the Zone Operation Characteristics field in the </span><span>Zoned Namespace Command Set</span><span> specific Identify Namespace data structure (refer to</span><span> section</span><span> </span><span>4.1.5.1</span><span>), then this field does not change without a change to the format of the zoned namespace.</span>
+    </p>
+    <p>
+     <span>If the Variable Zone Capacity bit is set to ‘1’ in the Zone Operation Characteristics field in the </span><span>Zoned Namespace Command Set</span><span> specific Identify Namespace data structure, then the zone capacity may change upon successful completion of a Zone Management Send command specifying the Zone Send Action of Reset Zone (refer to sectio</span><span>n </span><span>3.4.3.1.4</span><span>).</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>23:16</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Start Logical Block Address (ZSLBA):</span><span> </span><span>This field contains the 64-bit address of the lowest logical block for </span><span>the</span><span> </span><span>zone.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>31:24</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Write Pointer (WP):</span><span> </span><span>This field is the logical block address where the next write operation for this zone should be issued. Refer to section </span><span>2.1.1.2.1</span><span> </span><span>for the behavior of the write pointer.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>63:32</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>38</span><span>: Zone Management Send – Command Dword 10 and Command Dword 11</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Bits</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>63:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Starting LBA (SLBA):</span><span> This field specifies the lowest LBA of the zone on which the Zone Send Action is performed. Command Dword 10 contains bits 31:00 of the SLBA; Command Dword 11 contains bits 63:32 of the SLBA.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>39</span><span>: Zone Management Send – Command Dword 13</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Bits</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>31:09</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>08</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Select All</span><span class="txtfmt3">:</span><span> If this bit is set to ‘1’, then the SLBA field </span><span>is</span><span> ignored. If this bit is cleared to ‘0’, then the SLBA field specifies the lowest logical block of the zone. Refer to section </span><span>3.4.3.1</span><span> for specific behavior for each Zone Send Action.</span><span> </span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>07:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Send Action (ZSA):</span><span> Defines the </span><span>zone</span><span> action to be performed for Zone Management Send.</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell1">
+       <p>
+        <span>Value</span>
+       </p>
+      </th>
+      <th class="tcell1">
+       <p>
+        <span>Description</span>
+       </p>
+      </th>
+      <th class="tcell1">
+       <p>
+        <span>Refer to section</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>00h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+      <td>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>01h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt3">Close Zone:</span><span> Close one or more zones.</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>3.4.3.1.1</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>02h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt3">Finish Zone:</span><span> Finish one or more zones.</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>3.4.3.1.2</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>03h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt3">Open Zone:</span><span> Open one or more zones.</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>3.4.3.1.3</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>04h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt3">Reset Zone:</span><span> Reset one or more zones.</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>3.4.3.1.4</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>05h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt3">Offline Zone:</span><span> Offline one or more zones.</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>3.4.3.1.5</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>06h to 0Fh</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+      <td>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>10h</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt3">Set Zone Descriptor Extension:</span><span> </span><span>Attach Zone Descriptor</span><span> Extension</span><span> data to a zone.</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>3.4.3.1.6</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>11h to FFh</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+      <td>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>40</span><span>: Zone Management Send – Command Specific Status Values</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Value</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BA</span><span class="txtfmt2">h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Is Read Only: </span><span>Zone is in the ZSRO:Read Only state.</span><span> </span><span>This may have occurred during the processing of the command.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BB</span><span class="txtfmt2">h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Is Offline: </span><span>Zone is in the ZSO:Offline state. This may have occurred during the processing of the command.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>BDh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Too Many Active Zones:</span><span> The controller does not allow additional active zones.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>BEh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Too Many Open Zones:</span><span> The controller does not allow additional open zones.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">BF</span><span class="txtfmt2">h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Invalid Zone State Transition:</span><span> The request is not a valid zone state transition.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>41</span><span>: Zone Management Send – Completion Queue Entry Dword 0</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Bits</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>31</span><span>:0</span><span>1</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Capacity Changed:</span><span> This bit indicates if the zone capacity has changed </span><span>for one or more of the zones specified by the command</span><span>. If this bit is set to ‘1’, then </span><span>a </span><span>zone capacity has changed due to this command. If this bit is cleared to ‘0’, then </span><span>a </span><span>zone capacity has not changed due to this command</span><span>. </span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>42</span><span>: Asynchronous Event Information – Notice, </span><span>Zoned Namespace Command Set</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Value</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>EFh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Descriptor Changed:</span><span> The Zone Descriptor data structure for a zone in a specific zoned namespace</span><span> (refer to </span><span>Figure 43</span><span>) has changed</span><span>. The </span><span>Zone Descriptor</span><span> of the zone</span><span> that changed</span><span> is indicated in the Changed Zone List log page. To clear this event, host software reads the Zone Changed List log </span><span>page </span><span>using the Get Log Page command with the Retain Asynchronous Event bit cleared to ‘0’.</span>
+    </p>
+    <p>
+     <span>For a specific zone, a Zone Descriptor data structure change</span><span> that occurred</span><span>,</span><span> </span><span>for</span><span> </span><span>any of the following reasons</span><span>,</span><span> shall not generate a Zone Descriptor Changed event and shall not cause modifications to the Changed Zones List log page:</span>
+    </p>
+    <ol class="ol74">
+     <li>
+      <span>a Zone Management Send command that specified that zone;</span>
+     </li>
+     <li>
+      <span>a Zone Management Send command that specified all zones;</span>
+     </li>
+     <li>
+      <span>a write operation that transitioned that zone: </span>
+     </li>
+    </ol>
+    <ol class="ol40">
+     <li>
+      <span>from the ZSE:Empty state to the ZSIO:Implicitly Opened state;</span>
+     </li>
+     <li>
+      <span>from the ZSIO:Implicitly Opened state to the ZSF:Full state;</span>
+     </li>
+     <li>
+      <span>from the ZSEO:Explicitly Opened state to the ZSF:Full state; </span><span>or</span>
+     </li>
+     <li>
+      <span>from the ZSC:Closed state to the ZSIO:Implicitly Opened state; </span>
+     </li>
+    </ol>
+    <ol class="ol74">
+     <li>
+      <span>the controller transitioning that zone to the ZSF:Full state due to an NVM Subsystem Reset; and</span>
+     </li>
+     <li>
+      <span>the controller transitioning that zone to the ZSC:Closed state</span><span> (refer to section </span><span>2.1.1.4.1</span><span>)</span><span>.</span>
+     </li>
+    </ol>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>43</span><span>: Asynchronous Event Request – Completion Queue Entry Dword 1</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>3:0</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Namespace Identifier (NSID):</span><span> </span><span>If the Asynchronous Event Request command </span><span>returned a Zoned Namespace Command Set Notice event (refer to Figure 42), then this field indicates the namespace identifier that the asynchronous event occurred on. If the Asynchronous Event Request command returned an event other than a Zoned Namespace Command Set Notice event, then this field is reserved.</span>
+    </p>
+    <p>
+     <span>If the Asynchronous Event Request command did not complete successfully, then this</span><span> field</span><span> is reserved.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>44</span><span>: </span><span>Asynchronous Event Configuration – Command Dword 11</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Bit</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">27</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt4">Zone Descriptor Changed Notices:</span><span class="txtfmt2"> </span><span class="txtfmt2">This bit </span><span class="txtfmt2">specifies whether an</span><span class="txtfmt2"> asynchronous event notification is sent </span><span class="txtfmt2">to the host for a Zone Descriptor Changed event</span><span class="txtfmt2">. If this bit is set to ‘1’, then the Zone Descriptor Change</span><span class="txtfmt2">d</span><span class="txtfmt2"> event is sent </span><span>as defined in</span><span> </span><span>Figure 42</span><span> </span><span class="txtfmt2">when this condition occurs. If this bit is cleared to ‘0’, then the controller shall not send the Zone Descriptor Change</span><span class="txtfmt2">d</span><span class="txtfmt2"> event to the host.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="5">
+    <p>
+     <span>Figure </span><span>45</span><span>: </span><span>Log Page Identifiers</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Log Identifier</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Scope</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Log Page Name</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Reference</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>BFh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Namespace </span><span class="txtfmt1">1</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Changed Zone List</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>4.1.4.1</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Key</span><span>:</span>
+    </p>
+    <p>
+     <span>Namespace = The log page contains information about a specific </span><span>zoned </span><span>namespace.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Notes</span><span>:</span>
+    </p>
+    <ol class="ol65">
+     <li>
+      <span>For namespace identifiers other than 0h or FFFFFFFFh.</span>
+     </li>
+    </ol>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>46</span><span>: </span><span>Changed </span><span>Zone List </span><span>Log Page</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <th colspan="2" class="tcell1">
+    <p>
+     <span>Header</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>01:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Number of Zone Identifiers:</span><span> </span><span>This field indicates the number of Zone Identifiers entries in the list. </span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>07:0</span><span>2</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th colspan="2" class="tcell1">
+    <p>
+     <span class="txtfmt3">Zone Identifier List</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>15:08</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Identifier 0:</span><span> This field contains the ZSLBA of the first zone in the list, if present. </span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>23:16</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Identifier 1:</span><span> This field contains the ZSLBA of the second zone in the list, if present. </span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>…</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>…</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>(N*8+15):(N*8+8)</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Identifier N:</span><span> This field contains the ZSLBA of the N+1 zone in the list, if present. </span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="7">
+    <p>
+     <span>Figure </span><span>47</span><span>: CNS Values</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>CNS Value</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>O/M </span><span class="txtfmt0">1</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Definition</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>NSID</span><span> </span><span class="txtfmt0">2</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>CNTID</span><span> </span><span class="txtfmt0">3</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>CSI</span><span> </span><span class="txtfmt0">4</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Reference Section</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <th colspan="7" class="tcell1">
+    <p>
+     <span>Active Namespace Management</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>00h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>M</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Identify Namespace data structure for the specified NSID or the common namespace capabilities for the NVM Command Set</span><span>.</span><span class="txtfmt1"> </span><span class="txtfmt1">5</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Y</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>N</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>N</span><span> </span><span class="txtfmt1">6</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>NVM Command Set Specification</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>01h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>M</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Identify Controller Data Structure, I/O Command Set Independent</span><span>.</span><span class="txtfmt1"> </span><span class="txtfmt1">5</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>N</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>N</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>N</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>NVM Express </span><span>Base Specification</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td rowspan="2">
+    <p>
+     <span>05h</span>
+    </p>
+   </td>
+   <td rowspan="2">
+    <p>
+     <span>M</span>
+    </p>
+   </td>
+   <td rowspan="2">
+    <p>
+     <span>I/O Command Set </span><span>s</span><span>pecific </span><span>Identify </span><span>Namespace data structure for the specified NSID for the I/O Command Set specified in the CSI field</span><span>.</span><span> </span><span class="txtfmt1">5</span>
+    </p>
+   </td>
+   <td rowspan="2">
+    <p>
+     <span>Y</span>
+    </p>
+   </td>
+   <td rowspan="2">
+    <p>
+     <span>N</span>
+    </p>
+   </td>
+   <td rowspan="2">
+    <p>
+     <span>Y</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>CSI 00h: </span><span>NVM Command Set Specification</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>CSI 02h: </span><span>4.1.5.1</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>06h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>M</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>I/O Command Set </span><span>s</span><span>pecific </span><span>Identify </span><span>Controller data structure for the controller processing the command</span><span>.</span><span class="txtfmt1"> </span><span class="txtfmt1">5</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Y</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>N</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Y</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>4.1.5.2</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>16h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>A Namespace Granularity List is returned to the host for up to sixteen Namespace Granularity Entries.</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>N</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>N</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>N</span><span> </span><span class="txtfmt1">6</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>NVM Command Set Specification</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="7">
+    <p>
+     <span>Notes</span><span>:</span>
+    </p>
+    <ol class="ol44">
+     <li>
+      <span>O/M definition: O = Optional, M = Mandatory.</span>
+     </li>
+     <li>
+      <span>The NSID field is used: Y = Yes, N = No.</span>
+     </li>
+     <li>
+      <span>The CDW10.CNTID field is used: Y = Yes, N = No.</span>
+     </li>
+     <li>
+      <span>The CDW11.CSI field is used: Y = Yes, N = No.</span>
+     </li>
+     <li>
+      <span>Selection of a UUID may be supported. Refer to</span><span> the </span><span>UUIDs for Vendor Specific Information</span><span> section of</span><span> </span><span>the </span><span>NVM Command Set Specification</span><span>.</span>
+     </li>
+     <li>
+      <span>This Identify data structure applies to namespace</span><span>s</span><span> that are associated with command sets that specify logical blocks (i.e., Comm</span><span>and S</span><span>et Identifier 0h or</span><span> Command Set Identifier</span><span> 02h</span><span>)</span><span>.</span>
+     </li>
+    </ol>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="3">
+    <p>
+     <span>Figure </span><span>48</span><span>:</span><span> </span><span>I/O Command Set Specific Identify Namespace Data Structure for the Zoned Namespace Command Set</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>O/M </span><span class="txtfmt0">1</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">0</span><span class="txtfmt2">1:</span><span class="txtfmt2">0</span><span class="txtfmt2">0</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Operation Characteristics (ZOC):</span><span> This</span><span> </span><span class="txtfmt2">field </span><span>indicates the zone operation characteristics of the </span><span>zoned </span><span>namespace.</span><span> </span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell1">
+       <p>
+        <span>Bits</span>
+       </p>
+      </th>
+      <th class="tcell1">
+       <p>
+        <span>Description</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>15</span><span>:</span><span>2</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>1</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt3">Zone Active Excursions:</span><span> If</span><span> set to ‘1’, </span><span>then a</span><span> controller may transition a</span><span> zone in the ZSIO:Implicitly Opened state, the ZSEO:Explicitly Opened state, or the ZSC:Closed state</span><span> </span><span>to the ZS</span><span>F:Full state</span><span class="txtfmt2"> due to a vendor specific excursion event</span><span>.</span><span> </span><span>If cleared to ‘0’, then a controller shall not transition a zone due to a vendor specific excursion event. </span><span>Refer to section </span><span>5.6</span><span>.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>0</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt3">Variable Zone Capacity:</span><span> </span><span>if set to ‘1’, </span><span>then the</span><span> capacity </span><span>for a zone may change without a change to the format of the zoned namespace. </span><span>If cleared to ‘0’, </span><span>then the </span><span>capacit</span><span>y</span><span> </span><span>for a zone does not change without a change to the format </span><span>of the </span><span>zoned </span><span>namespace.</span><span> Refer to </span><span>Figure 37</span><span>.</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">0</span><span class="txtfmt2">3:</span><span class="txtfmt2">0</span><span class="txtfmt2">2</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Optional Zoned Command Support (OZCS):</span><span> This</span><span> </span><span class="txtfmt2">field </span><span>defines </span><span>optional </span><span>features of the zoned namespace</span><span>.</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell1">
+       <p>
+        <span>Bits</span>
+       </p>
+      </th>
+      <th class="tcell1">
+       <p>
+        <span>Description</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>15</span><span>:</span><span>1</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>0</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt3">Read Across Zone Boundaries</span><span class="txtfmt3">:</span><span> </span><span>If set to ‘1’, then any </span><span>User Data</span><span> Read</span><span> Access Command </span><span>is allowed to perform read operations that specify an LBA range containing logical blocks in more than one zone.</span>
+       </p>
+       <p>
+        <span>If cleared to ‘0’, then any command that performs a read operation that specifies an LBA range containing logical blocks in more than one zone is aborted </span><span>as defined in</span><span> section </span><span>2.1.1.2.1.2</span><span>.</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">0</span><span class="txtfmt2">7</span><span class="txtfmt2">:</span><span class="txtfmt2">0</span><span class="txtfmt2">4</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>M</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Maximum Active Resources (MAR):</span><span> This field</span><span> defines t</span><span>he maximum</span><span> n</span><span>umber of </span><span>active </span><span>zones </span><span>in the zoned namespace</span><span>. </span><span>A value of </span><span>F</span><span>FFFFFFFh indicates that there is no limit.</span><span> </span><span>This is a 0’s based value</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">11</span><span class="txtfmt2">:</span><span class="txtfmt2">0</span><span class="txtfmt2">8</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>M</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Maximum Open Resources (MOR):</span><span> </span><span>This field</span><span> defines the </span><span>maximum</span><span> n</span><span>umber of</span><span> open</span><span> zones </span><span>in the zoned namespace</span><span>. </span><span>This</span><span> field</span><span> shall be less than or equal to </span><span>the Maximum</span><span> Active Resources</span><span> field</span><span>. </span><span>A value of FFFFFFFFh indicates that there is no limit. </span><span>This is a 0’s based value</span><span> </span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">15:12</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Reset Recommended Limit (RRL):</span><span> </span><span>If the zone attribute Reset Zone Recommended Time Limit field is set to 00b, then this field indicates the n</span><span>umber of seconds before the NVM subsystem may perform a vendor specific action on a zone after the Reset Zone Recommended zone attribute is set to ‘1’ for that zone.</span><span> If this field is cleared to 0h, then no Reset Recommended Limit is reported. Refer to section </span><span>5.4</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">19:16</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Finish Recommended Limit (FRL):</span><span> </span><span>If the zone attribute Finish Zone Recommended Time Limit field is set to 00b, then this field indicates the n</span><span>umber of seconds before the NVM subsystem may perform the vendor specific action on a zone after the Finish Zone Recommended zone attribute is set to ‘1’ for that zone.</span><span> If this field is cleared to 0h, then no Finish Recommended Limit is reported. Refer to section </span><span>5.5</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">23:20</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Reset Recommended Limit 1 (RRL 1)</span><span class="txtfmt3">:</span><span> </span><span>If the zone attribute Reset Zone Recommended Time Limit field is set to 01b, then this field indicates the number of seconds before the NVM subsystem may perform a vendor specific action on a zone after the Reset Zone Recommended zone attribute is set to ‘1’ for that zone. If this field is cleared to 0h, then no Reset Recommended Limit is reported. Refer to section</span><span> </span><span>5.4</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">27:24</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Reset Recommended Limit 2 (RRL 2)</span><span class="txtfmt3">:</span><span> </span><span>If the zone attribute Reset Zone Recommended Time Limit field is set to </span><span>10</span><span>b, then this field indicates the number of seconds before the NVM subsystem may perform a vendor specific action on a zone after the Reset Zone Recommended zone attribute is set to ‘1’ for that zone. If this field is cleared to 0h, then no Reset Recommended Limit is reported. Refer to section</span><span> </span><span>5.4</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">31:28</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Reset Recommended Limit </span><span class="txtfmt3">3</span><span class="txtfmt3"> (RRL </span><span class="txtfmt3">3</span><span class="txtfmt3">)</span><span class="txtfmt3">:</span><span> If the zone attribute Reset Zone Recommended Time Limit field is set to </span><span>1</span><span>1b, then this field indicates the number of seconds before the NVM subsystem may perform a vendor specific action on a zone after the Reset Zone Recommended zone attribute is set to ‘1’ for that zone. If this field is cleared to 0h, then no Reset Recommended Limit is reported. Refer to section</span><span> </span><span>5.4</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">35:32</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Finish Recommended Limit 1 (FRL1)</span><span class="txtfmt3">:</span><span> </span><span>If the zone attribute Finish Zone Recommended Time Limit field is set to 01b, then this field indicates the number of seconds before the NVM subsystem may perform the vendor specific action on a zone after the Finish Zone Recommended zone attribute is set to ‘1’ for that zone. If this field is cleared to 0h, then no Finish Recommended Limit is reported. Refer to section</span><span> </span><span>5.5</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">39:36</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Finish Recommended Limit </span><span class="txtfmt3">2</span><span class="txtfmt3"> (FRL</span><span class="txtfmt3">2</span><span class="txtfmt3">)</span><span class="txtfmt3">:</span><span> </span><span>If the zone attribute Finish Zone Recommended Time Limit field is set to </span><span>10</span><span>b, then this field indicates the number of seconds before the NVM subsystem may perform the vendor specific action on a zone after the Finish Zone Recommended zone attribute is set to ‘1’ for that zone. If this field is cleared to 0h, then no Finish Recommended Limit is reported. Refer to section</span><span> </span><span>5.5</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">43:40</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Finish Recommended Limit </span><span class="txtfmt3">3</span><span class="txtfmt3"> (FRL</span><span class="txtfmt3">3</span><span class="txtfmt3">)</span><span class="txtfmt3">:</span><span> </span><span>If the zone attribute Finish Zone Recommended Time Limit field is set to </span><span>1</span><span>1b, then this field indicates the number of seconds before the NVM subsystem may perform the vendor specific action on a zone after the Finish Zone Recommended zone attribute is set to ‘1’ for that zone. If this field is cleared to 0h, then no Finish Recommended Limit is reported. Refer to section</span><span> </span><span>5.5</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>2815</span><span>:</span><span>44</span>
+    </p>
+   </td>
+   <td>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th colspan="3" class="tcell1">
+    <p>
+     <span>LBA Format Extensions</span><span> List</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">2831:2816</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>M</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">LBA Format 0 Extension (LBAFE0):</span><span> This field indicates the LBA format Extension 0 that is supported by the controller. The </span><span>LBA Format Extension </span><span>field is defined in </span><span>Figure 49</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">2847:2832</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">LBA Format 1 Extension (LBAFE1):</span><span> This field indicates the LBA format Extension </span><span>1 </span><span>that is supported by the controller. The LBA Format Extension field is defined in </span><span>Figure 49</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="3">
+    <p>
+     <span class="txtfmt2">…</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">3839</span><span class="txtfmt2">:</span><span class="txtfmt2">3824</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">LBA Format </span><span class="txtfmt3">63</span><span class="txtfmt3"> Extension (LBAFE</span><span class="txtfmt3">63</span><span class="txtfmt3">):</span><span> This field indicates the LBA format Extension </span><span>63</span><span> that is supported by the controller. The LBA Format Extension field is defined in </span><span>Figure 49</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>4095:</span><span>3840</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Vendor Specific</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="3">
+    <p>
+     <span>Notes</span><span>:</span>
+    </p>
+    <ol class="ol35">
+     <li>
+      <span>O/M definition: O = Optional, M = Mandatory.</span>
+     </li>
+    </ol>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>49</span><span>: LBA Format Extension Data Structure</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Bits</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>127</span><span>:</span><span>72</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>71:64</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Descriptor Extension Size (ZDES)</span><span class="txtfmt3">:</span><span> </span><span>This </span><span>field indicates</span><span> the</span><span> Zone Descriptor</span><span> </span><span>Extension </span><span>size</span><span> for each zone. The value is reported in 64B units (e.g., 1h corresponds to 64B, 2h corresponds to 128B). A value of 0h indicates that Zone Descriptor Extensions are not supported. </span><span>Refer to </span><span>section</span><span> </span><span>5.3</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>63:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Size (ZSZE):</span><span> This field contains the size of each zone in the </span><span>zoned </span><span>namespace. The value is reported as a number of logical blocks. The value of the field shall not be </span><span>cleared to 0h</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="3">
+    <p>
+     <span>Figure </span><span>50</span><span>: </span><span>I/O Command Set Specific </span><span>Identify Controller Data Structure</span><span> for the Zoned Namespace Command Set</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>O/M</span><span> </span><span class="txtfmt0">1</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span><span> </span><span class="txtfmt1">2</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt3">Zone Append Size Limit (ZASL):</span><span> If the Zone Append command is supported then: </span>
+    </p>
+    <ol class="ol64">
+     <li>
+      <span>a non-zero value in this field indicates </span><span>the maximum data transfer size for the Zone Append command </span><span>(refer to section</span><span> </span><span>3.4.1</span><span>); and</span>
+     </li>
+     <li>
+      <span>a value of 0h in this field indicates </span><span>that the maximum data transfer size for the Zone Append command is indicated </span><span>by </span><span>the Maximum Data Transfer Size (MDTS) field (refer to </span><span>the </span><span>NVM Express </span><span>Base Specification</span><span>).</span>
+     </li>
+    </ol>
+    <p>
+     <span>The value is in units of the minimum memory page size (CAP.MPSMIN) and is reported as a power of two (2^n). This field includes the length of metadata if metadata is interleaved with the stored logical block data.</span>
+    </p>
+    <p>
+     <span>The value of this field shall be less than or equal to the Maximum Data Transfer Size (MDTS).</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>4095:</span><span>0</span><span>1</span>
+    </p>
+   </td>
+   <td>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="3">
+    <p>
+     <span>Notes</span><span>:</span>
+    </p>
+    <ol class="ol20">
+     <li>
+      <span>O/M definition: O = Optional, M = Mandatory.</span>
+     </li>
+     <li>
+      <span>Mandatory for controllers that support the Zone Append command.</span>
+     </li>
+    </ol>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="7">
+    <p>
+     <span>Figure </span><span>51</span><span>: Sanitize Behavior for the </span><span>Zoned Namespace Command Set</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th rowspan="2" class="tcell1">
+    <p>
+     <span>No Deallocate After Sanitize</span>
+    </p>
+   </th>
+   <th rowspan="2" class="tcell1">
+    <p>
+     <span>No-Deallocate Modifies Media After Sanitize (NODMMAS)</span>
+    </p>
+   </th>
+   <th rowspan="2" class="tcell1">
+    <p>
+     <span>No-Deallocate Inhibited (NDI)</span>
+    </p>
+   </th>
+   <th rowspan="2" class="tcell1">
+    <p>
+     <span>No-Deallocate Response Mode (NODRM)</span>
+    </p>
+   </th>
+   <th colspan="3" class="tcell1">
+    <p>
+     <span>Result</span><span>s</span><span> </span><span>of a </span><span>successful sanitize operation</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Zone </span><span>State</span><span> </span><span class="txtfmt0">1</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Logical Block</span><span> </span><span>Content</span><span> </span><span class="txtfmt0">2</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Sanitize Status</span><span> </span><span class="txtfmt0">4</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>0b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>n/a</span><span> </span><span class="txtfmt0">3</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>n/a</span><span> </span><span class="txtfmt0">3</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>n/a</span><span> </span><span class="txtfmt0">3</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>ZSE:Empty</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Refer to section </span><span>2.1.1.2.1.2</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>001b</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>1b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>00b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>n/a</span><span> </span><span class="txtfmt0">3</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>ZSE:Empty</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Refer to section </span><span>2.1.1.2.1.2</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>001b</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>1b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>00b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>1b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0b</span>
+    </p>
+   </td>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td>
+    <p>
+     <span>n/a</span><span> </span><span class="txtfmt1">5</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>1b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>00b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>1b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>1b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>ZSE:Empty</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Refer to section </span><span>2.1.1.2.1.2</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>001b</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>1b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>01b</span><span>(does not modify)</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0b </span><span>(not inhibited)</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>n/a</span><span> </span><span class="txtfmt0">3</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>ZSF:Full</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Block Erase: not defined in this specification</span>
+    </p>
+    <p>
+     <span>Crypto Erase: not defined in this specification</span>
+    </p>
+    <p>
+     <span>Overwrite: Shall be the overwrite pattern specified in the Sanitize command that requested the sanitize operation</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>001b</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>1b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>01b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>1b</span><span>(inhibited)</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>1b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>ZSE:Empty</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Refer to section </span><span>2.1.1.2.1.2</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>100b</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>1b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>01b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>1b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0b</span>
+    </p>
+   </td>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td>
+    <p>
+     <span>n/a</span><span> </span><span class="txtfmt1">5</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>1b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>10b </span><span>(does modify)</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>n/a</span><span> </span><span class="txtfmt0">3</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>ZSF:Full</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Block Erase: not defined in this specification</span>
+    </p>
+    <p>
+     <span>Crypto Erase: </span><span>not defined in this specification</span>
+    </p>
+    <p>
+     <span>Overwrite: Shall be the overwrite pattern specified in the Sanitize command that requested the sanitize operation</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>001b</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>1b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>10b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>1b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>1b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>ZSE:Empty</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Refer to section </span><span>2.1.1.2.1.2</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>100b</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>1b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>10b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>1b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0b</span>
+    </p>
+   </td>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td>
+    <p>
+     <span>n/a</span><span> </span><span class="txtfmt1">5</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>n/a</span><span> </span><span class="txtfmt0">3</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>11b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>n/a</span><span> </span><span class="txtfmt0">3</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>n/a</span><span> </span><span class="txtfmt0">3</span>
+    </p>
+   </td>
+   <td colspan="3">
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="7">
+    <p>
+     <span>Notes</span><span>:</span>
+    </p>
+    <ol class="ol72">
+     <li>
+      <span>ZSO:Offline state is a valid zone state</span><span> </span><span>as a result of</span><span> </span><span>a successful sanitize operation.</span>
+     </li>
+     <li>
+      <span>This field describes the read value from a deallocated logical block. </span><span>Refer to the Deallocate</span><span>d or Unwritten Logical Blocks</span><span> section in the </span><span>NVM Command Set Specification</span><span>.</span>
+     </li>
+     <li>
+      <span>This</span><span> value is not relevant in the setup conditions </span><span>defined</span><span> in that row</span><span>.</span>
+     </li>
+     <li>
+      <span>Value reported in bits 2:0 of the Sanitize Status (SSTAT) field in the Sanitize Status (Log Identifier 81h) (refer to the </span><span>NVM Express </span><span>Base Specification</span><span>).</span>
+     </li>
+     <li>
+      <span>Sanitize command is </span><span>aborted with a status</span><span> code of Invalid Field in Command.</span>
+     </li>
+    </ol>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="9">
+    <p>
+     <span>Figure </span><span>52</span><span>: </span><span>Command Behavior in the Presence of a Reservation</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th rowspan="2" class="tcell1">
+    <p>
+     <span>NVMe Command</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell1">
+    <p>
+     <span>Write Exclusive</span>
+    </p>
+    <p>
+     <span>Reservation</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell1">
+    <p>
+     <span>Exclusive Access</span>
+    </p>
+    <p>
+     <span>Reservation</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell1">
+    <p>
+     <span>Write Exclusive Registrants Only</span>
+    </p>
+    <p>
+     <span>or</span>
+    </p>
+    <p>
+     <span>Write Exclusive</span>
+    </p>
+    <p>
+     <span>All Registrants</span>
+    </p>
+    <p>
+     <span>Reservation</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell1">
+    <p>
+     <span>Exclusive Access Registrants Only</span>
+    </p>
+    <p>
+     <span>or</span>
+    </p>
+    <p>
+     <span>Exclusive Access All Registrants</span>
+    </p>
+    <p>
+     <span>Reservation</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Non-Registrant</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Registrant </span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Non-Registrant</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Registrant </span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Non-Registrant</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Registrant </span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Non-Registrant</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Registrant </span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <th colspan="9" class="tcell2">
+    <p>
+     <span>Zoned Namespace</span><span> Read Command Group</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span class="txtfmt2">Zone Management Receive</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>A</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>A</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>C</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>C</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>A</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>A</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>C</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>A</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td>
+   </td>
+  </tr>
+  <tr>
+   <th colspan="9" class="tcell2">
+    <p>
+     <span>Zoned Namespace</span><span> Write Command Group</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Zone Append</span>
+    </p>
+    <p>
+     <span>Zone Management Send</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>C</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>C</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>C</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>C</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>C</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>A</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>C</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>A</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="9">
+    <p>
+     <span>Key:</span>
+    </p>
+    <p>
+     <span>A definition: A=Allowed, command processed normally by the controller</span>
+    </p>
+    <p>
+     <span>C definition: C=Conflict, command aborted by the controller with </span><span>a status code of </span><span>status Reservation Conflict</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Figure </span><span>53</span><span>: Size and Capacity Fields</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Data Structure</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Field</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td rowspan="4">
+    <p>
+     <span>Identify Namespace Data Structure, NVM Command Set</span><span> </span><span>(CNS 00h)</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Namespace Size (NSZE)</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>7:0</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>(NSZE-1) indicates the highest possible LBA in the </span><span>zoned </span><span>namespace</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Namespace Capacity (NCAP)</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>15:8</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>T</span><span>he maximum number of allocatable logical blocks in the </span><span>zoned </span><span>namespace</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Formatted LBA Size</span><span> (FLBAS)</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>26</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Index</span><span> into the list of LBA formats</span><span>.</span><span> </span><span>Refer to the </span><span>NVM Command Set Specification</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>LBA Format XX</span><span> (LBAFXX)</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>191</span><span>:128</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>LBADS field indicates the logical block data size (in bytes) (as a power of 2)</span><span>.</span>
+    </p>
+    <p>
+     <span>MS field indicates the metadata size (in bytes)</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Zoned </span><span>Namespace </span><span>Command Set specific Identify</span><span> Namespace</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>LBA Format Extension </span><span>XX (LBAFEXX)</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>3839:2816</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>ZDES indicates the size of the Zone Descriptor Extension (as a multiple of 64 bytes)</span><span>.</span>
+    </p>
+    <p>
+     <span>ZS</span><span>ZE</span><span> indicates the number of logical blocks of each zone of the </span><span>zoned </span><span>namespace</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Zone Descriptor</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Zone Capacity (ZCAP)</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>15:8</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>I</span><span>ndicates the maximum number of logical blocks that may be written in </span><span>the</span><span> zone</span><span> associated </span><span>with </span><span>the data descriptor</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+</body>
+</html>

@@ -15,7 +15,9 @@ build
 *.log
 dist
 *.css
+!example/**/*.css
 *.html
+!example/**/*.html
 *.json
 result
 *.build

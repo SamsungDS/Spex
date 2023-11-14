@@ -1,0 +1,3285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="utf-8" data-spec="NVM Express® Key Value Command Set Specification" data-revision="1.0c"/>
+ <title>NVM Express Key Value Command Set Specification 1.0c 2022.10.03 Ratified</title>
+ <link rel="stylesheet" href="NVM Express Key Value Command Set Specification 1.0c 2022.10.03 Ratified.css"/>
+</head>
+<body>
+ <table>
+  <tr>
+   <td colspan="3">
+    <p>
+     <span>Figure </span><span>2</span><span>: I/O Controller – </span><span>Key Value</span><span> </span><span>Command Set</span><span> </span><span>Support</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Command</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Command Support Requirements </span><span class="txtfmt0">1</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Store</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>M</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Retri</span><span>e</span><span>ve</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>M</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Delete</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>M</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Exist</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>M</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>List</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>M</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Notes:</span>
+    </p>
+    <ol class="ol31">
+     <li>
+      <span>O = Optional, M = Mandatory, P = Prohibited</span>
+     </li>
+    </ol>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Figure </span><span>3</span><span>: I/O Controller – </span><span>Feature</span><span> Support</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Feature Name</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Feature</span><span> Support </span>
+    </p>
+    <p>
+     <span>Requirements </span><span class="txtfmt0">1</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>Logged in </span>
+    </p>
+    <p>
+     <span>Persistent Event Log</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Key Value Configuration</span><span class="txtfmt1"> </span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>M</span><span class="txtfmt1"> </span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Yes</span><span class="txtfmt1"> </span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Notes:</span>
+    </p>
+    <ol class="ol13">
+     <li>
+      <span>O = Optional, M = Mandatory, P = Prohibited, NR = Not Recommended</span>
+     </li>
+    </ol>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="3">
+    <p>
+     <span>Figure </span><span>4</span><span>: Status Code – Command Specific Status Values, </span><span>Key Value</span><span> Command Set</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell1">
+    <p>
+     <span>Value</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Commands Affected</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>81h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Capacity Exceeded</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Store</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>82h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Namespace Not Ready</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Delete, Exist, Retrieve, Store</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>83h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reservation Conflict</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Delete, Store, Retrieve</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>84h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Format In Progress</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Delete, Exist, List, Retrieve, Store</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>85h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Invalid Value Size</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Store</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>86h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Invalid Key Size</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>List, Retrieve, Store</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>87h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>KV Key Does Not Exist</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Delete, Exist, Retrieve, Store</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>88h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Unrecovered Error</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Retrieve</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>89h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Key Exists</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Store</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="6">
+    <p>
+     <span>Figure </span><span>5</span><span>: Opcodes for Key Value Command Set Commands</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th colspan="3" class="tcell1">
+    <p>
+     <span>Opcode by Field</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Combined Opcode</span><span class="txtfmt0">1</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Command</span><span class="txtfmt0">2</span>
+    </p>
+   </th>
+   <th class="tcell1">
+    <p>
+     <span>Reference</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>(07)</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>(06:02)</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>(01:00)</span>
+    </p>
+   </th>
+   <th rowspan="2" class="tcell0">
+   </th>
+   <th rowspan="2" class="tcell0">
+   </th>
+   <th rowspan="2" class="tcell0">
+   </th>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Standard Command</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Function</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Data Transfer</span><span class="txtfmt0">3</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Refer to</span><span> the</span><span> </span><span>NVM Express </span><span>Base </span><span>S</span><span>pecification</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Flush</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>NVM Express </span><span>Base</span><span> </span><span>Specification</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Refer to </span><span>the </span><span>NVM Express </span><span>Base </span><span>S</span><span>pecification</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reservation Register</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>NVM Express </span><span>Base</span><span> </span><span>Specification</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Refer to </span><span>the </span><span>NVM Express </span><span>Base </span><span>S</span><span>pecification</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reservation Report</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>NVM Express </span><span>Base</span><span> </span><span>Specification</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Refer to </span><span>the </span><span>NVM Express </span><span>Base </span><span>S</span><span>pecification</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reservation Acquire</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>NVM Express </span><span>Base</span><span> </span><span>Specification</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Refer to </span><span>the </span><span>NVM Express </span><span>Base </span><span>S</span><span>pecification</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reservation Release</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>NVM Express </span><span>Base</span><span> </span><span>Specification</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>0b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>000 00b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>01b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>01h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Store</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>3.2.5</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>0b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>000 00b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>10b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>02h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Retrieve</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>3.2.3</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>0b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>001 00b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>00b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>10h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Delete</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>3.2.1</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>0b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>001 01b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>00b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>14h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Exist</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>3.2.4</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>0b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>000 01b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>10b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>06h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>List</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>3.2.2</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="6">
+    <p>
+     <span>Notes</span><span>:</span>
+    </p>
+    <ol class="ol3">
+     <li>
+      <span>Opcodes not listed are defined in the </span><span>NVM Express </span><span>Base </span><span>S</span><span>pecification.</span>
+     </li>
+     <li>
+      <span>All </span><span>Key Value Command Set</span><span> Commands use the Namespace Identifier (NSID) field. The value FFFFFFFFh is not supported in this field unless footnote </span><span>4</span><span> in this figure indicates that a specific command does support that value.</span>
+     </li>
+     <li>
+      <span>Indicates the data transfer direction of the command. All options to the command shall transfer data as specified or transfer no data. All commands, including vendor specific commands, shall follow this convention: 00b = no data transfer; 01b = host to controller; 10b = controller to host; 11b = bidirectional.</span>
+     </li>
+     <li>
+      <span>This command may support </span><span>the </span><span>use of the Namespace Identifier (NSID</span><span>) field set to FFFFFFFFh.</span>
+     </li>
+    </ol>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>6</span><span>: Delete – Command Dword 11</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bit</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>31:8</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>7:0</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Key Length (KL):</span><span> Specifies the length of the KV key in bytes.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>7</span><span>: Delete – Command Dword 2 and Command Dword 3</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bit</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>63:0</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">KV key[63:0</span><span class="txtfmt2">0</span><span class="txtfmt2">]</span><span class="txtfmt2">: </span><span>This field </span><span>specifies</span><span> </span><span>the least-significant </span><span>64-bit</span><span>s</span><span> </span><span>of the </span><span>KV key</span><span> to be used for the command</span><span>.</span><span> </span><span>Command Dword </span><span>2</span><span> contains bits 31:00; Command Dword </span><span>3</span><span> contains bits 63:32.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>8</span><span>: Delete – Command Dword 14 and Command Dword 15</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bit</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>63:0</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">KV key</span><span class="txtfmt2">[127:64</span><span class="txtfmt2">]</span><span class="txtfmt2">: </span><span>This field </span><span>specifies</span><span> </span><span>the most-significant </span><span>64-bit</span><span>s</span><span> </span><span>of the </span><span>KV key</span><span> to be used for the command</span><span>.</span><span> </span><span>Command Dword </span><span>14 contains bits 95:64</span><span>; Command Dword </span><span>15 contains bits 127: 96</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>9</span><span>: </span><span>Delete</span><span> – Command Specific </span><span>Status</span><span> Values</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Value</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>87h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>KV Key Does Not Exist</span><span class="txtfmt2">:</span><span> The KV key does not exist</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>0Bh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Invalid Namespace or Format: </span><span>The namespace or the format of that namespace is invalid</span><span> </span><span>or the namespace is not associated with the K</span><span>ey </span><span>V</span><span>alue</span><span> Command Set.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>10</span><span>: </span><span>List</span><span> – Command Dword 10</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bit</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>31</span><span>:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Host Buffer Size</span><span class="txtfmt2"> (</span><span class="txtfmt2">HBS</span><span class="txtfmt2">): </span><span>This field indicates </span><span>the host buffer size in bytes.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>11</span><span>:</span><span> List</span><span> – Command Dword 1</span><span>1</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bit</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>31</span><span>:8</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>7:0</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Key Length (KL):</span><span> Specifies the length of the </span><span>KV key in bytes.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>12</span><span>: </span><span>List</span><span> – </span><span>Command Dword 2 and Command Dword 3</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bit</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>63:0</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">KV key[63:0</span><span class="txtfmt2">0</span><span class="txtfmt2">]</span><span class="txtfmt2">: </span><span>This field </span><span>specifies</span><span> </span><span>least-significant </span><span>64-bit</span><span>s</span><span> </span><span>of the </span><span>KV key</span><span> to be used for the command</span><span>.</span><span> </span><span>Command Dword </span><span>2</span><span> contains bits 31:00; Command Dword </span><span>3</span><span> contains bits 63:32.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>13</span><span>: </span><span>List</span><span> – </span><span>Command Dword 14 and Command Dword 15</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bit</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>63:0</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">KV key</span><span class="txtfmt2">[127:64</span><span class="txtfmt2">]</span><span class="txtfmt2">: </span><span>This field </span><span>specifies</span><span> </span><span>the most-significant </span><span>64-bit</span><span>s</span><span> </span><span>of the </span><span>KV key</span><span> to be used for the command</span><span>.</span><span> </span><span>Command Dword </span><span>14 contains bits 95:64</span><span>; Command Dword </span><span>15 contains bits 127:96</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>14</span><span>: </span><span>List</span><span> – Command Specific </span><span>Status</span><span> Values</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Value</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>86h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Invalid Key Size:</span><span> The KV key size is not valid</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>0Bh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Invalid Namespace or Format: </span><span>The namespace or the format of that namespace is invalid.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>15</span><span>:</span><span> List</span><span> – </span><span>Return data structure</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Byte</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>03:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Number of Returned Keys (NRK):</span><span> This value reflects how many KV keys are returned in this data structure</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td>
+    <p>
+     <span>Key data structure 1 (refer to </span><span>Figure </span><span>16</span><span>)</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td>
+    <p>
+     <span>Key data structure 2 (refer to </span><span>Figure </span><span>16</span><span>)</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td>
+    <p>
+     <span>…</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td>
+    <p>
+     <span>Key data structure n (refer to </span><span>Figure </span><span>16</span><span>)</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>16</span><span>:</span><span> Key data structure</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Byte</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>01:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Key Length (KL):</span><span> indicates the length of the KV key in bytes that this data structure represents</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>n:02</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Key:</span><span> KV key that this entry describes</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>m:n</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Pad:</span><span> Pad necessary, if any to end the data structure on a 4 byte boundary</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>17</span><span>: </span><span>Retrieve</span><span> – </span><span>Data Pointer</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bit</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>127:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Data Pointer (DPTR):</span><span> </span><span>This field specifies </span><span>where data </span><span>is</span><span> transferred to</span><span>.</span><span> </span><span>Refer</span><span> to the </span><span>NVM Express </span><span>Base </span><span>S</span><span>pecification</span><span> </span><span>for the definition of this field.</span><span> </span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>18</span><span>: </span><span>Retrieve</span><span> – Command Dword 10</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bit</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>3</span><span>1</span><span>:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Host Buffer Size</span><span class="txtfmt2"> (</span><span class="txtfmt2">HBS</span><span class="txtfmt2">): </span><span>This field indicates </span><span>the host buffer size in bytes.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>19</span><span>:</span><span> Retrieve</span><span> – Command Dword 1</span><span>1</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bit</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>31</span><span>:16</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>15:8</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Retrieve Option (RO):</span><span> </span><span>This field s</span><span>pecifies </span><span>the retrieve option.</span>
+    </p>
+    <p>
+     <span>Bits 15:9 are reserved.</span>
+    </p>
+    <p>
+     <span>Bit 8 if set to ‘1’ specifies that the controller shall return raw data (i.e., no decompression is performed on the data). Bit 8 if cleared to ‘0’ specifies that the controller shall return decompressed data if compression is supported. Control of compression algorithms, if any, and their use by the controller is outside the scope of this specification.</span>
+    </p>
+    <p>
+     <span>If the controller does not compress data then this bit is ignored.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>7:0</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Key Length (KL):</span><span> Specifies the length of the </span><span>KV key in bytes.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>20</span><span>: </span><span>Retrieve</span><span> – </span><span>Command Dword 2 and Command Dword 3</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bit</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>63:0</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">KV key[63:0</span><span class="txtfmt2">0</span><span class="txtfmt2">]</span><span class="txtfmt2">: </span><span>This field </span><span>specifies</span><span> </span><span>the least-significant </span><span>64-bit</span><span>s</span><span> </span><span>of the </span><span>KV key</span><span> to be used for the command</span><span>.</span><span> </span><span>Command Dword </span><span>2</span><span> contains bits 31:00; Command Dword </span><span>3</span><span> contains bits 63:32.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>21</span><span>: </span><span>Retrieve</span><span> –Command Dword </span><span>14 and Command Dword </span><span>1</span><span>5</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bit</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>63:0</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">KV key</span><span class="txtfmt2">[127:64</span><span class="txtfmt2">]</span><span class="txtfmt2">: </span><span>This field </span><span>specifies</span><span> </span><span>the most-significant </span><span>64-bit</span><span>s</span><span> </span><span>of the </span><span>KV key</span><span> to be used for the command</span><span>.</span><span> </span><span>Command Dword </span><span>14 contains bits 95:64</span><span>; Command Dword </span><span>15 contains bits 127:96</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>22</span><span>: </span><span>Retrieve</span><span> – Command Specific </span><span>Status</span><span> Values</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Value</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>86h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Invalid Key Size:</span><span> The KV key size is not valid</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>0Bh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Invalid Namespace or Format: </span><span>The namespace or the format of that namespace is invalid.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>87h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>KV Key Does Not Exist</span><span class="txtfmt2">:</span><span> The KV key does not exist</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>88h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Unrecovered Error:</span><span> There was an unrecovered error when reading from the medium</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>23</span><span>:</span><span> Exist</span><span> – Command Dword 1</span><span>1</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bit</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>31:8</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>7:0</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Key Length (KL):</span><span> Specifies the length of the </span><span>KV key in bytes.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>24</span><span>: </span><span>Exist</span><span> – Command Dword </span><span>2 and Command Dword 3</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bit</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>63:0</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">KV key[63:0</span><span class="txtfmt2">0</span><span class="txtfmt2">]</span><span class="txtfmt2">: </span><span>This field </span><span>specifies</span><span> the least-significant</span><span> 64-bit</span><span>s</span><span> </span><span>of the </span><span>KV key</span><span> to be used for the command</span><span>.</span><span> </span><span>Command Dword </span><span>2</span><span> contains bits 31:00; Command Dword </span><span>3</span><span> contains bits 63:32.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>25</span><span>: </span><span>Exist</span><span> – </span><span> </span><span>Command Dword </span><span>14 and Command Dword</span><span> </span><span> </span><span>1</span><span>5</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bit</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>63:0</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">KV key</span><span class="txtfmt2">[127:64</span><span class="txtfmt2">]</span><span class="txtfmt2">: </span><span>This field </span><span>specifies</span><span> </span><span>most-significant </span><span>64-bit</span><span>s</span><span> </span><span>of the </span><span>KV key</span><span> to be used for the command</span><span>.</span><span> </span><span>Command Dword </span><span>14 contains bits 95:64</span><span>; Command Dword </span><span>15 contains bits 127:96</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>26</span><span>: </span><span>Exist</span><span> – Command </span><span>Specific Status Values</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Value</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>87h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">KV Key Does Not Exist</span><span>:</span><span>The KV key does not exist</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>27</span><span>: </span><span>Store</span><span> – </span><span>Data Pointer</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bit</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>127:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Data Pointer (DPTR):</span><span> </span><span>This field specifies the </span><span>location of a data buffer </span><span>from which </span><span>data is transferred</span><span>.</span><span> </span><span>Refer</span><span> to the </span><span>NVM Express </span><span>Base </span><span>S</span><span>pecification</span><span> </span><span>for the definition of this field.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>28</span><span>: </span><span>Store</span><span> – Command Dword 10</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bit</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>3</span><span>1</span><span>:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Value Size</span><span class="txtfmt2"> (</span><span class="txtfmt2">VS</span><span class="txtfmt2">): </span><span>This field indicates </span><span>the KV value size in bytes. A KV value of </span><span>0h</span><span> specifies that there is no value associated with this KV key but that the KV key exists.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>29</span><span>:</span><span> Store</span><span> – Command Dword 1</span><span>1</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bit</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>31</span><span>:16</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>15:8</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Store Option (SO):</span><span> Specifies </span><span>the store option</span><span>.</span>
+    </p>
+    <p>
+     <span>Bits 15:11 are reserved</span><span>.</span>
+    </p>
+    <p>
+     <span>Bit 10 if set to ‘1’ specifies that the controller shall not compress the KV value. Bit 10 if cleared to ‘0’ specifies that the controller shall compress the KV value if compression is supported.</span>
+    </p>
+    <p>
+     <span>Bit 9 if set to ‘1’ specifies that the controller shall not store the KV value if the KV key exists. Bit 9 if cleared to ‘0’ specifies that the controller shall store the KV value if other Store Options are met.</span>
+    </p>
+    <p>
+     <span>Bit 8 if set to ‘1’ specifies that the controller shall not store the KV value if the KV key does not exists. Bit 8 if cleared to ‘0’ specifies that the controller shall store the KV value if other Store Options are met.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>7:0</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Key Length (KL):</span><span> Specifies the length of the </span><span>KV key in bytes.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>30</span><span>: </span><span>Store</span><span> – Command Dword </span><span>2 and Command Dword 3</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bit</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>63:0</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">KV key[63:0</span><span class="txtfmt2">0</span><span class="txtfmt2">]</span><span class="txtfmt2">: </span><span>This field </span><span>specifies</span><span> </span><span>t</span><span>he least-significant </span><span>64-bit</span><span>s</span><span> </span><span>of the </span><span>KV key</span><span> to be used for the command</span><span>.</span><span> </span><span>Command Dword </span><span>2</span><span> contains bits 31:00; Command Dword </span><span>3</span><span> contains bits 63:32.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>31</span><span>: </span><span>Store</span><span> –Command Dword </span><span>14 and Command Dword </span><span>1</span><span>5</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bit</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>63:0</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">KV key</span><span class="txtfmt2">[127:64</span><span class="txtfmt2">]</span><span class="txtfmt2">: </span><span>This field </span><span>specifies</span><span> </span><span>the most-significant </span><span>64-bit</span><span>s</span><span> </span><span>of the </span><span>KV key</span><span> to be used for the command</span><span>.</span><span> </span><span>Command Dword </span><span>14 contains bits 95:64</span><span>; Command Dword </span><span>15 contains bits 127:96</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>32</span><span>: </span><span>Store</span><span> – Command Specific </span><span>Status</span><span> Values</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Value</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>85h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Invalid Value Size:</span><span> The value size is not valid</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>86h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Invalid Key Size:</span><span> The KV key size is not valid</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>0Bh</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Invalid Namespace or Format: </span><span>The namespace or the format of that namespace is invalid.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>81h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Capacity</span><span class="txtfmt2"> Exceeded</span><span class="txtfmt2">:</span><span> The capacity of the device was exceeded</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>89h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Key Exists: </span><span>Store Option bit 9 is set to ‘1’ and the KV key exists</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>87h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">KV Key Does Not Exist</span><span class="txtfmt2">:</span><span> Store Option bit 8 is set to ‘1’ and the KV key does not exist</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="5">
+    <p>
+     <span>Figure </span><span>33</span><span>: </span><span>Feature Identifiers</span><span> – </span><span>Key Value</span><span> Command Set</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Feature Identifier</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Persistent Across Power </span><span>Cycle and Reset</span><span class="txtfmt0">1</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Uses Memory Buffer for Attributes</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>20h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Yes</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>No</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Key Value Configuration</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="5">
+    <p>
+     <span>Notes</span><span>:</span>
+    </p>
+    <ol class="ol2">
+     <li>
+      <span>This column is only valid if the feature is not saveable (refer to </span><span>the </span><span>NVM Express </span><span>Base </span><span>S</span><span>pecification</span><span>). If the feature is saveable, then this column is not used and any feature may be configured to be saved across power </span><span>cycles</span><span> and reset.</span>
+     </li>
+    </ol>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>34</span><span>: Key Value Config – Command Dword 11</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bits</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>31:01</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Error on Delete of Non-Existent KV Key (EDNEK)</span><span class="txtfmt2">: </span><span>T</span><span>h</span><span>is</span><span> bit defines the response of the controller to a </span><span>Delete</span><span> command processed </span><span>for a </span><span>KV key</span><span> that does not exist</span><span>.</span>
+    </p>
+    <p>
+     <span>If th</span><span>is</span><span> bit is set to ‘1’</span><span> and the</span><span> controller process </span><span>a Delete</span><span> command</span><span> that specifies a KV key that does not exist, </span><span>then </span><span>the controller shall abort the command with a status code of KV Key Does Not Exist. </span>
+    </p>
+    <p>
+     <span>If th</span><span>is</span><span> bit is </span><span>cleared</span><span> to ‘</span><span>0</span><span>’</span><span> and the</span><span> controller process </span><span>a Delete</span><span> command</span><span> that specifies a KV key that does not exist, </span><span>then </span><span>the controller shall not abort the command with  a status code of KV Key Does Not Exist. (i.e., complete the command as if the KV key existed and was deleted).</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Figure </span><span>35</span><span>: </span><span>Get Log Page – Log Page Identifiers</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Log Identifier</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Scope and Support</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Log Page Name</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Reference</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>01h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Refer to the NVM Express Base Specification</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Error Information</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>4.1.4.1</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>06h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Refer to the NVM Express Base Specification</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Device Self-test</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>4.1.4.2</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>36</span><span>: </span><span>Error Information Log Entry Data Structure</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>23:16</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">LBA:</span><span> This field is reserved.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>37</span><span>: </span><span>Self-test Result Data Structure</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>23:16</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Failing LBA:</span><span> This field is reserved.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="7">
+    <p>
+     <span>Figure </span><span>38</span><span>: Identify – CNS Values</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>CNS Value</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>O/M </span><span class="txtfmt3">1</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Definition</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>NSID</span><span> </span><span class="txtfmt3">2</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>CNTID</span><span> </span><span class="txtfmt3">3</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>CSI</span><span> </span><span class="txtfmt3">4</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Reference Section</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <th colspan="7" class="tcell1">
+    <p>
+     <span>Active Namespace Management</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>05h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>M</span><span> </span><span class="txtfmt0">5</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Identify I/O Command Set specific Namespace data structure for the specified NSID for the I/O Command Set specified in the CSI field</span><span>.</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Y</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>N</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Y</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>4.1.5.1</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>06h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>M</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Identify I/O Command Set Specific Controller data structure for the controller processing the command</span><span>.</span><span> </span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Y</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>N</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Y</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>4.1.5.2</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="7">
+    <p>
+     <span>Notes</span><span>:</span>
+    </p>
+    <ol class="ol17">
+     <li>
+      <span>O/M definition: O = Optional, M = Mandatory.</span>
+     </li>
+     <li>
+      <span>The NSID field is used: Y = Yes, N = No.</span>
+     </li>
+     <li>
+      <span>The CDW10.CNTID field is used: Y = Yes, N = No.</span>
+     </li>
+     <li>
+      <span>The CDW11.CSI field is used: Y = Yes, N = No.</span>
+     </li>
+     <li>
+      <span>Mandatory for controllers that support the Namespace Management capability (refer to </span><span>the </span><span>NVM Express </span><span>Base </span><span>S</span><span>pecification</span><span>).</span>
+     </li>
+    </ol>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="3">
+    <p>
+     <span>Figure </span><span>39</span><span>: Identify – </span><span>I/O Command Set </span><span>S</span><span>pecific</span><span> </span><span>Identify Namespace Data Structure, </span><span>Key Value Type</span><span> Specific</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>O/M</span><span> </span><span class="txtfmt0">1</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>0</span><span>7:</span><span>0</span><span>0</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>M</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Namespace Size (NSZE): </span><span>This field indicates the total size of the namespace in</span><span> bytes</span><span>. </span><span>This is the space to store KV keys and KV values. </span><span>This field is undefined prior to the namespace being formatted.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>15:08</span>
+    </p>
+   </td>
+   <td>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>23:16</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>M</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Namespace Utilization (NUSE): </span><span>This field indicates the current number </span><span>of bytes</span><span> allocated in the namespace.</span><span> This is the space to store KV keys and KV values. </span><span>This field is </span><span>less</span><span> </span><span>than or equal to the Namespace </span><span>Size</span><span> field</span><span>.</span><span> </span>
+    </p>
+    <p>
+     <span>A </span><span>key value pair</span><span> is allocated when it is written with a </span><span>Store</span><span> command.</span><span> </span><span>A </span><span>key value pair is</span><span> deallocated using the </span><span>Delete </span><span>command.</span>
+    </p>
+    <p>
+     <span>If the controller supports Asymmetric Namespace Access Reporting (refer to the CMIC field), and the relationship between the controller and the namespace is in the ANA Inaccessible state (refer to </span><span>the </span><span>NVM Express </span><span>Base </span><span>S</span><span>pecification</span><span>) or the ANA Persistent Loss state (refer to</span><span> the </span><span>NVM Express </span><span>Base </span><span>S</span><span>pecification</span><span>)</span><span>,</span><span> then this field shall be cleared to </span><span>0h</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>24</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>M</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Namespace Features (NSFEAT): </span><span>This field defines features of the namespace.</span>
+    </p>
+    <p>
+     <span>Bits 7:</span><span>4</span><span> are reserved.</span>
+    </p>
+    <p>
+     <span class="txtfmt4">Bit 3 if set to ‘1’ indicates that the non-zero NGUID and non-zero EUI64 fields for this namespace are never reused by the controller.</span><span class="txtfmt4"> </span><span class="txtfmt4">I</span><span class="txtfmt4">f cleared to ‘0’, then the NGUID and EUI64 values may be reused by the controller for a new namespace created after this namespace is deleted. This bit shall be cleared to ‘0’ if both NGUID and EUI64 fields are cleared to 0h.</span><span class="txtfmt4"> </span><span class="txtfmt4">Refer to</span><span class="txtfmt4"> the </span><span>NVM Express </span><span class="txtfmt4">Base </span><span class="txtfmt4">S</span><span class="txtfmt4">pecification</span><span class="txtfmt4">.</span>
+    </p>
+    <p>
+     <span>Bits 2:0 are reserved.</span><span> </span><span> </span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>25</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>M</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Number of </span><span class="txtfmt2">KV Formats (NKV</span><span class="txtfmt2">F): </span><span>This field defines the number of </span><span>KV format descriptors</span><span> supported by the namespace.</span><span> KV</span><span> formats shall be packed sequentially</span><span> starting at the KV Format 0 Support (KVF0) field</span><span>.</span><span> </span><span>This is a 0’s based value.</span><span> </span>
+    </p>
+    <p>
+     <span>The maximum number of </span><span>KV</span><span> formats that may be indicated as supported is 16.</span><span> </span><span>The supported </span><span>KV</span><span> formats are indicated in bytes </span><span>72 to 327 </span><span>in this data structure.</span>
+    </p>
+    <p>
+     <span class="txtfmt4">The KV</span><span class="txtfmt4"> Format fields with a </span><span class="txtfmt4">Format I</span><span class="txtfmt4">ndex beyond the value set in this field are invalid and not supported. </span><span class="txtfmt4">KV</span><span class="txtfmt4"> Formats that are valid, but not currently available may be indicated by </span><span class="txtfmt4">clearing </span><span class="txtfmt4">the </span><span class="txtfmt4">KV</span><span class="txtfmt4"> </span><span class="txtfmt4">Key Max </span><span class="txtfmt4">Length field to 0h </span><span class="txtfmt4">and</span><span class="txtfmt4"> clearing the </span><span class="txtfmt4"> KV Value Max </span><span class="txtfmt4">Length field </span><span class="txtfmt4">to 0h</span><span class="txtfmt4"> for that </span><span class="txtfmt4">KV</span><span class="txtfmt4"> Format.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>26</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Namespace Multi-path I/O and Namespace Sharing Capabilities (NMIC):</span><span> </span><span>Refer to the NMIC field in the </span><span>I/O Command Set Independent </span><span>Identify Namespace data structure in the </span><span>NVM Express </span><span>Base </span><span>S</span><span>pecification.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>27</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Reservation Capabilities (RESCAP):</span><span> </span><span>Refer to </span><span>the </span><span>NVM Express </span><span>Base </span><span>S</span><span>pecification.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>28</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Format Progress Indicator (FPI): </span><span>Refer to </span><span>the </span><span>NVM Express </span><span>Base </span><span>S</span><span>pecification.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>31:29</span>
+    </p>
+   </td>
+   <td>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt4">Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>35:32</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt5">Namespace Optimal </span><span class="txtfmt5">Value Granularity </span><span class="txtfmt5">(</span><span class="txtfmt5">NOVG</span><span class="txtfmt5">): </span><span class="txtfmt4">This field indicates the optimal </span><span class="txtfmt4">value granularity</span><span class="txtfmt4"> for this namespace.</span><span class="txtfmt4"> </span><span class="txtfmt4">This field is specified in </span><span class="txtfmt4">bytes</span><span class="txtfmt4">.</span><span class="txtfmt4"> </span><span class="txtfmt4">The host should construct </span><span class="txtfmt4">Store</span><span class="txtfmt4"> commands that </span><span class="txtfmt4">store multiples of NOVG bytes</span><span class="txtfmt4"> to achieve optimal performance.</span><span class="txtfmt4"> </span><span class="txtfmt4">A value of 0h indicates that no optimal </span><span class="txtfmt4">value granularity</span><span class="txtfmt4"> is reported.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>39:36</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">ANA Group Identifier (ANAGRPID):</span><span> Refer to </span><span>the </span><span>NVM Express </span><span>Base </span><span>S</span><span>pecification.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>42:40</span>
+    </p>
+   </td>
+   <td>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>43</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Namespace Attributes (NSATTR):</span><span> Refer to </span><span>the </span><span>NVM Express </span><span>Base </span><span>S</span><span>pecification.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>45:44</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">NVM Set Identifier (NVMSETID):</span><span> </span><span>Refer to </span><span>the </span><span>NVM Express </span><span>Base </span><span>S</span><span>pecification.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>47:46</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Endurance Group Identifier (ENDGID):</span><span> </span><span>Refer to </span><span>the </span><span>NVM Express </span><span>Base </span><span>S</span><span>pecification.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>63:48</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Namespace Globally Unique Identifier (NGUID): </span><span>Refer to </span><span>the </span><span>NVM Express </span><span>Base </span><span>S</span><span>pecification.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>71:64</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">IEEE Extended Unique Identifier (EUI64): </span><span>Refer to </span><span>the </span><span>NVM Express </span><span>Base </span><span>S</span><span>pecification.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th colspan="3" class="tcell0">
+    <p>
+     <span>KV Formats</span><span> List</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>87:72</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>M</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>KV Format </span><span>0 Support (</span><span>KV</span><span>F0): This field indicates the </span><span>KV</span><span> format 0 that is supported by the controller. The </span><span>KV</span><span> format field is defined in </span><span>Figure 40</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>103:88</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>KV Format 1</span><span> Support (</span><span>KVF1</span><span>): This field indicates the </span><span>KV format 1</span><span> that is supported by the controller. The </span><span>KV</span><span> format field is defined in </span><span>Figure 40</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="3">
+    <p>
+     <span>…</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>327:312</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>KV Format 15</span><span> Support (</span><span>KVF15</span><span>): This field indicates the </span><span>KV format 15</span><span> that is supported by the controller. The </span><span>KV</span><span> format field is defined in </span><span>Figure 40</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>3839:328</span>
+    </p>
+   </td>
+   <td>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>4095:384</span><span>0</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Vendor Specific</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="3">
+    <p>
+     <span>Notes</span><span>:</span>
+    </p>
+    <ol class="ol8">
+     <li>
+      <span>O/M definition: O = Optional, M = Mandatory.</span>
+     </li>
+    </ol>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>40</span><span>: KV</span><span> Format Data Structure</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell2">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell2">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>01:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">KV Key Max Length: </span><span>Maximum length of a KV key in a key value pair in bytes. The value </span><span>of this field shall be less than or equal to </span><span>16.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>02</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>03</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Additional format options:</span>
+    </p>
+    <p>
+     <span>Bits 7:2 Reserved</span>
+    </p>
+    <p>
+     <span>Bits 1:0 </span><span class="txtfmt2">Relative Performance (RP):</span><span> This field indicates the relative performance of the KV format indicated, relative to other KV formats supported by the controller. Depending on the characteristics of the format, there may be performance implications. The performance analysis is based on better performance on a queue depth of 32 with</span><span> 4K</span><span>i</span><span>B KV value reads</span><span>. The meanings of the values indicated are included in the following table.</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell0">
+       <p>
+        <span>Value</span>
+       </p>
+      </th>
+      <th class="tcell0">
+       <p>
+        <span>Definition</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>00b</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Best performance</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>01b</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Better performance</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>10b</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Good performance</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>11b</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Degraded performance</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>07:04</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">KV Value Max Length: </span><span>Maximum length in bytes of a KV value in a key value pair.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>11:08</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt2">Max Num Keys: </span><span>Maximum number of KV keys allowed in the namespace. A value of </span><span>0h</span><span> indicates that no maximum number is indicated.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>15:12</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="3">
+    <p>
+     <span>Figure </span><span>41</span><span>: Namespace Management – Host Software Specified Fields</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Host Specified</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td colspan="3">
+    <p>
+     <span>These fields are the same fields as defined in the I/O Command Set specific Identify Namespace data structure</span><span> (refer to </span><span>Figure </span><span>39</span><span>)</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>07:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Namespace Size (NSZE)</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Yes</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>29:08</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>30</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Namespace Multi-path I/O and Namespace Sharing Capabilities (NMIC)</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Yes</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>91:31</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>95:92</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>ANA Group Identifier (ANAGRPID) </span><span class="txtfmt0">1</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Yes</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>99:96</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>101:100</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>NVM Set Identifier (NVMSETID) </span><span class="txtfmt0">1</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Yes</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>103:102</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Endurance Group Identifier (ENDGID)</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Yes</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>511</span><span>:104</span>
+    </p>
+   </td>
+   <td colspan="2">
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="3">
+    <p>
+     <span>Notes:</span>
+    </p>
+    <ol class="ol4">
+     <li>
+      <span>A value of 0h specifies that the controller determines the value to use (refer to </span><span>the </span><span>Namespace Management </span><span>section </span><span>in the </span><span>NVM Express </span><span>Base Specification</span><span>). If the associated feature is not supported, then this field is ignored by the controller.</span>
+     </li>
+    </ol>
+   </td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+   <td colspan="9">
+    <p>
+     <span>Figure </span><span>42</span><span>: </span><span>Command Behavior in the Presence of a Reservation</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th rowspan="2" class="tcell0">
+    <p>
+     <span>NVMe Command</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>Write Exclusive</span>
+    </p>
+    <p>
+     <span>Reservation</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>Exclusive Access</span>
+    </p>
+    <p>
+     <span>Reservation</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>Write Exclusive Registrants Only</span>
+    </p>
+    <p>
+     <span>or</span>
+    </p>
+    <p>
+     <span>Write Exclusive</span>
+    </p>
+    <p>
+     <span>All Registrants</span>
+    </p>
+    <p>
+     <span>Reservation</span>
+    </p>
+   </th>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>Exclusive Access Registrants Only</span>
+    </p>
+    <p>
+     <span>or</span>
+    </p>
+    <p>
+     <span>Exclusive Access All Registrants</span>
+    </p>
+    <p>
+     <span>Reservation</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Non-Registrant</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Registrant </span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Non-Registrant</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Registrant </span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Non-Registrant</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Registrant </span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Non-Registrant</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Registrant </span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <th colspan="9" class="tcell3">
+    <p>
+     <span>Key Value Command Set</span><span> Read Command Group</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Retrie</span><span>ve</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>A</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>A</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>C</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>C</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>A</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>A</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>C</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>A</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th colspan="9" class="tcell3">
+    <p>
+     <span>Key Value Command Set</span><span> Write Command Group</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>Delete</span>
+    </p>
+    <p>
+     <span>Flush</span>
+    </p>
+    <p>
+     <span>Format NVM (Admin)</span>
+    </p>
+    <p>
+     <span>Namespace Attachment (Admin)</span>
+    </p>
+    <p>
+     <span>Namespace Management (Admin)</span>
+    </p>
+    <p>
+     <span>Sanitize (Admin)</span>
+    </p>
+    <p>
+     <span>Security Send (Admin)</span>
+    </p>
+    <p>
+     <span>Store</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>C</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>C</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>C</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>C</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>C</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>A</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>C</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>A</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td colspan="9">
+    <p>
+     <span>Key:</span>
+    </p>
+    <p>
+     <span>A definition: A=Allowed, command processed normally by the controller</span>
+    </p>
+    <p>
+     <span>C definition: C=Conflict, command aborted by the controller with status Reservation Conflict</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+</body>
+</html>

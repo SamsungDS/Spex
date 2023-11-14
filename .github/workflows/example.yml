@@ -1,0 +1,56 @@
+---
+name: example
+
+on:
+  push:
+    branches:
+    - '*'
+    tags:
+    - '*'
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: [main]
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  example:
+    name: spec cli-usage example
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.11' 
+    - name: Set PIPX_DEFAULT_PYTHON
+      run: |
+        echo "PIPX_DEFAULT_PYTHON=$(which python3)" >> $GITHUB_ENV
+
+    - name: git checkout
+      uses: actions/checkout@v4
+
+    - name: build and install
+      run: |
+        make clean build install
+
+    - name: stage1 to stage2
+      run: |
+        pwd
+        tree || true
+        cd example && spex stage1/*.html --skip-figure-on-error --output stage2/
+
+    - name: Upload stage2 files
+      uses: actions/upload-artifact@v3.1.3
+      with:
+        name: documents-stage2
+        path: example/stage2/*.json
+        if-no-files-found: error
+
+    - name: Upload spex.log
+      uses: actions/upload-artifact@v3.1.3
+      with:
+        name: logs
+        path: example/spex.log
+        if-no-files-found: error

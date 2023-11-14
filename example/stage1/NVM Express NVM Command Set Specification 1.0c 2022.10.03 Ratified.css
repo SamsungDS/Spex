@@ -1,0 +1,1447 @@
+body {
+ font-family: sans-serif;
+}
+p:first-child {
+ margin-top: .3em;
+}
+p:last-child {
+ margin-bottom: .3em;
+}
+p {
+ margin-top: 0em;
+ margin-left: .2em;
+ margin-right: .2em;
+}
+table, td, th {
+ border-collapse: collapse;
+ border: 1px solid black;;
+}
+table {
+ margin-left: .3em;
+ margin-right: .3em;
+ margin-bottom: 3em;
+ margin-top: 1em;
+}
+td table {
+ margin-bottom: 1em;
+}
+/* list-formatting styles */
+ol.ol0 { list-style-type: decimal; }
+ol.ol1 { list-style-type: decimal; }
+ol.ol2 { list-style-type: decimal; }
+ol.ol3 { list-style-type: decimal; }
+ul.ul4 { list-style-type: disc; }
+ul.ul5 { list-style-type: disc; }
+ul.ul6 { list-style-type: disc; }
+ol.ol7 { list-style-type: decimal; }
+ol.ol8 { list-style-type: lower-alpha; }
+ul.ul8 ul { list-style-type: circle; }
+ul.ul8 ul ul { list-style-type: disc; }
+ul.ul8 ul ul ul { list-style-type: circle; }
+ul.ul8 ul ul ul ul { list-style-type: disc; }
+ul.ul8 ul ul ul ul ul { list-style-type: circle; }
+ul.ul8 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul8 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul8 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol9 { list-style-type: lower-alpha; }
+ol.ol9 ol { list-style-type: lower-alpha; }
+ol.ol9 ol ol { list-style-type: lower-roman; }
+ol.ol9 ol ol ol { list-style-type: decimal; }
+ol.ol9 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol9 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol9 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol9 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol9 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol10 { list-style-type: lower-alpha; }
+ol.ol10 ol { list-style-type: lower-alpha; }
+ol.ol10 ol ol { list-style-type: lower-roman; }
+ol.ol10 ol ol ol { list-style-type: decimal; }
+ol.ol10 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol10 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol10 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol10 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol10 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol11 { list-style-type: lower-alpha; }
+ol.ol11 ol { list-style-type: lower-alpha; }
+ol.ol11 ol ol { list-style-type: lower-roman; }
+ol.ol11 ol ol ol { list-style-type: decimal; }
+ol.ol11 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol11 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol11 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol11 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol11 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol12 { list-style-type: decimal; }
+ol.ol12 ol { list-style-type: lower-alpha; }
+ol.ol12 ol ol { list-style-type: lower-roman; }
+ol.ol12 ol ol ol { list-style-type: decimal; }
+ol.ol12 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol12 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol12 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol12 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol12 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol13 { list-style-type: decimal; }
+ul.ul13 ul { list-style-type: circle; }
+ul.ul13 ul ul { list-style-type: disc; }
+ul.ul13 ul ul ul { list-style-type: circle; }
+ul.ul13 ul ul ul ul { list-style-type: disc; }
+ul.ul13 ul ul ul ul ul { list-style-type: circle; }
+ul.ul13 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul13 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul13 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul14 { list-style-type: disc; }
+ul.ul14 ul { list-style-type: circle; }
+ul.ul14 ul ul { list-style-type: disc; }
+ul.ul14 ul ul ul { list-style-type: circle; }
+ul.ul14 ul ul ul ul { list-style-type: disc; }
+ul.ul14 ul ul ul ul ul { list-style-type: circle; }
+ul.ul14 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul14 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul14 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol15 { list-style-type: decimal; }
+ol.ol15 ol { list-style-type: lower-alpha; }
+ol.ol15 ol ol { list-style-type: lower-roman; }
+ol.ol15 ol ol ol { list-style-type: decimal; }
+ol.ol15 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol15 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol15 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol15 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol15 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol16 { list-style-type: decimal; }
+ol.ol16 ol { list-style-type: lower-alpha; }
+ol.ol16 ol ol { list-style-type: lower-roman; }
+ol.ol16 ol ol ol { list-style-type: decimal; }
+ol.ol16 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol16 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol16 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol16 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol16 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol17 { list-style-type: decimal; }
+ol.ol17 ol { list-style-type: lower-alpha; }
+ol.ol17 ol ol { list-style-type: lower-roman; }
+ol.ol17 ol ol ol { list-style-type: decimal; }
+ol.ol17 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol17 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol17 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol17 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol17 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol18 { list-style-type: lower-alpha; }
+ol.ol18 ol { list-style-type: lower-alpha; }
+ol.ol18 ol ol { list-style-type: lower-roman; }
+ol.ol18 ol ol ol { list-style-type: decimal; }
+ol.ol18 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol18 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol18 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol18 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol18 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol19 { list-style-type: lower-alpha; }
+ol.ol19 ol { list-style-type: lower-alpha; }
+ol.ol19 ol ol { list-style-type: lower-roman; }
+ol.ol19 ol ol ol { list-style-type: decimal; }
+ol.ol19 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol19 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol19 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol19 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol19 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol20 { list-style-type: lower-alpha; }
+ol.ol20 ol { list-style-type: lower-alpha; }
+ol.ol20 ol ol { list-style-type: lower-roman; }
+ol.ol20 ol ol ol { list-style-type: decimal; }
+ol.ol20 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol20 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol20 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol20 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol20 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ul.ul21 { list-style-type: disc; }
+ul.ul21 ul { list-style-type: circle; }
+ul.ul21 ul ul { list-style-type: disc; }
+ul.ul21 ul ul ul { list-style-type: circle; }
+ul.ul21 ul ul ul ul { list-style-type: disc; }
+ul.ul21 ul ul ul ul ul { list-style-type: circle; }
+ul.ul21 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul21 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul21 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul22 { list-style-type: disc; }
+ul.ul22 ul { list-style-type: circle; }
+ul.ul22 ul ul { list-style-type: disc; }
+ul.ul22 ul ul ul { list-style-type: circle; }
+ul.ul22 ul ul ul ul { list-style-type: disc; }
+ul.ul22 ul ul ul ul ul { list-style-type: circle; }
+ul.ul22 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul22 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul22 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol23 { list-style-type: lower-alpha; }
+ul.ul23 ul { list-style-type: circle; }
+ul.ul23 ul ul { list-style-type: disc; }
+ul.ul23 ul ul ul { list-style-type: circle; }
+ul.ul23 ul ul ul ul { list-style-type: disc; }
+ul.ul23 ul ul ul ul ul { list-style-type: circle; }
+ul.ul23 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul23 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul23 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol24 { list-style-type: lower-alpha; }
+ul.ul24 ul { list-style-type: circle; }
+ul.ul24 ul ul { list-style-type: disc; }
+ul.ul24 ul ul ul { list-style-type: circle; }
+ul.ul24 ul ul ul ul { list-style-type: disc; }
+ul.ul24 ul ul ul ul ul { list-style-type: circle; }
+ul.ul24 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul24 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul24 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul25 { list-style-type: disc; }
+ul.ul25 ul { list-style-type: circle; }
+ul.ul25 ul ul { list-style-type: disc; }
+ul.ul25 ul ul ul { list-style-type: circle; }
+ul.ul25 ul ul ul ul { list-style-type: disc; }
+ul.ul25 ul ul ul ul ul { list-style-type: circle; }
+ul.ul25 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul25 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul25 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol26 { list-style-type: lower-alpha; }
+ol.ol26 ol { list-style-type: lower-alpha; }
+ol.ol26 ol ol { list-style-type: lower-roman; }
+ol.ol26 ol ol ol { list-style-type: decimal; }
+ol.ol26 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol26 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol26 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol26 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol26 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol27 { list-style-type: lower-alpha; }
+ol.ol27 ol { list-style-type: lower-alpha; }
+ol.ol27 ol ol { list-style-type: lower-roman; }
+ol.ol27 ol ol ol { list-style-type: decimal; }
+ol.ol27 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol27 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol27 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol27 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol27 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ul.ul28 { list-style-type: disc; }
+ul.ul28 ul { list-style-type: circle; }
+ul.ul28 ul ul { list-style-type: disc; }
+ul.ul28 ul ul ul { list-style-type: circle; }
+ul.ul28 ul ul ul ul { list-style-type: disc; }
+ul.ul28 ul ul ul ul ul { list-style-type: circle; }
+ul.ul28 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul28 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul28 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol29 { list-style-type: decimal; }
+ol.ol29 ol { list-style-type: lower-alpha; }
+ol.ol29 ol ol { list-style-type: lower-roman; }
+ol.ol29 ol ol ol { list-style-type: decimal; }
+ol.ol29 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol29 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol29 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol29 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol29 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ul.ul30 { list-style-type: disc; }
+ul.ul30 ul { list-style-type: circle; }
+ul.ul30 ul ul { list-style-type: disc; }
+ul.ul30 ul ul ul { list-style-type: circle; }
+ul.ul30 ul ul ul ul { list-style-type: disc; }
+ul.ul30 ul ul ul ul ul { list-style-type: circle; }
+ul.ul30 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul30 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul30 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul31 { list-style-type: disc; }
+ul.ul31 ul { list-style-type: circle; }
+ul.ul31 ul ul { list-style-type: disc; }
+ul.ul31 ul ul ul { list-style-type: circle; }
+ul.ul31 ul ul ul ul { list-style-type: disc; }
+ul.ul31 ul ul ul ul ul { list-style-type: circle; }
+ul.ul31 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul31 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul31 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol32 { list-style-type: decimal; }
+ol.ol32 ol { list-style-type: lower-alpha; }
+ol.ol32 ol ol { list-style-type: lower-roman; }
+ol.ol32 ol ol ol { list-style-type: decimal; }
+ol.ol32 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol32 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol32 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol32 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol32 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol33 { list-style-type: decimal; }
+ol.ol33 ol { list-style-type: lower-alpha; }
+ol.ol33 ol ol { list-style-type: lower-roman; }
+ol.ol33 ol ol ol { list-style-type: decimal; }
+ol.ol33 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol33 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol33 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol33 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol33 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol34 { list-style-type: lower-alpha; }
+ol.ol34 ol { list-style-type: lower-alpha; }
+ol.ol34 ol ol { list-style-type: lower-roman; }
+ol.ol34 ol ol ol { list-style-type: decimal; }
+ol.ol34 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol34 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol34 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol34 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol34 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol35 { list-style-type: lower-alpha; }
+ol.ol35 ol { list-style-type: lower-alpha; }
+ol.ol35 ol ol { list-style-type: lower-roman; }
+ol.ol35 ol ol ol { list-style-type: decimal; }
+ol.ol35 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol35 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol35 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol35 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol35 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol36 { list-style-type: lower-alpha; }
+ol.ol36 ol { list-style-type: lower-alpha; }
+ol.ol36 ol ol { list-style-type: lower-roman; }
+ol.ol36 ol ol ol { list-style-type: decimal; }
+ol.ol36 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol36 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol36 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol36 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol36 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol37 { list-style-type: lower-alpha; }
+ol.ol37 ol { list-style-type: lower-alpha; }
+ol.ol37 ol ol { list-style-type: lower-roman; }
+ol.ol37 ol ol ol { list-style-type: decimal; }
+ol.ol37 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol37 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol37 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol37 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol37 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol38 { list-style-type: decimal; }
+ol.ol38 ol { list-style-type: lower-alpha; }
+ol.ol38 ol ol { list-style-type: lower-roman; }
+ol.ol38 ol ol ol { list-style-type: decimal; }
+ol.ol38 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol38 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol38 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol38 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol38 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol39 { list-style-type: lower-alpha; }
+ul.ul39 ul { list-style-type: circle; }
+ul.ul39 ul ul { list-style-type: disc; }
+ul.ul39 ul ul ul { list-style-type: circle; }
+ul.ul39 ul ul ul ul { list-style-type: disc; }
+ul.ul39 ul ul ul ul ul { list-style-type: circle; }
+ul.ul39 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul39 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul39 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol40 { list-style-type: decimal; }
+ol.ol40 ol { list-style-type: lower-alpha; }
+ol.ol40 ol ol { list-style-type: lower-roman; }
+ol.ol40 ol ol ol { list-style-type: decimal; }
+ol.ol40 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol40 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol40 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol40 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol40 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol41 { list-style-type: decimal; }
+ol.ol41 ol { list-style-type: lower-alpha; }
+ol.ol41 ol ol { list-style-type: lower-roman; }
+ol.ol41 ol ol ol { list-style-type: decimal; }
+ol.ol41 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol41 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol41 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol41 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol41 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol42 { list-style-type: lower-alpha; }
+ol.ol42 ol { list-style-type: lower-alpha; }
+ol.ol42 ol ol { list-style-type: lower-roman; }
+ol.ol42 ol ol ol { list-style-type: decimal; }
+ol.ol42 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol42 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol42 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol42 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol42 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol43 { list-style-type: lower-alpha; }
+ul.ul43 ul { list-style-type: circle; }
+ul.ul43 ul ul { list-style-type: disc; }
+ul.ul43 ul ul ul { list-style-type: circle; }
+ul.ul43 ul ul ul ul { list-style-type: disc; }
+ul.ul43 ul ul ul ul ul { list-style-type: circle; }
+ul.ul43 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul43 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul43 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol44 { list-style-type: decimal; }
+ol.ol44 ol { list-style-type: lower-alpha; }
+ol.ol44 ol ol { list-style-type: lower-roman; }
+ol.ol44 ol ol ol { list-style-type: decimal; }
+ol.ol44 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol44 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol44 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol44 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol44 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol45 { list-style-type: lower-alpha; }
+ol.ol45 ol { list-style-type: lower-alpha; }
+ol.ol45 ol ol { list-style-type: lower-roman; }
+ol.ol45 ol ol ol { list-style-type: decimal; }
+ol.ol45 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol45 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol45 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol45 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol45 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ul.ul46 { list-style-type: disc; }
+ol.ol46 ol { list-style-type: decimal; }
+ol.ol46 ol ol { list-style-type: decimal; }
+ol.ol46 ol ol ol { list-style-type: decimal; }
+ol.ol46 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol46 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol46 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol46 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol46 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol47 { list-style-type: lower-alpha; }
+ol.ol47 ol { list-style-type: lower-alpha; }
+ol.ol47 ol ol { list-style-type: lower-roman; }
+ol.ol47 ol ol ol { list-style-type: decimal; }
+ol.ol47 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol47 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol47 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol47 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol47 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol48 { list-style-type: lower-alpha; }
+ol.ol48 ol { list-style-type: lower-alpha; }
+ol.ol48 ol ol { list-style-type: lower-roman; }
+ol.ol48 ol ol ol { list-style-type: decimal; }
+ol.ol48 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol48 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol48 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol48 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol48 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ul.ul49 { list-style-type: disc; }
+ul.ul49 ul { list-style-type: circle; }
+ul.ul49 ul ul { list-style-type: disc; }
+ul.ul49 ul ul ul { list-style-type: circle; }
+ul.ul49 ul ul ul ul { list-style-type: disc; }
+ul.ul49 ul ul ul ul ul { list-style-type: circle; }
+ul.ul49 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul49 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul49 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol50 { list-style-type: lower-alpha; }
+ol.ol50 ol { list-style-type: lower-alpha; }
+ol.ol50 ol ol { list-style-type: lower-roman; }
+ol.ol50 ol ol ol { list-style-type: decimal; }
+ol.ol50 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol50 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol50 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol50 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol50 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol51 { list-style-type: decimal; }
+ol.ol51 ol { list-style-type: lower-alpha; }
+ol.ol51 ol ol { list-style-type: lower-roman; }
+ol.ol51 ol ol ol { list-style-type: decimal; }
+ol.ol51 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol51 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol51 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol51 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol51 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol52 { list-style-type: lower-alpha; }
+ol.ol52 ol { list-style-type: lower-alpha; }
+ol.ol52 ol ol { list-style-type: lower-roman; }
+ol.ol52 ol ol ol { list-style-type: decimal; }
+ol.ol52 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol52 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol52 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol52 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol52 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol53 { list-style-type: lower-alpha; }
+ol.ol53 ol { list-style-type: lower-alpha; }
+ol.ol53 ol ol { list-style-type: lower-roman; }
+ol.ol53 ol ol ol { list-style-type: decimal; }
+ol.ol53 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol53 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol53 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol53 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol53 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ul.ul54 { list-style-type: disc; }
+ul.ul54 ul { list-style-type: circle; }
+ul.ul54 ul ul { list-style-type: disc; }
+ul.ul54 ul ul ul { list-style-type: circle; }
+ul.ul54 ul ul ul ul { list-style-type: disc; }
+ul.ul54 ul ul ul ul ul { list-style-type: circle; }
+ul.ul54 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul54 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul54 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol55 { list-style-type: lower-alpha; }
+ol.ol55 ol { list-style-type: lower-alpha; }
+ol.ol55 ol ol { list-style-type: lower-roman; }
+ol.ol55 ol ol ol { list-style-type: decimal; }
+ol.ol55 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol55 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol55 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol55 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol55 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ul.ul56 { list-style-type: disc; }
+ul.ul56 ul { list-style-type: circle; }
+ul.ul56 ul ul { list-style-type: disc; }
+ul.ul56 ul ul ul { list-style-type: circle; }
+ul.ul56 ul ul ul ul { list-style-type: disc; }
+ul.ul56 ul ul ul ul ul { list-style-type: circle; }
+ul.ul56 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul56 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul56 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol57 { list-style-type: lower-alpha; }
+ol.ol57 ol { list-style-type: lower-alpha; }
+ol.ol57 ol ol { list-style-type: lower-roman; }
+ol.ol57 ol ol ol { list-style-type: decimal; }
+ol.ol57 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol57 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol57 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol57 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol57 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ul.ul58 { list-style-type: disc; }
+ul.ul58 ul { list-style-type: circle; }
+ul.ul58 ul ul { list-style-type: disc; }
+ul.ul58 ul ul ul { list-style-type: circle; }
+ul.ul58 ul ul ul ul { list-style-type: disc; }
+ul.ul58 ul ul ul ul ul { list-style-type: circle; }
+ul.ul58 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul58 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul58 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol59 { list-style-type: decimal; }
+ol.ol59 ol { list-style-type: lower-alpha; }
+ol.ol59 ol ol { list-style-type: lower-roman; }
+ol.ol59 ol ol ol { list-style-type: decimal; }
+ol.ol59 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol59 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol59 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol59 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol59 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol60 { list-style-type: decimal; }
+ol.ol60 ol { list-style-type: lower-alpha; }
+ol.ol60 ol ol { list-style-type: lower-roman; }
+ul.ul60 ul ul ul { list-style-type: circle; }
+ul.ul60 ul ul ul ul { list-style-type: disc; }
+ul.ul60 ul ul ul ul ul { list-style-type: circle; }
+ol.ol60 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol60 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol60 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ul.ul61 { list-style-type: disc; }
+ol.ol61 ol { list-style-type: decimal; }
+ol.ol61 ol ol { list-style-type: decimal; }
+ol.ol61 ol ol ol { list-style-type: decimal; }
+ol.ol61 ol ol ol ol { list-style-type: decimal; }
+ol.ol61 ol ol ol ol ol { list-style-type: decimal; }
+ol.ol61 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol61 ol ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol61 ol ol ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol62 { list-style-type: lower-alpha; }
+ol.ol62 ol { list-style-type: lower-alpha; }
+ol.ol62 ol ol { list-style-type: lower-roman; }
+ol.ol62 ol ol ol { list-style-type: decimal; }
+ol.ol62 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol62 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol62 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol62 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol62 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol63 { list-style-type: lower-alpha; }
+ol.ol63 ol { list-style-type: lower-roman; }
+ol.ol63 ol ol { list-style-type: lower-roman; }
+ol.ol63 ol ol ol { list-style-type: decimal; }
+ol.ol63 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol63 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol63 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol63 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol63 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol64 { list-style-type: lower-alpha; }
+ol.ol64 ol { list-style-type: lower-alpha; }
+ol.ol64 ol ol { list-style-type: lower-roman; }
+ol.ol64 ol ol ol { list-style-type: decimal; }
+ol.ol64 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol64 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol64 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol64 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol64 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol65 { list-style-type: decimal; }
+ol.ol65 ol { list-style-type: lower-alpha; }
+ol.ol65 ol ol { list-style-type: lower-roman; }
+ol.ol65 ol ol ol { list-style-type: decimal; }
+ol.ol65 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol65 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol65 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol65 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol65 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol66 { list-style-type: decimal; }
+ol.ol66 ol { list-style-type: lower-alpha; }
+ol.ol66 ol ol { list-style-type: lower-roman; }
+ol.ol66 ol ol ol { list-style-type: decimal; }
+ol.ol66 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol66 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol66 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol66 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol66 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol67 { list-style-type: decimal; }
+ul.ul67 ul { list-style-type: circle; }
+ol.ol67 ol ol { list-style-type: decimal; }
+ol.ol67 ol ol ol { list-style-type: decimal; }
+ol.ol67 ol ol ol ol { list-style-type: decimal; }
+ol.ol67 ol ol ol ol ol { list-style-type: decimal; }
+ol.ol67 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol67 ol ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol67 ol ol ol ol ol ol ol ol { list-style-type: decimal; }
+ul.ul68 { list-style-type: disc; }
+ul.ul68 ul { list-style-type: circle; }
+ul.ul68 ul ul { list-style-type: disc; }
+ul.ul68 ul ul ul { list-style-type: circle; }
+ul.ul68 ul ul ul ul { list-style-type: disc; }
+ul.ul68 ul ul ul ul ul { list-style-type: circle; }
+ul.ul68 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul68 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul68 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol69 { list-style-type: lower-alpha; }
+ol.ol69 ol { list-style-type: lower-alpha; }
+ol.ol69 ol ol { list-style-type: lower-roman; }
+ol.ol69 ol ol ol { list-style-type: decimal; }
+ol.ol69 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol69 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol69 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol69 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol69 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ul.ul70 { list-style-type: disc; }
+ul.ul70 ul { list-style-type: circle; }
+ul.ul70 ul ul { list-style-type: disc; }
+ul.ul70 ul ul ul { list-style-type: circle; }
+ul.ul70 ul ul ul ul { list-style-type: disc; }
+ul.ul70 ul ul ul ul ul { list-style-type: circle; }
+ul.ul70 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul70 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul70 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol71 { list-style-type: lower-alpha; }
+ol.ol71 ol { list-style-type: lower-alpha; }
+ol.ol71 ol ol { list-style-type: lower-roman; }
+ol.ol71 ol ol ol { list-style-type: decimal; }
+ol.ol71 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol71 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol71 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol71 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol71 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol72 { list-style-type: lower-alpha; }
+ol.ol72 ol { list-style-type: lower-alpha; }
+ol.ol72 ol ol { list-style-type: lower-roman; }
+ol.ol72 ol ol ol { list-style-type: decimal; }
+ol.ol72 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol72 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol72 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol72 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol72 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol73 { list-style-type: lower-alpha; }
+ul.ul73 ul { list-style-type: circle; }
+ul.ul73 ul ul { list-style-type: disc; }
+ul.ul73 ul ul ul { list-style-type: circle; }
+ul.ul73 ul ul ul ul { list-style-type: disc; }
+ul.ul73 ul ul ul ul ul { list-style-type: circle; }
+ul.ul73 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul73 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul73 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol74 { list-style-type: lower-alpha; }
+ol.ol74 ol { list-style-type: lower-alpha; }
+ol.ol74 ol ol { list-style-type: lower-roman; }
+ol.ol74 ol ol ol { list-style-type: decimal; }
+ol.ol74 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol74 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol74 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol74 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol74 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ul.ul75 { list-style-type: disc; }
+ul.ul75 ul { list-style-type: circle; }
+ul.ul75 ul ul { list-style-type: disc; }
+ul.ul75 ul ul ul { list-style-type: circle; }
+ul.ul75 ul ul ul ul { list-style-type: disc; }
+ul.ul75 ul ul ul ul ul { list-style-type: circle; }
+ul.ul75 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul75 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul75 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol76 { list-style-type: decimal; }
+ol.ol76 ol { list-style-type: lower-alpha; }
+ol.ol76 ol ol { list-style-type: lower-roman; }
+ul.ul76 ul ul ul { list-style-type: circle; }
+ul.ul76 ul ul ul ul { list-style-type: disc; }
+ul.ul76 ul ul ul ul ul { list-style-type: circle; }
+ol.ol76 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol76 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol76 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol77 { list-style-type: lower-alpha; }
+ul.ul77 ul { list-style-type: circle; }
+ul.ul77 ul ul { list-style-type: disc; }
+ul.ul77 ul ul ul { list-style-type: circle; }
+ul.ul77 ul ul ul ul { list-style-type: disc; }
+ul.ul77 ul ul ul ul ul { list-style-type: circle; }
+ul.ul77 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul77 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul77 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol78 { list-style-type: lower-alpha; }
+ol.ol78 ol { list-style-type: lower-alpha; }
+ol.ol78 ol ol { list-style-type: lower-roman; }
+ol.ol78 ol ol ol { list-style-type: decimal; }
+ol.ol78 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol78 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol78 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol78 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol78 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol79 { list-style-type: lower-alpha; }
+ol.ol79 ol { list-style-type: lower-alpha; }
+ol.ol79 ol ol { list-style-type: lower-roman; }
+ol.ol79 ol ol ol { list-style-type: decimal; }
+ol.ol79 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol79 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol79 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol79 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol79 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol80 { list-style-type: lower-alpha; }
+ol.ol80 ol { list-style-type: lower-alpha; }
+ol.ol80 ol ol { list-style-type: lower-roman; }
+ol.ol80 ol ol ol { list-style-type: decimal; }
+ol.ol80 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol80 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol80 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol80 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol80 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol81 { list-style-type: lower-alpha; }
+ol.ol81 ol { list-style-type: lower-alpha; }
+ol.ol81 ol ol { list-style-type: lower-roman; }
+ol.ol81 ol ol ol { list-style-type: decimal; }
+ol.ol81 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol81 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol81 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol81 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol81 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ul.ul82 { list-style-type: disc; }
+ul.ul82 ul { list-style-type: circle; }
+ul.ul82 ul ul { list-style-type: disc; }
+ul.ul82 ul ul ul { list-style-type: circle; }
+ul.ul82 ul ul ul ul { list-style-type: disc; }
+ul.ul82 ul ul ul ul ul { list-style-type: circle; }
+ul.ul82 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul82 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul82 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul83 { list-style-type: disc; }
+ul.ul83 ul { list-style-type: circle; }
+ul.ul83 ul ul { list-style-type: disc; }
+ul.ul83 ul ul ul { list-style-type: circle; }
+ul.ul83 ul ul ul ul { list-style-type: disc; }
+ul.ul83 ul ul ul ul ul { list-style-type: circle; }
+ul.ul83 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul83 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul83 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol84 { list-style-type: decimal; }
+ol.ol84 ol { list-style-type: decimal; }
+ol.ol84 ol ol { list-style-type: decimal; }
+ol.ol84 ol ol ol { list-style-type: decimal; }
+ol.ol84 ol ol ol ol { list-style-type: decimal; }
+ol.ol84 ol ol ol ol ol { list-style-type: decimal; }
+ol.ol84 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol84 ol ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol84 ol ol ol ol ol ol ol ol { list-style-type: decimal; }
+ul.ul85 { list-style-type: disc; }
+ul.ul85 ul { list-style-type: circle; }
+ul.ul85 ul ul { list-style-type: disc; }
+ul.ul85 ul ul ul { list-style-type: circle; }
+ul.ul85 ul ul ul ul { list-style-type: disc; }
+ul.ul85 ul ul ul ul ul { list-style-type: circle; }
+ul.ul85 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul85 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul85 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul86 { list-style-type: disc; }
+ul.ul86 ul { list-style-type: circle; }
+ul.ul86 ul ul { list-style-type: disc; }
+ul.ul86 ul ul ul { list-style-type: circle; }
+ul.ul86 ul ul ul ul { list-style-type: disc; }
+ul.ul86 ul ul ul ul ul { list-style-type: circle; }
+ul.ul86 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul86 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul86 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol87 { list-style-type: lower-alpha; }
+ul.ul87 ul { list-style-type: circle; }
+ul.ul87 ul ul { list-style-type: disc; }
+ul.ul87 ul ul ul { list-style-type: circle; }
+ul.ul87 ul ul ul ul { list-style-type: disc; }
+ul.ul87 ul ul ul ul ul { list-style-type: circle; }
+ul.ul87 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul87 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul87 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul88 { list-style-type: disc; }
+ul.ul88 ul { list-style-type: circle; }
+ul.ul88 ul ul { list-style-type: disc; }
+ul.ul88 ul ul ul { list-style-type: circle; }
+ul.ul88 ul ul ul ul { list-style-type: disc; }
+ul.ul88 ul ul ul ul ul { list-style-type: circle; }
+ul.ul88 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul88 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul88 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol89 { list-style-type: lower-alpha; }
+ul.ul89 ul { list-style-type: circle; }
+ul.ul89 ul ul { list-style-type: disc; }
+ul.ul89 ul ul ul { list-style-type: circle; }
+ul.ul89 ul ul ul ul { list-style-type: disc; }
+ul.ul89 ul ul ul ul ul { list-style-type: circle; }
+ul.ul89 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul89 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul89 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol90 { list-style-type: decimal; }
+ol.ol90 ol { list-style-type: lower-alpha; }
+ol.ol90 ol ol { list-style-type: lower-roman; }
+ol.ol90 ol ol ol { list-style-type: decimal; }
+ol.ol90 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol90 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol90 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol90 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol90 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol91 { list-style-type: lower-alpha; }
+ol.ol91 ol { list-style-type: lower-alpha; }
+ol.ol91 ol ol { list-style-type: lower-roman; }
+ol.ol91 ol ol ol { list-style-type: decimal; }
+ol.ol91 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol91 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol91 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol91 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol91 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol92 { list-style-type: lower-alpha; }
+ol.ol92 ol { list-style-type: lower-alpha; }
+ol.ol92 ol ol { list-style-type: lower-roman; }
+ol.ol92 ol ol ol { list-style-type: decimal; }
+ol.ol92 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol92 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol92 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol92 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol92 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol93 { list-style-type: decimal; }
+ol.ol93 ol { list-style-type: lower-alpha; }
+ol.ol93 ol ol { list-style-type: lower-roman; }
+ol.ol93 ol ol ol { list-style-type: decimal; }
+ol.ol93 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol93 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol93 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol93 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol93 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ul.ul94 { list-style-type: disc; }
+ul.ul94 ul { list-style-type: circle; }
+ul.ul94 ul ul { list-style-type: disc; }
+ul.ul94 ul ul ul { list-style-type: circle; }
+ul.ul94 ul ul ul ul { list-style-type: disc; }
+ul.ul94 ul ul ul ul ul { list-style-type: circle; }
+ul.ul94 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul94 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul94 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol95 { list-style-type: decimal; }
+ol.ol95 ol { list-style-type: lower-alpha; }
+ol.ol95 ol ol { list-style-type: lower-roman; }
+ol.ol95 ol ol ol { list-style-type: decimal; }
+ol.ol95 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol95 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol95 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol95 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol95 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol96 { list-style-type: lower-alpha; }
+ol.ol96 ol { list-style-type: lower-alpha; }
+ol.ol96 ol ol { list-style-type: lower-roman; }
+ol.ol96 ol ol ol { list-style-type: decimal; }
+ol.ol96 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol96 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol96 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol96 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol96 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol97 { list-style-type: lower-alpha; }
+ol.ol97 ol { list-style-type: lower-alpha; }
+ol.ol97 ol ol { list-style-type: lower-roman; }
+ol.ol97 ol ol ol { list-style-type: decimal; }
+ol.ol97 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol97 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol97 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol97 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol97 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ul.ul98 { list-style-type: disc; }
+ul.ul98 ul { list-style-type: circle; }
+ul.ul98 ul ul { list-style-type: disc; }
+ul.ul98 ul ul ul { list-style-type: circle; }
+ul.ul98 ul ul ul ul { list-style-type: disc; }
+ul.ul98 ul ul ul ul ul { list-style-type: circle; }
+ul.ul98 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul98 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul98 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol99 { list-style-type: lower-alpha; }
+ol.ol99 ol { list-style-type: lower-alpha; }
+ol.ol99 ol ol { list-style-type: lower-roman; }
+ol.ol99 ol ol ol { list-style-type: decimal; }
+ol.ol99 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol99 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol99 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol99 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol99 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol100 { list-style-type: lower-alpha; }
+ol.ol100 ol { list-style-type: lower-alpha; }
+ol.ol100 ol ol { list-style-type: lower-roman; }
+ol.ol100 ol ol ol { list-style-type: decimal; }
+ol.ol100 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol100 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol100 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol100 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol100 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol101 { list-style-type: decimal; }
+ol.ol101 ol { list-style-type: decimal; }
+ol.ol101 ol ol { list-style-type: decimal; }
+ol.ol101 ol ol ol { list-style-type: decimal; }
+ol.ol101 ol ol ol ol { list-style-type: decimal; }
+ol.ol101 ol ol ol ol ol { list-style-type: decimal; }
+ol.ol101 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol101 ol ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol101 ol ol ol ol ol ol ol ol { list-style-type: decimal; }
+ul.ul102 { list-style-type: disc; }
+ul.ul102 ul { list-style-type: circle; }
+ul.ul102 ul ul { list-style-type: disc; }
+ul.ul102 ul ul ul { list-style-type: circle; }
+ul.ul102 ul ul ul ul { list-style-type: disc; }
+ul.ul102 ul ul ul ul ul { list-style-type: circle; }
+ul.ul102 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul102 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul102 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol103 { list-style-type: lower-alpha; }
+ol.ol103 ol { list-style-type: lower-alpha; }
+ol.ol103 ol ol { list-style-type: lower-roman; }
+ol.ol103 ol ol ol { list-style-type: decimal; }
+ol.ol103 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol103 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol103 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol103 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol103 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ul.ul104 { list-style-type: disc; }
+ul.ul104 ul { list-style-type: circle; }
+ul.ul104 ul ul { list-style-type: disc; }
+ul.ul104 ul ul ul { list-style-type: circle; }
+ul.ul104 ul ul ul ul { list-style-type: disc; }
+ul.ul104 ul ul ul ul ul { list-style-type: circle; }
+ul.ul104 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul104 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul104 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol105 { list-style-type: decimal; }
+ol.ol105 ol { list-style-type: lower-alpha; }
+ol.ol105 ol ol { list-style-type: lower-roman; }
+ol.ol105 ol ol ol { list-style-type: decimal; }
+ol.ol105 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol105 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol105 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol105 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol105 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ul.ul106 { list-style-type: disc; }
+ul.ul106 ul { list-style-type: circle; }
+ul.ul106 ul ul { list-style-type: disc; }
+ul.ul106 ul ul ul { list-style-type: circle; }
+ul.ul106 ul ul ul ul { list-style-type: disc; }
+ul.ul106 ul ul ul ul ul { list-style-type: circle; }
+ul.ul106 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul106 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul106 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul107 { list-style-type: disc; }
+ul.ul107 ul { list-style-type: circle; }
+ul.ul107 ul ul { list-style-type: disc; }
+ul.ul107 ul ul ul { list-style-type: circle; }
+ul.ul107 ul ul ul ul { list-style-type: disc; }
+ul.ul107 ul ul ul ul ul { list-style-type: circle; }
+ul.ul107 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul107 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul107 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol108 { list-style-type: decimal; }
+ol.ol108 ol { list-style-type: lower-alpha; }
+ol.ol108 ol ol { list-style-type: lower-roman; }
+ol.ol108 ol ol ol { list-style-type: decimal; }
+ol.ol108 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol108 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol108 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol108 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol108 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ul.ul109 { list-style-type: disc; }
+ul.ul109 ul { list-style-type: circle; }
+ul.ul109 ul ul { list-style-type: disc; }
+ul.ul109 ul ul ul { list-style-type: circle; }
+ul.ul109 ul ul ul ul { list-style-type: disc; }
+ul.ul109 ul ul ul ul ul { list-style-type: circle; }
+ul.ul109 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul109 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul109 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul110 { list-style-type: disc; }
+ul.ul110 ul { list-style-type: circle; }
+ul.ul110 ul ul { list-style-type: disc; }
+ul.ul110 ul ul ul { list-style-type: circle; }
+ul.ul110 ul ul ul ul { list-style-type: disc; }
+ul.ul110 ul ul ul ul ul { list-style-type: circle; }
+ul.ul110 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul110 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul110 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol111 { list-style-type: lower-alpha; }
+ol.ol111 ol { list-style-type: lower-alpha; }
+ol.ol111 ol ol { list-style-type: lower-roman; }
+ol.ol111 ol ol ol { list-style-type: decimal; }
+ol.ol111 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol111 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol111 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol111 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol111 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol112 { list-style-type: lower-alpha; }
+ol.ol112 ol { list-style-type: lower-alpha; }
+ol.ol112 ol ol { list-style-type: lower-roman; }
+ol.ol112 ol ol ol { list-style-type: decimal; }
+ol.ol112 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol112 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol112 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol112 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol112 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol113 { list-style-type: decimal; }
+ol.ol113 ol { list-style-type: lower-alpha; }
+ol.ol113 ol ol { list-style-type: lower-roman; }
+ol.ol113 ol ol ol { list-style-type: decimal; }
+ol.ol113 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol113 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol113 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol113 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol113 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol114 { list-style-type: lower-alpha; }
+ul.ul114 ul { list-style-type: circle; }
+ul.ul114 ul ul { list-style-type: disc; }
+ul.ul114 ul ul ul { list-style-type: circle; }
+ul.ul114 ul ul ul ul { list-style-type: disc; }
+ul.ul114 ul ul ul ul ul { list-style-type: circle; }
+ul.ul114 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul114 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul114 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol115 { list-style-type: lower-alpha; }
+ol.ol115 ol { list-style-type: lower-alpha; }
+ol.ol115 ol ol { list-style-type: lower-roman; }
+ol.ol115 ol ol ol { list-style-type: decimal; }
+ol.ol115 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol115 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol115 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol115 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol115 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol116 { list-style-type: lower-alpha; }
+ol.ol116 ol { list-style-type: lower-alpha; }
+ol.ol116 ol ol { list-style-type: lower-roman; }
+ol.ol116 ol ol ol { list-style-type: decimal; }
+ol.ol116 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol116 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol116 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol116 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol116 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol117 { list-style-type: decimal; }
+ol.ol117 ol { list-style-type: lower-alpha; }
+ol.ol117 ol ol { list-style-type: lower-roman; }
+ol.ol117 ol ol ol { list-style-type: decimal; }
+ol.ol117 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol117 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol117 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol117 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol117 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol118 { list-style-type: decimal; }
+ol.ol118 ol { list-style-type: lower-alpha; }
+ol.ol118 ol ol { list-style-type: lower-roman; }
+ol.ol118 ol ol ol { list-style-type: decimal; }
+ol.ol118 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol118 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol118 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol118 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol118 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol119 { list-style-type: decimal; }
+ol.ol119 ol { list-style-type: lower-alpha; }
+ol.ol119 ol ol { list-style-type: lower-roman; }
+ol.ol119 ol ol ol { list-style-type: decimal; }
+ol.ol119 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol119 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol119 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol119 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol119 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ul.ul120 { list-style-type: disc; }
+ul.ul120 ul { list-style-type: circle; }
+ul.ul120 ul ul { list-style-type: disc; }
+ul.ul120 ul ul ul { list-style-type: circle; }
+ul.ul120 ul ul ul ul { list-style-type: disc; }
+ul.ul120 ul ul ul ul ul { list-style-type: circle; }
+ul.ul120 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul120 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul120 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol121 { list-style-type: decimal; }
+ol.ol121 ol { list-style-type: lower-alpha; }
+ol.ol121 ol ol { list-style-type: lower-roman; }
+ol.ol121 ol ol ol { list-style-type: decimal; }
+ol.ol121 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol121 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol121 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol121 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol121 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol122 { list-style-type: decimal; }
+ol.ol122 ol { list-style-type: lower-alpha; }
+ol.ol122 ol ol { list-style-type: lower-roman; }
+ol.ol122 ol ol ol { list-style-type: decimal; }
+ol.ol122 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol122 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol122 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol122 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol122 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol123 { list-style-type: lower-alpha; }
+ul.ul123 ul { list-style-type: circle; }
+ul.ul123 ul ul { list-style-type: disc; }
+ul.ul123 ul ul ul { list-style-type: circle; }
+ul.ul123 ul ul ul ul { list-style-type: disc; }
+ul.ul123 ul ul ul ul ul { list-style-type: circle; }
+ul.ul123 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul123 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul123 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol124 { list-style-type: lower-alpha; }
+ol.ol124 ol { list-style-type: lower-alpha; }
+ol.ol124 ol ol { list-style-type: lower-roman; }
+ol.ol124 ol ol ol { list-style-type: decimal; }
+ol.ol124 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol124 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol124 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol124 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol124 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol125 { list-style-type: lower-alpha; }
+ul.ul125 ul { list-style-type: circle; }
+ul.ul125 ul ul { list-style-type: disc; }
+ul.ul125 ul ul ul { list-style-type: circle; }
+ul.ul125 ul ul ul ul { list-style-type: disc; }
+ul.ul125 ul ul ul ul ul { list-style-type: circle; }
+ul.ul125 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul125 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul125 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol126 { list-style-type: lower-alpha; }
+ul.ul126 ul { list-style-type: circle; }
+ul.ul126 ul ul { list-style-type: disc; }
+ul.ul126 ul ul ul { list-style-type: circle; }
+ul.ul126 ul ul ul ul { list-style-type: disc; }
+ul.ul126 ul ul ul ul ul { list-style-type: circle; }
+ul.ul126 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul126 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul126 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul127 { list-style-type: disc; }
+ul.ul127 ul { list-style-type: circle; }
+ul.ul127 ul ul { list-style-type: disc; }
+ul.ul127 ul ul ul { list-style-type: circle; }
+ul.ul127 ul ul ul ul { list-style-type: disc; }
+ul.ul127 ul ul ul ul ul { list-style-type: circle; }
+ul.ul127 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul127 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul127 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol128 { list-style-type: decimal; }
+ol.ol128 ol { list-style-type: lower-alpha; }
+ol.ol128 ol ol { list-style-type: lower-roman; }
+ol.ol128 ol ol ol { list-style-type: decimal; }
+ol.ol128 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol128 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol128 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol128 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol128 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ul.ul129 { list-style-type: disc; }
+ul.ul129 ul { list-style-type: circle; }
+ul.ul129 ul ul { list-style-type: disc; }
+ul.ul129 ul ul ul { list-style-type: circle; }
+ul.ul129 ul ul ul ul { list-style-type: disc; }
+ul.ul129 ul ul ul ul ul { list-style-type: circle; }
+ul.ul129 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul129 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul129 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul130 { list-style-type: disc; }
+ul.ul130 ul { list-style-type: circle; }
+ul.ul130 ul ul { list-style-type: disc; }
+ul.ul130 ul ul ul { list-style-type: circle; }
+ul.ul130 ul ul ul ul { list-style-type: disc; }
+ul.ul130 ul ul ul ul ul { list-style-type: circle; }
+ul.ul130 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul130 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul130 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol131 { list-style-type: decimal; }
+ol.ol131 ol { list-style-type: lower-alpha; }
+ol.ol131 ol ol { list-style-type: lower-roman; }
+ol.ol131 ol ol ol { list-style-type: decimal; }
+ol.ol131 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol131 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol131 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol131 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol131 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol132 { list-style-type: lower-alpha; }
+ol.ol132 ol { list-style-type: lower-alpha; }
+ol.ol132 ol ol { list-style-type: lower-roman; }
+ol.ol132 ol ol ol { list-style-type: decimal; }
+ol.ol132 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol132 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol132 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol132 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol132 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ul.ul133 { list-style-type: disc; }
+ol.ol133 ol { list-style-type: lower-alpha; }
+ol.ol133 ol ol { list-style-type: lower-roman; }
+ol.ol133 ol ol ol { list-style-type: decimal; }
+ol.ol133 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol133 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol133 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol133 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol133 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol134 { list-style-type: decimal; }
+ol.ol134 ol { list-style-type: decimal; }
+ol.ol134 ol ol { list-style-type: decimal; }
+ol.ol134 ol ol ol { list-style-type: decimal; }
+ol.ol134 ol ol ol ol { list-style-type: decimal; }
+ol.ol134 ol ol ol ol ol { list-style-type: decimal; }
+ol.ol134 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol134 ol ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol134 ol ol ol ol ol ol ol ol { list-style-type: decimal; }
+ul.ul135 { list-style-type: disc; }
+ol.ol136 { list-style-type: lower-alpha; }
+ol.ol136 ol { list-style-type: lower-alpha; }
+ol.ol136 ol ol { list-style-type: lower-roman; }
+ol.ol136 ol ol ol { list-style-type: decimal; }
+ol.ol136 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol136 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol136 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol136 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol136 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ul.ul137 { list-style-type: disc; }
+ul.ul137 ul { list-style-type: circle; }
+ul.ul137 ul ul { list-style-type: disc; }
+ul.ul137 ul ul ul { list-style-type: circle; }
+ul.ul137 ul ul ul ul { list-style-type: disc; }
+ul.ul137 ul ul ul ul ul { list-style-type: circle; }
+ul.ul137 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul137 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul137 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol138 { list-style-type: decimal; }
+ol.ol138 ol { list-style-type: lower-alpha; }
+ol.ol138 ol ol { list-style-type: lower-roman; }
+ol.ol138 ol ol ol { list-style-type: decimal; }
+ol.ol138 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol138 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol138 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol138 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol138 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol139 { list-style-type: lower-alpha; }
+ol.ol139 ol { list-style-type: lower-alpha; }
+ol.ol139 ol ol { list-style-type: lower-roman; }
+ol.ol139 ol ol ol { list-style-type: decimal; }
+ol.ol139 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol139 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol139 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol139 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol139 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol140 { list-style-type: lower-alpha; }
+ol.ol140 ol { list-style-type: lower-alpha; }
+ol.ol140 ol ol { list-style-type: lower-roman; }
+ol.ol140 ol ol ol { list-style-type: decimal; }
+ol.ol140 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol140 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol140 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol140 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol140 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol141 { list-style-type: decimal; }
+ol.ol141 ol { list-style-type: decimal; }
+ol.ol141 ol ol { list-style-type: decimal; }
+ol.ol141 ol ol ol { list-style-type: decimal; }
+ol.ol141 ol ol ol ol { list-style-type: decimal; }
+ol.ol141 ol ol ol ol ol { list-style-type: decimal; }
+ol.ol141 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol141 ol ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol141 ol ol ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol142 { list-style-type: lower-alpha; }
+ul.ul142 ul { list-style-type: circle; }
+ul.ul142 ul ul { list-style-type: disc; }
+ul.ul142 ul ul ul { list-style-type: circle; }
+ul.ul142 ul ul ul ul { list-style-type: disc; }
+ul.ul142 ul ul ul ul ul { list-style-type: circle; }
+ul.ul142 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul142 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul142 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul143 { list-style-type: disc; }
+ul.ul143 ul { list-style-type: circle; }
+ul.ul143 ul ul { list-style-type: disc; }
+ul.ul143 ul ul ul { list-style-type: circle; }
+ul.ul143 ul ul ul ul { list-style-type: disc; }
+ul.ul143 ul ul ul ul ul { list-style-type: circle; }
+ul.ul143 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul143 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul143 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol144 { list-style-type: decimal; }
+ol.ol144 ol { list-style-type: lower-alpha; }
+ol.ol144 ol ol { list-style-type: lower-roman; }
+ol.ol144 ol ol ol { list-style-type: decimal; }
+ol.ol144 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol144 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol144 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol144 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol144 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol145 { list-style-type: lower-alpha; }
+ol.ol145 ol { list-style-type: lower-alpha; }
+ol.ol145 ol ol { list-style-type: lower-roman; }
+ol.ol145 ol ol ol { list-style-type: decimal; }
+ol.ol145 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol145 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol145 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol145 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol145 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ul.ul146 { list-style-type: disc; }
+ul.ul146 ul { list-style-type: circle; }
+ul.ul146 ul ul { list-style-type: disc; }
+ul.ul146 ul ul ul { list-style-type: circle; }
+ul.ul146 ul ul ul ul { list-style-type: disc; }
+ul.ul146 ul ul ul ul ul { list-style-type: circle; }
+ul.ul146 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul146 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul146 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol147 { list-style-type: decimal; }
+ul.ul147 ul { list-style-type: circle; }
+ul.ul147 ul ul { list-style-type: disc; }
+ul.ul147 ul ul ul { list-style-type: circle; }
+ul.ul147 ul ul ul ul { list-style-type: disc; }
+ul.ul147 ul ul ul ul ul { list-style-type: circle; }
+ul.ul147 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul147 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul147 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol148 { list-style-type: lower-alpha; }
+ol.ol148 ol { list-style-type: lower-alpha; }
+ol.ol148 ol ol { list-style-type: lower-roman; }
+ol.ol148 ol ol ol { list-style-type: decimal; }
+ol.ol148 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol148 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol148 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol148 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol148 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ul.ul149 { list-style-type: disc; }
+ul.ul149 ul { list-style-type: circle; }
+ul.ul149 ul ul { list-style-type: disc; }
+ul.ul149 ul ul ul { list-style-type: circle; }
+ul.ul149 ul ul ul ul { list-style-type: disc; }
+ul.ul149 ul ul ul ul ul { list-style-type: circle; }
+ul.ul149 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul149 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul149 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul150 { list-style-type: disc; }
+ul.ul150 ul { list-style-type: circle; }
+ul.ul150 ul ul { list-style-type: disc; }
+ul.ul150 ul ul ul { list-style-type: circle; }
+ul.ul150 ul ul ul ul { list-style-type: disc; }
+ul.ul150 ul ul ul ul ul { list-style-type: circle; }
+ul.ul150 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul150 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul150 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol151 { list-style-type: lower-alpha; }
+ol.ol151 ol { list-style-type: lower-alpha; }
+ol.ol151 ol ol { list-style-type: lower-roman; }
+ol.ol151 ol ol ol { list-style-type: decimal; }
+ol.ol151 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol151 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol151 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol151 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol151 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol152 { list-style-type: lower-alpha; }
+ol.ol152 ol { list-style-type: lower-alpha; }
+ul.ul152 ul ul { list-style-type: disc; }
+ul.ul152 ul ul ul { list-style-type: circle; }
+ul.ul152 ul ul ul ul { list-style-type: disc; }
+ul.ul152 ul ul ul ul ul { list-style-type: circle; }
+ul.ul152 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul152 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul152 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol153 { list-style-type: decimal; }
+ol.ol153 ol { list-style-type: lower-alpha; }
+ol.ol153 ol ol { list-style-type: lower-roman; }
+ol.ol153 ol ol ol { list-style-type: decimal; }
+ol.ol153 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol153 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol153 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol153 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol153 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol154 { list-style-type: decimal; }
+ol.ol154 ol { list-style-type: lower-alpha; }
+ol.ol154 ol ol { list-style-type: lower-roman; }
+ul.ul154 ul ul ul { list-style-type: circle; }
+ul.ul154 ul ul ul ul { list-style-type: disc; }
+ul.ul154 ul ul ul ul ul { list-style-type: circle; }
+ol.ol154 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol154 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol154 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ul.ul155 { list-style-type: disc; }
+ul.ul155 ul { list-style-type: circle; }
+ul.ul155 ul ul { list-style-type: disc; }
+ul.ul155 ul ul ul { list-style-type: circle; }
+ul.ul155 ul ul ul ul { list-style-type: disc; }
+ul.ul155 ul ul ul ul ul { list-style-type: circle; }
+ul.ul155 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul155 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul155 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ol.ol156 { list-style-type: decimal; }
+ol.ol156 ol { list-style-type: lower-alpha; }
+ol.ol156 ol ol { list-style-type: lower-roman; }
+ol.ol156 ol ol ol { list-style-type: decimal; }
+ol.ol156 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol156 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol156 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol156 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol156 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol157 { list-style-type: lower-alpha; }
+ol.ol157 ol { list-style-type: lower-alpha; }
+ol.ol157 ol ol { list-style-type: lower-roman; }
+ol.ol157 ol ol ol { list-style-type: decimal; }
+ol.ol157 ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol157 ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol157 ol ol ol ol ol ol { list-style-type: decimal; }
+ol.ol157 ol ol ol ol ol ol ol { list-style-type: lower-alpha; }
+ol.ol157 ol ol ol ol ol ol ol ol { list-style-type: lower-roman; }
+ol.ol158 { list-style-type: lower-alpha; }
+ul.ul158 ul { list-style-type: circle; }
+ul.ul158 ul ul { list-style-type: disc; }
+ul.ul158 ul ul ul { list-style-type: circle; }
+ul.ul158 ul ul ul ul { list-style-type: disc; }
+ul.ul158 ul ul ul ul ul { list-style-type: circle; }
+ul.ul158 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul158 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul158 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul159 { list-style-type: disc; }
+ul.ul159 ul { list-style-type: circle; }
+ul.ul159 ul ul { list-style-type: disc; }
+ul.ul159 ul ul ul { list-style-type: circle; }
+ul.ul159 ul ul ul ul { list-style-type: disc; }
+ul.ul159 ul ul ul ul ul { list-style-type: circle; }
+ul.ul159 ul ul ul ul ul ul { list-style-type: disc; }
+ul.ul159 ul ul ul ul ul ul ul { list-style-type: circle; }
+ul.ul159 ul ul ul ul ul ul ul ul { list-style-type: disc; }
+/* text-formatting styles */
+.txtfmt0 {
+ font-weight: bold;
+}
+.txtfmt1 {
+ vertical-align: super;
+}
+.txtfmt2 {
+ font-weight: normal;
+}
+.txtfmt3 {
+ font-weight: bold;
+ vertical-align: super;
+}
+.txtfmt4 {
+ font-style: italic;
+}
+/* table cell formatting styles */
+.tcell0 {
+ background-color: #E6E6E6;
+}
+.tcell1 {
+ background-color: #C6D9F1;
+}
+.tcell2 {
+ background-color: #F2DBDB;
+}
+.tcell3 {
+ background-color: #DBE5F1;
+}
+.tcell4 {
+ background-color: #EAF1DD;
+}
+.tcell5 {
+ background-color: #FABF8F;
+}
+.tcell6 {
+ background-color: #D9D9D9;
+}
+.tcell7 {
+ background-color: #F0F0F0;
+}
+.tcell8 {
+ background-color: #DDDDDD;
+}
+.tcell9 {
+ background-color: #F3F3F3;
+}
+.tcell10 {
+ background-color: #808080;
+}
