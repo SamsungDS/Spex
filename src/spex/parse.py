@@ -5,7 +5,7 @@
 import json
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional, Protocol, TypedDict
+from typing import Dict, List, Optional, Protocol, Set, TypedDict, cast
 
 from spex.htmlspec.htmlrenderer import SpexHtmlRenderer
 from spex.jsonspec import parse
@@ -107,7 +107,7 @@ def get_writer(src: Path, out_path: Optional[Path]) -> Writer:
 
 
 def parse_spec(spec, args: ParserArgs):
-    ignore_lint_codes = set(c.name for c in args.lint_codes_ignore)
+    ignore_lint_codes: Set[str] = set(c.name for c in args.lint_codes_ignore)
 
     if spec.suffix == ".json":
         # lint code filtering is applied at the point of writing the lint errors
@@ -140,12 +140,12 @@ def parse_spec(spec, args: ParserArgs):
         w.write_meta("format version", 1)  # TODO define elsewhere
         dparser = sdoc.get_parser(args)
         for entity in dparser.parse():
-            w.write_entity(entity)
+            w.write_entity(cast(JSON, entity))
 
         reported_lint_errs = [
-            lint_err
-            for lint_err in dparser.linter.to_json()
-            if lint_err["code"] not in ignore_lint_codes
+            lint_entry.to_json()
+            for lint_entry in dparser.linter.lint_entries()
+            if lint_entry.code not in ignore_lint_codes
         ]
 
         if reported_lint_errs:

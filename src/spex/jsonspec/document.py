@@ -52,8 +52,8 @@ class DocLinter:
         )
         self._lint_issues.append(l_entry)
 
-    def to_json(self) -> JSON:
-        return [l_entry.to_json() for l_entry in self._lint_issues]
+    def lint_entries(self) -> List[LintEntry]:
+        return [*self._lint_issues]
 
 
 class DocumentParser:
