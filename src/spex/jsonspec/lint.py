@@ -4,7 +4,7 @@
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Dict, Optional, Protocol
+from typing import Dict, List, Optional, Protocol
 
 from spex.jsonspec.defs import JSON, ToJson
 
@@ -99,6 +99,10 @@ class LintEntry:
             ret["row"] = self.row
         return ret
 
+    @property
+    def code(self) -> str:
+        return self.err.value.name
+
 
 class Linter(Protocol):
     def add_issue(
@@ -110,4 +114,7 @@ class Linter(Protocol):
         row_key: Optional[str] = None,
         ctx: Optional[Dict[str, JSON]] = None,
     ) -> None:
+        ...
+
+    def lint_entries(self) -> List[LintEntry]:
         ...
