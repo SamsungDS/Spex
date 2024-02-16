@@ -2,12 +2,12 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-from argparse import Namespace
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
 from spex.jsonspec.document import DocumentParser
+from spex.jsonspec.parserargs import ParserArgs
 from spex.jsonspec.quirks import QUIRKS_MAP, QuirksMap
 from spex.xml import ElementTree, Xpath, etree
 
@@ -19,7 +19,7 @@ class SpecDocument:
     rev: str
 
     def get_parser(
-        self, args: Namespace, quirks_map: Optional[QuirksMap] = None
+        self, args: ParserArgs, quirks_map: Optional[QuirksMap] = None
     ) -> DocumentParser:
         if quirks_map is None:
             quirks_map = QUIRKS_MAP
