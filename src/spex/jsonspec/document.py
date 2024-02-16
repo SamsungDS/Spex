@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-from argparse import Namespace
 from re import compile as re_compile
 from typing import TYPE_CHECKING, Dict, Iterator, List, Optional, Tuple, Type, TypeAlias
 
@@ -12,6 +11,7 @@ from spex.jsonspec.defs import JSON, Entity, EntityMeta, cast_json
 from spex.jsonspec.extractors.structtable import BitsTableExtractor, BytesTableExtractor
 from spex.jsonspec.extractors.valuetable import ValueTableExtractor
 from spex.jsonspec.lint import LintEntry, Linter, LintErr
+from spex.jsonspec.parserargs import ParserArgs
 from spex.logging import ULog
 from spex.xml import XmlUtils, Xpath
 
@@ -60,7 +60,7 @@ class DocumentParser:
     rgx_fig_id = re_compile(r"Figure\s+(?P<figid>[^\s^:]+).*")
     fig_extractor_overrides: Dict[str, Type["FigureExtractor"]] = {}
 
-    def __init__(self, args: Namespace, doc: "ElementTree", spec: str, revision: str):
+    def __init__(self, args: ParserArgs, doc: "ElementTree", spec: str, revision: str):
         self.__args = args
         self.__doc = doc
         self.__spec = spec
@@ -73,7 +73,7 @@ class DocumentParser:
         ...
 
     @property
-    def args(self) -> Namespace:
+    def args(self) -> ParserArgs:
         """Return CLI args."""
         return self.__args
 
