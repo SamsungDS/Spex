@@ -115,7 +115,7 @@ class RunProperties:
         return self.__css_attrs
 
     def __eq__(self, other):
-        return type(other) == type(self) and self.__css_attrs == other.__css_attrs
+        return isinstance(other, type(self)) and self.__css_attrs == other.__css_attrs
 
     def __hash__(self):
         return hash(frozenset(self.__css_attrs))
