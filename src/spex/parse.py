@@ -150,6 +150,7 @@ def parse_spec(
             num_figures = dparser.num_figures
             for fig_ndx, entity in enumerate(dparser.parse()):
                 yield ("json", fig_ndx, num_figures)
+                w.write_entity(cast(JSON, entity))
         else:
             for entity in dparser.parse():
                 w.write_entity(cast(JSON, entity))
