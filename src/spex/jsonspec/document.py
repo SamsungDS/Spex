@@ -145,8 +145,20 @@ class DocumentParser:
         assert m is not None, f"failed to extract figure ID from {figure_title}"
         return m.group("figid")
 
+    def _figures(self) -> List["Element"]:
+        return Xpath.elems(self.doc, "./body/table")
+
+    @property
+    def num_figures(self) -> int:
+        """Return estimate of number of figures in document.
+
+        NOTE: some figures may be skipped due to missing information
+              so this value represents an upper bound on the number of
+              figures being processed."""
+        return len(self._figures())
+
     def iter_figures(self) -> Iterator[Tuple[EntityMeta, "Element"]]:
-        for tbl in Xpath.elems(self.doc, "./body/table"):
+        for tbl in self._figures():
             # Kludge: should be fixed in source documents, but a few tables
             # (Fig202, Fig223 in Base 2.0c spec) are wrapped in an extra table
             inner_tbl = Xpath.elem_first(tbl, "./tr[1]/td[1]/*[1]")

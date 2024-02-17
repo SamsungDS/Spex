@@ -3,15 +3,29 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 import json
-import sys
 from pathlib import Path
-from typing import Dict, List, Optional, Protocol, Set, TypedDict, cast
+from typing import (
+    Dict,
+    Generator,
+    List,
+    Optional,
+    Protocol,
+    Set,
+    Tuple,
+    TypeAlias,
+    TypedDict,
+    cast,
+)
 
 from spex.htmlspec.htmlrenderer import SpexHtmlRenderer
 from spex.jsonspec import parse
 from spex.jsonspec.defs import JSON
 from spex.jsonspec.parserargs import ParserArgs
 from spex.logging import ULog, logger
+
+ParseProgressStatus: TypeAlias = Tuple[
+    str, int, int
+]  # (<phase>, <figure>, <of figures>)
 
 
 class S2Model(TypedDict):
@@ -106,30 +120,23 @@ def get_writer(src: Path, out_path: Optional[Path]) -> Writer:
     return StdoutWriter(src)
 
 
-def parse_spec(spec, args: ParserArgs):
+def parse_spec(
+    spec: Path, args: ParserArgs, yield_progress=False
+) -> Generator[ParseProgressStatus, None, Optional[Path]]:
     ignore_lint_codes: Set[str] = set(c.name for c in args.lint_codes_ignore)
-
-    if spec.suffix == ".json":
-        # lint code filtering is applied at the point of writing the lint errors
-        # into the resulting NVMe (JSON) model.
-        sys.stderr.write(
-            "cannot operate on NVMe model (JSON), requires the HTML model or docx spec as input\n"
-        )
-        sys.stderr.flush()
-        sys.exit(1)
-
-    if spec.suffix not in (".html", ".docx"):
-        sys.stderr.write(
-            f"invalid input file ({spec!s}), requires a HTML model or the docx specification file\n"
-        )
-        sys.stderr.flush()
-        sys.exit(1)
 
     if spec.suffix == ".docx":
         sp = SpexHtmlRenderer(docx_path=spec, out_dir=args.output_dir)
         spec = sp.html_path
         try:
-            sp.generate()
+            gen = sp.generate(yield_progress=yield_progress)
+            if yield_progress:
+                num_figures = sp.num_figures
+                for fig_ndx in gen:
+                    yield ("html", fig_ndx, num_figures)
+            else:
+                for _ in gen:
+                    pass
         finally:
             del sp
 
@@ -139,8 +146,13 @@ def parse_spec(spec, args: ParserArgs):
         w.write_meta("revision", sdoc.rev)
         w.write_meta("format version", 1)  # TODO define elsewhere
         dparser = sdoc.get_parser(args)
-        for entity in dparser.parse():
-            w.write_entity(cast(JSON, entity))
+        if yield_progress:
+            num_figures = dparser.num_figures
+            for fig_ndx, entity in enumerate(dparser.parse()):
+                yield ("json", fig_ndx, num_figures)
+        else:
+            for entity in dparser.parse():
+                w.write_entity(cast(JSON, entity))
 
         reported_lint_errs = [
             lint_entry.to_json()
@@ -159,3 +171,4 @@ def parse_spec(spec, args: ParserArgs):
                 f"{err_prefix}, {err_msg}",
             )
         w.write_meta("lint", reported_lint_errs)
+        return w.path  # return path to output JSON
