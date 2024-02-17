@@ -4,7 +4,7 @@
 
 from html import escape as html_escape
 from pathlib import Path
-from typing import Any, Optional, Set
+from typing import Any, Generator, Optional, Set, Tuple, TypeAlias
 
 from gcgen.api import Section, write_file
 from lxml.etree import _Element
@@ -20,6 +20,8 @@ from spex.htmlspec.parser import (
     SpexParser,
     Table,
 )
+
+ProgressStatus: TypeAlias = Tuple[int, int]  # processing figure X of Y figures
 
 
 # TODO: nicer way of using `write_file` ?
@@ -110,8 +112,13 @@ class SpexHtmlRenderer:
         s.emitln("/* table cell formatting styles */")
         self.__css_tcell_cache.emit_rules(s)
 
-    def generate(self):
-        """main entrypoint for generator."""
+    def generate(self, yield_progress=False) -> Generator[int, None, None]:
+        """main entrypoint for generator.
+
+        Args:
+          * yield_progress (bool): whether to progress status tuples.
+                Can be used to implement e.g. progress bars.
+        """
         # TODO: really should not be called twice.
         # write prelude for CSS document
         self.__write_css_prelude()
@@ -133,8 +140,13 @@ class SpexHtmlRenderer:
         s.emitln("<body>").indent()
         s.add_section(self._html_body)
 
-        for tbl in self._parser.parse():
-            self._render_table(s, tbl)
+        if yield_progress:
+            for ndx, tbl in enumerate(self._parser.parse()):
+                yield ndx
+                self._render_table(s, tbl)
+        else:
+            for tbl in self._parser.parse():
+                self._render_table(s, tbl)
 
         s.dedent().emitln("</body>")
         s.emitln("</html>")
@@ -223,11 +235,22 @@ class SpexHtmlRenderer:
 
     @property
     def html_path(self) -> Path:
+        """output path of the HTML document resulting from parsing the specification."""
         return self._html_path
 
     @property
     def css_path(self) -> Path:
+        """output path of the CSS sheet accompanying the output HTML page."""
         return self._css_path
+
+    @property
+    def num_figures(self) -> int:
+        """return number of figures in the document being parsed.
+
+        NOTE: some figures may be skipped during processing for various reasons.
+              This thus represents an upper-bound on the number of figures to
+              process."""
+        return len(self._document.tables)
 
     def __del__(self):
         if self._destroyed:

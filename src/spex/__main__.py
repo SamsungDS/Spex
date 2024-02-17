@@ -113,7 +113,23 @@ def main():
     try:
         for spec in args.input:
             logger.log(ULog.INFO, f"parsing '{spec}'...")
-            parse_spec(spec, pargs)
+            if spec.suffix == ".json":
+                # lint code filtering is applied at the point of writing the lint errors
+                # into the resulting NVMe (JSON) model.
+                sys.stderr.write(
+                    "cannot operate on NVMe model (JSON), requires the HTML model or docx spec as input\n"
+                )
+                sys.stderr.flush()
+                sys.exit(1)
+
+            if spec.suffix not in (".html", ".docx"):
+                sys.stderr.write(
+                    f"invalid input file ({spec!s}), requires a HTML model or the docx specification file\n"
+                )
+                sys.stderr.flush()
+                sys.exit(1)
+            for _ in parse_spec(spec, pargs, yield_progress=False):
+                pass
     except Exception:
         logger.exception("unhandled exception bubbled up to top-level")
 
