@@ -142,7 +142,17 @@ class DocumentParser:
         """Extract figure ID from its title."""
         # Extract figure ID, all figures should have one
         m = self.rgx_fig_id.match(figure_title)
-        assert m is not None, f"failed to extract figure ID from {figure_title}"
+        if m is None:
+            logger.log(
+                ULog.ERROR,
+                f"failed extracting title from figure header {figure_title!r}",
+            )
+            self.linter.add_issue(
+                LintErr.TBL_FIG_ID_EXTRACT_ERR,
+                "FIG_ID_MISSING",
+                ctx={"title": figure_title},
+            )
+            raise RuntimeError(f"failed to extract figure ID from {figure_title!r}")
         return m.group("figid")
 
     def _figures(self) -> List["Element"]:
