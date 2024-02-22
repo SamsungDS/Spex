@@ -68,6 +68,7 @@ class DocumentParser:
         self.__linter = DocLinter()
         self.__post_init__()
         self._unwind_parse_error = False
+        self.__fig_id_missing_counter = 0
 
     def __post_init__(self) -> None:
         ...
@@ -147,9 +148,12 @@ class DocumentParser:
                 ULog.ERROR,
                 f"failed extracting title from figure header {figure_title!r}",
             )
+            fig_id = self.__fig_id_missing_counter
+            self.__fig_id_missing_counter = fig_id + 1
+
             self.linter.add_issue(
                 LintErr.TBL_FIG_ID_EXTRACT_ERR,
-                "FIG_ID_MISSING",
+                f"FIG_ID_MISSING[{fig_id}]",
                 ctx={"title": figure_title},
             )
             raise RuntimeError(f"failed to extract figure ID from {figure_title!r}")
