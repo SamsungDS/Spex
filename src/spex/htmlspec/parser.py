@@ -180,7 +180,6 @@ class SpexParser:
         # children, extracting runs (w:r) and hyperlinks (w:hyperlink)
         # if a hyperlink, strip and yield the run.
         # TODO: works, but need to satisfy mypy somehow...
-        # for child in p.iterchildren(Tag.r.value, Tag.hyperlink.value):
         for child in p.iterchildren():
             if child.tag == Tag.r.value:
                 yield child
