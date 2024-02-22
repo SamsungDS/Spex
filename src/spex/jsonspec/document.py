@@ -185,7 +185,11 @@ class DocumentParser:
             if figure_title is None:
                 continue
 
-            figure_id = self._on_extract_figure_id(figure_title)
+            try:
+                figure_id = self._on_extract_figure_id(figure_title)
+            except RuntimeError:
+                # see caller - skip figure
+                continue
             yield {
                 "title": figure_title,
                 "fig_id": figure_id,
