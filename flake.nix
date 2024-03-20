@@ -27,6 +27,7 @@
         (with pkgs.python311Packages; [
           pip
           jsonschema
+          types-jsonschema
           mypy
           isort
           black

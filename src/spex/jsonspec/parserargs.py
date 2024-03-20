@@ -18,13 +18,15 @@ class ParserArgs:
     output_dir: Optional[Path]
     skip_fig_on_error: bool
     lint_codes_ignore: List[Code]
+    validate_json: bool
 
     def __init__(
         self,
         *,
         output_dir: Path,
         lint_codes_ignore: Optional[List[Code]] = None,
-        skip_fig_on_error: bool = False
+        skip_fig_on_error: bool = False,
+        validate_json: bool = False
     ):
         if not isinstance(output_dir, Path):
             raise ValueError("output_dir is not a Path instance")
@@ -42,3 +44,4 @@ class ParserArgs:
         self.output_dir = output_dir
         self.lint_codes_ignore = lint_codes_ignore or []
         self.skip_fig_on_error = skip_fig_on_error
+        self.validate_json = validate_json

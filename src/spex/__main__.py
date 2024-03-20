@@ -6,11 +6,13 @@ import argparse
 import sys
 import textwrap
 from pathlib import Path
+import traceback
 from typing import List
 
 from spex.jsonspec.lint import Code
 from spex.logging import ULog, logger
 from spex.parse import ParserArgs, parse_spec
+from spex.validate import validate_json
 
 
 def arg_input(arg: str) -> Path:
@@ -96,6 +98,9 @@ def main():
         default=None,
         help="path to directory where the resulting file(s) should be stored.",
     )
+    parser.add_argument(
+        "--validate-json", action=argparse.BooleanOptionalAction, default=False
+    )
     parser.add_argument("--lint-ignore", type=arg_lintcode, default=[])
 
     args = parser.parse_args()
@@ -108,6 +113,7 @@ def main():
         output_dir=args.output or Path.cwd(),
         skip_fig_on_error=args.skip_fig_on_error,
         lint_codes_ignore=args.lint_ignore,
+        validate_json=args.validate_json,
     )
 
     try:
@@ -128,8 +134,15 @@ def main():
                 )
                 sys.stderr.flush()
                 sys.exit(1)
-            for _ in parse_spec(spec, pargs, yield_progress=False):
-                pass
+
+            parser = parse_spec(spec, pargs, yield_progress=False)
+            try:
+                while True:
+                    next(parser)
+            except StopIteration as e:
+                if args.validate_json and e.value is not None:
+                    validate_json(e.value)
+
     except Exception:
         logger.exception("unhandled exception bubbled up to top-level")
 
@@ -148,9 +161,11 @@ def main():
                     "When filing the bug report, please attach the `spex.log` file which resides",
                     "in this directory.",
                     "Note that the `spex.log` file is rewritten on each execution",
+                    "",
                 ]
             ),
         )
+        traceback.print_exc()
         sys.exit(1)
 
 
