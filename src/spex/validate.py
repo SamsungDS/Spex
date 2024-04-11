@@ -1,7 +1,8 @@
+import json
 from importlib import resources
 from pathlib import Path
+
 from jsonschema import validate
-import json
 
 
 def validate_json(document_path: Path):

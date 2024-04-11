@@ -5,8 +5,8 @@
 import argparse
 import sys
 import textwrap
-from pathlib import Path
 import traceback
+from pathlib import Path
 from typing import List
 
 from spex.jsonspec.lint import Code
