@@ -27,7 +27,6 @@
         (with pkgs.python311Packages; [
           pip
           jsonschema
-          types-jsonschema
           mypy
           isort
           black
@@ -49,7 +48,7 @@
       # package necessary for Spex to run
       spexDeps = pkgs:
         (with pkgs.python311Packages; [ lxml ])
-        ++ (with self.packages.${pkgs.system}; [ lxml-stubs loguru gcgen ]);
+        ++ (with self.packages.${pkgs.system}; [ lxml-stubs loguru gcgen types-jsonschema ]);
     in {
       # used when calling `nix fmt <path/to/flake.nix>`
       formatter = forAllSystems ({ pkgs }: pkgs.nixfmt);
@@ -59,6 +58,7 @@
           buildPythonPackage = pkgs.python311Packages.buildPythonPackage;
           fetchPypi = pkgs.python311Packages.fetchPypi;
         in rec {
+          # third-party dependencies
           gcgen = (buildPythonPackage rec {
             pname = "gcgen";
             version = "0.1.0";
@@ -91,6 +91,26 @@
             doCheck = false;
             propagatedBuildInputs = [ ];
           });
+          types-jsonschema = (buildPythonPackage rec {
+            pname = "types-jsonschema";
+            version = "4.21.0.20240331";
+            src = fetchPypi {
+              inherit pname version;
+              sha256 = "3a5ed0a72ab7bc304ca4accbb709272c620f396abf2fb19570b80d949e357eb6";
+            };
+
+            # Package does not have any tests
+            doCheck = false;
+            propagatedBuildInputs = [];
+
+            meta = {
+              description = "Typing stubs for jsonschema";
+              homepage = "https://github.com/python/typeshed";
+              license = pkgs.lib.licenses.asl20;
+            };
+          });
+
+          # spex packages
           spex = (buildPythonPackage rec {
             pname = "spex";
             version = revision;
