@@ -70,7 +70,8 @@ class DocumentParser:
         self._unwind_parse_error = False
         self.__fig_id_missing_counter = 0
 
-    def __post_init__(self) -> None: ...
+    def __post_init__(self) -> None:
+        ...
 
     @property
     def args(self) -> ParserArgs:
