@@ -9,8 +9,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 set -ex
 
-flake8 src/spex --extend-ignore=E203,F401,F811,E501
-mypy src/spex
+flake8 .
+mypy .
 
-black src/spex --check
-isort src/spex --profile=black --check
+black . --check
+isort . --check
