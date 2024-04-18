@@ -157,7 +157,10 @@ def parse_spec(
         ]
 
         if reported_lint_errs:
-            err_prefix = f"Encountered {len(reported_lint_errs)} linting errors during processing"
+            err_prefix = (
+                f"Encountered {len(reported_lint_errs)} "
+                "linting errors during processing"
+            )
             if p := w.path:
                 err_msg = f"see `{str(p)}`"
             else:

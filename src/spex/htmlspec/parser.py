@@ -234,7 +234,8 @@ class SpexParser:
                     and shd_fill is not None
                     and (shd_fill[0:2] == shd_fill[2:4] == shd_fill[4:6])
                 ):
-                    # heuristic: specs uses various greytone colors to mark table headers
+                    # heuristic: specs uses various greytone colors
+                    # to mark table headers
                     tag = "th"
 
                 tcell = TableCell(

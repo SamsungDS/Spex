@@ -32,10 +32,11 @@ class StructTableExtractor(FigureExtractor, ABC):
     @staticmethod
     @abstractmethod
     def range_column_hdrs() -> List[str]:
-        """Return prioritized list of column headers where extractor should extract the row's range.
+        """Return prioritized list of column headers where extractor should
+        extract the row's range.
 
-        The value row is where the extractor will extract the row's range, equivalent to the field's
-        offset and width in a C struct.
+        The value row is where the extractor will extract the row's range,
+        equivalent to the field's offset and width in a C struct.
 
         Note:
             First match found in figure's actual table headers is used.
@@ -81,7 +82,8 @@ class StructTableExtractor(FigureExtractor, ABC):
         fields: List[StructField],
         err: Exception,
     ) -> Generator["Entity", None, RowErrPolicy]:
-        """hook called for unhandled errors from extracting a row's value and data fields.
+        """hook called for unhandled errors from extracting a row's value and
+        data fields.
 
         This hook is useful only for individual table overrides to catch special cases.
         """
@@ -150,8 +152,9 @@ class StructTableExtractor(FigureExtractor, ABC):
             yield from self.extract_data_subtbls(subtbl_ent, row_data)
             fields.append(sfield)
 
-        # bits tables have their rows in descending order, bytes tables show rows in ascending order
-        # this step ensures we are always processing fields sorted by their range in ascending order
+        # bits tables have their rows in descending order, bytes tables show
+        # rows in ascending order this step ensures we are always processing
+        # fields sorted by their range in ascending order
         fields = list(reversed(fields)) if self.type == "bits" else fields
 
         self.validate_fields(fields)
@@ -288,7 +291,8 @@ class StructTableExtractor(FigureExtractor, ABC):
                     return lbl
                 txt_parts = txt.split(":", 1)
                 # generic naming strategy
-                # TODO: improve, replace certain words/sentences by certain abbreviations
+                # TODO: improve, replace certain words/sentences by certain
+                # abbreviations
                 #       namespace -> ns, pointer -> ptr
                 gen_name = "".join(w[0] for w in txt_parts[0].split()).lower()
                 self.add_issue(LintErr.LBL_IMPUTED, row_key=row_key)

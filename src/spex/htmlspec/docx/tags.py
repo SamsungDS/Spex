@@ -25,7 +25,10 @@ _nsmap = {
 
 
 def _expand(tag: str) -> str:
-    """Expand tag such as `w:tbl` into the absolute format used by lxml etree.Element.tag."""
+    """
+    Expand tag such as `w:tbl` into the absolute
+    format used by lxml etree.Element.tag.
+    """
     ns, tagname = tag.split(":")
     return f"{{{_nsmap[ns]}}}{tagname}"
 
