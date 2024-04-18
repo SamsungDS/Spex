@@ -83,13 +83,19 @@ def main():
         default=False,
         dest="skip_fig_on_error",
         action="store_true",
-        help="If processing a figure fails, do not abort, but skip it and continue processing the remaining figures",
+        help=(
+            "If processing a figure fails, do not abort,"
+            " but skip it and continue processing the remaining figures"
+        ),
     )
     parser.add_argument(
         "input",
         nargs="+",
         type=arg_input,
-        help="One or more .docx specifications or HTML models to extract data-structures from",
+        help=(
+            "One or more .docx specifications"
+            " or HTML models to extract data-structures from"
+        ),
     )
     parser.add_argument(
         "-o",
@@ -123,14 +129,16 @@ def main():
                 # lint code filtering is applied at the point of writing the lint errors
                 # into the resulting NVMe (JSON) model.
                 sys.stderr.write(
-                    "cannot operate on NVMe model (JSON), requires the HTML model or docx spec as input\n"
+                    "cannot operate on NVMe model (JSON), "
+                    "requires the HTML model or docx spec as input\n"
                 )
                 sys.stderr.flush()
                 sys.exit(1)
 
             if spec.suffix not in (".html", ".docx"):
                 sys.stderr.write(
-                    f"invalid input file ({spec!s}), requires a HTML model or the docx specification file\n"
+                    f"invalid input file ({spec!s}), "
+                    "requires a HTML model or the docx specification file\n"
                 )
                 sys.stderr.flush()
                 sys.exit(1)
@@ -152,13 +160,18 @@ def main():
                 [
                     "Program exited in error!",
                     "",
-                    "This typically happens if spex failed to parse one or more figures.",
-                    "Check the log messages above to see which figures are causing errors.",
+                    "This typically happens if spex failed to parse one or "
+                    "more figures.",
+                    "Check the log messages above to see which figures are "
+                    "causing errors.",
                     "",
-                    "If you believe Spex *should* be able to parse this figure - and that",
-                    "it is not simply a matter of changing to the figure to follow conventions",
+                    "If you believe Spex *should* be able to parse this figure"
+                    " - and that",
+                    "it is not simply a matter of changing to the "
+                    "figure to follow conventions",
                     "then perhaps a bug report for Spex is in order.",
-                    "When filing the bug report, please attach the `spex.log` file which resides",
+                    "When filing the bug report, please attach the `spex.log` "
+                    "file which resides",
                     "in this directory.",
                     "Note that the `spex.log` file is rewritten on each execution",
                     "",

@@ -29,14 +29,13 @@ def call(*args, **kwargs) -> sp.CompletedProcess:
     }
     forbidden_keys = set(kwargs.keys()).intersection(set(_fixed_args.keys()))
     if forbidden_keys:
-        raise RuntimeError(f"cannot override any of the args: {', '.join(forbidden_keys)}")
+        raise RuntimeError(
+            f"cannot override any of the args: {', '.join(forbidden_keys)}"
+        )
     return sp.run(args, shell=False, check=True)
 
 
-parser = argparse.ArgumentParser(
-    description="run spex using docker",
-    add_help=False
-)
+parser = argparse.ArgumentParser(description="run spex using docker", add_help=False)
 
 
 SPEX_DOCKER_DIR = Path(__file__).parent
@@ -64,21 +63,25 @@ def cmd_run(args: argparse.Namespace, run_args: list[str]):
         dst = str(Path("/volumes") / (pa.relative_to("/") if pa.absolute() else pa))
         vol_map[arg] = dst
         return dst
-    
+
     spex_cli_args = [map_fn(arg) for arg in run_args]
     spex_args = [
-        "docker", "run", "--rm", "-it",
-        "--mount", f"type=bind,source={os.getcwd()},target=/host-cwd",
-        "--workdir", "/host-cwd"
+        "docker",
+        "run",
+        "--rm",
+        "-it",
+        "--mount",
+        f"type=bind,source={os.getcwd()},target=/host-cwd",
+        "--workdir",
+        "/host-cwd",
     ]
 
     for src, dst in vol_map.items():
         spex_args.extend(["--mount", f"type=bind,source={src},target={dst}"])
 
-
     spex_args.extend([img, "spex"])
     spex_args.extend(spex_cli_args)
-    
+
     try:
         call(*spex_args)
     except sp.CalledProcessError as e:
@@ -94,7 +97,9 @@ def main():
         print("must decide which version of Spex to use.")
         print()
         print("1) Visit https://github.com/OpenMPDK/Spex/pkgs/container/spex/versions")
-        print("2) Next to each release will be a series of tags such as 'v1.0' or '700ae3c'.")
+        print(
+            "2) Next to each release will be a series of tags such as 'v1.0' or '700ae3c'."
+        )
         print("   Select one corresponding to the version of Spex you wish to run.")
         print("")
         print(f"USAGE: {Path(__file__).name} --tag=v1.0 [SPEX command-line arguments]")
