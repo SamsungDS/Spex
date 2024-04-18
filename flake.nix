@@ -49,7 +49,7 @@
       # package necessary for Spex to run
       spexDeps = pkgs:
         (with pkgs.python311Packages; [ lxml ])
-        ++ (with self.packages.${pkgs.system}; [ lxml-stubs loguru gcgen types-jsonschema ]);
+        ++ (with self.packages.${pkgs.system}; [ lxml-stubs loguru gcgen types-jsonschema flake8-pyproject ]);
     in {
       # used when calling `nix fmt <path/to/flake.nix>`
       formatter = forAllSystems ({ pkgs }: pkgs.nixfmt);
@@ -112,13 +112,16 @@
           });
 
           flake8-pyproject = (buildPythonPackage rec {
-            pname = "flake8-pyproject";
+            pname = "Flake8-pyproject";
             version = "1.2.3";
-            src = fetchPypi {
-              inherit pname version;
+            src = fetchFromGitHub {
+              owner = "john-hen";
+              repo = "Flake8-pyproject";
+              rev = "1.2.3";
               sha256 = "";
             };
-
+            format = "wheel";
+            dist = "py3";
             # Package does not have any tests
             doCheck = false;
             propagatedBuildInputs = [];
@@ -126,7 +129,6 @@
             meta = {
               description = "Flake8 plug-in loading the configuration from pyproject.toml";
               homepage = "https://github.com/john-hen/Flake8-pyproject";
-              license = pkgs.lib.licenses.mit;
             };
           });
 
