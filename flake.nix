@@ -31,7 +31,6 @@
           isort
           black
           flake8
-          flake8-pyproject
           sphinx
           sphinx-copybutton
           furo
@@ -109,6 +108,25 @@
               description = "Typing stubs for jsonschema";
               homepage = "https://github.com/python/typeshed";
               license = pkgs.lib.licenses.asl20;
+            };
+          });
+
+          flake8-pyproject = (buildPythonPackage rec {
+            pname = "flake8-pyproject";
+            version = "1.2.3";
+            src = fetchPypi {
+              inherit pname version;
+              sha256 = "";
+            };
+
+            # Package does not have any tests
+            doCheck = false;
+            propagatedBuildInputs = [];
+
+            meta = {
+              description = "Flake8 plug-in loading the configuration from pyproject.toml";
+              homepage = "https://github.com/john-hen/Flake8-pyproject";
+              license = pkgs.lib.licenses.mit;
             };
           });
 
