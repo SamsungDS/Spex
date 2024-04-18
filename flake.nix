@@ -37,6 +37,7 @@
           twine
           wheel
           build
+          types-setuptools
         ]) ++ (with pkgs; [
           # tools needed directly or indirectly by Makefile and ./scripts
           gnugrep

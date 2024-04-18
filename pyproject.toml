@@ -9,6 +9,11 @@ requires = [
 ]
 build-backend = "setuptools.build_meta"
 
+[tool.mypy]
+exclude = [
+    "^docs/"
+]
+
 [tool.black]
 line-length = 88
 
