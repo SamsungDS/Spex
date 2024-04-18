@@ -58,6 +58,8 @@
         let
           buildPythonPackage = pkgs.python311Packages.buildPythonPackage;
           fetchPypi = pkgs.python311Packages.fetchPypi;
+          fetchFromGitHub = pkgs.fetchFromGitHub;
+
         in rec {
           # third-party dependencies
           gcgen = (buildPythonPackage rec {
@@ -118,14 +120,13 @@
               owner = "john-hen";
               repo = "Flake8-pyproject";
               rev = "1.2.3";
-              sha256 = "";
+              sha256 = "sha256-bPRIj7tYmm6I9eo1ZjiibmpVmGcHctZSuTvnKX+raPg=";
             };
-            format = "wheel";
-            dist = "py3";
             # Package does not have any tests
             doCheck = false;
             propagatedBuildInputs = [];
-
+            format = "pyproject";
+            nativeBuildInputs = [ pkgs.python311Packages.flake8 pkgs.python311Packages.flit-core ];
             meta = {
               description = "Flake8 plug-in loading the configuration from pyproject.toml";
               homepage = "https://github.com/john-hen/Flake8-pyproject";
