@@ -4,12 +4,12 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-import sys
 import argparse
-from pathlib import Path
-from contextlib import contextmanager
 import os
 import subprocess as sp
+import sys
+from contextlib import contextmanager
+from pathlib import Path
 
 
 @contextmanager
