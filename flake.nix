@@ -51,7 +51,7 @@
         (with pkgs.python311Packages; [ lxml ])
         ++ (with self.packages.${pkgs.system}; [ lxml-stubs loguru gcgen types-jsonschema flake8-pyproject ]);
       spexSrvDeps = pkgs:
-        (with pkgs.python311Packages; [ quart ])
+        (with pkgs.python311Packages; [ quart ]);
     in {
       # used when calling `nix fmt <path/to/flake.nix>`
       formatter = forAllSystems ({ pkgs }: pkgs.nixfmt);
@@ -142,7 +142,7 @@
             format = "setuptools";
             src = ./.;
             doCheck = false;
-            propagatedBuildInputs = (spexDeps pkgs) + (spexSrvDeps);
+            propagatedBuildInputs = (spexDeps pkgs) ;
           });
           dockerImage = pkgs.dockerTools.buildLayeredImage {
             name = "spex";
@@ -160,7 +160,7 @@
         in {
           default = pkgs.mkShell {
             name = "default";
-            nativeBuildInputs = (spexDeps pkgs) ++ (devPackages pkgs);
+            nativeBuildInputs = (spexDeps pkgs) ++ (spexSrvDeps pkgs) ++ (devPackages pkgs);
             shellHook = ''
               unset SOURCE_DATE_EPOCH
               export SPEX_NIX_ENV=1
