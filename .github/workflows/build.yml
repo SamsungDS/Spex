@@ -40,7 +40,7 @@ jobs:
         if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
         run: |
           echo "Building packge"
-          nix develop --command python -m build
+          nix develop --command make build
 
       - name: Upload Release to PyPI
         if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
