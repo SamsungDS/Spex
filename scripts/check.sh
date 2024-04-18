@@ -12,5 +12,5 @@ set -ex
 flake8 .
 mypy .
 
-black . --check
+black . --check --diff
 isort . --check
