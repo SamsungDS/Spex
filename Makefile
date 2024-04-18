@@ -24,7 +24,7 @@ clean: ## Remove artifacts from 'make build'
 
 .PHONY: install
 install: build ## Install Spex using pipx and the source package (sdist)
-	@pipx install dist/nvme-$(PROJECT_NAME)*.tar.gz
+	@pipx install dist/nvme_$(PROJECT_NAME)*.tar.gz
 
 .PHONY: uninstall
 uninstall: ## Uninstall Spex using pipx
