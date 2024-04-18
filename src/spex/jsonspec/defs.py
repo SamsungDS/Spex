@@ -26,7 +26,8 @@ JSON = Union[None, bool, str, float, int, List["JSON"], Dict[str, "JSON"]]
 
 @runtime_checkable
 class ToJson(Protocol):
-    def to_json(self) -> JSON: ...
+    def to_json(self) -> JSON:
+        ...
 
 
 def cast_json(val: Any) -> JSON:
@@ -61,7 +62,8 @@ class Entity(TypedDict):
 
 
 class ParseFn(Protocol):
-    def __call__(self, entity: EntityMeta, tbl: "Element") -> Iterator[Entity]: ...
+    def __call__(self, entity: EntityMeta, tbl: "Element") -> Iterator[Entity]:
+        ...
 
 
 ExtractorMap: TypeAlias = Dict[str, "FigureExtractor"]
