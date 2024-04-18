@@ -16,7 +16,7 @@ help:
 
 .PHONY: build
 build: ## Build Spex source package (sdist)
-	@python3 setup.py sdist
+	@python3 -m build
 
 .PHONY: clean
 clean: ## Remove artifacts from 'make build'

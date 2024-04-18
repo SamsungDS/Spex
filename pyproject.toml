@@ -4,11 +4,52 @@
 
 [build-system]
 requires = [
-    "setuptools>=54",
-    "wheel"
+    "setuptools>=61.2",
+    "wheel",
 ]
 build-backend = "setuptools.build_meta"
 
+[project]
+name = "nvme-spex"
+description = "extract data structures from docx/HTML specification"
+authors = [{name = "Jesper Wendel Devantier", email = "j.devantier@samsung.com"}]
+maintainers = [{name = "Jesper Wendel Devantier", email = "j.devantier@samsung.com"}]
+license = {text = "MIT"}
+requires-python = ">=3.11"
+dependencies = [
+    "lxml>=4.9.2,<5.0",
+    "lxml-stubs>=0.4.0,<0.5",
+    "loguru>=0.6,<0.8",
+    "jsonschema>=4.21.1",
+    "gcgen",
+]
+dynamic = ["version"]
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown; charset=UTF-8"
+
+[project.scripts]
+spexsrv = "spexsrv.__main__:main"
+spex = "spex.__main__:main"
+
+[project.optional-dependencies]
+spexsrv = ["quart"]
+
+[tool.distutils.bdist_wheel]
+universal = 1
+
+[tool.setuptools]
+zip-safe = false
+package-dir = {"" = "src"}
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = false
+
+[tool.setuptools.dynamic]
+version = {attr = "spex.__version__"}
 [tool.mypy]
 exclude = [
     "^docs/"
