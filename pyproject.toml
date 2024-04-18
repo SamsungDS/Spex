@@ -1,7 +1,3 @@
-# SPDX-FileCopyrightText: 2023 Samsung Electronics Co., Ltd
-#
-# SPDX-License-Identifier: BSD-3-Clause
-
 [build-system]
 requires = [
     "setuptools>=61.2",
@@ -50,6 +46,7 @@ namespaces = false
 
 [tool.setuptools.dynamic]
 version = {attr = "spex.__version__"}
+
 [tool.mypy]
 exclude = [
     "^docs/"
@@ -58,8 +55,13 @@ exclude = [
 [tool.black]
 line-length = 88
 
+[tool.flake8]
+max-line-length = 88
+exclude = [
+    "docs/",
+    ".venv/"
+]
+
+
 [tool.isort]
 profile = "black"
-
-[tool.pytest.ini_options]
-addopts = "-W ignore::DeprecationWarning"
