@@ -106,10 +106,11 @@ class ValueTableExtractor(FigureExtractor):
 
     @staticmethod
     def value_column_hdrs() -> List[str]:
-        """Return prioritized list of column headers where extractor should extract the row's value.
+        """Return prioritized list of column headers where extractor should
+        extract the row's value.
 
-        The value row is where the extractor will extract the row's value - loosely equivalent to
-        the enum value of the entry.
+        The value row is where the extractor will extract the row's value -
+        loosely equivalent to the enum value of the entry.
 
         Note:
             First match found in figure's actual table headers is used.
@@ -126,7 +127,8 @@ class ValueTableExtractor(FigureExtractor):
         fields: List[ValueField],
         err: Exception,
     ) -> Generator["Entity", None, RowErrPolicy]:
-        """hook called for unhandled errors from extracting a row's value and data fields.
+        """hook called for unhandled errors from extracting a row's value and
+        data fields.
 
         This hook is useful only for individual table overrides to catch special cases.
         """
@@ -166,8 +168,10 @@ class ValueTableExtractor(FigureExtractor):
         return Xpath.elem_first_req(row, f"./td[{self._col_ndx_value + 1}]")
 
     def val_clean(self, row: Element, val_cell: Element) -> Union[str, int]:
-        # TODO: read as number if possible, complain if not a hex value using the 'h' suffix
-        # TODO: there are also tables using b suffix, is there always a suffix or..?
+        # TODO: read as number if possible, complain if not a hex value using
+        # the 'h' suffix
+        # TODO: there are also tables using b suffix, is there
+        # always a suffix or..?
         return (
             "".join(
                 e.decode("utf-8") if isinstance(e, bytes) else e
@@ -181,7 +185,8 @@ class ValueTableExtractor(FigureExtractor):
         return Xpath.elem_first_req(row, f"./td[{self._col_ndx_content + 1}]")
 
     def _extract_label_dedicated_col(self, row: Element, row_key: str) -> str:
-        # if we hit this, some document actually has a value table with a dedicated 'attribute' column
+        # if we hit this, some document actually has a value table with a
+        # dedicated 'attribute' column
         breakpoint()
         p1 = Xpath.elem_first_req(row, f"./td[{self._col_ndx_label + 1}]/p[1]")
         txt = XmlUtils.to_text(p1).lower()

@@ -39,7 +39,8 @@ class StyleResolver:
     @lru_cache(maxsize=60)
     def __get_style(self, style_id: str) -> Optional[RunProperties]:
         # get entry
-        # if w:basedOn exists, resolv (using same fn, causing caching), return merge(<basedOn>, <this>)
+        # if w:basedOn exists, resolv (using same fn, causing caching),
+        # return merge(<basedOn>, <this>)
         style = Xpath.elem_first_req(
             self._style_doc,
             f"./w:style[@w:type = '{self._style_type}'][@w:styleId = '{style_id}']",

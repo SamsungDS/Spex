@@ -53,7 +53,8 @@ class Xpath:
                 )
             else:
                 raise RuntimeError(
-                    f"query '{query}' did not return a list of Element, first element is {type(res[0])}"
+                    f"query '{query}' did not return a list of Element, "
+                    f"first element is {type(res[0])}"
                 )
         return cast(List[Element], res)
 
@@ -77,7 +78,8 @@ class Xpath:
         assert isinstance(res, list)
         if len(res) > 0 and not isinstance(res[0], str):
             raise RuntimeError(
-                f"query should return a list of str elements for attr-queries, got {type(res[0])}, use `Xpath.elems` instead?"
+                "query should return a list of str elements for attr-queries, "
+                f"got {type(res[0])}, use `Xpath.elems` instead?"
             )
         return cast(List[str], res)
 

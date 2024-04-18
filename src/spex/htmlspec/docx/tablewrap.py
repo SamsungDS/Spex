@@ -63,9 +63,11 @@ class TableWrap:
                 vmerge = tc_vmerge(tc)
                 if vmerge is VMerge.MERGED:
                     lcell = matrix[-1][cndx]
-                    assert (
-                        grid_span == lcell.colspan
-                    ), f"cell has grid_span {grid_span}, but parent has {lcell.colspan} - breaks assumption of rectangular-only merges"
+                    assert grid_span == lcell.colspan, (
+                        f"cell has grid_span {grid_span}, but parent has "
+                        f"{lcell.colspan} - breaks assumption of "
+                        "rectangular-only merges"
+                    )
                     # update bottom value to mark
                     lcell.bottom = rndx
                 else:

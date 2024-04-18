@@ -12,7 +12,10 @@ from spex.jsonspec.defs import JSON
 class Code(Enum):
     O1000 = "general error"
 
-    T1000 = "error parsing table - the table's columns implied it should be parsed but some quirk of the table caused the parser to fail"
+    T1000 = (
+        "error parsing table - the table's columns implied it should be parsed but "
+        "some quirk of the table caused the parser to fail"
+    )
     T1001 = "field overlaps with range of prior field"
     T1002 = "gap between this and the prior field"
     T1004 = "row order wrong, bits should be in desc order, bytes in asc order"
@@ -86,9 +89,10 @@ class LintEntry:
             self.err, LintErr
         ), f"invalid code, expected {LintErr}, got {type(self.err)}"
         if self.err.value.name[0] in ("R", "L", "V"):
-            assert (
-                self.row is not None
-            ), "R|L|V codes point to a row or label/value within the row, row field must be set"
+            assert self.row is not None, (
+                "R|L|V codes point to a row or label/value within the row, "
+                "row field must be set"
+            )
 
     def to_json(self) -> JSON:
         ret: Dict[str, JSON] = {

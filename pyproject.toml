@@ -61,6 +61,9 @@ exclude = [
     "docs/",
     ".venv/"
 ]
+per-file-ignores = [
+    "src/spex/htmlspec/docx/__init__.py:F401"
+]
 
 
 [tool.isort]

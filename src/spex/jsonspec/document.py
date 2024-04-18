@@ -88,7 +88,7 @@ class DocumentParser:
 
     @property
     def extractors(self) -> List[Type["FigureExtractor"]]:
-        """Return list of Figure extractors to try applying to figures found in document.
+        """Return list of Figure extractors to try applying to figures found in document
 
         Note:
             Each extractor's `can_apply` function is called in turn to determine if
