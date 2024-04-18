@@ -33,6 +33,7 @@ jobs:
 
     - name: build and install
       run: |
+        pip install build
         make clean build install
 
     - name: stage1 to stage2
