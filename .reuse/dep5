@@ -11,7 +11,7 @@ Files: docs/*
 Copyright: Samsung Electronics Co., Ltd
 License: BSD-3-Clause
 
-Files: stage2.schema.json setup.cfg
+Files: src/spex/resources/stage2.schema.json
 Copyright: Samsung Electronics Co., Ltd
 License: BSD-3-Clause
 

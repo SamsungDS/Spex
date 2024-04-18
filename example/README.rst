@@ -1,3 +1,8 @@
+  SPDX-FileCopyrightText: 2024 Samsung Electronics Co., Ltd
+
+  SPDX-License-Identifier: BSD-3-Clause
+
+
 Workflow Example
 ================
 
