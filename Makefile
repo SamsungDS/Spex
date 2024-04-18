@@ -62,3 +62,7 @@ dev-docker: ## enter containerized development environment
 	--mount type=bind,source="$(shell pwd)",target=/tmp/$(PROJECT_NAME) \
 	$(DOCKER_IMAGE_ID) \
 	nix develop .#
+
+.PHONY: runserver
+runserver: ## Start the spexsrv webapplication
+	PYTHONPATH=./src:$PYTHONPATH python3 src/spexsrv/__main__.py

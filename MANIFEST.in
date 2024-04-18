@@ -1,1 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Samsung Electronics Co., Ltd
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 include src/spex/resources/stage2.schema.json
+include src/spexsrv/templates/*.html
+include src/spexsrv/static/*
