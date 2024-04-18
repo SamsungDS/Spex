@@ -31,6 +31,7 @@
           isort
           black
           flake8
+          flake8-pyproject
           sphinx
           sphinx-copybutton
           furo
