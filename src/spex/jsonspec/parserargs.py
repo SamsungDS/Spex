@@ -26,7 +26,7 @@ class ParserArgs:
         output_dir: Path,
         lint_codes_ignore: Optional[List[Code]] = None,
         skip_fig_on_error: bool = False,
-        validate_json: bool = False
+        validate_json: bool = False,
     ):
         if not isinstance(output_dir, Path):
             raise ValueError("output_dir is not a Path instance")

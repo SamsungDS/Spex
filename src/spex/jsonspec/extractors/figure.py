@@ -37,7 +37,7 @@ class FigureExtractor(ABC):
         tbl: Element,
         tbl_hdrs: List[str],
         parse_fn: "ParseFn",
-        linter: Linter
+        linter: Linter,
     ):
         self.doc_parser = doc_parser
         self.__entity_meta = entity_meta
@@ -47,8 +47,7 @@ class FigureExtractor(ABC):
         self.__linter = linter
         self.__post_init__()
 
-    def __post_init__(self) -> None:
-        ...
+    def __post_init__(self) -> None: ...
 
     @property
     def entity_meta(self) -> "EntityMeta":
@@ -85,7 +84,7 @@ class FigureExtractor(ABC):
         fig: Optional[str] = None,
         msg: str = "",
         row_key: Optional[str] = None,
-        ctx: Optional[Dict[str, JSON]] = None
+        ctx: Optional[Dict[str, JSON]] = None,
     ) -> None:
         self.__linter.add_issue(
             err,
