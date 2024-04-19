@@ -139,7 +139,7 @@
           spex = (buildPythonPackage rec {
             pname = "spex";
             version = revision;
-            format = "setuptools";
+            format = "pyproject";
             src = ./.;
             doCheck = false;
             propagatedBuildInputs = (spexDeps pkgs);
