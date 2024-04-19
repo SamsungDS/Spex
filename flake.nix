@@ -142,7 +142,7 @@
             format = "setuptools";
             src = ./.;
             doCheck = false;
-            propagatedBuildInputs = (spexDeps pkgs) ;
+            propagatedBuildInputs = (spexDeps pkgs);
           });
           dockerImage = pkgs.dockerTools.buildLayeredImage {
             name = "spex";
