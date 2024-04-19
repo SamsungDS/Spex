@@ -77,8 +77,8 @@ Structured JSON for downstream consumption
 
 The :json:`JSON <>` document produced by **Spex** is a structured document.
 That is, the content is verifiable using a :json-schema:`JSON-Schema <>`, see
-:repos-blob:`stage2.schema.json <stage2.schema.json>` . The content represents two
-things:
+:repos-blob:`stage2.schema.json <src/spex/resources/stage2.schema.json>` . The
+content represents two things:
 
 * The Figures with table-like data which in the specification document
   describes data layout of among other things commands and command-results, and
