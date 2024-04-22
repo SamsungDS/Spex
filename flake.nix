@@ -48,7 +48,7 @@
 
       # package necessary for Spex to run
       spexDeps = pkgs:
-        (with pkgs.python311Packages; [ lxml ])
+        (with pkgs.python311Packages; [ lxml  setuptools])
         ++ (with self.packages.${pkgs.system}; [ lxml-stubs loguru gcgen types-jsonschema flake8-pyproject ]);
       spexSrvDeps = pkgs:
         (with pkgs.python311Packages; [ quart ]);
