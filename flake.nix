@@ -115,7 +115,7 @@
             };
           });
 
-          flake8-pyproject = (buildPythonPackage rec {
+          flake8-pyproject = (buildPythonPackage {
             pname = "Flake8-pyproject";
             version = "1.2.3";
             src = fetchFromGitHub {
@@ -136,7 +136,7 @@
           });
 
           # spex packages
-          spex = (buildPythonPackage rec {
+          spex = (buildPythonPackage {
             pname = "spex";
             version = revision;
             format = "pyproject";
@@ -155,9 +155,7 @@
       # -- 
       # $ nix develop <flake-ref>#blue
       # $ nix develop <flake-ref>#yellow
-      devShells = forAllSystems ({ pkgs }:
-        let
-        in {
+      devShells = forAllSystems ({ pkgs }: {
           default = pkgs.mkShell {
             name = "default";
             nativeBuildInputs = (spexDeps pkgs) ++ (spexSrvDeps pkgs) ++ (devPackages pkgs);
