@@ -1,7 +1,7 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: nvme-spex
 Upstream-Contact: Jesper Wendel Devantier <j.devantier@samsung.com>
-Source: https://openmpdk.github.io/Spex/
+Source: https://samsungds.github.io/Spex/
 
 Files: .github/workflows/*.yml
 Copyright: Samsung Electronics Co., Ltd
