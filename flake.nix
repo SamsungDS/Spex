@@ -44,6 +44,8 @@
           gnumake
           gawk
           bash
+          # pyright LSP
+          nodePackages.pyright
         ]);
 
       # package necessary for Spex to run
