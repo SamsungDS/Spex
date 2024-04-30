@@ -48,10 +48,15 @@
 
       # package necessary for Spex to run
       spexDeps = pkgs:
-        (with pkgs.python311Packages; [ lxml  setuptools])
-        ++ (with self.packages.${pkgs.system}; [ lxml-stubs loguru gcgen types-jsonschema flake8-pyproject ]);
-      spexSrvDeps = pkgs:
-        (with pkgs.python311Packages; [ quart ]);
+        (with pkgs.python311Packages; [ lxml setuptools ])
+        ++ (with self.packages.${pkgs.system}; [
+          lxml-stubs
+          loguru
+          gcgen
+          types-jsonschema
+          flake8-pyproject
+        ]);
+      spexSrvDeps = pkgs: (with pkgs.python311Packages; [ quart ]);
     in {
       # used when calling `nix fmt <path/to/flake.nix>`
       formatter = forAllSystems ({ pkgs }: pkgs.nixfmt);
@@ -101,12 +106,13 @@
             version = "4.21.0.20240331";
             src = fetchPypi {
               inherit pname version;
-              sha256 = "3a5ed0a72ab7bc304ca4accbb709272c620f396abf2fb19570b80d949e357eb6";
+              sha256 =
+                "3a5ed0a72ab7bc304ca4accbb709272c620f396abf2fb19570b80d949e357eb6";
             };
 
             # Package does not have any tests
             doCheck = false;
-            propagatedBuildInputs = [];
+            propagatedBuildInputs = [ ];
 
             meta = {
               description = "Typing stubs for jsonschema";
@@ -126,11 +132,15 @@
             };
             # Package does not have any tests
             doCheck = false;
-            propagatedBuildInputs = [];
+            propagatedBuildInputs = [ ];
             format = "pyproject";
-            nativeBuildInputs = [ pkgs.python311Packages.flake8 pkgs.python311Packages.flit-core ];
+            nativeBuildInputs = [
+              pkgs.python311Packages.flake8
+              pkgs.python311Packages.flit-core
+            ];
             meta = {
-              description = "Flake8 plug-in loading the configuration from pyproject.toml";
+              description =
+                "Flake8 plug-in loading the configuration from pyproject.toml";
               homepage = "https://github.com/john-hen/Flake8-pyproject";
             };
           });
@@ -156,16 +166,17 @@
       # $ nix develop <flake-ref>#blue
       # $ nix develop <flake-ref>#yellow
       devShells = forAllSystems ({ pkgs }: {
-          default = pkgs.mkShell {
-            name = "default";
-            nativeBuildInputs = (spexDeps pkgs) ++ (spexSrvDeps pkgs) ++ (devPackages pkgs);
-            shellHook = ''
-              unset SOURCE_DATE_EPOCH
-              export SPEX_NIX_ENV=1
-              # run spex from module in src dir
-              alias spex="PYTHONPATH=./src:$PYTHONPATH python -m spex"
-            '';
-          };
-        });
+        default = pkgs.mkShell {
+          name = "default";
+          nativeBuildInputs = (spexDeps pkgs) ++ (spexSrvDeps pkgs)
+            ++ (devPackages pkgs);
+          shellHook = ''
+            unset SOURCE_DATE_EPOCH
+            export SPEX_NIX_ENV=1
+            # run spex from module in src dir
+            alias spex="PYTHONPATH=./src:$PYTHONPATH python -m spex"
+          '';
+        };
+      });
     };
 }
