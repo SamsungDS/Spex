@@ -23,7 +23,7 @@ SPEX_CACHE = environ.get("SPEX_CACHE", "true").lower() in ("1", "y", "yes", "tru
 
 async def render_template(tpl: str, **ctx: str):
     bundle = ctx.get("bundle", False)
-    assert isinstance(app.static_folder, str)
+    assert app.static_folder is not None
     static = Path(app.static_folder)
 
     if bundle:
@@ -82,6 +82,10 @@ async def _app_init():
     app.config.update(
         {SPEX_CACHE_TMPDIR: tempfile.TemporaryDirectory(), SPEX_CACHE_LOOKUP: {}}
     )
+    assert app.template_folder is not None, "expected templates_folder to be set"
+    assert app.static_folder is not None, "expected static_folder to be set"
+    print(f"  * Template Directory: {app.template_folder.resolve()}")
+    print(f"  * Static Assets Directory: {app.static_folder.resolve()}")
 
 
 @app.after_serving
