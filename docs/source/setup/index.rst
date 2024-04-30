@@ -8,13 +8,11 @@ Setting up Spex
    :hidden:
 
    nix.rst
-   docker.rst
    manual.rst
 
 **Spex** has various dependencies. You can use :ref:`sec-setup-nix` to setup the reference
 environment which is actively used in development and tested in CI.
 
-You can also use the pre-built docker image, see :ref:`sec-setup-docker`
 Otherwise, you can install Spex in the traditional way, see :ref:`sec-setup-manual`.
 
 .. note::
@@ -29,4 +27,4 @@ Otherwise, you can install Spex in the traditional way, see :ref:`sec-setup-manu
     Dependencies will not be dropped, nor will code be rewritten to support
     old software or conservative Linux distributions.
     
-    You can use Nix or Docker to run on such platforms.
+    You can use Nix to run on such platforms.

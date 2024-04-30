@@ -3,9 +3,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 PROJECT_NAME = spex
-DOCKER_IMAGE_NAME = $(PROJECT_NAME)-devenv
-DOCKER_IMAGE_TAG ?= manual
-DOCKER_IMAGE_ID = ghcr.io/samsungds/$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)
 
 .DEFAULT_GOAL := help
 
@@ -44,23 +41,6 @@ docs: ## build documentation
 
 .PHONY: dev
 dev: ## enter development environment (requires Nix)
-	nix develop .#
-
-.PHONY: dev-docker-build
-dev-docker-build:  ## build development environment as a docker container
-	docker build \
-	. \
-	-f docker/Dockerfile \
-	-t $(DOCKER_IMAGE_ID)
-
-.PHONY: dev-docker
-dev-docker: ## enter containerized development environment
-	docker run \
-	--rm \
-	-it \
-	-w /tmp/$(PROJECT_NAME) \
-	--mount type=bind,source="$(shell pwd)",target=/tmp/$(PROJECT_NAME) \
-	$(DOCKER_IMAGE_ID) \
 	nix develop .#
 
 .PHONY: runserver

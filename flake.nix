@@ -156,11 +156,6 @@
             doCheck = false;
             propagatedBuildInputs = (spexDeps pkgs);
           });
-          dockerImage = pkgs.dockerTools.buildLayeredImage {
-            name = "spex";
-            tag = revision;
-            contents = [ spex ];
-          };
         });
 
       # nix develop <flake-ref>#<name>
