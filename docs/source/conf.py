@@ -38,9 +38,9 @@ extlinks = {
     "nvme-specs": ("https://nvmexpress.org/specifications/%s", None),
     "pipx": ("https://pypa.github.io/pipx/%s", None),
     "pypi": ("https://pypi.org/%s", None),
-    "repos-blob": ("https://github.com/OpenMPDK/Spex/blob/main/%s", None),
+    "repos-blob": ("https://github.com/SamsungDS/Spex/blob/main/%s", None),
     "repos-actions": (
-        "https://github.com/OpenMPDK/Spex/actions/workflows/example.yml%s",
+        "https://github.com/SamsungDS/Spex/actions/workflows/example.yml%s",
         None,
     ),
 }

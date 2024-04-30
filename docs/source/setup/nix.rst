@@ -41,7 +41,7 @@ Run the Spex program
 ~~~~~~~~~~~~~~~~~~~~
 You can run spex, even without cloning the repository, like so::
 
-  nix run github:OpenMPDK/Spex#spex
+  nix run github:SamsungDS/Spex#spex
 
 .. note::
   that this is not for development use, this will not reflect any local changes made to the source code.

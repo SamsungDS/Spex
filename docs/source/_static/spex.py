@@ -36,7 +36,7 @@ parser = argparse.ArgumentParser(description="run spex using docker", add_help=F
 
 SPEX_DOCKER_DIR = Path(__file__).parent
 SPEX_ROOT = SPEX_DOCKER_DIR.parent
-SPEX_IMG_NAME = "ghcr.io/openmpdk/spex"
+SPEX_IMG_NAME = "ghcr.io/samsungds/spex"
 
 
 parser.add_argument("--tag", default="main")
@@ -92,7 +92,7 @@ def main():
         print("The Spex command-line options are described below, but you also")
         print("must decide which version of Spex to use.")
         print()
-        print("1) Visit https://github.com/OpenMPDK/Spex/pkgs/container/spex/versions")
+        print("1) Visit https://github.com/SamsungDS/Spex/pkgs/container/spex/versions")
         print(
             "2) Next to each release will be a series of tags such as 'v1.0' or '700ae3c'."
         )
