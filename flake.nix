@@ -26,7 +26,6 @@
       devPackages = pkgs:
         (with pkgs.python311Packages; [
           pip
-          jsonschema
           mypy
           isort
           black
@@ -50,7 +49,7 @@
 
       # package necessary for Spex to run
       spexDeps = pkgs:
-        (with pkgs.python311Packages; [ lxml setuptools ])
+        (with pkgs.python311Packages; [ jsonschema lxml setuptools ])
         ++ (with self.packages.${pkgs.system}; [
           lxml-stubs
           loguru
