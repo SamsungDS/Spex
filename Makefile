@@ -44,5 +44,5 @@ dev: ## enter development environment (requires Nix)
 	nix develop .#
 
 .PHONY: runserver
-runserver: ## Start the spexsrv webapplication
-	PYTHONPATH=./src:$PYTHONPATH python3 src/spexsrv/__main__.py
+runserver:
+	cd ./src; python3 -m spexsrv
