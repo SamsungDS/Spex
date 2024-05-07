@@ -1,0 +1,321 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block head_end %}
+<style>
+    .flex {
+        display: flex;
+    }
+
+    .justify-between {
+        justify-content: space-between;
+    }
+
+    .filter_selected {
+        color: #fff;
+        background-color: #a2b1bd;
+    }
+
+    .bold {
+        font-weight: bold;
+    }
+
+    .no-select {
+        user-select: none;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<section class="container box mt-6">
+    <div class="flex justify-between">
+        <h1 class="title">Report</h1>
+        {% if link_self is defined and link_self is not none %}
+        <a class="button is-success" href="{{ link_self }}" download="report.html">Download Report</a>
+        {% endif %}
+    </div>
+
+    <ul>
+        <li>
+            <span class="has-text-weight-bold">Specification: </span>
+            <span x-data x-text="$store.report.meta.specification"></span>
+        </li>
+        <li>
+            <span class="has-text-weight-bold">Revision: </span>
+            <span x-data x-text="$store.report.meta.revision"></span>
+        </li>
+    </ul>
+    <div x-data class="tabs">
+        <ul>
+            <li x-data :class="{'is-active': $store.tab === 'summary'}">
+                <a x-on:click="$store.tab = 'summary'">Summary</a>
+            </li>
+            <li :class="{'is-active': $store.tab === 'figures'}">
+                <a x-on:click="$store.tab = 'figures'">Figures</a>
+            </li>
+        </ul>
+    </div>
+    <section x-data x-show="$store.tab === 'summary'" class="message mt-4">
+        <div class="message-header">
+            <p>Error Summary</p>
+        </div>
+        <div class="message-body">
+            <div class="notification is-info">
+                <p>
+                    Click on rows in the table to filter the figures list to
+                    only show figures with any of these errors.
+                </p>
+            </div>
+            <table x-data class="table is-fullwidth">
+                <thead>
+                    <th><abbr title="Code">Code</abbr></th>
+                    <th><abbr title="Description">Description</abbr></th>
+                    <th><abbr title="Count">Count</abbr></th>
+                </thead>
+                <tbody>
+                    <template x-for="entry in $store.error_summary.rows">
+                        <tr class="no-select" style="cursor: pointer;"
+                            x-on:click.prevent="$store.error_summary.toggle(entry.code)"
+                            :class="{'filter_selected': entry.selected}">
+                            <td class="bold" x-text="entry.code"></td>
+                            <td><span x-text="entry.msg"></span></td>
+                            <td class="has-text-right"><span x-text="entry.amount"></span></td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            <div class="level">
+                <div class="level-right">
+                    <div class="level-item">
+                        <button class="button is-warning" x-on:click="$store.error_summary.clear()">Clear all
+                            filters</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section x-data x-show="$store.tab === 'figures'">
+        <h2 class="title">Figures:</h2>
+        <template x-data x-for="e in $store.figures.value" :key="e.fig_id">
+            <div x-data="{
+                uistate: Alpine.store('fig_uistate')[e.fig_id],
+                title: figureTitle(e)
+            }" x-show="title !== 'unset'">
+                <div class="card">
+                    <a x-on:click="uistate.show = !uistate.show">
+                        <header class="card-header">
+                            <p class="card-header-title" x-text="figureTitle(e)"></p>
+                            <button class="card-header-icon">
+                                <span class="icon">
+                                    <i class="fas fa-angle-down"></i>
+                                </span>
+                            </button>
+                        </header>
+                    </a>
+                    <div x-show="uistate.show" class="card-content">
+                        <div class="tabs">
+                            <ul>
+                                <li :class="{'is-active': uistate.tab === 'figure'}">
+                                    <a x-on:click="uistate.tab = 'figure'">Figure</a>
+                                </li>
+                                <li :class="{'is-active': uistate.tab === 'lint_errors'}">
+                                    <a x-on:click="uistate.tab = 'lint_errors'">Lint Errors</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="content" x-show="uistate.tab === 'figure'">
+                            <template x-if="e.type === 'bits' || e.type === 'bytes'">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th><abbr title="offset" x-text="capitalize(e.type)"></abbr></th>
+                                            <th><abbr title="field label">Label</abbr></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template x-for="f in e.fields">
+                                            <tr>
+                                                <td class="flex">
+                                                    <span x-text="f.range.high"></span>
+                                                    <span>&#58;</span>
+                                                    <span x-text="f.range.low"></span>
+                                                </td>
+                                                <td>
+                                                    <span x-text="f.label"></span>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </template>
+                            <template x-if="e.type === 'values'">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th><abbr title="label">Label</abbr></th>
+                                            <th><abbr title="value">Value</abbr></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template x-for="f in e.fields">
+                                            <tr>
+                                                <td>
+                                                    <span x-text="f.label"></span>
+                                                </td>
+                                                <td>
+                                                    <span x-text="f.val"></span>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </template>
+                        </div>
+                        <div class="content" x-show="uistate.tab === 'lint_errors'">
+                            <pre x-text="JSON.stringify(e.lint_errors, null, 2)"></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </section>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script defer>
+    const capitalize = (word) => (
+        word.charAt(0).toUpperCase()
+        + word.slice(1)
+    );
+    const figureTitle = (ent) => {
+        if (ent.title) {
+            return ent.title;
+        }
+
+        // Alpine.store("report").entities[0].fig_id.split("_") // [ "11", "0" ];
+        fig_elems = ent.fig_id.split("_");
+        rfig_id = fig_elems[0];
+        rfig = Alpine.store("report").entities.find(parent => parent.fig_id === rfig_id);
+        if (!rfig) {
+            console.warn(`!rfig\n---\nent.fig_id: ${ent.fig_id}\nrfig_id: ${rfig_id}`);
+            return 'unset';
+        }
+
+        subfig_field_offset = parseInt(fig_elems[1], 10);
+        rfig_field = rfig.fields.find(field => field.range.low === subfig_field_offset);
+        if (!rfig_field) {
+            console.warn(`!rfig_field\n----\nent.fig_id: ${ent.fig_id}\nfilter on: range.low == ${fig_elems[1]}\nrfig`)
+            console.debug(rfig);
+            return 'empty rfig_field'
+        }
+
+        base_label = `${rfig.title}[${rfig_field.label}]`;
+        if (fig_elems.length === 2) {
+            return base_label;
+        } else if (fig_elems.length === 3) {
+            return `${base_label} - table ${fig_elems[2]}`
+        }
+    };
+    const lintGroupByCode = () => {
+        let lint = Alpine.store("report").meta.lint;
+        const grouped = lint.reduce((acc, entry) => {
+            if (acc[entry.code]) {
+                acc[entry.code].amount++;
+            } else {
+                acc[entry.code] = { code: entry.code, msg: entry.msg, amount: 1 };
+            }
+            return acc;
+        }, {});
+        let arr = Object.values(grouped);
+        // sort in descending order
+        arr.sort((a, b) => b.amount - a.amount)
+        return arr;
+    }
+    document.addEventListener("alpine:init", () => {
+        Alpine.store("tab", "summary");
+        Alpine.store("report", {{ report_json | tojson }});
+    Alpine.store("lint_codes", {{ lint_codes | tojson }});
+
+    Alpine.store("error_summary", {
+        toggle(code) {
+            entry = this.rows.find(e => e.code === code);
+            if (entry) {
+                entry.selected = !entry.selected;
+            }
+        },
+        clear() {
+            this.rows = this.rows.map(r => {
+                r.selected = false;
+                return r;
+            })
+        },
+        init() {
+            this.rows = lintGroupByCode().map(r => {
+                r.selected = false;
+                return r;
+            });
+        }
+    });
+
+    Alpine.store("fig_uistate", {
+        toggleShow(fig_id) {
+            this[fig_id].show = ! this[fig_id].show;
+        },
+        init() {
+            Alpine.effect(() => {
+                let ents = Alpine.store("report").entities;
+                ents.forEach(e => this[e.fig_id] = {
+                    show: false,
+                    tab: 'figure'
+                });
+            });
+        }
+    });
+
+    Alpine.store("figures", {
+        init() {
+            Alpine.effect(() => {
+                console.warn("RECOMPUTING FIGURES");
+                let ents = Alpine.store("report").entities;
+                let filter_codes = Alpine.store("error_summary")
+                    .rows.filter(e => e.selected)
+                    .map(e => e.code);
+                let lints = Alpine.store("report").meta.lint;
+
+
+                if (filter_codes.length) {
+                    // only retain lint entries whose lint code is contained in the filter applied
+                    lints = lints.filter(l => filter_codes.find(c => c === l.code));
+                }
+
+                // group lints by fig (fig_id)
+                let lints_by_fig = lints.reduce((acc, l) => {
+                    if (acc[l.fig]) {
+                        acc[l.fig].push(l);
+                    } else {
+                        acc[l.fig] = [l];
+                    }
+                    return acc;
+                }, {});
+
+                // add lint_errors to entities
+                let ents_w_lints = ents.map(e => {
+                    if (lints_by_fig[e.fig_id]) {
+                        e.lint_errors = lints_by_fig[e.fig_id];
+                    } else {
+                        e.lint_errors = [];
+                    }
+                    return e;
+                });
+
+                if (filter_codes.length) {
+                    ents_w_lints = ents_w_lints.filter(e => e.lint_errors.length > 0);
+                }
+
+                this.value = ents_w_lints;
+            });
+        }
+    });
+});
+
+</script>
+{% endblock %}

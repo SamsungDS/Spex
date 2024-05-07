@@ -3,5 +3,5 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 include src/spex/resources/stage2.schema.json
-include src/spexsrv/templates/*.html
-include src/spexsrv/static/*
+recursive-include src/spexsrv/static *
+recursive-include src/spexsrv/templates *

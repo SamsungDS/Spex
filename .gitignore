@@ -16,8 +16,10 @@ build
 dist
 *.css
 !example/**/*.css
+!src/spexsrv/static/*.css
 *.html
 !example/**/*.html
+!src/spexsrv/templates/*.html
 *.json
 result
 *.build

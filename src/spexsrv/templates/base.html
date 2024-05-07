@@ -1,0 +1,36 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>{% block title %}{% endblock %} | Spex Srv</title>
+  <meta name="description" content="Spex Web Front-end">
+  <meta name="author" content="Spex">
+
+  {% if bulma_src is defined and bulma_src is not none %}
+  <style>{{ bulma_src | safe }}</style>
+  {% else %}
+  <link rel="stylesheet" href="{{ bulma_url }}" />
+  {% endif %}
+  {% if fontawesome_src is defined and fontawesome_src is not none %}
+  <style>{{ fontawesome_src | safe }}</style>
+  {% else %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  {% endif %}
+  {% block head_end %}{% endblock %}
+</head>
+
+<body>
+  <div id="page-content">
+  {% block content %}{% endblock %}
+  </div>
+  {% block scripts %}{% endblock %}
+  {% if alpinejs_src is defined and alpinejs_src is not none %}
+  <script defer>{{ alpinejs_src | safe }}</script>
+  {% else %}
+  <script defer src="{{ alpinejs_url }}"></script>
+  {% endif %}
+</body>
+</html>

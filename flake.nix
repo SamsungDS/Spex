@@ -64,9 +64,32 @@
 
       packages = forAllSystems ({ pkgs }:
         let
-          buildPythonPackage = pkgs.python311Packages.buildPythonPackage;
-          fetchPypi = pkgs.python311Packages.fetchPypi;
+          pypkgs = pkgs.python311Packages;
+          buildPythonPackage = pypkgs.buildPythonPackage;
+          fetchPypi = pypkgs.fetchPypi;
           fetchFromGitHub = pkgs.fetchFromGitHub;
+
+          spexBuild = { spexsrvEnabled ? false }: (buildPythonPackage rec {
+            pname = "spex";
+            version = revision;
+            format = "pyproject";
+            src = ./.;
+            doCheck = false;
+
+            propagatedBuildInputs = (spexDeps pkgs)
+              ++ pkgs.lib.optional spexsrvEnabled (spexSrvDeps pkgs);
+
+            postPatch = pkgs.lib.optionalString (!spexsrvEnabled) ''
+              sed -i '/"spexsrv.__main__:main"/d' ./pyproject.toml
+              rm -rf src/spexsrv
+            '';
+
+            meta = with pkgs.lib; {
+              description = "extract data structures from docx/HTML specification";
+              homepage = "https://samsungds.github.io/Spex/";
+              license = licenses.mit;
+            };
+          });
 
         in rec {
           # third-party dependencies
@@ -147,14 +170,8 @@
           });
 
           # spex packages
-          spex = (buildPythonPackage {
-            pname = "spex";
-            version = revision;
-            format = "pyproject";
-            src = ./.;
-            doCheck = false;
-            propagatedBuildInputs = (spexDeps pkgs);
-          });
+          spex = spexBuild {};
+          spex-with-srv = spexBuild { spexsrvEnabled = true; };
         });
 
       # nix develop <flake-ref>#<name>

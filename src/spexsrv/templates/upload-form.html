@@ -1,0 +1,144 @@
+{%  extends "base.html" %}
+{% block title %}{{ title }}{%  endblock %}
+
+{% block content %}
+
+<section x-data class="container box mt-6" x-show="!$store.processing">
+    <h1 class="title">Submit Specification For Parsing</h1>
+    <!-- action="/parse" method="post" enctype="multipart/form-data" -->
+    <form @submit.prevent="submitForm" x-data="{
+        'path': '',
+        'filename': '',
+    }">
+        <div class="field">
+            <div class="file is-normal is-boxed has-name">
+                <label class="file-label">
+                    <input id="spec" class="file-input" type="file" name="document" accept=".docx,.html" x-model="path">
+                    <span class="file-cta">
+                        <span class="file-icon">
+                            <i class="fas fa-upload"></i>
+                        </span>
+                        <span class="file-label">
+                            Specification file...
+                        </span>
+                    </span>
+                </label>
+            </div>
+        </div>
+        <div class="field">
+            <button class="button is-primary">Submit</button>
+        </div>
+    </form>
+</section>
+
+<section x-data x-show="$store.processing" class="container box mt-6">
+    <div class="field">
+        <h2 class="title">Extracting Figures from Specification</h2>
+        <progress x-data class="progress is-large is-info" :value="$store.progress_html.current" :max="$store.progress_html.max">45%</progress>
+    </div>
+    <div class="field">
+        <h2 class="title">Producing Report</h2>
+        <progress x-data class="progress is-large is-success" :value="$store.progress_json.current" :max="$store.progress_json.max">45%</progress>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script defer>
+const fileInputName = () => {
+    const el = document.querySelector('#spec');
+    const f = el.files[0];
+    console.log(`el: ${JSON.stringify(el)}`);
+    console.log(`el.files: ${JSON.stringify(el.files)}`);
+    let res = ''
+    if (f && f.name) {
+        res = f.name;
+    }
+    console.log(`fileInputName() => ${res}`);
+    return res;
+}
+document.addEventListener("alpine:init", () => {
+    Alpine.store("document", "");
+
+    Alpine.store("processing", false);
+    Alpine.store("progress_html", {
+        current: 0,
+        max: 100,
+    });
+    Alpine.store("progress_json", {
+        current: 0,
+        max: 100,
+    });
+});
+
+const onProgressUpdate = ({phase, fig_ndx, num_figs}) => {
+    let store = null;
+    if (phase === "html") {
+        store = Alpine.store("progress_html");
+        store.current = fig_ndx;
+        store.max = num_figs;
+    } else if (phase === "json") {
+        store = Alpine.store("progress_json");
+        store.current = fig_ndx;
+        store.max = num_figs;
+
+        store = Alpine.store("progress_html");
+        store.current = 100;
+        store.max = 100;
+    }
+};
+
+const submitForm = () => {
+    let url = null;
+    const inputFile = document.querySelector("input[type='file']");
+    const fData = new FormData();
+    fData.append("document", inputFile.files[0]);
+    fetch("/parse", {
+        method: "POST",
+        body: fData
+    }).then(rsp => {
+        if (rsp.ok) {
+            const reader = rsp.body.getReader();
+            const decoder = new TextDecoder();
+            Alpine.store("processing", true);
+            return reader.read().then(function processMsg({done, value}) {
+                if (done) {
+                    window.location.href = url;
+                    return;
+                }
+                const chunk = decoder.decode(value);
+                chunk.split("\n").forEach((line) => {
+                    if (line.startsWith("data: ")) {
+                        try {
+                            msg = JSON.parse(line.substring(6));
+                            if (msg.type === "progress-update") {
+                                onProgressUpdate(msg);
+                            } else if (msg.type === "report-completed") {
+                                onProgressUpdate({
+                                    type: "",
+                                    phase: "json",
+                                    fig_ndx: 100,
+                                    num_figs: 100
+                                });
+                                Alpine.store("processing", false);
+                                url = msg.url;
+                            } else { // unhandled SSE
+                                console.debug(msg);
+                            }
+                        } catch (err) {
+                            console.warn(line);
+                            console.error(err);
+                        }
+                    }
+                });
+
+                return reader.read().then(processMsg);
+            });
+        }
+    }).catch(error => {
+        console.error("ERROR:", error);
+    });
+}
+</script>
+{% endblock %}
