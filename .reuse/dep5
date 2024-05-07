@@ -18,3 +18,19 @@ License: BSD-3-Clause
 Files: flake.lock
 Copyright: Samsung Electronics Co., Ltd
 License: BSD-3-Clause
+
+Files: src/spexsrv/static/fontawesome*.css
+Copyright: Fonticons, Inc
+License: CC-BY-4.0 AND OFL-1.1 AND MIT
+Comment: This file contains multiple components:
+     - The icons included in the CSS are licensed under Creative Commons Attribution 4.0 International (CC-BY-4.0).
+     - The font definitions are covered by the SIL Open Font License 1.1 (OFL-1.1).
+     - The source code within this CSS file is licensed under the MIT License.
+
+Files: src/spexsrv/static/bulma-*.css
+Copyright: Jeremy Thomas
+License: MIT
+
+Files: src/spexsrv/templates/*.html
+Copyright: Samsung Electronics Co., Ltd
+License: BSD-3-Clause
