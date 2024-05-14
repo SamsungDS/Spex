@@ -15,7 +15,7 @@ rgx_lbl = re_compile(r"""^[a-zA-Z_][\w]*$""")
 
 
 def content_extract_brief(
-    row: "Element", data: "Element", brief_maxlen=60
+    row: "Element", data: "Element", brief_maxlen: int = 60
 ) -> Optional[str]:
     p1_opt = Xpath.elem_first(data, "./p[1]")
     if p1_opt is None:

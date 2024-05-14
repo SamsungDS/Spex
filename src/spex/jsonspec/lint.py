@@ -76,7 +76,7 @@ class LintEntry:
     row: Optional[str] = None
     ctx: Dict[str, JSON] = field(default_factory=dict)
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if self.msg == "":
             object.__setattr__(self, "msg", self.err.value.value)
         assert (

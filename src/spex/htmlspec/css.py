@@ -44,6 +44,6 @@ class CssCache:
         self.__cache[elem] = clsname
         return clsname
 
-    def emit_rules(self, s: Section):
+    def emit_rules(self, s: Section) -> None:
         for css_obj, clsname in self.__cache.items():
             css_block(s, f".{clsname}", css_obj.css_attrs)

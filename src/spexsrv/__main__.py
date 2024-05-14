@@ -8,7 +8,7 @@ from os import environ
 from spexsrv.application.app import app
 
 
-def main():
+def main() -> None:
     app.run(port=int(environ.get("SPEXSRV_PORT", 5050)), debug=True)
 
 

@@ -31,8 +31,8 @@ class DocLinter:
     Implements the `spexs2.lint.Linter` protocol.
     """
 
-    def __init__(self):
-        self._lint_issues = []
+    def __init__(self) -> None:
+        self._lint_issues: List[LintEntry] = []
 
     def add_issue(
         self,
@@ -42,7 +42,7 @@ class DocLinter:
         msg: Optional[str] = None,
         row_key: Optional[str] = None,
         ctx: Optional[Dict[str, JSON]] = None,
-    ):
+    ) -> None:
         l_entry = LintEntry(
             err=err,
             fig=fig,

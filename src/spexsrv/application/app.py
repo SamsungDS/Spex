@@ -11,17 +11,21 @@ import tempfile
 from contextlib import contextmanager
 from os import environ
 from pathlib import Path
+from typing import Any, AsyncIterator, Dict, Iterator, Tuple
 
 import quart
 from quart import Quart, abort, make_response, redirect, request, url_for
+from quart.wrappers.response import Response
 
+from spex.jsonspec.defs import JSON
 from spex.jsonspec.lint import Code
-from spex.parse import ParserArgs, parse_spec
+from spex.jsonspec.parserargs import ParserArgs
+from spex.parse import parse_spec
 
 SPEX_CACHE = environ.get("SPEX_CACHE", "true").lower() in ("1", "y", "yes", "true")
 
 
-async def render_template(tpl: str, **ctx: str):
+async def render_template(tpl: str, **ctx: str) -> str:
     bundle = ctx.get("bundle", False)
     assert app.static_folder is not None
     static = Path(app.static_folder)
@@ -47,12 +51,12 @@ def md5sum(fpath: Path, chunk_bytes: int = 4096) -> str:
     return hash_md5.hexdigest()
 
 
-def json_to_sse(data) -> bytes:
+def json_to_sse(data: JSON) -> bytes:
     return f"data: {json.dumps(data)}\n\n".encode("utf-8")
 
 
 @contextmanager
-def temp_dir():
+def temp_dir() -> Iterator[Path]:
     tmp = tempfile.TemporaryDirectory()
     tmpd = Path(tmp.name)
     try:
@@ -73,7 +77,7 @@ lint_codes = {entry.name: entry.value for entry in Code}
 
 
 @app.before_serving
-async def _app_init():
+async def _app_init() -> None:
     logger.info("spexsrv initializing...")
 
     print(f"Cache reports? {SPEX_CACHE}")
@@ -84,12 +88,12 @@ async def _app_init():
     )
     assert app.template_folder is not None, "expected templates_folder to be set"
     assert app.static_folder is not None, "expected static_folder to be set"
-    print(f"  * Template Directory: {app.template_folder.resolve()}")
-    print(f"  * Static Assets Directory: {app.static_folder.resolve()}")
+    print(f"  * Template Directory: {app.template_folder.resolve()}")  # type: ignore
+    print(f"  * Static Assets Directory: {app.static_folder.resolve()}")  # type: ignore
 
 
 @app.after_serving
-async def _app_shutdown():
+async def _app_shutdown() -> None:
     logging.info("spexsrv shutting down...")
     app.config[SPEX_CACHE_TMPDIR].cleanup
     del app.config[SPEX_CACHE_TMPDIR]
@@ -97,12 +101,12 @@ async def _app_shutdown():
 
 
 @app.route("/")
-async def index():
+async def index() -> str:
     return await render_template("upload-form.html", title="Upload Specification")
 
 
 @app.route("/report/<hash>")
-async def report(hash: str):
+async def report(hash: str) -> str:
     # TODO: enable this part again this actually looks for the document requested
     json_fpath = app.config[SPEX_CACHE_LOOKUP].get(hash)
     if json_fpath is None or not json_fpath.is_file():
@@ -126,7 +130,7 @@ async def report(hash: str):
 
 
 @app.route("/parse", methods=["POST"])
-async def spec_parse():
+async def spec_parse() -> Response | Tuple[str, int, Dict[Any, Any]]:
     files = await request.files
 
     if "document" not in files:
@@ -146,7 +150,7 @@ async def spec_parse():
     json_path = app.config[SPEX_CACHE_LOOKUP].get(hash)
     if SPEX_CACHE and json_path:
         # redirect immediately to the existing report
-        return redirect(report_url)
+        return redirect(report_url)  # type: ignore
 
     pargs = ParserArgs(
         output_dir=Path(tdir_path),
@@ -154,7 +158,7 @@ async def spec_parse():
         lint_codes_ignore=[],
     )
 
-    async def sse_events():
+    async def sse_events() -> AsyncIterator[bytes]:
         try:
             gen = parse_spec(dst, pargs, yield_progress=True)
             try:
@@ -188,5 +192,5 @@ async def spec_parse():
             "Transfer-Encoding": "chunked",
         },
     )
-    rsp.timeout = 60
-    return rsp
+    rsp.timeout = 60  # type: ignore
+    return rsp  # type: ignore

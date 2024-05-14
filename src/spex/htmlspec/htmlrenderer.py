@@ -39,11 +39,11 @@ class SpexHtmlRenderer:
         self._html_writer = write_file(self._html_path)
         self._html_head = Section()
         self._html_body = Section()
-        self._html_doc: Section = self._html_writer.__enter__()
+        self._html_doc: Optional[Section] = self._html_writer.__enter__()
 
         self._css_path = out_dir / f"{self._fname}.css"
         self._css_writer = write_file(self._css_path)
-        self._css_doc: Section = self._css_writer.__enter__()
+        self._css_doc: Optional[Section] = self._css_writer.__enter__()
         # from props -> name
         self._css_txtfmt_cache = css.CssCache("txtfmt")
 
@@ -52,7 +52,8 @@ class SpexHtmlRenderer:
 
         self.__tbls_seen: Set[_Element] = set()
 
-    def __write_css_prelude(self):
+    def __write_css_prelude(self) -> None:
+        assert self._css_doc is not None
         s = self._css_doc
         css.css_block(
             s,
@@ -100,19 +101,21 @@ class SpexHtmlRenderer:
         num_xml = self._document.numbering_xml
         if num_xml:
             s.emitln("/* list-formatting styles */")
+            assert self._document.numbering_xml is not None
             for nstyle in self._document.numbering_xml.iter_styles():
                 for ilvl in nstyle.ilvls:
                     s.emitln(ilvl.to_css())
 
-    def __write_css_epilog(self):
+    def __write_css_epilog(self) -> None:
         # write out cached styles
+        assert self._css_doc is not None
         s = self._css_doc
         s.emitln("/* text-formatting styles */")
         self._css_txtfmt_cache.emit_rules(s)
         s.emitln("/* table cell formatting styles */")
         self.__css_tcell_cache.emit_rules(s)
 
-    def generate(self, yield_progress=False) -> Generator[int, None, None]:
+    def generate(self, yield_progress: bool = False) -> Generator[int, None, None]:
         """main entrypoint for generator.
 
         Args:
@@ -123,6 +126,7 @@ class SpexHtmlRenderer:
         # write prelude for CSS document
         self.__write_css_prelude()
 
+        assert self._html_doc is not None
         s = self._html_doc
         s.emitln("<!DOCTYPE html>")
         s.emitln('<html lang="en">')
@@ -252,13 +256,13 @@ class SpexHtmlRenderer:
               process."""
         return len(self._document.tables)
 
-    def __del__(self):
+    def __del__(self) -> None:
         if self._destroyed:
             return
         try:
-            self._css_writer.__exit__(None, None, None)
+            self._css_writer.__exit__(None, None, None)  # type: ignore
             self._css_doc = None
-            self._html_writer.__exit__(None, None, None)
+            self._html_writer.__exit__(None, None, None)  # type: ignore
             self._html_doc = None
         except Exception as e:
             print(e)

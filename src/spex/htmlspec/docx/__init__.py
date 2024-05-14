@@ -7,3 +7,13 @@ from spex.htmlspec.docx.numbering import AbstractNum, AbstractNumLvl, NumberingD
 from spex.htmlspec.docx.runproperties import RunProperties
 from spex.htmlspec.docx.tablewrap import TableWrap
 from spex.htmlspec.docx.tags import Tag
+
+__all__ = [
+    "Document",
+    "AbstractNum",
+    "AbstractNumLvl",
+    "NumberingDocument",
+    "RunProperties",
+    "TableWrap",
+    "Tag",
+]

@@ -4,6 +4,7 @@
 
 import dataclasses as dc
 from enum import Enum
+from typing import List
 
 from lxml.etree import _Element
 
@@ -33,11 +34,14 @@ class GridElement:
         return self.bottom - self.top + 1
 
 
+Matrix = List[List[GridElement]]
+
+
 class TableWrap:
     def __init__(self, elem: _Element):
         self._elem = elem
 
-    def grid(self):
+    def grid(self) -> Matrix:
         def tc_grid_span(tc: _Element) -> int:
             ret = Xpath.attr_first(tc, "./w:tcPr/w:gridSpan/@w:val")
             return int(ret) if isinstance(ret, str) else 1
@@ -54,11 +58,11 @@ class TableWrap:
             else:
                 return VMerge.MERGED
 
-        matrix = []
+        matrix: Matrix = []
         for rndx, tr in enumerate(Xpath.elems(self._elem, "./w:tr")):
             cndx = 0
             mrow = []
-            for tc in tr.findall("./w:tc", tr.nsmap):
+            for tc in tr.findall("./w:tc", tr.nsmap):  # type: ignore
                 grid_span = tc_grid_span(tc)
                 vmerge = tc_vmerge(tc)
                 if vmerge is VMerge.MERGED:

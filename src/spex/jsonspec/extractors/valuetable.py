@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-from typing import TYPE_CHECKING, Dict, Generator, Iterator, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, Generator, Iterator, List, Optional, Union
 
 from spex.jsonspec.defs import ELLIPSIS, RESERVED, ValueField
 from spex.jsonspec.extractors.figure import FigureExtractor, RowErrPolicy
@@ -34,7 +34,7 @@ class ValueTableExtractor(FigureExtractor):
                 return ndx
         raise RuntimeError("failed to find column to extract values from")
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         col_ndxs = {hdr: ndx for ndx, hdr in enumerate(self.tbl_hdrs)}
         self._col_ndx_value = self._get_col_ndx(self.value_column_hdrs(), col_ndxs)
@@ -138,7 +138,7 @@ class ValueTableExtractor(FigureExtractor):
     def _val_to_rowkey(self, val: Union[str, int]) -> str:
         return str(val)
 
-    def validate_fields(self, fields: List[ValueField]):
+    def validate_fields(self, fields: List[ValueField]) -> None:
         if len(fields) < 2:
             return
 
@@ -210,13 +210,17 @@ class ValueTableExtractor(FigureExtractor):
                 return RESERVED
         else:
             p1 = Xpath.elem_first_req(data, "./p[1]")
-            txt = "".join(
+            txt: str = "".join(
                 e.decode("utf-8") if isinstance(e, bytes) else e for e in p1.itertext()
             ).strip()
             if txt.lower() == "reserved":
                 return RESERVED
             txt_parts = txt.split(":", 1)
             if txt_parts[0] == txt_parts:
+                # TODO: The typing here is off, `txt_parts`` will be a list of
+                # strings So you are comparing a string with a list of strings.
+                # When will this work?
+
                 # to infer labels, we need the text to be of the form
                 # 'Foo Bar Baz: lorem ipsum...' - if no colon is found, this is
                 # not the case, ergo we cannot reliably extract a label.

@@ -4,7 +4,7 @@
 
 from abc import ABC, abstractmethod
 from re import compile as re_compile
-from typing import Dict, Generator, Iterator, List, Optional, Union
+from typing import Any, Dict, Generator, Iterator, List, Optional, Union
 
 from spex.jsonspec.defs import (
     ELLIPSIS,
@@ -53,7 +53,7 @@ class StructTableExtractor(FigureExtractor, ABC):
                 return ndx
         raise RuntimeError("failed to find column to extract ranges from")
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any):
         super().__init__(*args, **kwargs)
         col_ndxs = {hdr: ndx for ndx, hdr in enumerate(self.tbl_hdrs)}
         self._col_ndx_range = self._get_col_ndx(self.range_column_hdrs(), col_ndxs)
@@ -167,7 +167,7 @@ class StructTableExtractor(FigureExtractor, ABC):
             "fields": fields,
         }
 
-    def validate_fields(self, fields: List[StructField]):
+    def validate_fields(self, fields: List[StructField]) -> None:
         if len(fields) < 2:
             return
 

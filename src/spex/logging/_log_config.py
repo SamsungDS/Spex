@@ -25,27 +25,31 @@ import os
 import sys
 import traceback
 from pathlib import Path
+from types import TracebackType
+from typing import Any, Dict, cast
 
 from loguru import logger
+
+from spex.jsonspec.defs import JSON
 
 # If `SPEX_DEBUG` is true then the console logger includes program-specific
 # log message levels and formatted stack traces
 DEBUG = os.environ.get("SPEX_DEBUG", "0").lower().strip() in {"true", "yes", "1"}
 
 
-def exc_get_traceback(exc):
-    if hasattr(exc, "traceback"):
-        return exc.traceback
-    elif hasattr(exc, "__traceback__"):
+def exc_get_traceback(exc: BaseException | None) -> TracebackType | None:
+    if exc is not None and hasattr(exc, "traceback"):
+        return cast(TracebackType, exc.traceback)
+    elif exc is not None and hasattr(exc, "__traceback__"):
         return exc.__traceback__
     raise RuntimeError("exception has no traceback/__traceback__ attr") from exc
 
 
-def jsonify_exc(exc):
+def jsonify_exc(exc: BaseException | None) -> JSON:
     tb = exc_get_traceback(exc)
     ss = traceback.extract_tb(tb)
 
-    exc_json = {
+    exc_json: Dict[str, JSON] = {
         "type": type(exc).__qualname__,
         "msg": str(exc),
         "frames": [
@@ -58,7 +62,7 @@ def jsonify_exc(exc):
             for frame in ss
         ],
     }
-    if hasattr(exc, "__cause__") and exc.__cause__:
+    if exc is not None and hasattr(exc, "__cause__") and exc.__cause__:
         print("CAUSE")
         print(repr(exc.__cause__))
         print("/CAUSE")
@@ -71,7 +75,7 @@ SPEX_LOG_PATH = Path.cwd() / "spex.log"
 SPEX_LOG_PATH.unlink(missing_ok=True)
 
 
-def fmt_no_stacktrace(rec):
+def fmt_no_stacktrace(rec) -> str:
     if rec["level"].name == "U_CRITICAL":
         return "<level>•</level> <bg red><white>{message}</white></bg red>\n"
     return "<level>•</level> {message}\n"
@@ -101,10 +105,10 @@ class ULog:
     CRITICAL = "U_CRITICAL"
 
     # ... poor man's public final
-    def __setattr__(self, key, value):
+    def __setattr__(self, key: Any, value: Any) -> None:
         raise AttributeError("cannot modify values in this class")
 
-    def __delattr__(self, item):
+    def __delattr__(self, item: Any) -> None:
         raise AttributeError("cannot modify values in this class")
 
 
@@ -132,7 +136,7 @@ class LogFileSerializer:
         self._fpath = fpath
         self._fp = open(fpath, "w")
 
-    def __call__(self, message):
+    def __call__(self, message) -> None:
         record = message.record
         log = {
             "level": record["level"].name,
@@ -149,7 +153,7 @@ class LogFileSerializer:
         # self._fp.write(json.dumps(log))
         print(json.dumps(log), file=self._fp)
 
-    def __del__(self):
+    def __del__(self) -> None:
         self._fp.close()
 
 

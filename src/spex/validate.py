@@ -9,7 +9,7 @@ from pathlib import Path
 from jsonschema import validate
 
 
-def validate_json(document_path: Path):
+def validate_json(document_path: Path) -> None:
     schema = (
         resources.files("spex.resources").joinpath("stage2.schema.json").read_text()
     )

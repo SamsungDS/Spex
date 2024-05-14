@@ -103,7 +103,7 @@ class SpexParser:
             else:
                 stream.consume()
 
-    def __p_is_list_paragraph(self, e: _Element):
+    def __p_is_list_paragraph(self, e: _Element) -> bool:
         num_id = Xpath.attr_first(e, "./w:pPr/w:numPr/w:numId/@w:val")
         if num_id is None or self._document.numbering_xml is None:
             return False
