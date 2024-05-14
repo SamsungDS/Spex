@@ -17,7 +17,7 @@ class AbstractNumLvl:
     num_fmt: str
     lvl_text: str
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         assert isinstance(self.abstract_num_id, int), "`num_id` should be an integer"
         assert isinstance(self.ilvl, int), "`ilvl` should be an integer"
 

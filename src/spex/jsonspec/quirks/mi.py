@@ -6,10 +6,10 @@ from typing import Generator, Iterator, List, Optional
 
 from lxml import etree
 
-from spex.jsonspec.defs import Entity, EntityMeta
+from spex.jsonspec.defs import Entity, EntityMeta, StructField
 from spex.jsonspec.document import DocumentParser
 from spex.jsonspec.extractors.figure import RowErrPolicy
-from spex.jsonspec.extractors.structtable import BitsTableExtractor, StructField
+from spex.jsonspec.extractors.structtable import BitsTableExtractor
 from spex.xml import Element
 
 

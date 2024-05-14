@@ -21,22 +21,25 @@ This is complicated by two facts:
   corresponding to the requested offset.
 """
 import copy
+from typing import Iterator, List, Optional, Tuple
 
 from lxml import etree
 
-from spex.xml import Xpath
+from spex.xml import Element, Xpath
+
+ALST = Tuple[int, Tuple[Element, int]]
 
 
-def repr_elem(elem):
+def repr_elem(elem: Element) -> str:
     return etree.tostring(elem, encoding="unicode").strip()
 
 
-def alst_count_decr(alst):
+def alst_count_decr(alst: List[ALST]) -> List[ALST]:
     res = [(ndx, (elem, count - 1)) for ndx, (elem, count) in alst if count > 1]
     return res
 
 
-def alst_insert(alst, ndx, elem, count):
+def alst_insert(alst: List[ALST], ndx: int, elem: Element, count: int) -> None:
     entry = (ndx, (elem, count))
     for iter_ndx, (e_ndx, _) in enumerate(alst):
         if ndx < e_ndx:
@@ -45,7 +48,8 @@ def alst_insert(alst, ndx, elem, count):
     alst.append(entry)
 
 
-def sorted_row_children(row, alst):
+def sorted_row_children(row: Element, alst: List[ALST]) -> Iterator[Element]:
+    elem_off: Optional[int]
     col_off = 0
     rest = alst
     (elem_off, (elem, _)), rest = rest[0], rest[1:]
@@ -67,7 +71,7 @@ def sorted_row_children(row, alst):
         yield from (elem for (_, (elem, __)) in rest)
 
 
-def alst_repr(alst):
+def alst_repr(alst: List[ALST]) -> str:
     return repr(
         [
             (ndx, (etree.tostring(elem, encoding="unicode").strip(), count))
@@ -76,9 +80,9 @@ def alst_repr(alst):
     )
 
 
-def row_iter(tbl):
+def row_iter(tbl: Element) -> Iterator[Element]:
     it = Xpath.elems(tbl, "./tr/td[1]/parent::tr")
-    alst = []
+    alst: List[ALST] = []
 
     row_cnt = 1
     for row in it:
@@ -99,12 +103,12 @@ def row_iter(tbl):
         # re-insert these later.
         column_offset = 0
         for td in Xpath.elems(row, "./td"):
-            rowspan = int(td.get("rowspan", 1))
-            if rowspan > 1:
+            row_span = int(td.get("rowspan", 1))
+            if row_span > 1:
                 elem = copy.copy(td)
                 # avoid repeatedly processing this elem in subsequent rows
                 del elem.attrib["rowspan"]
-                alst_insert(alst, column_offset, elem, rowspan)
+                alst_insert(alst, column_offset, elem, row_span)
             column_offset += int(td.get("colspan", 1))
 
         yield row

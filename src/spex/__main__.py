@@ -7,11 +7,12 @@ import sys
 import textwrap
 import traceback
 from pathlib import Path
-from typing import List
+from typing import List, NoReturn
 
 from spex.jsonspec.lint import Code
+from spex.jsonspec.parserargs import ParserArgs
 from spex.logging import ULog, logger
-from spex.parse import ParserArgs, parse_spec
+from spex.parse import parse_spec
 from spex.validate import validate_json
 
 
@@ -39,13 +40,13 @@ def arg_lintcode(arg: str) -> List[Code]:
 
 
 class CliParser(argparse.ArgumentParser):
-    def error(self, message):
+    def error(self, message: str) -> NoReturn:
         sys.stderr.write(f"error: {message}\n")
         self.print_help()
         sys.exit(2)
 
 
-def main():
+def main() -> None:
     lint_codes = "\n".join(f"      * {entry.name}  - {entry.value}" for entry in Code)
     epilog = textwrap.dedent(
         f"""
@@ -71,13 +72,13 @@ def main():
       current working directory.
     """
     )
-    parser = CliParser(
+    cli_parser = CliParser(
         description="Extract data-structures from .docx spec or HTML model",
         epilog=epilog,
         prog="spex",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    parser.add_argument(
+    cli_parser.add_argument(
         "-s",
         "--skip-figure-on-error",
         default=False,
@@ -88,7 +89,7 @@ def main():
             " but skip it and continue processing the remaining figures"
         ),
     )
-    parser.add_argument(
+    cli_parser.add_argument(
         "input",
         nargs="+",
         type=arg_input,
@@ -97,19 +98,19 @@ def main():
             " or HTML models to extract data-structures from"
         ),
     )
-    parser.add_argument(
+    cli_parser.add_argument(
         "-o",
         "--output",
         type=arg_output,
         default=None,
         help="path to directory where the resulting file(s) should be stored.",
     )
-    parser.add_argument(
+    cli_parser.add_argument(
         "--validate-json", action=argparse.BooleanOptionalAction, default=False
     )
-    parser.add_argument("--lint-ignore", type=arg_lintcode, default=[])
+    cli_parser.add_argument("--lint-ignore", type=arg_lintcode, default=[])
 
-    args = parser.parse_args()
+    args = cli_parser.parse_args()
 
     # if no explicit output directory is specified, use the current working directory
     if args.output is None:
@@ -143,7 +144,7 @@ def main():
                 sys.stderr.flush()
                 sys.exit(1)
 
-            parser = parse_spec(spec, pargs, yield_progress=False)
+            parser = parse_spec(Path(spec), pargs, yield_progress=False)
             try:
                 while True:
                     next(parser)

@@ -58,7 +58,7 @@ class Entity(TypedDict):
     title: NotRequired[str]
     fig_id: str
     parent_fig_id: NotRequired[str]
-    data: dict
+    data: dict  # type: ignore
 
 
 class ParseFn(Protocol):

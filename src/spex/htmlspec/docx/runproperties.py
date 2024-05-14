@@ -4,7 +4,7 @@
 
 import copy
 from enum import Enum
-from typing import Dict, Optional, Union
+from typing import Any, Dict, Optional, Union
 
 from lxml.etree import _Element
 
@@ -114,13 +114,13 @@ class RunProperties:
     def css_attrs(self) -> Dict[str, str]:
         return self.__css_attrs
 
-    def __eq__(self, other):
+    def __eq__(self, other: Any) -> bool:
         return isinstance(other, type(self)) and self.__css_attrs == other.__css_attrs
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(frozenset(self.__css_attrs))
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return repr(self.__css_attrs)
 
     def __copy__(self) -> "RunProperties":
