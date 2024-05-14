@@ -36,11 +36,11 @@
     <ul>
         <li>
             <span class="has-text-weight-bold">Specification: </span>
-            <span x-data x-text="$store.report.meta.specification"></span>
+            <span x-data x-text="report.meta.specification"></span>
         </li>
         <li>
             <span class="has-text-weight-bold">Revision: </span>
-            <span x-data x-text="$store.report.meta.revision"></span>
+            <span x-data x-text="report.meta.revision"></span>
         </li>
     </ul>
     <div x-data class="tabs">
@@ -94,7 +94,7 @@
     </section>
     <section x-data x-show="$store.tab === 'figures'">
         <h2 class="title">Figures:</h2>
-        <template x-data x-for="e in $store.figures.value" :key="e.fig_id">
+        <template x-data x-if="!$store.figures.loading && $store.figures.length" x-for="e in $store.figures.value" :key="e.fig_id">
             <div x-data="{
                 uistate: Alpine.store('fig_uistate')[e.fig_id],
                 title: figureTitle(e)
@@ -182,6 +182,9 @@
 
 {% block scripts %}
 <script defer>
+    const report = {{ report_json | tojson }};
+    const lintCodes = {{ lint_codes | tojson }};
+
     const capitalize = (word) => (
         word.charAt(0).toUpperCase()
         + word.slice(1)
@@ -191,10 +194,10 @@
             return ent.title;
         }
 
-        // Alpine.store("report").entities[0].fig_id.split("_") // [ "11", "0" ];
+        // report[0].fig_id.split("_") // [ "11", "0" ];
         fig_elems = ent.fig_id.split("_");
         rfig_id = fig_elems[0];
-        rfig = Alpine.store("report").entities.find(parent => parent.fig_id === rfig_id);
+        rfig = report.entities.find(parent => parent.fig_id === rfig_id);
         if (!rfig) {
             console.warn(`!rfig\n---\nent.fig_id: ${ent.fig_id}\nrfig_id: ${rfig_id}`);
             return 'unset';
@@ -216,7 +219,7 @@
         }
     };
     const lintGroupByCode = () => {
-        let lint = Alpine.store("report").meta.lint;
+        let lint = report.meta.lint;
         const grouped = lint.reduce((acc, entry) => {
             if (acc[entry.code]) {
                 acc[entry.code].amount++;
@@ -231,10 +234,7 @@
         return arr;
     }
     document.addEventListener("alpine:init", () => {
-        Alpine.store("tab", "summary");
-        Alpine.store("report", {{ report_json | tojson }});
-    Alpine.store("lint_codes", {{ lint_codes | tojson }});
-
+    Alpine.store("tab", "summary");
     Alpine.store("error_summary", {
         toggle(code) {
             entry = this.rows.find(e => e.code === code);
@@ -249,6 +249,7 @@
             })
         },
         init() {
+            console.info("STORE[error_summary] init");
             this.rows = lintGroupByCode().map(r => {
                 r.selected = false;
                 return r;
@@ -256,13 +257,19 @@
         }
     });
 
+    // Alpine.store("report", {{ report_json | tojson }});
+    // Alpine.store("lint_codes", {{ lint_codes | tojson }});
+
     Alpine.store("fig_uistate", {
         toggleShow(fig_id) {
             this[fig_id].show = ! this[fig_id].show;
         },
         init() {
             Alpine.effect(() => {
-                let ents = Alpine.store("report").entities;
+                console.info("STORE[fig_uistate] init");
+                let ents = report.entities;
+                console.warn(typeof(ents));
+                console.warn(ents);
                 ents.forEach(e => this[e.fig_id] = {
                     show: false,
                     tab: 'figure'
@@ -272,14 +279,22 @@
     });
 
     Alpine.store("figures", {
+        loading: true,
         init() {
             Alpine.effect(() => {
+                console.info("STORE[figures] init");
+                // this.loading = true;
+                // this.value = [];
+                // this.loading = false;
+                // this.loading = true;
                 console.warn("RECOMPUTING FIGURES");
-                let ents = Alpine.store("report").entities;
+                let ents = report.entities;
+                console.debug("ENTS");
+                console.debug(ents);
                 let filter_codes = Alpine.store("error_summary")
                     .rows.filter(e => e.selected)
                     .map(e => e.code);
-                let lints = Alpine.store("report").meta.lint;
+                let lints = report.meta.lint;
 
 
                 if (filter_codes.length) {
@@ -312,6 +327,8 @@
                 }
 
                 this.value = ents_w_lints;
+                this.loading = false;
+                console.warn(`recompute DONE ${this.value.length} elems`);
             });
         }
     });
