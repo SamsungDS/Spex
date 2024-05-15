@@ -94,86 +94,16 @@
     </section>
     <section x-data x-show="$store.tab === 'figures'">
         <h2 class="title">Figures:</h2>
-        <template x-data x-if="!$store.figures.loading && $store.figures.length" x-for="e in $store.figures.value" :key="e.fig_id">
-            <div x-data="{
-                uistate: Alpine.store('fig_uistate')[e.fig_id],
-                title: figureTitle(e)
-            }" x-show="title !== 'unset'">
-                <div class="card">
-                    <a x-on:click="uistate.show = !uistate.show">
-                        <header class="card-header">
-                            <p class="card-header-title" x-text="figureTitle(e)"></p>
-                            <button class="card-header-icon">
-                                <span class="icon">
-                                    <i class="fas fa-angle-down"></i>
-                                </span>
-                            </button>
-                        </header>
-                    </a>
-                    <div x-show="uistate.show" class="card-content">
-                        <div class="tabs">
-                            <ul>
-                                <li :class="{'is-active': uistate.tab === 'figure'}">
-                                    <a x-on:click="uistate.tab = 'figure'">Figure</a>
-                                </li>
-                                <li :class="{'is-active': uistate.tab === 'lint_errors'}">
-                                    <a x-on:click="uistate.tab = 'lint_errors'">Lint Errors</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="content" x-show="uistate.tab === 'figure'">
-                            <template x-if="e.type === 'bits' || e.type === 'bytes'">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th><abbr title="offset" x-text="capitalize(e.type)"></abbr></th>
-                                            <th><abbr title="field label">Label</abbr></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <template x-for="f in e.fields">
-                                            <tr>
-                                                <td class="flex">
-                                                    <span x-text="f.range.high"></span>
-                                                    <span>&#58;</span>
-                                                    <span x-text="f.range.low"></span>
-                                                </td>
-                                                <td>
-                                                    <span x-text="f.label"></span>
-                                                </td>
-                                            </tr>
-                                        </template>
-                                    </tbody>
-                                </table>
-                            </template>
-                            <template x-if="e.type === 'values'">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th><abbr title="label">Label</abbr></th>
-                                            <th><abbr title="value">Value</abbr></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <template x-for="f in e.fields">
-                                            <tr>
-                                                <td>
-                                                    <span x-text="f.label"></span>
-                                                </td>
-                                                <td>
-                                                    <span x-text="f.val"></span>
-                                                </td>
-                                            </tr>
-                                        </template>
-                                    </tbody>
-                                </table>
-                            </template>
-                        </div>
-                        <div class="content" x-show="uistate.tab === 'lint_errors'">
-                            <pre x-text="JSON.stringify(e.lint_errors, null, 2)"></pre>
-                        </div>
-                    </div>
-                </div>
+        <template x-if="!$store.figures.loading && $store.figures.value && $store.figures.length !== 0">
+            <div>
+                <template x-data x-for="e in $store.figures.value">
+                    <span>
+                        <span>&quot;</span>
+                        <span x-text="e.fig_id"></span>
+                        <span>&quot;</span>
+                        <span>,</span>
+                    </span>
+                </template>
             </div>
         </template>
     </section>
@@ -257,36 +187,13 @@
         }
     });
 
-    // Alpine.store("report", {{ report_json | tojson }});
-    // Alpine.store("lint_codes", {{ lint_codes | tojson }});
-
-    Alpine.store("fig_uistate", {
-        toggleShow(fig_id) {
-            this[fig_id].show = ! this[fig_id].show;
-        },
-        init() {
-            Alpine.effect(() => {
-                console.info("STORE[fig_uistate] init");
-                let ents = report.entities;
-                console.warn(typeof(ents));
-                console.warn(ents);
-                ents.forEach(e => this[e.fig_id] = {
-                    show: false,
-                    tab: 'figure'
-                });
-            });
-        }
-    });
-
     Alpine.store("figures", {
         loading: true,
+        value: [],
         init() {
             Alpine.effect(() => {
                 console.info("STORE[figures] init");
-                // this.loading = true;
-                // this.value = [];
-                // this.loading = false;
-                // this.loading = true;
+                this.loading = true;
                 console.warn("RECOMPUTING FIGURES");
                 let ents = report.entities;
                 console.debug("ENTS");
@@ -332,6 +239,25 @@
             });
         }
     });
+
+    // Alpine.store("fig_uistate", {
+    //     toggleShow(fig_id) {
+    //         this[fig_id].show = ! this[fig_id].show;
+    //     },
+    //     init() {
+    //         Alpine.effect(() => {
+    //             console.info("STORE[fig_uistate] init");
+    //             //let ents = report.entities;
+    //             let ents = Alpine.store("figures").value;
+    //             console.warn(typeof(ents));
+    //             console.warn(ents);
+    //             ents.forEach(e => this[e.fig_id] = {
+    //                 show: false,
+    //                 tab: 'figure'
+    //             });
+    //         });
+    //     }
+    // });
 });
 
 </script>
