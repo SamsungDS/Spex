@@ -287,10 +287,13 @@ class DocumentParser:
                         logger.log(ULog.ERROR, f"failed parsing figure {entity!r}")
                         logger.exception("exception when parsing figure")
                         self._unwind_parse_error = True
+                        ctx = {}
+                        if "title" in entity:
+                            ctx["title"] = entity["title"]
                         self.linter.add_issue(
                             LintErr.TBL_PARSE_ERR,
                             entity["fig_id"],
-                            ctx={"title": entity["title"]},
+                            ctx=ctx,
                         )
                     else:
                         logger.log(ULog.ERROR, f"  in {entity!r}")
