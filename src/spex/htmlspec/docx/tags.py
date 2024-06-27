@@ -50,6 +50,7 @@ class Tag(Enum):
     color = _expand("w:color")  # color
     t = _expand("w:t")  # text
     hyperlink = _expand("w:hyperlink")
+    fldSimple = _expand("w:fldSimple")
 
 
 __all__ = ["Tag"]

@@ -185,6 +185,8 @@ class SpexParser:
                 yield child
             elif child.tag == Tag.hyperlink.value:
                 yield Xpath.elem_first_req(child, "./w:r")
+            elif child.tag == Tag.fldSimple.value:
+                yield Xpath.elem_first_req(child, "./w:r")
 
     def _parse_spans(self, p: _Element) -> Iterator[Span]:
         for r in self._select_runs(p):
