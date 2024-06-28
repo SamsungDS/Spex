@@ -107,7 +107,7 @@ class StructTableExtractor(FigureExtractor, ABC):
                     # (bits fields are in desc order, bytes are in asc)
                     fields.append({"range": {"low": -1, "high": -1}, "label": ELLIPSIS})
                     continue
-                elif row_txt.startswith("notes:"):
+                elif row_txt.startswith("notes:") or row_txt.startswith("note:"):
                     break
                 else:
                     out = yield from self.row_err_handler(row_it, row, fields, e)
