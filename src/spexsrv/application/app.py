@@ -88,8 +88,8 @@ async def _app_init() -> None:
     )
     assert app.template_folder is not None, "expected templates_folder to be set"
     assert app.static_folder is not None, "expected static_folder to be set"
-    print(f"  * Template Directory: {app.template_folder.resolve()}")  # type: ignore
-    print(f"  * Static Assets Directory: {app.static_folder.resolve()}")  # type: ignore
+    print(f"  * Template Directory: {app.template_folder}")
+    print(f"  * Static Assets Directory: {app.static_folder}")
 
 
 @app.after_serving
