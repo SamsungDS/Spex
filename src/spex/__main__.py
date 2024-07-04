@@ -11,7 +11,7 @@ from typing import List, NoReturn
 
 from spex.jsonspec.lint import Code
 from spex.jsonspec.parserargs import ParserArgs
-from spex.logging import ULog, logger
+from spex.log import ULog, logger
 from spex.parse import parse_spec
 from spex.validate import validate_json
 

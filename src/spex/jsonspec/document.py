@@ -12,7 +12,7 @@ from spex.jsonspec.extractors.structtable import BitsTableExtractor, BytesTableE
 from spex.jsonspec.extractors.valuetable import ValueTableExtractor
 from spex.jsonspec.lint import LintEntry, Linter, LintErr
 from spex.jsonspec.parserargs import ParserArgs
-from spex.logging import ULog
+from spex.log import ULog
 from spex.xml import XmlUtils, Xpath
 
 if TYPE_CHECKING:
