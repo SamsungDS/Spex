@@ -9,7 +9,7 @@ from spex.htmlspec.htmlrenderer import SpexHtmlRenderer
 from spex.jsonspec import parse
 from spex.jsonspec.defs import JSON
 from spex.jsonspec.parserargs import ParserArgs
-from spex.logging import ULog, logger
+from spex.log import ULog, logger
 from spex.progressbar import ParseProgressStatus
 from spex.writer import FileWriter, StdoutWriter, Writer
 
