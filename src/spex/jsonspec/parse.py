@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
+import io
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
@@ -33,7 +34,23 @@ class SpecDocument:
 
 # TODO determine what to return
 def open_doc(spec: Path) -> SpecDocument:
-    doc = etree.parse(str(spec.absolute()))
+    return html_to_spec_doc(spec.absolute().read_text())
+
+
+def html_to_spec_doc(html_doc: str) -> SpecDocument:
+    """Html to SpecDocument
+
+    This creates a SpecDocument from a raw string containing html
+    from a second stage run.
+
+    Args:
+        html (str): Full html document to parse as a string
+
+    Returns:
+        SpecDocument: A wrapper that returns a parser and holds meta data on the
+        specification
+    """
+    doc = etree.parse(io.StringIO(html_doc))
 
     doc_spec = Xpath.attr_first_req(doc, "./head/meta/@data-spec").lower()
     doc_rev = Xpath.attr_first_req(doc, "./head/meta/@data-revision").lower()
