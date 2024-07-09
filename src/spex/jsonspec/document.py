@@ -287,7 +287,7 @@ class DocumentParser:
                         logger.log(ULog.ERROR, f"failed parsing figure {entity!r}")
                         logger.exception("exception when parsing figure")
                         self._unwind_parse_error = True
-                        ctx = {}
+                        ctx: Dict[str, JSON] = {}
                         if "title" in entity:
                             ctx["title"] = entity["title"]
                         self.linter.add_issue(
