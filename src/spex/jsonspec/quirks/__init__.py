@@ -20,4 +20,5 @@ QUIRKS_MAP: QuirksMap = {
     ("nvm express® zoned namespace command set specification", "1.1c"): NvmCsZoned11c,
     ("nvm express® management interface specification", "1.2c"): NvmMi1_2c,
     ("nvm express® key value command set specification", "1.0c"): NvmKv1_0c,
+    ("nvm express® key value command set specification", "1.0"): NvmKv1_0c,
 }
