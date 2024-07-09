@@ -185,8 +185,6 @@ class StructTableExtractor(FigureExtractor, ABC):
                 continue
             elif prev_range is not None:
                 if prev_range["low"] > field_range["low"]:
-                    if self.fig_id == "94":
-                        breakpoint()
                     self.add_issue(LintErr.TBL_ROW_ORDER_REVERSED)
                     return
             else:
