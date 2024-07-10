@@ -22,6 +22,7 @@ dependencies = [
     "loguru>=0.6,<0.8",
     "jsonschema>=4.21.1",
     "gcgen",
+    "types-jsonschema"
 ]
 dynamic = ["version"]
 
@@ -35,6 +36,10 @@ spex = "spex.__main__:main"
 
 [project.optional-dependencies]
 spexsrv = ["quart"]
+dev = ["pytest", "mypy", "black", "lxml-stubs", "types-jsonschema", "isort",
+      "flake8", "sphinx", "sphinx-copybutton", "furo", "wheel", "build",
+      "twine", "types-setuptools", "reuse"]
+all = ["nvme-spex[spexsrv,dev]"]
 
 [tool.distutils.bdist_wheel]
 universal = 1
