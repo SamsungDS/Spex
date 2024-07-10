@@ -34,3 +34,7 @@ License: MIT
 Files: src/spexsrv/templates/*.html
 Copyright: Samsung Electronics Co., Ltd
 License: BSD-3-Clause
+
+Files: tests/resources/*.html
+Copyright: Samsung Electronics Co., Ltd
+License: BSD-3-Clause
