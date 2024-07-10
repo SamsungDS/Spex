@@ -20,6 +20,7 @@ dist
 *.html
 !example/**/*.html
 !src/spexsrv/templates/*.html
+!tests/**/*.html
 *.json
 result
 *.build
