@@ -120,6 +120,37 @@ class ValueTableExtractor(FigureExtractor):
         """
         return ["value"]
 
+    @staticmethod
+    def content_column_hdrs() -> List[str]:
+        """Return prioritized list of column headers where extractor should
+        extract the row's content.
+
+        The content row is where the extractor will extract a brief (short
+        documentation string) for the row and any sub-tables, if present.
+        Also, if there is no dedicated column for row names, these too will be
+        extracted from this column.
+
+        Note:
+            First match found in figure's actual table headers is used.
+
+            This is intended to be overridden for specialized extractors where
+            the content column is using a non-standard heading.
+        """
+        return ["description", "definition"]
+
+    @staticmethod
+    def label_column_hdrs() -> List[str]:
+        """Return prioritized list of column headers where extractor should
+        extract the row's name.
+
+        Note:
+            First match found in figure's actual table headers is used.
+
+            This is intended to be overridden for specialized extractors where the label
+            column is using a non-standard heading.
+        """
+        return ["attribute", "description", "definition"]
+
     def row_err_handler(
         self,
         row_it: Iterator[Element],
