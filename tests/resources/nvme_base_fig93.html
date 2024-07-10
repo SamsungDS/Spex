@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" data-spec="Spex test case" data-revision="1" />
+    <title>Spex test case</title>
+ 
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        p:first-child {
+            margin-top: .3em;
+        }
+
+        p:last-child {
+            margin-bottom: .3em;
+        }
+
+        p {
+            margin-top: 0em;
+            margin-left: .2em;
+            margin-right: .2em;
+        }
+
+        table,
+        td,
+        th {
+            border-collapse: collapse;
+            border: 1px solid black;
+            ;
+        }
+
+        table {
+            margin-left: .3em;
+            margin-right: .3em;
+            margin-bottom: 3em;
+            margin-top: 1em;
+        }
+
+        td table {
+            margin-bottom: 1em;
+        }
+    </style>
+</head>
+
+<body>
+    <table>
+        <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>93</span><span>: Common Command Format –</span><span> </span><span>Vendor Specific Commands (Optional)</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>03:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">Command Dword 0 (CDW0): </span><span>This field is common to all commands and is defined in </span><span>Figure </span><span>91</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>07:04</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">Namespace Identifier (NSID): </span><span>This field indicates the namespace ID that this command applies to. If the namespace ID is not used for the command, then this field shall be cleared to 0h. Setting this value to FFFFFFFFh causes the command to be applied to all namespaces attached to the controller processing the command, unless otherwise specified.</span>
+    </p>
+    <p>
+     <span>The behavior of a controller in response to an inactive namespace ID for a vendor specific command is vendor specific. Specifying an invalid namespace ID in a command that uses the namespace ID shall cause the controller to abort the command with a status code of Invalid Namespace or Format, unless otherwise specified.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>39:08</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>43:40</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">Number of Dwords in Data Transfer (NDT):</span><span> This field indicates the number of dwords in the data transfer.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>47:44</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">Number of Dwords in Metadata Transfer (NDM):</span><span> This field indicates the number of dwords in the metadata transfer.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>51:48</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">Command Dword 12 (CDW12):</span><span> This field is command specific Dword 12.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>55:52</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">Command Dword 13 (CDW13):</span><span> This field is command specific Dword 13.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>59:56</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">Command Dword 14 (CDW14):</span><span> This field is command specific Dword 14.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>63:60</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">Command Dword 15 (CDW15):</span><span> This field is command specific Dword 15.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+</body>
+</html>

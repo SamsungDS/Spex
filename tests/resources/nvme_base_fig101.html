@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" data-spec="Spex test case" data-revision="1" />
+    <title>Spex test case</title>
+
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        p:first-child {
+            margin-top: .3em;
+        }
+
+        p:last-child {
+            margin-bottom: .3em;
+        }
+
+        p {
+            margin-top: 0em;
+            margin-left: .2em;
+            margin-right: .2em;
+        }
+
+        table,
+        td,
+        th {
+            border-collapse: collapse;
+            border: 1px solid black;
+            ;
+        }
+
+        table {
+            margin-left: .3em;
+            margin-right: .3em;
+            margin-bottom: 3em;
+            margin-top: 1em;
+        }
+
+        td table {
+            margin-bottom: 1em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <table>
+        <tr>
+            <td colspan="3">
+                <p>
+                    <span>Figure </span><span>101</span><span>: Status Code – Status Code Type Values</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <th class="tcell0">
+                <p>
+                    <span>Value</span>
+                </p>
+            </th>
+            <th class="tcell0">
+                <p>
+                    <span>Description</span>
+                </p>
+            </th>
+            <th class="tcell0">
+                <p>
+                    <span>Reference</span>
+                </p>
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>0h</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">Generic Command Status: </span><span>Indicates that the command specified by
+                        the Command and Submission Queue identifiers in the completion queue entry has completed. These
+                        status values are generic across all command types, and include such conditions as success,
+                        opcode not supported, and invalid field. </span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>4.2.3.1</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>1h</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">Command Specific Status: </span><span>Indicates a status value that is
+                        specific to a particular command opcode. These values may indicate additional processing is
+                        required. Status values such as invalid firmware image or exceeded maximum number of queues is
+                        reported with this type.</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>4.2.3.2</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>2h</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">Media and Data Integrity Errors:</span><span> Any media specific errors that
+                        occur in the NVM or data integrity type errors shall be of this type.</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>4.2.3.3</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>3h</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">Path Related Status:</span><span> </span><span>Indicates that the command
+                        specified by the Command and Submission Queue identifier in the completion queue entry has
+                        completed. These status values are generic across all command types. These values may indicate
+                        that additional process is required and indicate a status value that is specific to:</span>
+                </p>
+                <ol class="ol691">
+                    <li>
+                        <span>the connection between the host and the controller processing the command; or</span>
+                    </li>
+                    <li>
+                        <span>the characteristics that support Asymmetric Namespace Access Reporting (refer to section
+                        </span><span>8.1.1</span><span>), the characteristics of the relationship between the controller
+                            processing the command and the specified namespace.</span>
+                    </li>
+                </ol>
+            </td>
+            <td>
+                <p>
+                    <span>4.2.3.4</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>4h to 6h</span>
+                </p>
+            </td>
+            <td colspan="2">
+                <p>
+                    <span>Reserved</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>7h</span>
+                </p>
+            </td>
+            <td colspan="2">
+                <p>
+                    <span>Vendor Specific</span>
+                </p>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

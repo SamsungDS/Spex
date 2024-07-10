@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" data-spec="Spex test case" data-revision="1" />
+    <title>Spex test case</title>
+
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        p:first-child {
+            margin-top: .3em;
+        }
+
+        p:last-child {
+            margin-bottom: .3em;
+        }
+
+        p {
+            margin-top: 0em;
+            margin-left: .2em;
+            margin-right: .2em;
+        }
+
+        table,
+        td,
+        th {
+            border-collapse: collapse;
+            border: 1px solid black;
+            ;
+        }
+
+        table {
+            margin-left: .3em;
+            margin-right: .3em;
+            margin-bottom: 3em;
+            margin-top: 1em;
+        }
+
+        td table {
+            margin-bottom: 1em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <table>
+        <tr>
+            <td colspan="2">
+                <p>
+                    <span>Figure </span><span>559</span><span>: I/O Management Receive – Command Dword 10</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <th class="tcell0">
+                <p>
+                    <span>Bits</span>
+                </p>
+            </th>
+            <th class="tcell0">
+                <p>
+                    <span>Description</span>
+                </p>
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>31:16</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">Management Operation Specific (MOS):</span><span> This definition of this
+                        field is specific the value of the MO field. If this field is not defined for the management
+                        operation specified by the MO field, then this field is reserved.</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>15:08</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Reserved</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>07:00</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">Management Operation (MO): </span><span>This field specifies the management
+                        operation to perform.</span>
+                </p>
+                <table>
+                    <tr>
+                        <th class="tcell1">
+                            <p>
+                                <span>Value</span>
+                            </p>
+                        </th>
+                        <th class="tcell1">
+                            <p>
+                                <span>Definition</span>
+                            </p>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span>00h</span>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <span>No action</span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span>01h</span>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <span class="txtfmt1">Reclaim Unit Handle Status: </span><span>For each Placement Handle
+                                    of the namespace, the controller shall return a Reclaim Unit</span><span>
+                                </span><span>Handle Status Descriptor for each Reclaim Group</span><span>.</span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span>FFh</span>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <span>Vendor specific</span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span>All others</span>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <span>Reserved</span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>
