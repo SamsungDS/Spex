@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" data-spec="Spex test case" data-revision="1" />
+    <title>Spex test case</title>
+
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        p:first-child {
+            margin-top: .3em;
+        }
+
+        p:last-child {
+            margin-bottom: .3em;
+        }
+
+        p {
+            margin-top: 0em;
+            margin-left: .2em;
+            margin-right: .2em;
+        }
+
+        table,
+        td,
+        th {
+            border-collapse: collapse;
+            border: 1px solid black;
+            ;
+        }
+
+        table {
+            margin-left: .3em;
+            margin-right: .3em;
+            margin-bottom: 3em;
+            margin-top: 1em;
+        }
+
+        td table {
+            margin-bottom: 1em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <table>
+        <tr>
+            <td colspan="2">
+                <p>
+                    <span>Figure </span><span>94</span><span>: Fabrics Command</span><span> </span><span>– Submission
+                        Queue Entry Format</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <th class="tcell0">
+                <p>
+                    <span>Bytes</span>
+                </p>
+            </th>
+            <th class="tcell0">
+                <p>
+                    <span>Description</span>
+                </p>
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>03:00</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">Command Dword 0</span><span class="txtfmt1"> (CDW0)</span><span
+                        class="txtfmt1">:</span><span> Refer to </span><span>Figure </span><span>95</span><span>.</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>04</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">Fabrics Command Type (FCTYPE): </span><span>This field specifies the Fabrics
+                        command transferred in the capsule. The Fabrics command types are defined in </span><span>Figure
+                    </span><span>538</span><span>. If this field is set to a reserved value, the</span><span>n
+                        the</span><span> command shall be aborted with a status code of Invalid Field in
+                        Command.</span><span> The format of the FCTYPE field is shown here:</span>
+                </p>
+                <table>
+                    <tr>
+                        <th class="tcell1">
+                            <p>
+                                <span class="txtfmt1">Bit</span><span class="txtfmt1">s</span>
+                            </p>
+                        </th>
+                        <th class="tcell1">
+                            <p>
+                                <span class="txtfmt1">Description</span>
+                            </p>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span>07:02</span>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <span class="txtfmt1">Function: </span><span>This field contains a value that, in
+                                    combination with the other fields in the Fabrics Command Type data structure,
+                                    creates a unique Combined Fabrics Command Type.</span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span>01:00</span>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <span class="txtfmt1">Data </span><span class="txtfmt1">Transfer Direction:</span><span>
+                                    This field indicates the direction of a data transfer, if any. </span><span>All
+                                    options of the command shall transfer data as specified or transfer no data. All
+                                    commands, including vendor specific commands, shall follow this convention.</span>
+                            </p>
+                            <table>
+                                <tr>
+                                    <th class="tcell2">
+                                        <p>
+                                            <span class="txtfmt1">Value</span>
+                                        </p>
+                                    </th>
+                                    <th class="tcell2">
+                                        <p>
+                                            <span class="txtfmt1">Description</span>
+                                        </p>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <span>00b</span>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <span>No data is transferred.</span>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <span>01b</span>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <span>Data is transferred from the host to the controller.</span>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <span>10b</span>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <span>Data is transferred from the controller to the host.</span>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <span>11b</span>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <span>Reserved.</span>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>23:05</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Reserved</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>39:24</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">SGL Descriptor 1 (SGL1):</span><span> This field contains a Transport SGL Data
+                        Block descriptor or a Keyed SGL Data Block descriptor that describes the entire data transfer.
+                        Refer to section </span><span>4.3.2</span><span> for the definition of SGL descriptors.</span>
+                </p>
+                <p>
+                    <span>This field is used for Fabrics commands that transfer data. If a Fabrics command does not
+                        transfer data, then this field is reserved.</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>63:40</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">Fabrics Command Type Specific</span><span class="txtfmt1"> (FCTS)</span><span
+                        class="txtfmt1">:</span><span> This field is Fabrics command type specific.</span>
+                </p>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

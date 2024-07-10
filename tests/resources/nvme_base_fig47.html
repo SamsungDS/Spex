@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" data-spec="Spex test case" data-revision="1" />
+    <title>Spex test case</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        p:first-child {
+            margin-top: .3em;
+        }
+
+        p:last-child {
+            margin-bottom: .3em;
+        }
+
+        p {
+            margin-top: 0em;
+            margin-left: .2em;
+            margin-right: .2em;
+        }
+
+        table,
+        td,
+        th {
+            border-collapse: collapse;
+            border: 1px solid black;
+            ;
+        }
+
+        table {
+            margin-left: .3em;
+            margin-right: .3em;
+            margin-bottom: 3em;
+            margin-top: 1em;
+        }
+
+        td table {
+            margin-bottom: 1em;
+        }
+    </style>
+</head>
+
+<body>
+    <table>
+        <tr>
+            <td colspan="4">
+                <p>
+                    <span>Figure </span><span>47</span><span>: Offset 38h: CMBLOC – Controller Memory Buffer Location</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <th class="tcell0">
+                <p>
+                    <span>Bits</span>
+                </p>
+            </th>
+            <th class="tcell0">
+                <p>
+                    <span>Type</span>
+                </p>
+            </th>
+            <th class="tcell0">
+                <p>
+                    <span>Reset</span>
+                </p>
+            </th>
+            <th class="tcell0">
+                <p>
+                    <span>Description</span>
+                </p>
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>31:12</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Impl Spec</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">Offset (OFST): </span><span>Indicates the offset of the Controller Memory
+                        Buffer in multiples of the Size Unit specified in CMBSZ.</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>11:09</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>000b</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Reserved</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>08</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Impl Spec</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">CMB Queue Dword Alignment (CQDA):</span><span> </span><span>If this bit is set to ‘1’, CDW11.PC is set to ‘1’; and the address pointer specifies Controller Memory Buffer, then the address pointer in a Create I/O Submission Queue command (refer to </span><span>Figure
+                    </span><span>475</span><span>) or a Create I/O Completion Queue command (refer to
+                    </span><span>Figure </span><span>471</span><span>) shall be Dword aligned.</span>
+                </p>
+                <p>
+                    <span>If this bit is cleared to ‘0’, then the I/O Submission Queues and I/O Completion Queues
+                        contained in the Controller Memory Buffer are aligned as defined by the PRP1 field of a Create
+                        I/O Submission Queue command (refer to </span><span>Figure </span><span>475</span><span>) or a
+                        Create I/O Completion Queue command (refer to </span><span>Figure
+                    </span><span>471</span><span>).</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>07</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Impl Spec</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">CMB Data Metadata Mixed Memory Support (CDMMMS):</span><span> If this bit is
+                        set to ‘1’, then the restriction on data and metadata use of Controller Buffer Memory by a
+                        command as defined in section </span><span>8.2.1</span><span> is not enforced. If this bit is
+                        cleared to ‘0’, then the restriction on data and metadata use of Controller Buffer Memory by a
+                        command as defined in section </span><span>8.2.1</span><span> is enforced.</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>06</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Impl Spec</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">CMB Data Pointer and Command Independent Locations Support
+                        (CDPCILS):</span><span> If this bit is set to ‘1’, then the restriction that the PRP Lists and
+                        SGLs shall not be located in the Controller Buffer Memory if the command that they are
+                        associated with is not located in the Controller Buffer Memory is not enforced (refer to
+                        section</span><span> </span><span>8.2.1</span><span>). If this bit is cleared to ‘0’, then that
+                        restriction is enforced.</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>05</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Impl Spec</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">CMB Data Pointer Mixed Locations Support (CDPMLS):</span><span> If this bit is
+                        set to ‘1’, then the restriction that for a particular PRP List or SGL associated with a single
+                        command, all memory that </span><span>contains</span><span> that particular PRP List or SGL
+                        shall reside in either the Controller Memory Buffer or outside the Controller Memory Buffer, is
+                        not enforced (refer to section</span><span> </span><span>8.2.1</span><span>). If this bit is
+                        cleared to ‘0’, then that restriction is enforced.</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>04</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Impl Spec</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">CMB Queue Physically Discontiguous Support (CQPDS):</span><span> If this bit
+                        is set to ‘1’, then the restriction that for all queues in the Controller Memory Buffer, the
+                        queue shall be physically contiguous, is not enforced (refer to section
+                    </span><span>8.2.1</span><span>). If this bit is cleared to ‘0’, then that restriction is
+                        enforced.</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>03</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Impl Spec</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">CMB Queue Mixed Memory Support (CQMMS):</span><span> If this bit is set to
+                        ‘1’, then for a particular queue placed in the Controller Memory Buffer, the restriction that
+                        all memory associated with that queue shall reside in the Controller Memory Buffer is not
+                        enforced (refer to section </span><span>8.2.1</span><span>). If this bit is cleared to ‘0’, then
+                        that requirement is enforced.</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>02:00</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Impl Spec</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">Base Indicator Register (BIR):</span><span> Indicates the Base Address
+                        Register (BAR) that contains the Controller Memory Buffer. For a 64-bit BAR, the BAR for the
+                    </span><span>least significant </span><span>32-bits of the address is specified. Values 000b, 010b,
+                        011b, 100b, and 101b are valid. The address specified by the </span><span>bar</span><span> shall
+                        be 4 KiB aligned.</span>
+                </p>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

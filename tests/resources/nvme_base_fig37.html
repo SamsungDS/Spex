@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" data-spec="{spec_title}" data-revision="{spec_version}" />
+  <title>{spec_title}</title>
+  <link rel="stylesheet" href="{spec_title}.css" />
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+
+    p:first-child {
+      margin-top: .3em;
+    }
+
+    p:last-child {
+      margin-bottom: .3em;
+    }
+
+    p {
+      margin-top: 0em;
+      margin-left: .2em;
+      margin-right: .2em;
+    }
+
+    table,
+    td,
+    th {
+      border-collapse: collapse;
+      border: 1px solid black;
+      ;
+    }
+
+    table {
+      margin-left: .3em;
+      margin-right: .3em;
+      margin-bottom: 3em;
+      margin-top: 1em;
+    }
+
+    td table {
+      margin-bottom: 1em;
+    }
+  </style>
+</head>
+
+<body>
+  <table>
+    <tr>
+      <td colspan="2">
+        <p>
+          <span>Figure </span><span>37</span><span>: Specification Version Descriptor</span>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th class="tcell0">
+        <p>
+          <span>Bits</span>
+        </p>
+      </th>
+      <th class="tcell0">
+        <p>
+          <span>Description</span>
+        </p>
+      </th>
+    </tr>
+    <tr>
+      <td>
+        <p>
+          <span>31:16</span>
+        </p>
+      </td>
+      <td>
+        <p>
+          <span class="txtfmt1">Major Version (MJR):</span><span> An integer value indicating the major
+            version
+            number of this specification which is supported by the controller.</span>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>
+          <span>15:08</span>
+        </p>
+      </td>
+      <td>
+        <p>
+          <span class="txtfmt1">Minor Version (MNR):</span><span> An integer value indicating the minor
+            version
+            number of this specification which is supported by the controller.</span>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>
+          <span>07:00</span>
+        </p>
+      </td>
+      <td>
+        <p>
+          <span class="txtfmt1">Tertiary Version (TER):</span><span> An integer value indicating the tertiary
+            version number of this specification which is supported by the controller. If this field is
+            cleared
+            to 0h, then this specification does not have a tertiary version number.</span>
+        </p>
+      </td>
+    </tr>
+  </table>
+</body>
+
+</html>
