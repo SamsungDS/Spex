@@ -88,6 +88,9 @@ class StructTableExtractor(FigureExtractor, ABC):
 
         This hook is useful only for individual table overrides to catch special cases.
         """
+        if len(Xpath.elems(row, "./td")) == 1:
+            # There is only one column in the whole row
+            return RowErrPolicy.Continue
         yield from ()  # To turn method into a generator
         return RowErrPolicy.Raise
 
