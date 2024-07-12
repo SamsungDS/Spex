@@ -45,6 +45,24 @@ def test_bits_fig37(
     assert json_doc == expected_json
 
 
+@pytest.mark.xfail(
+    reason="This will not succeed, it will be an acceptance test for the"
+    " correctness of Spex, something goes wrong in determining embedded table"
+)
+def test_bits_fig41(
+    html_parser: Callable[[str, bool], List[EntityMeta]],
+    html_loader: Callable[[str | Path], str],
+):
+    """Simple test case that simulates figure 37 from the
+    NVM Express® Base Specification.
+
+    This is the simplest bits table just containing a Bits and Description
+    column.
+    """
+    html = html_loader("tests/resources/nvme_base_fig41.html")
+    json_doc = html_parser(html, True)
+
+
 def test_bits_fig47(
     html_parser: Callable[[str, bool], List[EntityMeta]],
     html_loader: Callable[[str | Path], str],
@@ -137,10 +155,22 @@ def test_bytes_fig93(
     assert json_doc == expected_rtrn
 
 
-# @pytest.mark.xfail(
-#     reason="This will not succeed yet, it will be an acceptance test"
-#     " for the correctness of Spex"
-# )
+def test_bytes_fig95(
+    html_parser: Callable[[str, bool], List[EntityMeta]],
+    html_loader: Callable[[str | Path], str],
+):
+    """Advanced test case that simulates figure 94 from the
+    NVM Express® Base Specification.
+
+    This figure contains a byte table with a embedded bit table that contains
+    yet another value table.
+
+    Currently this won't succeed.
+    """
+    html = html_loader("tests/resources/nvme_base_fig95.html")
+    json_doc = html_parser(html, False)
+
+
 def test_bytes_fig94(
     html_parser: Callable[[str, bool], List[EntityMeta]],
     html_loader: Callable[[str | Path], str],
@@ -161,16 +191,16 @@ def test_bytes_fig94(
             "parent_fig_id": "94_4",
             "type": "values",
             "fields": [
-                {"val": "00b", "label": "NO_DATA_IS_TRANSFERRED."},
+                {"val": "00b", "label": "NO_DATA_IS_TRANSFERRED"},
                 {
                     "val": "01b",
-                    "label": "DATA_IS_TRANSFERRED_FROM_THE_HOST_TO_THE_CONTROLLER.",
+                    "label": "DATA_IS_TRANSFERRED_FROM_THE_HOST_TO_THE_CONTROLLER",
                 },
                 {
                     "val": "10b",
-                    "label": "DATA_IS_TRANSFERRED_FROM_THE_CONTROLLER_TO_THE_HOST.",
+                    "label": "DATA_IS_TRANSFERRED_FROM_THE_CONTROLLER_TO_THE_HOST",
                 },
-                {"val": "11b", "label": "RESERVED."},
+                {"val": "11b", "label": "RESERVED"},
             ],
         },
         {
@@ -244,7 +274,7 @@ def test_values_fig101(
 
 @pytest.mark.xfail(
     reason="This will not succeed, it will be an acceptance test for the"
-    "correctness of Spex"
+    " correctness of Spex, currently its is missing support for dynamic tables"
 )
 def test_bytes_fig335(
     html_parser: Callable[[str, bool], List[EntityMeta]],
@@ -254,11 +284,11 @@ def test_bytes_fig335(
     NVM Express® Base Specification.
 
     This test case have a row mid table that denotes a second header.
-    This second header is currently treated as a normal row.
+    This second header is currently treated as a normal row. This
+    is what we define as dynamic table or list table.
     """
     html = html_loader("tests/resources/nvme_base_fig335.html")
-    json_doc = html_parser(html, False)
-    print(json_doc)
+    json_doc = html_parser(html, True)
     assert json_doc == [
         {
             "title": "Figure 335: Ports List Data Structure",

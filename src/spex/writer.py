@@ -67,8 +67,8 @@ class StdoutWriter(Writer):
         exc_tb: TracebackType | None,
     ) -> None:
         # retain UTF-8 characters in output
-        res = json.dumps(self._doc, indent=2, ensure_ascii=False).encode("utf-8")
-        print(res.decode())
+        # res = json.dumps(self._doc, indent=2, ensure_ascii=False).encode("utf-8")
+        # print(res.decode())
         if exc_val is not None:
             raise exc_val
 

@@ -107,13 +107,13 @@ def html_table() -> Callable[[List[List[str]]], str]:
                     )
                 else:
                     if j != 0:
-                        content += f"<td><p>\n"
+                        content += "<td><p>\n"
                         labels = label_structure(td)
                         for k, txt in enumerate(labels):
                             if k == 0:
-                                content += f"<span class='txtfmt1'>{txt}</span>\n"
+                                content += f"<span class='txtfmt1'>{txt}</span>"
                             elif txt != "":
-                                content += f"<span>{txt}</span>\n"
+                                content += f"<span>{txt}</span>"
                         content += "</p></td>\n"
                     else:
                         content += f"<td><p><span>{td}</span></p></td>\n"
@@ -151,44 +151,6 @@ HTML_DOC_TEMPLATE = """
 <head>
     <meta charset="utf-8" data-spec="Spex test case" data-revision="1" />
     <title>Spex test case</title>
-    <style>
-        body {{
-            font-family: sans-serif;
-        }}
-
-        p:first-child {{
-            margin-top: .3em;
-        }}
-
-        p:last-child {{
-            margin-bottom: .3em;
-        }}
-
-        p {{
-            margin-top: 0em;
-            margin-left: .2em;
-            margin-right: .2em;
-        }}
-
-        table,
-        td,
-        th {{
-            border-collapse: collapse;
-            border: 1px solid black;
-            ;
-        }}
-
-        table {{
-            margin-left: .3em;
-            margin-right: .3em;
-            margin-bottom: 3em;
-            margin-top: 1em;
-        }}
-
-        td table {{
-            margin-bottom: 1em;
-        }}
-    </style>
 </head>
 <body>
 {body}
