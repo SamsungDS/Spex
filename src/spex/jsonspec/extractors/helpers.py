@@ -13,6 +13,8 @@ if TYPE_CHECKING:
 
 rgx_lbl = re_compile(r"""^[a-zA-Z_][\w]*$""")
 
+rgx_lbl_ellipsis = re_compile(r"^[\s]*\.\.\.[\s]*$")
+
 
 def content_extract_brief(
     row: "Element", data: "Element", brief_maxlen: int = 60
@@ -36,7 +38,7 @@ def content_extract_brief(
 
 
 def validate_label(lbl: str, fig_id: str, row_key: str, linter: Linter) -> None:
-    if rgx_lbl.match(lbl) is None:
+    if rgx_lbl.match(lbl) is None and rgx_lbl_ellipsis.match(lbl) is None:
         linter.add_issue(
             LintErr.LBL_INVALID_CHRS, fig_id, row_key=row_key, ctx={"label": lbl}
         )
