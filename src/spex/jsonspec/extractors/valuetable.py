@@ -6,7 +6,12 @@ from typing import TYPE_CHECKING, Any, Dict, Generator, Iterator, List, Optional
 
 from spex.jsonspec.defs import ELLIPSIS, RESERVED, ValueField
 from spex.jsonspec.extractors.figure import FigureExtractor, RowErrPolicy
-from spex.jsonspec.extractors.helpers import content_extract_brief, validate_label
+from spex.jsonspec.extractors.helpers import (
+    content_extract_brief,
+    extract_content,
+    validate_label,
+)
+from spex.jsonspec.extractors.regular_expressions import VALUE_LABEL_REGEX
 from spex.jsonspec.lint import LintErr
 from spex.xml import Element, XmlUtils, Xpath
 
@@ -136,7 +141,7 @@ class ValueTableExtractor(FigureExtractor):
             This is intended to be overridden for specialized extractors where
             the content column is using a non-standard heading.
         """
-        return ["definition", "description"]
+        return ["definition", "description", "power scope"]
 
     @staticmethod
     def label_column_hdrs() -> List[str]:
@@ -149,7 +154,7 @@ class ValueTableExtractor(FigureExtractor):
             This is intended to be overridden for specialized extractors where the label
             column is using a non-standard heading.
         """
-        return ["attribute", "definition", "description"]
+        return ["attribute", "definition", "description", "power scope"]
 
     def row_err_handler(
         self,
@@ -218,7 +223,6 @@ class ValueTableExtractor(FigureExtractor):
     def _extract_label_dedicated_col(self, row: Element, row_key: str) -> str:
         # if we hit this, some document actually has a value table with a
         # dedicated 'attribute' column
-        breakpoint()
         p1 = Xpath.elem_first_req(row, f"./td[{self._col_ndx_label + 1}]/p[1]")
         txt = XmlUtils.to_text(p1).lower()
         if txt == "reserved":
@@ -236,31 +240,27 @@ class ValueTableExtractor(FigureExtractor):
 
     def _extract_label(self, row: Element, row_key: str, data: Element) -> str:
         if self._col_ndx_content != self._col_ndx_label:
-            lbl = self._extract_label_dedicated_col(row, row_key)
-            if lbl.lower() == "reserved":
+            label = self._extract_label_dedicated_col(row, row_key)
+            if label.upper() == RESERVED:
                 return RESERVED
         else:
-            p1 = Xpath.elem_first_req(data, "./p[1]")
-            txt: str = "".join(
-                e.decode("utf-8") if isinstance(e, bytes) else e for e in p1.itertext()
-            ).strip()
-            if txt.lower() == "reserved":
+            text: Optional[str] = extract_content(data)
+            if text is None:
+                self.add_issue(LintErr.LBL_EXTRACT_ERR, row_key=row_key)
+                raise Exception("Could not extract label")
+            if text.upper() == RESERVED:
                 return RESERVED
-            txt_parts = txt.split(":", 1)
-            if txt_parts[0] == txt_parts:
-                # TODO: The typing here is off, `txt_parts`` will be a list of
-                # strings So you are comparing a string with a list of strings.
-                # When will this work?
-
-                # to infer labels, we need the text to be of the form
-                # 'Foo Bar Baz: lorem ipsum...' - if no colon is found, this is
-                # not the case, ergo we cannot reliably extract a label.
-                # TODO: fix, must have the cleaned value here, for reporting
-                self.add_issue(LintErr.LBL_IMPUTED, row_key=row_key)
-            # generic naming strategy
-            lbl = txt_parts[0].replace(" ", "_").upper()
-        validate_label(lbl, self.fig_id, row_key, self.linter)
-        return lbl
+            match = VALUE_LABEL_REGEX.match(text)
+            if match is None:
+                self.add_issue(LintErr.LBL_EXTRACT_ERR, row_key=row_key)
+                label = text.replace(" ", "_").upper()
+            elif match.group("label") is not None and match.group("label") != "":
+                label = match.group("label").replace(" ", "_").upper()
+            else:
+                self.add_issue(LintErr.LBL_EXTRACT_ERR, row_key=row_key)
+                label = text.replace(" ", "_").upper()
+        validate_label(label, self.fig_id, row_key, self.linter)
+        return label
 
     def _content_extract_brief(
         self, row: Element, row_key: str, data: Element
