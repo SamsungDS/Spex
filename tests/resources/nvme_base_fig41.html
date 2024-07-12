@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" data-spec="Spex test case" data-revision="1" />
+    <title>Spex test case</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        p:first-child {
+            margin-top: .3em;
+        }
+
+        p:last-child {
+            margin-bottom: .3em;
+        }
+
+        p {
+            margin-top: 0em;
+            margin-left: .2em;
+            margin-right: .2em;
+        }
+
+        table,
+        td,
+        th {
+            border-collapse: collapse;
+            border: 1px solid black;
+            ;
+        }
+
+        table {
+            margin-left: .3em;
+            margin-right: .3em;
+            margin-bottom: 3em;
+            margin-top: 1em;
+        }
+
+        td table {
+            margin-bottom: 1em;
+        }
+    </style>
+</head>
+
+<body>
+
+<table>
+  <tr>
+   <td colspan="4">
+    <p>
+     <span>Figure </span><span>41</span><span>: Offset 14h: CC – Controller Configuration</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bits</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Type</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Reset</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>31:</span><span>25</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>RO</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>24</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>R</span><span>W</span><span>/R</span><span>O</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0</span><span>b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">Controller Ready Independent of Media </span><span class="txtfmt1">Enable (CRIME): </span><span>This field controls the controller ready mode. The controller ready mode is determined by the state of this bit at the time the controller is enabled by transitioning the CC.EN bit from ‘0’ to ‘1’.</span>
+    </p>
+    <p>
+     <span>If the CAP.CRMS field is set to 11b, then this bit is RW. If the CAP.CRMS field is not set to 11b, then this bit is RO and shall be cleared to ‘0’. Refer to sections </span><span>3.5.3</span><span> and </span><span>3.5.4</span><span> for more detail.</span>
+    </p>
+    <p>
+     <span>Changing the value of this field may cause a change in the time reported in the CAP.TO field. Refer to the definition of CAP.TO for more details.</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell0">
+       <p>
+        <span>Value</span>
+       </p>
+      </th>
+      <th class="tcell0">
+       <p>
+        <span>Definition</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>0b</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">Controller Ready With Media </span><span class="txtfmt1">M</span><span class="txtfmt1">ode</span><span>:</span><span> </span><span>Enabling the controller (i.e., CC.EN transitions from ‘0’ to ‘1’) when this bit is cleared to ‘0’ enables Controller Ready With Media mode. </span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>1b</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">Controller Ready Independent </span><span class="txtfmt1">O</span><span class="txtfmt1">f Media </span><span class="txtfmt1">M</span><span class="txtfmt1">ode:</span><span> </span><span>Enabling the controller when this bit is set to ‘1’ enables Controller Ready Independent of Media mode. </span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>23:20</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>RW/RO</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">I/O Completion Queue Entry Size (IOCQES):</span><span> This field defines the I/O </span><span>c</span><span>ompletion </span><span>q</span><span>ueue entry size that is used for the selected I/O Command Set</span><span>(s)</span><span>. The required and maximum values for this field are specified in the CQES field in the Identify Controller data structure in </span><span>Figure </span><span>312</span><span> for each I/O Command Set. The value is in bytes and is specified as a power of two (2^</span><span class="txtfmt3">n</span><span>).</span>
+    </p>
+    <p>
+     <span>If any I/O Completion Queues exist, then write operations that change the value in this field produce undefined results.</span>
+    </p>
+    <p>
+     <span>If the controller does not support I/O queues, then this field shall be read-only with a value of 0h.</span>
+    </p>
+    <p>
+     <span>For Discovery </span><span>c</span><span>ontrollers</span><span>, this </span><span>field </span><span>is reserved.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>19:16</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>RW/RO</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">I/O Submission Queue Entry Size (IOSQES):</span><span> This field defines the I/O </span><span>s</span><span>ubmission </span><span>q</span><span>ueue entry size that is used for the selected I/O Command Set</span><span>(s)</span><span>. The required and maximum values for this field are specified in the SQES field in the Identify Controller data structure in </span><span>Figure </span><span>312</span><span> for each I/O Command Set. The value is in bytes and is specified as a power of two (2^</span><span class="txtfmt3">n</span><span>).</span>
+    </p>
+    <p>
+     <span>If any I/O Submission Queues exist, then write operations that change the value in this field produce undefined results.</span>
+    </p>
+    <p>
+     <span>If the controller does not support I/O queues, then this field shall be read-only with a value of 0h.</span>
+    </p>
+    <p>
+     <span>For Discovery </span><span>c</span><span>ontrollers, this </span><span>field </span><span>is reserved.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>15:14</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>RW</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>00b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">Shutdown Notification (SHN):</span><span> This field is used to initiate </span><span>a controller </span><span>shutdown when a power down condition is expected. For a normal </span><span>controller </span><span>shutdown, it is expected that the controller is given time to process the </span><span>controller </span><span>shutdown. For an abrupt shutdown, the host may not wait for </span><span>the controller </span><span>shutdown to complete before power is lost.</span>
+    </p>
+    <p>
+     <span>The</span><span> controller</span><span> shutdown notification values are defined as:</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell0">
+       <p>
+        <span>Value</span>
+       </p>
+      </th>
+      <th class="tcell0">
+       <p>
+        <span>Definition</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>00b</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>No notification</span><span> and</span><span> no effect</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>01b</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Normal shutdown notification</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>10b</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Abrupt shutdown notification</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>11b</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+    <p>
+     <span>This field should be written by host software prior to any power down condition and prior to any change of the PCI power management state. It is recommended that this field also be written prior to a warm</span><span> reset (refer to the PCI Express </span><span>Base S</span><span>pecification)</span><span>. To determine when </span><span>the controller </span><span>shutdown processing is complete, refer to</span><span> the definition of the</span><span> </span><span>CSTS.ST</span><span> bit</span><span> and </span><span>the definition of the </span><span>CSTS.SHST</span><span> field</span><span>. Refer to section</span><span> </span><span>3.6</span><span> for additional shutdown processing details.</span>
+    </p>
+    <p>
+     <span>Other fields in </span><span>this </span><span>property</span><span> (including the EN bit) may be modified as part of updating this field to 01b or 10b</span><span> </span><span>to initiate a controller shutdown. If the EN bit is cleared to ‘0’ such that the EN bit transitions from ‘1’ to ‘0’, then both a Controller Reset and a controller shutdown occur.</span>
+    </p>
+    <p>
+     <span>If an NVM Subsystem Shutdown is </span><span>reported as </span><span>in progress or is reported as complete (i.e., CSTS.ST is set to ‘1’, and CSTS.SHST is set to 01b or 10b), then writes to this field modify the field value but have no effect. </span><span>Refer to section </span><span>3.6.3</span><span> </span><span>for details.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>13:11</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>RW</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>000b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">Arbitration Mechanism Selected (AMS): </span><span>This field selects the arbitration mechanism to be used. This value shall only be changed when </span><span>CC.</span><span>EN is cleared to ‘0’. Host software shall only set this field to supported arbitration mechanisms indicated in CAP.AMS. If this field is set to an unsupported value, the</span><span>n the</span><span> behavior is undefined.</span>
+    </p>
+    <p>
+     <span>For Discovery </span><span>c</span><span>ontrollers, this value shall be cleared to 0h.</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell0">
+       <p>
+        <span>Value</span>
+       </p>
+      </th>
+      <th class="tcell0">
+       <p>
+        <span>Definition</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>000b</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Round Robin</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>001b</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Weighted Round Robin with Urgent Priority Class</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>010b to 110b</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>111b</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Vendor Specific</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>10:07</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>RW</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0h</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">Memory Page Size (MPS): </span><span>This field indicates the host memory page size. The memory page size is (2 ^ (12 + MPS)). Thus, the minimum host memory page size is 4 KiB and the maximum host memory page size is 128 MiB. The value set by host software shall be a supported value as indicated by the CAP.MPSMAX and CAP.MPSMIN fields. This field describes the value used for PRP entry size. This field shall only be modified when </span><span>CC.</span><span>EN is cleared to ‘0’.</span>
+    </p>
+    <p>
+     <span>For Discovery </span><span>c</span><span>ontrollers this </span><span>property</span><span> shall be cleared to 0h.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>06:04</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>RW</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>000b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">I/O Command Set Selected (CSS): </span><span>This field specifies the I/O Command Set or Sets that are selected. This field shall only be changed when the controller is disabled (</span><span>i.e., </span><span>CC.EN is cleared to ‘0’). The I/O Command Set or Sets that are selected shall be used for all I/O Submission Queues.</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell0">
+       <p>
+        <span>Value</span>
+       </p>
+      </th>
+      <th class="tcell0">
+       <p>
+        <span>Definition</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>000b</span>
+       </p>
+      </td>
+      <td>
+       <table>
+        <tr>
+         <th class="tcell0">
+          <p>
+           <span>CAP.CSS</span><span>.</span><span>NCSS</span><span> </span><span>B</span><span>it</span>
+          </p>
+         </th>
+         <th class="tcell0">
+          <p>
+           <span>Definition</span>
+          </p>
+         </th>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>1</span><span>b</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>NVM Command Set</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>0</span><span>b</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>Reserved</span>
+          </p>
+         </td>
+        </tr>
+       </table>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>001b to 101b</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>110b</span>
+       </p>
+      </td>
+      <td>
+       <table>
+        <tr>
+         <th class="tcell0">
+          <p>
+           <span>CAP.CSS</span><span>.</span><span>IOCSS Bit</span>
+          </p>
+         </th>
+         <th class="tcell0">
+          <p>
+           <span>Definition</span>
+          </p>
+         </th>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>1</span><span>b</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>All Supported I/O Command Sets</span>
+          </p>
+          <p>
+           <span>The I/O Command Sets that are supported are reported in the Identify I/O Command Set data structure (refer to section </span><span>5.1.13.2.19</span><span>).</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>0</span><span>b</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>Reserved</span>
+          </p>
+         </td>
+        </tr>
+       </table>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>111b</span>
+       </p>
+      </td>
+      <td>
+       <table>
+        <tr>
+         <th class="tcell0">
+          <p>
+           <span>CAP.CSS</span><span>.</span><span>NOIOCSS Bit</span>
+          </p>
+         </th>
+         <th class="tcell0">
+          <p>
+           <span>Definition</span>
+          </p>
+         </th>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>1</span><span>b</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>Admin Command Set only</span>
+          </p>
+          <p>
+           <span>I/O Command Set and I/O Command Set specific Admin commands are not supported. Any I/O Command Set specific Admin command submitted on the Admin Submission Queue is aborted with a status code of Invalid Command Opcode.</span>
+          </p>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <p>
+           <span>0</span><span>b</span>
+          </p>
+         </td>
+         <td>
+          <p>
+           <span>Reserved</span>
+          </p>
+         </td>
+        </tr>
+       </table>
+      </td>
+     </tr>
+    </table>
+    <p>
+     <span>For Discovery controllers, this property shall be cleared to 000b.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>03:01</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>RO</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>000b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>RW</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>0b</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">Enable (EN): </span><span>When set to ‘1’, then the controller shall process commands. When cleared to ‘0’, then the controller shall not process commands nor post completion queue entries to Completion Queues. When</span><span> the host modifies CC to clear this bit</span><span> from ‘1’ to ‘0’, the controller is reset (i.e., a Controller Reset</span><span>, refer to section </span><span>3.7.2</span><span>). That reset deletes all I/O Submission Queues and I/O Completion Queues, resets the Admin Submission Queue and </span><span>the </span><span>Admin </span><span>Completion Queue, and brings the hardware to an idle state. That reset does not affect </span><span>transport specific</span><span> state</span><span> </span><span>(</span><span>e.g.</span><span>,</span><span> PCI Express registers </span><span>including </span><span>MMIO MSI-X registers), nor the Admin Queue </span><span>properties </span><span>(AQA, ASQ, or ACQ). </span><span>Refer to section </span><span>3.7.2</span><span> for the effects of that reset on a</span><span>ll controller </span><span>properties</span><span>.</span><span> </span><span>I</span><span>nternal controller state (e.g., Feature values defined in section </span><span>5.1.25</span><span> that are not persistent across power states) are reset to their default values. The controller shall ensure that there is no </span><span>impact (e.g., </span><span>data loss</span><span>)</span><span> </span><span>caused by that Controller Reset to the results of </span><span>commands that have had corresponding completion queue entries posted to an I/O Completion Queue prior to that Controller Reset.</span><span> </span>
+    </p>
+    <p>
+     <span>When this bit is cleared to ‘0’, the CSTS.RDY bit is cleared to ‘0’ by the controller once the controller is ready to be re-enabled. When this bit is set to ‘1’, the controller sets </span><span>the </span><span>CSTS.RDY </span><span>bit </span><span>to ‘1’ when it is ready to process commands. </span><span>The </span><span>CSTS.RDY</span><span> bit</span><span> may be set to ‘1’ before namespace(s) are ready to be accessed.</span>
+    </p>
+    <p>
+     <span>Setting this bit from a ‘0’ to a ‘1’ when </span><span>the </span><span>CSTS.RDY</span><span> bit</span><span> is a ‘1’ or clearing this bit from a &#x27;1&#x27; to a &#x27;0&#x27; when </span><span>the </span><span>CSTS.RDY</span><span> bit</span><span> is cleared to &#x27;0&#x27; has undefined results.</span><span class="txtfmt1"> </span><span>The Admin Queue </span><span>properties </span><span>(AQA, ASQ, and ACQ) </span><span>are </span><span>only </span><span>allowed to </span><span>be modified when </span><span>this bit </span><span>is cleared to ‘0’.</span>
+    </p>
+    <p>
+     <span>If an NVM Subsystem Shutdown is </span><span>reported as </span><span>in progress or is </span><span>reported as </span><span>completed (i.e., </span><span>the </span><span>CSTS.ST</span><span> bit</span><span> is set to ‘1’, and </span><span>the </span><span>CSTS.SHST</span><span> field</span><span> is set to 01b or 10b), then</span>
+    </p>
+    <ul class="ul250">
+     <li>
+      <span>setting</span><span> this </span><span>bit from ‘0’ to ‘1’</span><span> </span><span>modifies </span><span>the field value but </span><span>has </span><span>no effect</span><span> (e.g., the controller does not respond by setting the CSTS.RDY bit to ‘1’); and</span>
+     </li>
+     <li>
+      <span>clearing this bit from ‘1’ to ‘0’ resets the controller as defined by this field</span><span>.</span>
+     </li>
+    </ul>
+    <p>
+     <span>Refer to section </span><span>3.6.3</span><span> for details</span><span> </span><span>on NVM Subsystem Shutdown functionality</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+</body>
+
+</html>
