@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" data-spec="Spex test case" data-revision="1" />
+    <title>Spex test case</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        p:first-child {
+            margin-top: .3em;
+        }
+
+        p:last-child {
+            margin-bottom: .3em;
+        }
+
+        p {
+            margin-top: 0em;
+            margin-left: .2em;
+            margin-right: .2em;
+        }
+
+        table,
+        td,
+        th {
+            border-collapse: collapse;
+            border: 1px solid black;
+            ;
+        }
+
+        table {
+            margin-left: .3em;
+            margin-right: .3em;
+            margin-bottom: 3em;
+            margin-top: 1em;
+        }
+
+        td table {
+            margin-bottom: 1em;
+        }
+    </style>
+</head>
+
+<body>
+ 
+<table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>95</span><span>: Fabrics Command</span><span> </span><span>– Command Dword 0</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bits</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>31:16</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">Command Identifier (CID):</span><span> Refer to </span><span>Figure </span><span>91</span><span>.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>15:14</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">PRP or SGL for Data Transfer (PSDT):</span>
+    </p>
+    <table>
+     <tr>
+      <th class="tcell2">
+       <p>
+        <span>Value</span>
+       </p>
+      </th>
+      <th class="tcell2">
+       <p>
+        <span>Description</span>
+       </p>
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>00b</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">No Data Transffered: </span><span>This value is used for Fabrics commands that do not transfer data.</span>
+       </p>
+       <p>
+        <span>If this value is used for Fabrics commands that transfer data, then SGLs are used for this transfer. A host should use the value 10b rather than 00b for Fabrics commands that transfer data.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>01b</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>10b</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span class="txtfmt1">Data Transferred: </span><span>This value is used for Fabrics commands that transfer data. SGLs are used for this transfer.</span>
+       </p>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <p>
+        <span>11b</span>
+       </p>
+      </td>
+      <td>
+       <p>
+        <span>Reserved</span>
+       </p>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>13:10</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>Reserved</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>09:08</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">Fused Operation (FUSE):</span><span> Refer to </span><span>Figure </span><span>91</span><span>. There are no fused Fabrics commands and as a result this field is cleared to 00b.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>07:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">Opcode (OPC):</span><span> This field is set to 7Fh to specify a Fabrics command.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+</body>
+
+</html>
