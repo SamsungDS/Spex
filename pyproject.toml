@@ -55,6 +55,9 @@ dev = [
     "reuse"]
 all = ["nvme-spex[spexsrv,dev]"]
 
+[tool.pytest.ini_options]
+pythonpath = [ "src" ]
+
 [tool.distutils.bdist_wheel]
 universal = 1
 
