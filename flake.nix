@@ -5,7 +5,7 @@
 {
   description = "Spex development environment flake";
 
-  inputs = { nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11"; };
+  inputs = { nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05"; };
 
   outputs = { self, nixpkgs }:
     let
@@ -37,6 +37,7 @@
           wheel
           build
           types-setuptools
+          pytest
         ]) ++ (with pkgs; [
           # tools needed directly or indirectly by Makefile and ./scripts
           gnugrep
