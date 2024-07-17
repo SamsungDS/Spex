@@ -21,7 +21,7 @@ clean: ## Remove artifacts from 'make build'
 
 .PHONY: install
 install: build ## Install Spex using pipx and the source package (sdist)
-	@pipx install dist/nvme_$(PROJECT_NAME)*.tar.gz
+	./scripts/install.sh
 
 .PHONY: uninstall
 uninstall: ## Uninstall Spex using pipx
@@ -46,3 +46,7 @@ dev: ## enter development environment (requires Nix)
 .PHONY: runserver
 runserver:
 	cd ./src; python3 -m spexsrv
+
+.PHONY: tests
+tests: ## run tests
+	./scripts/tests.sh
