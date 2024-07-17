@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 import json
+import re
 from pathlib import Path
 from typing import Callable, List
 
@@ -57,8 +58,8 @@ def html_parser(
         if len(reported_lint_errs):
             raise LintException(
                 "HTML Parsing resulted in linting errors:\n"
-                f" {json.dumps(reported_lint_errs, indent=4)}"
-                f" {json.dumps(entities, indent=4)}",
+                f" {json.dumps(reported_lint_errs, indent=2)}"
+                f" {json.dumps(entities, indent=2)}",
                 reported_lint_errs,
                 entities,
             )
@@ -83,3 +84,76 @@ def html_loader() -> Callable[[str | Path], str]:
         return path.read_text()
 
     return load_inner
+
+
+@pytest.fixture
+def html_table() -> Callable[[List[List[str]]], str]:
+    def label_structure(content: str) -> List[str]:
+        label_regex = r"^(?P<label>[\w\s\d()]+:?)(?P<brief>[\w\s\d,\".]*)$"
+        match = re.search(label_regex, content)
+        if match:
+            return list(match.groups())
+        return [content]
+
+    def table_inner(table: List[List[str]]) -> str:
+        content = ""
+        for i, tr in enumerate(table):
+            content += "<tr>\n"
+            for j, td in enumerate(tr):
+                if i == 0:
+                    content += (
+                        f"<th class='tcell0'><p><span class='txtfmt1'>{td}"
+                        "</span></p></th>\n"
+                    )
+                else:
+                    if j != 0:
+                        content += f"<td><p>\n"
+                        labels = label_structure(td)
+                        for k, txt in enumerate(labels):
+                            if k == 0:
+                                content += f"<span class='txtfmt1'>{txt}</span>\n"
+                            elif txt != "":
+                                content += f"<span>{txt}</span>\n"
+                        content += "</p></td>\n"
+                    else:
+                        content += f"<td><p><span>{td}</span></p></td>\n"
+            content += "</tr>\n"
+        return HTML_TABLE_TEMPLATE.format(content=content, colspan=len(tr))
+
+    return table_inner
+
+
+@pytest.fixture
+def html_doc() -> Callable[[str], str]:
+    def doc_inner(body_content: str) -> str:
+        return HTML_DOC_TEMPLATE.format(body=body_content)
+
+    return doc_inner
+
+
+HTML_TABLE_TEMPLATE = """
+        <table>
+        <tr>
+            <td colspan="{colspan}">
+                <p>
+                    <span>Figure </span><span>0</span><span>: Test</span>
+                </p>
+            </td>
+        </tr>
+        {content}
+        </table>
+
+"""
+
+HTML_DOC_TEMPLATE = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" data-spec="Spex test case" data-revision="1" />
+    <title>Spex test case</title>
+</head>
+<body>
+{body}
+</body>
+</html>
+"""

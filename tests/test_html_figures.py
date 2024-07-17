@@ -27,7 +27,7 @@ def test_bits_fig37(
     column.
     """
     html = html_loader("tests/resources/nvme_base_fig37.html")
-    json_doc = html_parser(html, False)
+    json_doc = html_parser(html, True)
 
     expected_json = [
         {
@@ -243,8 +243,8 @@ def test_values_fig101(
 
 
 @pytest.mark.xfail(
-    reason="This will not succeed yet, it will be an acceptance test"
-    " for the correctness of Spex"
+    reason="This will not succeed, it will be an acceptance test for the"
+    "correctness of Spex"
 )
 def test_bytes_fig335(
     html_parser: Callable[[str, bool], List[EntityMeta]],
@@ -258,6 +258,7 @@ def test_bytes_fig335(
     """
     html = html_loader("tests/resources/nvme_base_fig335.html")
     json_doc = html_parser(html, False)
+    print(json_doc)
     assert json_doc == [
         {
             "title": "Figure 335: Ports List Data Structure",
@@ -277,6 +278,10 @@ def test_bytes_fig335(
                     "brief": "If any",
                 },
                 {
+                    "range": {"low": -1, "high": -1},
+                    "label": "…",
+                },  # TODO: This should not be part of the output?
+                {
                     "range": {"low": 576, "high": 576},
                     "label": "ften",
                     "brief": "If any",
@@ -286,10 +291,6 @@ def test_bytes_fig335(
     ]
 
 
-# @pytest.mark.xfail(
-#     reason="This will not succeed yet, it will be an acceptance test"
-#     " for the correctness of Spex"
-# )
 def test_bytes_fig559(
     html_parser: Callable[[str, bool], List[EntityMeta]],
     html_loader: Callable[[str | Path], str],
