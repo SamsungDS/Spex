@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 from abc import ABC, abstractmethod
+from dataclasses import fields
 from enum import Enum
 from typing import TYPE_CHECKING, Dict, Iterator, List, Optional, Tuple
 
@@ -116,21 +117,58 @@ class FigureExtractor(ABC):
         ...
 
     @classmethod
-    @abstractmethod
-    def can_apply(cls, tbl_col_hdrs: List[str]) -> bool:
+    def can_apply(cls, tbl_col_hdrs: List[str]) -> Optional["Mapping"]:
         """determine if extractor can be used given the table's column headers.
 
         Note:
-            this function is not called when extractor is provided explicitly
-            as an override for some figure.
+            If you want to customize whether an extractor can be applied or not,
+            then override `_can_apply` instead of this, probably calling the
+            base class' `_can_apply` method and adjusting it as necessary.
+
+            This method is there to catch (for all) that an extractor can only
+            be applied if all the semantic components the extractor cares for
+            have been identified.
 
         Args:
             tbl_col_hdrs: the table's column headers, lower-cased and stripped.
 
         Returns:
-            True iff. extractor is applicable, False otherwise.
+            If extractor can be used, returns a Mapping where each semantic component
+            is mapped to a concrete column in the figure.
+            A semantic components is any type of information the extractor
+            extracts with an eye toward generating a normalized representation of the
+            struct or enumeration. These components are typically labels, which we
+            use to name fields, content (textual description, sometimes used for
+            comments in the data-structure) and a value or bit-/byte-range.
         """
-        ...
+        mapping = cls._can_apply(tbl_col_hdrs)
+        if mapping is None:
+            return None
+
+        for field in fields(mapping):
+            if getattr(mapping, field.name) is None:
+                return None
+
+        return mapping
+
+    @classmethod
+    @abstractmethod
+    def _can_apply(cls, tbl_col_hdrs: List[str]) -> "Mapping":
+        """determine if extractor can be used given the table's column headers.
+
+        Args:
+            tbl_col_hdrs: the table's column headers, lower-cased and stripped.
+
+        Returns:
+            Regardless of whether extractor can be used or not, this returns the
+            (extractor-specific) mapping value where each entry represents a semantic
+            component that the extractor is looking for.
+            If the value for an entry is None, the extractors generic matching code
+            failed to find the relevant column.
+            However, a specialized extractor class may override this class and leverage
+            the existing mapping code while attempting to fill out still-unmatched parts.
+        """
+        pass
 
     @staticmethod
     def content_column_hdrs() -> List[str]:

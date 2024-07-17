@@ -2,11 +2,12 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-from typing import TYPE_CHECKING, Any, Dict, Generator, Iterator, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Generator, Iterator, List, Optional, Union, cast
 
 from spex.jsonspec.defs import ELLIPSIS, RESERVED, ValueField
 from spex.jsonspec.extractors.figure import FigureExtractor, RowErrPolicy
 from spex.jsonspec.extractors.helpers import (
+    ValueTableMapping,
     content_extract_brief,
     extract_content,
     validate_label,
@@ -17,6 +18,7 @@ from spex.xml import Element, XmlUtils, Xpath
 
 if TYPE_CHECKING:
     from spex.jsonspec.defs import Entity, EntityMeta
+    from spex.jsonspec.extractors.helpers import Mapping
 
 
 class ValueTableExtractor(FigureExtractor):
@@ -25,26 +27,26 @@ class ValueTableExtractor(FigureExtractor):
     _col_ndx_label: int
 
     @classmethod
-    def can_apply(cls, tbl_col_hdrs: List[str]) -> bool:
-        return (
-            len(set(cls.value_column_hdrs()).intersection(tbl_col_hdrs)) > 0
-            and len(set(cls.content_column_hdrs()).intersection(tbl_col_hdrs)) > 0
-            and (len(set(cls.label_column_hdrs()).intersection(tbl_col_hdrs))) > 0
+    def _can_apply(cls, tbl_col_hdrs: List[str]) -> "Mapping":
+        return ValueTableMapping(
+            value_column=next(
+                (hdr for hdr in tbl_col_hdrs if hdr in cls.value_column_hdrs()), None
+            ),
+            label_column=next(
+                (hdr for hdr in tbl_col_hdrs if hdr in cls.label_column_hdrs()), None
+            ),
+            content_column=next(
+                (hdr for hdr in tbl_col_hdrs if hdr in cls.content_column_hdrs()), None
+            ),
         )
 
-    def _get_col_ndx(self, col_hdrs: List[str], tbl_cols_ndxs: Dict[str, int]) -> int:
-        for colname in col_hdrs:
-            ndx = tbl_cols_ndxs.get(colname, None)
-            if ndx is not None:
-                return ndx
-        raise RuntimeError("failed to find column to extract values from")
-
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, *args: Any, mapping: ValueTableMapping, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         col_ndxs = {hdr: ndx for ndx, hdr in enumerate(self.tbl_hdrs)}
-        self._col_ndx_value = self._get_col_ndx(self.value_column_hdrs(), col_ndxs)
-        self._col_ndx_content = self._get_col_ndx(self.content_column_hdrs(), col_ndxs)
-        self._col_ndx_label = self._get_col_ndx(self.label_column_hdrs(), col_ndxs)
+
+        self._col_ndx_value = col_ndxs[cast(str, mapping.value_column)]
+        self._col_ndx_label = col_ndxs[cast(str, mapping.label_column)]
+        self._col_ndx_content = col_ndxs[cast(str, mapping.content_column)]
 
     def __call__(self) -> Iterator["Entity"]:
         fields: List[ValueField] = []

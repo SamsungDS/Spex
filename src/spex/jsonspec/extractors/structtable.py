@@ -4,7 +4,7 @@
 
 from abc import ABC, abstractmethod
 from re import compile as re_compile
-from typing import Any, Dict, Generator, Iterator, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Generator, Iterator, List, Optional, Union, cast
 
 from spex.jsonspec.defs import (
     ELLIPSIS,
@@ -17,6 +17,7 @@ from spex.jsonspec.defs import (
 )
 from spex.jsonspec.extractors.figure import FigureExtractor, RowErrPolicy
 from spex.jsonspec.extractors.helpers import (
+    StructTableMapping,
     content_extract_brief,
     generate_acronym,
     validate_label,
@@ -25,6 +26,10 @@ from spex.jsonspec.extractors.regular_expressions import STRUCT_LABEL_REGEX
 from spex.jsonspec.lint import LintErr
 from spex.log import logger
 from spex.xml import Element, XmlUtils, Xpath
+from spex.jsonspec.extractors.helpers import StructTableMapping
+
+if TYPE_CHECKING:
+    from spex.jsonspec.extractors.helpers import Mapping
 
 
 class StructTableExtractor(FigureExtractor, ABC):
@@ -52,26 +57,26 @@ class StructTableExtractor(FigureExtractor, ABC):
         """
         ...
 
-    def _get_col_ndx(self, col_hdrs: List[str], tbl_cols_ndxs: Dict[str, int]) -> int:
-        for colname in col_hdrs:
-            ndx = tbl_cols_ndxs.get(colname, None)
-            if ndx is not None:
-                return ndx
-        raise RuntimeError("failed to find column to extract ranges from")
-
-    def __init__(self, *args: Any, **kwargs: Any):
+    def __init__(self, *args: Any, mapping: StructTableMapping, **kwargs: Any):
         super().__init__(*args, **kwargs)
         col_ndxs = {hdr: ndx for ndx, hdr in enumerate(self.tbl_hdrs)}
-        self._col_ndx_range = self._get_col_ndx(self.range_column_hdrs(), col_ndxs)
-        self._col_ndx_content = self._get_col_ndx(self.content_column_hdrs(), col_ndxs)
-        self._col_ndx_label = self._get_col_ndx(self.label_column_hdrs(), col_ndxs)
+
+        self._col_ndx_range = col_ndxs[cast(str, mapping.range_column)]
+        self._col_ndx_label = col_ndxs[cast(str, mapping.label_column)]
+        self._col_ndx_content = col_ndxs[cast(str, mapping.content_column)]
 
     @classmethod
-    def can_apply(cls, tbl_col_hdrs: List[str]) -> bool:
-        return (
-            len(set(cls.range_column_hdrs()).intersection(tbl_col_hdrs)) > 0
-            and len(set(cls.content_column_hdrs()).intersection(tbl_col_hdrs)) > 0
-            and (len(set(cls.label_column_hdrs()).intersection(tbl_col_hdrs))) > 0
+    def _can_apply(cls, tbl_col_hdrs: List[str]) -> "Mapping":
+        return StructTableMapping(
+            range_column=next(
+                (hdr for hdr in tbl_col_hdrs if hdr in cls.range_column_hdrs()), None
+            ),
+            label_column=next(
+                (hdr for hdr in tbl_col_hdrs if hdr in cls.label_column_hdrs()), None
+            ),
+            content_column=next(
+                (hdr for hdr in tbl_col_hdrs if hdr in cls.content_column_hdrs()), None
+            ),
         )
 
     @property

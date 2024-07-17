@@ -255,9 +255,12 @@ class DocumentParser:
         fig_id = entity["fig_id"]
         tbl_hdrs = self.extract_tbl_headers(fig_id, tbl)
         extractor_cls = self.fig_extractor_overrides.get(fig_id, None)
+        mapping = None
+
         if extractor_cls is None:
             for ecls in self.extractors:
-                if ecls.can_apply(tbl_hdrs):
+                mapping = ecls.can_apply(tbl_hdrs)
+                if mapping is not None:
                     extractor_cls = ecls
                     break
             if extractor_cls is None:
@@ -265,7 +268,15 @@ class DocumentParser:
                     LintErr.TBL_SKIPPED, fig_id, ctx={"columns": cast_json(tbl_hdrs)}
                 )
                 return
+        else:
+            # extractor_cls not None, class gotten from override
+            mapping = extractor_cls.can_apply(tbl_hdrs)
+            if mapping is None:
+                raise RuntimeError(
+                    "override class failed to detect columns to extract from"
+                )
 
+        assert mapping is not None  # only needed to appease type-checking
         e = extractor_cls(
             doc_parser=self,
             entity_meta=entity,
@@ -273,6 +284,7 @@ class DocumentParser:
             tbl_hdrs=tbl_hdrs,
             parse_fn=self._on_parse_fig,
             linter=self.__linter,
+            mapping=mapping,
         )
         with logger.contextualize(
             entity=entity,

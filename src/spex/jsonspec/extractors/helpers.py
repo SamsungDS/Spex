@@ -2,7 +2,8 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-from typing import TYPE_CHECKING, Optional
+from dataclasses import dataclass
+from typing import TYPE_CHECKING, Optional, Union
 
 from spex.jsonspec.extractors.regular_expressions import (
     ELLIPSIS_LABEL_REGEX,
@@ -58,3 +59,20 @@ def validate_label(lbl: str, fig_id: str, row_key: str, linter: Linter) -> None:
         linter.add_issue(
             LintErr.LBL_INVALID_CHRS, fig_id, row_key=row_key, ctx={"label": lbl}
         )
+
+
+@dataclass(frozen=True)
+class StructTableMapping:
+    range_column: Optional[str]
+    label_column: Optional[str]
+    content_column: Optional[str]
+
+
+@dataclass(frozen=True)
+class ValueTableMapping:
+    value_column: Optional[str]
+    label_column: Optional[str]
+    content_column: Optional[str]
+
+
+Mapping = Union[StructTableMapping, ValueTableMapping]
