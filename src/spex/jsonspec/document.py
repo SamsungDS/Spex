@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-from re import compile as re_compile
+from re import compile as re_compile, sub
 from typing import TYPE_CHECKING, Dict, Iterator, List, Optional, Tuple, Type, TypeAlias
 
 from loguru import logger
@@ -221,6 +221,8 @@ class DocumentParser:
         """
 
         def normalize_hdr(hdr: str) -> str:
+            # some headers have newlines and use spaces for indentation, strip all of that
+            hdr = sub(' +', ' ', hdr.replace('\n', ' ').replace('\r', '')).strip()
             replacement = self.tbl_normalize_mappings.get(hdr, None)
             if replacement is not None:
                 self.linter.add_issue(
