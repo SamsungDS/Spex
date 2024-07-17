@@ -136,7 +136,7 @@ class ValueTableExtractor(FigureExtractor):
             This is intended to be overridden for specialized extractors where
             the content column is using a non-standard heading.
         """
-        return ["description", "definition"]
+        return ["definition", "description"]
 
     @staticmethod
     def label_column_hdrs() -> List[str]:
@@ -149,7 +149,7 @@ class ValueTableExtractor(FigureExtractor):
             This is intended to be overridden for specialized extractors where the label
             column is using a non-standard heading.
         """
-        return ["attribute", "description", "definition"]
+        return ["attribute", "definition", "description"]
 
     def row_err_handler(
         self,

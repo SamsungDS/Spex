@@ -82,7 +82,6 @@ class DocumentParser:
     def tbl_normalize_mappings(self) -> Dict[str, str]:
         return {
             "code": "value",
-            "definition": "description",
             "bit": "bits",
             "byte": "bytes",
         }
