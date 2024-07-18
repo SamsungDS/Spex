@@ -85,7 +85,8 @@ line-length = 88
 max-line-length = 88
 exclude = [
     "docs/",
-    ".venv/"
+    ".venv/",
+    "venv/",
 ]
 per-file-ignores = [
     "src/spex/htmlspec/docx/__init__.py:F401"
