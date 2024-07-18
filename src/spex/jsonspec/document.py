@@ -222,7 +222,7 @@ class DocumentParser:
         """
 
         def normalize_hdr(hdr: str) -> str:
-            # some headers have newlines and use spaces for indentation, strip all of that
+            # some headers have newlines and use spaces for indentation, strip
             hdr = sub(" +", " ", hdr.replace("\n", " ").replace("\r", "")).strip()
             replacement = self.tbl_normalize_mappings.get(hdr, None)
             if replacement is not None:
