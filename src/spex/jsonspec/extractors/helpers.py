@@ -87,7 +87,8 @@ def mapping_incomplete(m: Optional[Mapping]) -> bool:
 
     Returns:
         True iff. any entry in the mapping table is None, signifying it is unbound, that
-        the extractor failed to identify a column where this semantic component could be found.
+        the extractor failed to identify a column where this semantic component
+        could be found.
     """
     if m is None:
         return True

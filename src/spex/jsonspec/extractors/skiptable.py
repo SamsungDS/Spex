@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING, Iterator, List, Optional
 
 from spex.jsonspec.defs import Entity
 from spex.jsonspec.extractors.figure import FigureExtractor
-from spex.jsonspec.extractors.helpers import Mapping
 
 if TYPE_CHECKING:
     from spex.jsonspec.extractors.helpers import Mapping

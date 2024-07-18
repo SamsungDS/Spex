@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 from abc import ABC, abstractmethod
-from dataclasses import fields
 from enum import Enum
 from typing import TYPE_CHECKING, Dict, Iterator, List, Optional, Tuple
 
@@ -164,7 +163,8 @@ class FigureExtractor(ABC):
             If the value for an entry is None, the extractors generic matching code
             failed to find the relevant column.
             However, a specialized extractor class may override this class and leverage
-            the existing mapping code while attempting to fill out still-unmatched parts.
+            the existing mapping code while attempting to fill out still-unmatched
+            parts.
         """
         pass
 
