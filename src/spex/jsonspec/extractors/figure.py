@@ -8,6 +8,7 @@ from enum import Enum
 from typing import TYPE_CHECKING, Dict, Iterator, List, Optional, Tuple
 
 from spex.jsonspec.defs import JSON
+from spex.jsonspec.extractors.helpers import mapping_incomplete
 from spex.jsonspec.lint import Linter, LintErr
 from spex.jsonspec.rowiter import row_iter
 from spex.xml import Element, Xpath
@@ -15,6 +16,7 @@ from spex.xml import Element, Xpath
 if TYPE_CHECKING:
     from spex.jsonspec.defs import Entity, EntityMeta, ParseFn
     from spex.jsonspec.document import DocumentParser
+    from spex.jsonspec.extractors.helpers import Mapping
 
 
 RowResult = Tuple[Element, Element, Element]
@@ -142,12 +144,8 @@ class FigureExtractor(ABC):
             comments in the data-structure) and a value or bit-/byte-range.
         """
         mapping = cls._can_apply(tbl_col_hdrs)
-        if mapping is None:
+        if mapping_incomplete(mapping):
             return None
-
-        for field in fields(mapping):
-            if getattr(mapping, field.name) is None:
-                return None
 
         return mapping
 

@@ -26,7 +26,6 @@ from spex.jsonspec.extractors.regular_expressions import STRUCT_LABEL_REGEX
 from spex.jsonspec.lint import LintErr
 from spex.log import logger
 from spex.xml import Element, XmlUtils, Xpath
-from spex.jsonspec.extractors.helpers import StructTableMapping
 
 if TYPE_CHECKING:
     from spex.jsonspec.extractors.helpers import Mapping

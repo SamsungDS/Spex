@@ -2,7 +2,8 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-from dataclasses import dataclass
+from dataclasses import dataclass, fields
+from re import compile as re_compile
 from typing import TYPE_CHECKING, Optional, Union
 
 from spex.jsonspec.extractors.regular_expressions import (
@@ -76,3 +77,22 @@ class ValueTableMapping:
 
 
 Mapping = Union[StructTableMapping, ValueTableMapping]
+
+
+def mapping_incomplete(m: Optional[Mapping]) -> bool:
+    """return true iff any entry in the mapping is set to None (unbound).
+
+    Args:
+        m: a mapping instance
+
+    Returns:
+        True iff. any entry in the mapping table is None, signifying it is unbound, that
+        the extractor failed to identify a column where this semantic component could be found.
+    """
+    if m is None:
+        return True
+
+    for field in fields(m):
+        if getattr(m, field.name) is None:
+            return True
+    return False
