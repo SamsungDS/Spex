@@ -73,6 +73,8 @@ ValStr: TypeAlias = str
 RESERVED = "RESERVED"
 ELLIPSIS = "…"
 
+SPECIAL_CASE_SET = {RESERVED, ELLIPSIS}
+
 
 class ValueField(TypedDict):
     val: Union[str, int]

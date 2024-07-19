@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 from re import compile as re_compile
+from re import sub
 from typing import TYPE_CHECKING, Dict, Iterator, List, Optional, Tuple, Type, TypeAlias
 
 from loguru import logger
@@ -12,7 +13,7 @@ from spex.jsonspec.extractors.structtable import BitsTableExtractor, BytesTableE
 from spex.jsonspec.extractors.valuetable import ValueTableExtractor
 from spex.jsonspec.lint import LintEntry, Linter, LintErr
 from spex.jsonspec.parserargs import ParserArgs
-from spex.logging import ULog
+from spex.log import ULog
 from spex.xml import XmlUtils, Xpath
 
 if TYPE_CHECKING:
@@ -82,7 +83,6 @@ class DocumentParser:
     def tbl_normalize_mappings(self) -> Dict[str, str]:
         return {
             "code": "value",
-            "definition": "description",
             "bit": "bits",
             "byte": "bytes",
         }
@@ -222,6 +222,8 @@ class DocumentParser:
         """
 
         def normalize_hdr(hdr: str) -> str:
+            # some headers have newlines and use spaces for indentation, strip all of that
+            hdr = sub(" +", " ", hdr.replace("\n", " ").replace("\r", "")).strip()
             replacement = self.tbl_normalize_mappings.get(hdr, None)
             if replacement is not None:
                 self.linter.add_issue(
@@ -287,10 +289,13 @@ class DocumentParser:
                         logger.log(ULog.ERROR, f"failed parsing figure {entity!r}")
                         logger.exception("exception when parsing figure")
                         self._unwind_parse_error = True
+                        ctx: Dict[str, JSON] = {}
+                        if "title" in entity:
+                            ctx["title"] = entity["title"]
                         self.linter.add_issue(
                             LintErr.TBL_PARSE_ERR,
                             entity["fig_id"],
-                            ctx={"title": entity["title"]},
+                            ctx=ctx,
                         )
                     else:
                         logger.log(ULog.ERROR, f"  in {entity!r}")

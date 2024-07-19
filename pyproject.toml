@@ -41,6 +41,9 @@ dev = ["pytest", "mypy", "black", "lxml-stubs", "types-jsonschema", "isort",
       "twine", "types-setuptools", "reuse"]
 all = ["nvme-spex[spexsrv,dev]"]
 
+[tool.pytest.ini_options]
+pythonpath = [ "src" ]
+
 [tool.distutils.bdist_wheel]
 universal = 1
 

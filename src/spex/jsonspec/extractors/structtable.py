@@ -9,15 +9,21 @@ from typing import Any, Dict, Generator, Iterator, List, Optional, Union
 from spex.jsonspec.defs import (
     ELLIPSIS,
     RESERVED,
+    SPECIAL_CASE_SET,
     Entity,
     EntityMeta,
     Range,
     StructField,
 )
 from spex.jsonspec.extractors.figure import FigureExtractor, RowErrPolicy
-from spex.jsonspec.extractors.helpers import content_extract_brief, validate_label
+from spex.jsonspec.extractors.helpers import (
+    content_extract_brief,
+    generate_acronym,
+    validate_label,
+)
+from spex.jsonspec.extractors.regular_expressions import STRUCT_LABEL_REGEX
 from spex.jsonspec.lint import LintErr
-from spex.logging import logger
+from spex.log import logger
 from spex.xml import Element, XmlUtils, Xpath
 
 
@@ -88,6 +94,9 @@ class StructTableExtractor(FigureExtractor, ABC):
 
         This hook is useful only for individual table overrides to catch special cases.
         """
+        if len(Xpath.elems(row, "./td")) == 1:
+            # There is only one column in the whole row
+            return RowErrPolicy.Continue
         yield from ()  # To turn method into a generator
         return RowErrPolicy.Raise
 
@@ -107,7 +116,7 @@ class StructTableExtractor(FigureExtractor, ABC):
                     # (bits fields are in desc order, bytes are in asc)
                     fields.append({"range": {"low": -1, "high": -1}, "label": ELLIPSIS})
                     continue
-                elif row_txt.startswith("notes:"):
+                elif row_txt.startswith("notes:") or row_txt.startswith("note:"):
                     break
                 else:
                     out = yield from self.row_err_handler(row_it, row, fields, e)
@@ -185,8 +194,6 @@ class StructTableExtractor(FigureExtractor, ABC):
                 continue
             elif prev_range is not None:
                 if prev_range["low"] > field_range["low"]:
-                    if self.fig_id == "94":
-                        breakpoint()
                     self.add_issue(LintErr.TBL_ROW_ORDER_REVERSED)
                     return
             else:
@@ -274,32 +281,42 @@ class StructTableExtractor(FigureExtractor, ABC):
                 )
             return txt_parts[0]
 
+    def _extract_label_same_col(self, data: Element, row_key: str) -> str:
+        paragraph = Xpath.elem_first_req(data, "./p[1]")
+        text = XmlUtils.to_text(paragraph)
+        match = STRUCT_LABEL_REGEX.match(text)
+
+        if match is None:
+            # TODO: This part of the extraction is taken from old implementation.
+            # Should be revisited, when time allows
+            text_parts = text.split(":", 1)
+            label = generate_acronym(text_parts[0])
+            self.add_issue(LintErr.LBL_IMPUTED, row_key=row_key)
+        elif match.group("acronym") is not None and match.group("acronym") != "":
+            label = match.group("acronym")
+        elif match.group("label") is not None and match.group("label") != "":
+            text = match.group("label")
+            if text.upper() in SPECIAL_CASE_SET:
+                return text
+            label = generate_acronym(text)
+            self.add_issue(LintErr.LBL_IMPUTED, row_key=row_key)
+        else:
+            self.add_issue(LintErr.LBL_IMPUTED, row_key=row_key)
+            label = text
+        return label
+
     def _extract_label(self, row: Element, row_key: str, data: Element) -> str:
         try:
             if self._col_ndx_content != self._col_ndx_label:
-                lbl = self._extract_label_separate_col(row, row_key)
-                if lbl == RESERVED:
+                label = self._extract_label_separate_col(row, row_key)
+                if label == RESERVED:
                     return RESERVED
             else:
-                p1 = Xpath.elem_first_req(data, "./p[1]")
-                txt = XmlUtils.to_text(p1)
-                if txt.lower() == "reserved":
+                label = self._extract_label_same_col(data, row_key)
+                if label.upper() == RESERVED:
                     return RESERVED
-                m = self.rgx_field_lbl.match(txt)
-                if m is not None:
-                    lbl = m.group("lbl").replace(" ", "").lower()
-                    validate_label(lbl, self.fig_id, row_key, self.linter)
-                    return lbl
-                txt_parts = txt.split(":", 1)
-                # generic naming strategy
-                # TODO: improve, replace certain words/sentences by certain
-                # abbreviations
-                #       namespace -> ns, pointer -> ptr
-                gen_name = "".join(w[0] for w in txt_parts[0].split()).lower()
-                self.add_issue(LintErr.LBL_IMPUTED, row_key=row_key)
-                lbl = gen_name
-            validate_label(lbl, self.fig_id, row_key, self.linter)
-            return lbl
+            validate_label(label, self.fig_id, row_key, self.linter)
+            return label.lower()
         except Exception as e:
             logger.bind(row=row_key).exception("error extracting label for row")
             raise e
