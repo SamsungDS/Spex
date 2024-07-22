@@ -107,7 +107,7 @@ class NvmCmdSet1c(DocumentParser):
     }
     fig_extractor_overrides = {
         "23": NvmFig23,
-        "41": SkipTable,
+        # "41": SkipTable,
         # "97": NvmFig97,  # TODO: should be inferred
         # "100": NvmFig100,  # TODO: should be inferred
     }
