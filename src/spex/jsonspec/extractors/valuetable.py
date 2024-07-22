@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
+from dataclasses import replace as dataclass_replace
 from typing import TYPE_CHECKING, Any, Generator, Iterator, List, Optional, Union, cast
 
 from spex.jsonspec.defs import ELLIPSIS, RESERVED, ValueField
@@ -10,6 +11,7 @@ from spex.jsonspec.extractors.helpers import (
     ValueTableMapping,
     content_extract_brief,
     extract_content,
+    mapping_incomplete,
     validate_label,
 )
 from spex.jsonspec.extractors.regular_expressions import VALUE_LABEL_REGEX
@@ -28,7 +30,7 @@ class ValueTableExtractor(FigureExtractor):
 
     @classmethod
     def _can_apply(cls, tbl_col_hdrs: List[str]) -> "Mapping":
-        return ValueTableMapping(
+        m = ValueTableMapping(
             value_column=next(
                 (hdr for hdr in tbl_col_hdrs if hdr in cls.value_column_hdrs()), None
             ),
@@ -39,6 +41,17 @@ class ValueTableExtractor(FigureExtractor):
                 (hdr for hdr in tbl_col_hdrs if hdr in cls.content_column_hdrs()), None
             ),
         )
+        if not mapping_incomplete(m):
+            return m
+        if len(tbl_col_hdrs) == 2 and m.value_column == "value":
+            other_col = next((hdr for hdr in tbl_col_hdrs if hdr != "value"), None)
+            if other_col:
+                return dataclass_replace(
+                    m, label_column=other_col, content_column=other_col
+                )
+
+        # no other avenue, fail
+        return m
 
     def __init__(self, *args: Any, mapping: ValueTableMapping, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
