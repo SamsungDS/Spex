@@ -25,6 +25,7 @@ from typing import Iterator, List, Optional, Tuple
 
 from lxml import etree
 
+from spex.jsonspec.queries import contains_th
 from spex.xml import Element, Xpath
 
 ALST = Tuple[int, Tuple[Element, int]]
@@ -81,11 +82,15 @@ def alst_repr(alst: List[ALST]) -> str:
 
 
 def row_iter(tbl: Element) -> Iterator[Element]:
-    it = Xpath.elems(tbl, "./tr/td[1]/parent::tr")
+    it = Xpath.elems(tbl, "./tr/td[1]/parent::tr | ./tr/th[1]/parent::tr")
+    # it = Xpath.elems(tbl, "./tr/td[1]/parent::tr")
     alst: List[ALST] = []
 
     row_cnt = 1
     for row in it:
+        if contains_th(row):
+            yield row
+            continue
         if alst:
             row_ = row
             # There's one or more cells to re-insert. Insert while respecting

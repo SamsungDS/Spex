@@ -3,11 +3,11 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 from dataclasses import dataclass, fields
-from re import compile as re_compile
 from typing import TYPE_CHECKING, Optional, Union
 
 from spex.jsonspec.extractors.regular_expressions import (
     ELLIPSIS_LABEL_REGEX,
+    LABEL_VALIDATION_REGEX,
     STRUCT_LABEL_REGEX,
 )
 from spex.jsonspec.lint import Linter, LintErr
@@ -30,14 +30,12 @@ def extract_content(data: "Element") -> Optional[str]:
     return txt
 
 
-def content_extract_brief(
-    row: "Element", data: "Element", brief_maxlen: int = 60
-) -> Optional[str]:
-    txt = extract_content(data=data)
+def content_extract_brief(content: str, brief_maxlen: int = 60) -> Optional[str]:
+    txt = content
     if txt is None or ":" not in txt:
         return None
 
-    match = STRUCT_LABEL_REGEX.match(txt)
+    match = STRUCT_LABEL_REGEX.regex.match(txt)
     if match is None or match.group("brief") is None:
         return None
     brief = match.group("brief").rstrip(".").lstrip(" ")
@@ -52,9 +50,21 @@ def generate_acronym(text: str) -> str:
     return "".join(w[0] for w in text.split()).lower()
 
 
+def normalize_label(label: str) -> str:
+    return (
+        label.lstrip()
+        .rstrip()
+        .replace(" ", "_")
+        .replace("/", "")
+        .replace("-", "_")
+        .replace("__", "_")
+        .upper()
+    )
+
+
 def validate_label(lbl: str, fig_id: str, row_key: str, linter: Linter) -> None:
     if (
-        STRUCT_LABEL_REGEX.match(lbl) is None
+        LABEL_VALIDATION_REGEX.match(lbl) is None
         and ELLIPSIS_LABEL_REGEX.match(lbl) is None
     ):
         linter.add_issue(
