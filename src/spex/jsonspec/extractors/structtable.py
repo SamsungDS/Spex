@@ -4,26 +4,46 @@
 
 from abc import ABC, abstractmethod
 from re import compile as re_compile
-from typing import TYPE_CHECKING, Any, Generator, Iterator, List, Optional, Union, cast
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Generator,
+    Iterator,
+    List,
+    Optional,
+    Tuple,
+    Union,
+    cast,
+)
 
 from spex.jsonspec.defs import (
     ELLIPSIS,
+    NOTE,
+    OBSOLETE,
     RESERVED,
     SPECIAL_CASE_SET,
     Entity,
     EntityMeta,
+    MaybeRange,
     Range,
     StructField,
 )
+from spex.jsonspec.exceptions import XPathElementNotFoundException
 from spex.jsonspec.extractors.figure import FigureExtractor, RowErrPolicy
 from spex.jsonspec.extractors.helpers import (
     StructTableMapping,
     content_extract_brief,
     generate_acronym,
+    normalize_label,
     validate_label,
 )
-from spex.jsonspec.extractors.regular_expressions import STRUCT_LABEL_REGEX
+from spex.jsonspec.extractors.regular_expressions import (
+    DYNAMIC_RANGE_REGEX,
+    RANGE_REGEX,
+    STRUCT_LABEL_REGEX,
+)
 from spex.jsonspec.lint import LintErr
+from spex.jsonspec.queries import contains_th, extract_possible_colspan
 from spex.log import logger
 from spex.xml import Element, XmlUtils, Xpath
 
@@ -37,7 +57,6 @@ class StructTableExtractor(FigureExtractor, ABC):
     _col_ndx_label: int
 
     rgx_range = re_compile(r"(?P<high>\d+)\s*(:\s*(?P<low>\d+))?")
-    rgx_field_lbl = re_compile(r"^.*\s+(\((?P<lbl>[^\)]*)\)\s*:)")
 
     @staticmethod
     @abstractmethod
@@ -83,7 +102,7 @@ class StructTableExtractor(FigureExtractor, ABC):
     def type(self) -> str:
         ...
 
-    def _range_to_rowkey(self, val: Union[str, Range]) -> str:
+    def _range_to_row_key(self, val: Union[str, Range]) -> str:
         return str(val["low"]) if isinstance(val, dict) else val
 
     def row_err_handler(
@@ -106,21 +125,35 @@ class StructTableExtractor(FigureExtractor, ABC):
 
     def __call__(self) -> Iterator["Entity"]:
         fields: List[StructField] = []
+        is_dynamic_table_mode = False
         row_it = self.row_iter()
         for row in row_it:
-            row_range: Optional[Element] = None
-            row_data: Element
+            if contains_th(row):
+                if colspan := extract_possible_colspan(row):
+                    # Identify if rows denote a dynamic list table
+                    # and set the dynamic mode to true.
+                    if "List" in colspan and not is_dynamic_table_mode:
+                        is_dynamic_table_mode = True
+                # Skip this row, its either the table header or a dynamic list.
+                # In any case, it won't result in a StructField
+                continue
+
+            # Extract string representations of the fields: range, label and brief
             try:
-                row_range = self.range_elem(row)
-                row_data = self.content_elem(row)
-            except Exception as e:
+                range_field, content_field, label_field = self._extract_fields(row)
+            except XPathElementNotFoundException as e:
                 row_txt = XmlUtils.to_text(row).lower()
                 if row_txt.startswith(ELLIPSIS):
                     # revisit ranges here once we have normalized field order
                     # (bits fields are in desc order, bytes are in asc)
-                    fields.append({"range": {"low": -1, "high": -1}, "label": ELLIPSIS})
+                    fields.append(
+                        self._struct_field(
+                            maybe_range={"low": -1, "high": -1},
+                            label=ELLIPSIS,
+                        )
+                    )
                     continue
-                elif row_txt.startswith("notes:") or row_txt.startswith("note:"):
+                elif row_txt.startswith("note"):
                     break
                 else:
                     out = yield from self.row_err_handler(row_it, row, fields, e)
@@ -133,38 +166,43 @@ class StructTableExtractor(FigureExtractor, ABC):
                         raise e
                     else:
                         continue
-
-            range = self.range_clean(row, row_range)
-            if range == ELLIPSIS:
-                fields.append({"range": {"low": -1, "high": -1}, "label": ELLIPSIS})
+            # If range, label or content is a special case, such as ellipsis,
+            # it will need to be handled separately
+            if (
+                self.is_special_case(range_field)
+                or self.is_special_case(label_field)
+                or self.is_special_case(content_field)
+            ):
+                if self.is_special_case(range_field):
+                    continue
+                elif field := self.handle_special_case(
+                    content=content_field,
+                    range=self._parse_range(range_field, range_field),
+                ):
+                    fields.append(field)
                 continue
 
-            row_key = self._range_to_rowkey(range)
-            override_key = (self.fig_id, row_key)
-
-            label = self.doc_parser.label_overrides.get(override_key, None)
-            if label is None:
-                label = self._extract_label(row, row_key, row_data)
+            if is_dynamic_table_mode:
+                # Handle subsequent rows if dynamic list table mode is identified
+                range = self._parse_dynamic_range(field_range=range_field)
             else:
-                self.add_issue(LintErr.LBL_IMPUTED, row_key=row_key)
+                range = self._parse_range(range_field, range_field)
 
-            sfield: StructField = {"range": range, "label": label}
+            row_key = self._range_to_row_key(range)
+            label = self._parse_label(label=label_field, row_key=row_key)
+            brief = self._parse_brief(content_field, row_key=row_key)
 
-            brief = self.doc_parser.brief_overrides.get(override_key, None)
-            if brief is None:
-                brief = self._content_extract_brief(row, row_key, row_data)
-
-            # no brief override, no brief extracted from table cell
-            if brief is not None:
-                sfield["brief"] = brief
-
-            subtbl_ent: "EntityMeta" = {
+            sub_table_entity: "EntityMeta" = {
                 "fig_id": f"""{self.fig_id}_{row_key}""",
                 "parent_fig_id": self.fig_id,
             }
 
-            yield from self.extract_data_subtbls(subtbl_ent, row_data)
-            fields.append(sfield)
+            yield from self.extract_data_sub_table(
+                sub_table_entity, self.content_elem(row)
+            )
+            fields.append(
+                self._struct_field(maybe_range=range, label=label, brief=brief)
+            )
 
         # bits tables have their rows in descending order, bytes tables show
         # rows in ascending order this step ensures we are always processing
@@ -197,83 +235,130 @@ class StructTableExtractor(FigureExtractor, ABC):
                 prev_range = None
                 continue
             elif prev_range is not None:
-                if prev_range["low"] > field_range["low"]:
+                prev = prev_range["low"]
+                current = field_range["low"]
+                if (
+                    isinstance(prev, int)
+                    and isinstance(current, int)
+                    and prev > current
+                ):
                     self.add_issue(LintErr.TBL_ROW_ORDER_REVERSED)
                     return
             else:
                 prev_range = field_range
 
-        lbls = {fields[0]["label"]}
+        labels = {fields[0]["label"]}
         prev_range = field_get_range(fields[0])
 
         for field in fields[1:]:
-            flbl = field["label"]
-            if flbl not in {RESERVED, ELLIPSIS}:
-                if flbl in lbls:
+            field_label = field["label"]
+            if field_label not in {RESERVED, ELLIPSIS}:
+                if field_label in labels:
                     self.add_issue(
                         LintErr.LBL_DUPLICATE,
-                        row_key=self._range_to_rowkey(field["range"]),
-                        ctx={"label": flbl},
+                        row_key=self._range_to_row_key(field["range"]),
+                        ctx={"label": field_label},
                     )
-                lbls.add(flbl)
+                labels.add(field_label)
 
-            if flbl == "…":
+            if field_label == "…":
                 prev_range = None
                 continue
 
             field_range = field_get_range(field)
             if field_range is not None:
                 if prev_range is not None:
-                    if prev_range["high"] >= field_range["low"]:
-                        self.add_issue(
-                            LintErr.TBL_FIELD_OVERLAP,
-                            row_key=self._range_to_rowkey(field_range),
-                        )
-                    elif prev_range["high"] + 1 != field_range["low"]:
-                        self.add_issue(
-                            LintErr.TBL_FIELD_GAP,
-                            row_key=self._range_to_rowkey(field_range),
-                        )
+                    prev = prev_range["high"]
+                    current = field_range["low"]
+                    if isinstance(prev, int) and isinstance(current, int):
+                        if prev >= current:
+                            self.add_issue(
+                                LintErr.TBL_FIELD_OVERLAP,
+                                row_key=self._range_to_row_key(field_range),
+                            )
+                        elif prev + 1 != current:
+                            self.add_issue(
+                                LintErr.TBL_FIELD_GAP,
+                                row_key=self._range_to_row_key(field_range),
+                            )
                 prev_range = field_range
             else:
                 # skip next range check
                 prev_range = None
 
     def range_elem(self, row: Element) -> Element:
+        """Query row to find range element
+
+        Args:
+            row (Element): The row to query
+
+        Returns:
+            Element: If label element is found return it, this method can raise
+            an XPathElementNotFoundException
+        """
+
         return Xpath.elem_first_req(row, f"./td[{self._col_ndx_range + 1}]")
 
-    def range_clean(self, row: Element, val_cell: Element) -> Union[str, "Range"]:
-        val = (
-            "".join(
-                e.decode("utf-8") if isinstance(e, bytes) else e
-                for e in val_cell.itertext()
-            )
-            .strip()
-            .lower()
-        )
-        m = self.rgx_range.match(val)
-        if not m:  # cannot parse into a range, sadly
-            # elided rows are simply skipped.
-            if val != "…":
-                self.add_issue(LintErr.RANGE_INVALID, row_key=val)
-            return val
-        high = int(m.group("high"))
-        _low = m.group("low")
-        low = int(_low) if _low is not None else high
-        if low > high:
-            self.add_issue(LintErr.RANGE_REVERSED, row_key=val)
-        return {"low": low, "high": high}
-
     def content_elem(self, row: Element) -> Element:
+        """Query row to find content element
+
+        Args:
+            row (Element): The row to query
+
+        Returns:
+            Element: If label element is found return it, this method can raise
+            an XPathElementNotFoundException
+        """
+
         return Xpath.elem_first_req(row, f"./td[{self._col_ndx_content + 1}]")
 
-    def _extract_label_separate_col(self, row: Element, row_key: str) -> str:
-        p1 = Xpath.elem_first_req(row, f"./td[{self._col_ndx_label + 1}]/p[1]")
-        txt = XmlUtils.to_text(p1).lower()
-        if txt == "reserved":
-            return RESERVED
+    def label_elem(self, row: Element) -> Element:
+        """Query row to find label element
 
-        txt_parts = txt.split(":", 1)
+        Args:
+            row (Element): The row to query
+
+        Returns:
+            Element: If label element is found return it, this method can raise
+            an XPathElementNotFoundException
+        """
+        return Xpath.elem_first_req(row, f"./td[{self._col_ndx_label + 1}]/p[1]")
+
+    def _struct_field(
+        self, maybe_range: MaybeRange, label: str, brief: Optional[str] = None
+    ) -> StructField:
+        if brief:
+            return {
+                "label": label,
+                "range": maybe_range,
+                "brief": brief,
+            }
+        else:
+            return {
+                "label": label,
+                "range": maybe_range,
+            }
+
+    def _extract_fields(self, row: Element) -> Tuple[str, str, str]:
+        """Extract the range/content/label elements from row
+
+        Will return a tuple containing strings
+
+        Args:
+            row (Element): A row element to extract the inner elements of the
+            range, label and content columns.
+
+        Returns:
+            Tuple[Element, Element]:
+              range, label and content
+        """
+        range = XmlUtils.to_text(self.range_elem(row))
+        content = XmlUtils.to_text(self.content_elem(row))
+        label = XmlUtils.to_text(self.label_elem(row))
+        return (range, content, label)
+
+    def _extract_label_separate_column(self, label: str, row_key: str) -> str:
+        txt_parts = label.split(":", 1)
         if len(txt_parts) == 1:
             # no explicit name, forced to infer it
             self.add_issue(LintErr.LBL_IMPUTED, fig=self.fig_id, row_key=row_key)
@@ -285,15 +370,12 @@ class StructTableExtractor(FigureExtractor, ABC):
                 )
             return txt_parts[0]
 
-    def _extract_label_same_col(self, data: Element, row_key: str) -> str:
-        paragraph = Xpath.elem_first_req(data, "./p[1]")
-        text = XmlUtils.to_text(paragraph)
-        match = STRUCT_LABEL_REGEX.match(text)
-
+    def _extract_label_same_column(self, label: str, row_key: str) -> str:
+        match = STRUCT_LABEL_REGEX.regex.match(label)
         if match is None:
             # TODO: This part of the extraction is taken from old implementation.
             # Should be revisited, when time allows
-            text_parts = text.split(":", 1)
+            text_parts = label.split(":", 1)
             label = generate_acronym(text_parts[0])
             self.add_issue(LintErr.LBL_IMPUTED, row_key=row_key)
         elif match.group("acronym") is not None and match.group("acronym") != "":
@@ -303,32 +385,86 @@ class StructTableExtractor(FigureExtractor, ABC):
             if text.upper() in SPECIAL_CASE_SET:
                 return text
             label = generate_acronym(text)
-            self.add_issue(LintErr.LBL_IMPUTED, row_key=row_key)
+            # self.add_issue(LintErr.LBL_IMPUTED, row_key=row_key)
         else:
-            self.add_issue(LintErr.LBL_IMPUTED, row_key=row_key)
-            label = text
+            self.add_issue(LintErr.LBL_EXTRACT_ERR, row_key=row_key)
         return label
 
-    def _extract_label(self, row: Element, row_key: str, data: Element) -> str:
+    def _parse_label(self, label: str, row_key: str) -> str:
         try:
             if self._col_ndx_content != self._col_ndx_label:
-                label = self._extract_label_separate_col(row, row_key)
-                if label == RESERVED:
-                    return RESERVED
+                label = self._extract_label_separate_column(label, row_key)
             else:
-                label = self._extract_label_same_col(data, row_key)
-                if label.upper() == RESERVED:
-                    return RESERVED
+                label = self._extract_label_same_column(label, row_key)
+            label = normalize_label(label)
             validate_label(label, self.fig_id, row_key, self.linter)
             return label.lower()
         except Exception as e:
             logger.bind(row=row_key).exception("error extracting label for row")
             raise e
 
-    def _content_extract_brief(
-        self, row: Element, row_key: str, data: Element
-    ) -> Optional[str]:
-        return content_extract_brief(row, data, self.BRIEF_MAXLEN)
+    def _parse_range(self, value: str, row_key: str) -> MaybeRange:
+        """Parse text into range if possible with the RANGE_REGEX.
+
+        Args:
+            value (str): parameter that contains the range text
+            row_key (str): row_key used in case of linting issue
+
+        Returns:
+            MaybeRange:
+        """
+        m = RANGE_REGEX.match(value)
+        if not m:  # cannot parse into a range, sadly
+            # elided rows are simply skipped.
+            self.add_issue(LintErr.RANGE_INVALID, row_key=row_key)
+            return value
+        else:
+            high = int(m.group("high"))
+            _low = m.group("low")
+            low = int(_low) if _low is not None else high
+            if low > high:
+                self.add_issue(LintErr.RANGE_REVERSED, row_key=row_key)
+            return {"low": low, "high": high}
+
+    def _parse_brief(self, content: str, row_key: str) -> Optional[str]:
+        return content_extract_brief(content, self.BRIEF_MAXLEN)
+
+    def _parse_dynamic_range(self, field_range: str) -> MaybeRange:
+        range_match = DYNAMIC_RANGE_REGEX.match(
+            field_range.replace("\n", "").replace(" ", "")
+        )
+        if range_match is None:
+            self.add_issue(LintErr.RANGE_INVALID, row_key=field_range)
+            return field_range
+        high, low = range_match.group("low"), range_match.group("high")
+        return {"low": low, "high": high}
+
+    @staticmethod
+    def is_special_case(content: str) -> bool:
+        return content.upper() in SPECIAL_CASE_SET or content.lower().startswith("note")
+
+    def handle_special_case(
+        self, content: str, range: MaybeRange
+    ) -> Optional[StructField]:
+        if content == ELLIPSIS:
+            return self._struct_field(
+                maybe_range=range,
+                label=ELLIPSIS,
+            )
+        elif content.upper() == RESERVED:
+            return self._struct_field(
+                maybe_range=range,
+                label=RESERVED,
+            )
+        elif content.upper() == OBSOLETE:
+            return self._struct_field(
+                maybe_range=range,
+                label=OBSOLETE,
+            )
+        elif content.startswith(NOTE):
+            return None
+
+        return None
 
 
 class BitsTableExtractor(StructTableExtractor):

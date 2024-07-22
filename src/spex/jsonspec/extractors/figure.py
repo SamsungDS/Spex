@@ -103,7 +103,7 @@ class FigureExtractor(ABC):
         # -> filters out header (th) rows
         yield from row_iter(self.tbl)
 
-    def extract_data_subtbls(
+    def extract_data_sub_table(
         self, entity_base: "EntityMeta", data: Element
     ) -> Iterator["Entity"]:
         tbls = Xpath.elems(data, "./table")

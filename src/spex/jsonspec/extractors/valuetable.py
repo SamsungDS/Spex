@@ -12,10 +12,12 @@ from spex.jsonspec.extractors.helpers import (
     content_extract_brief,
     extract_content,
     mapping_incomplete,
+    normalize_label,
     validate_label,
 )
 from spex.jsonspec.extractors.regular_expressions import VALUE_LABEL_REGEX
 from spex.jsonspec.lint import LintErr
+from spex.jsonspec.queries import contains_th
 from spex.xml import Element, XmlUtils, Xpath
 
 if TYPE_CHECKING:
@@ -67,6 +69,10 @@ class ValueTableExtractor(FigureExtractor):
         for row in row_it:
             row_val: Element
             row_data: Element
+            if contains_th(row):
+                # Skip this row, its the table header.
+                # In any case, it is handled before getting here.
+                continue
             try:
                 row_val = self.val_elem(row)
                 row_data = self.content_elem(row)
@@ -111,7 +117,7 @@ class ValueTableExtractor(FigureExtractor):
                 "fig_id": f"""{self.fig_id}_{str(val_cleaned)}""",
                 "parent_fig_id": self.fig_id,
             }
-            yield from self.extract_data_subtbls(subtbl_ent, row_data)
+            yield from self.extract_data_sub_table(subtbl_ent, row_data)
 
             fields.append(value_field)
 
@@ -135,10 +141,10 @@ class ValueTableExtractor(FigureExtractor):
         Note:
             First match found in figure's actual table headers is used.
 
-            This is intended to be overridden for specialized extractors where the value
-            column is using a non-standard heading.
+            This is intended to be overridden for specialized extractors where
+            the value column is using a non-standard heading.
         """
-        return ["value"]
+        return ["value", "values"]
 
     @staticmethod
     def content_column_hdrs() -> List[str]:
@@ -250,7 +256,7 @@ class ValueTableExtractor(FigureExtractor):
         else:
             # if we hit this, some figure actually has a dedicated attribute
             # column where the text contains a an explicitly-given short-hand/label
-            breakpoint()
+            pass
         return txt_parts[0].replace(" ", "_").upper()
 
     def _extract_label(self, row: Element, row_key: str, data: Element) -> str:
@@ -265,19 +271,22 @@ class ValueTableExtractor(FigureExtractor):
                 raise Exception("Could not extract label")
             if text.upper() == RESERVED:
                 return RESERVED
-            match = VALUE_LABEL_REGEX.match(text)
+            match = VALUE_LABEL_REGEX.regex.match(text)
             if match is None:
                 self.add_issue(LintErr.LBL_EXTRACT_ERR, row_key=row_key)
-                label = text.replace(" ", "_").upper()
+                label = text
             elif match.group("label") is not None and match.group("label") != "":
-                label = match.group("label").replace(" ", "_").upper()
+                label = match.group("label")
             else:
                 self.add_issue(LintErr.LBL_EXTRACT_ERR, row_key=row_key)
-                label = text.replace(" ", "_").upper()
+                label = text
+
+        label = normalize_label(label)
         validate_label(label, self.fig_id, row_key, self.linter)
         return label
 
     def _content_extract_brief(
         self, row: Element, row_key: str, data: Element
     ) -> Optional[str]:
-        return content_extract_brief(row, data, self.BRIEF_MAXLEN)
+        content = self.content_elem(row)
+        return content_extract_brief(XmlUtils.to_text(content), self.BRIEF_MAXLEN)
