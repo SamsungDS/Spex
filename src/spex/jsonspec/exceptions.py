@@ -1,0 +1,46 @@
+from typing import Any, Optional
+
+
+class XPathException(Exception):
+    message: str
+    query: Optional[str]
+    details: Optional[Any]
+
+    def __init__(
+        self, message: str, query: Optional[str], details: Optional[Any] = None
+    ) -> None:
+        super().__init__(message)
+
+        self.message: str = message
+        self.query: Optional[str] = query
+        self.details: Optional[Any] = details
+
+
+class XPathElementNotFoundException(XPathException):
+    message: str
+    query: Optional[str]
+    details: Optional[Any]
+
+    def __init__(
+        self, message: str, query: Optional[str], details: Optional[Any] = None
+    ) -> None:
+        super().__init__(message, details)
+
+        self.message: str = message
+        self.query: Optional[str] = query
+        self.details: Optional[Any] = details
+
+
+class XPathInvalidQueryException(XPathException):
+    message: str
+    query: Optional[str]
+    details: Optional[Any]
+
+    def __init__(
+        self, message: str, query: Optional[str], details: Optional[Any] = None
+    ) -> None:
+        super().__init__(message, details)
+
+        self.message: str = message
+        self.query: Optional[str] = query
+        self.details: Optional[Any] = details

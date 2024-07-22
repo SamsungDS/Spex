@@ -72,8 +72,10 @@ ValStr: TypeAlias = str
 
 RESERVED = "RESERVED"
 ELLIPSIS = "…"
+OBSOLETE = "OBSOLETE"
+NOTE = "NOTE"
 
-SPECIAL_CASE_SET = {RESERVED, ELLIPSIS}
+SPECIAL_CASE_SET = {RESERVED, ELLIPSIS, OBSOLETE}
 
 
 class ValueField(TypedDict):
@@ -90,12 +92,15 @@ class ValueTable(TypedDict):
 
 
 class Range(TypedDict):
-    low: int
-    high: int
+    low: int | str
+    high: int | str
+
+
+MaybeRange = Union[Range, str]
 
 
 class StructField(TypedDict):
-    range: Union[Range, str]
+    range: MaybeRange
     label: str
     brief: NotRequired[str]
 

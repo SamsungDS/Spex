@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
+import traceback
 from re import compile as re_compile
 from re import sub
 from typing import TYPE_CHECKING, Dict, Iterator, List, Optional, Tuple, Type, TypeAlias
@@ -285,7 +286,7 @@ class DocumentParser:
             parse_fn=self._on_parse_fig,
             linter=self.__linter,
             mapping=mapping,
-        )
+        )  # type: ignore
         with logger.contextualize(
             entity=entity,
             doc={"spec": self.spec, "revision": self.revision},
@@ -297,6 +298,7 @@ class DocumentParser:
                     yield from gen
                     break
                 except Exception as err:
+                    traceback.print_exc()
                     if not self._unwind_parse_error:
                         if self.args.verbose:
                             traceback.print_exc()
