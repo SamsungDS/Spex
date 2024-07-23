@@ -36,9 +36,23 @@ spex = "spex.__main__:main"
 
 [project.optional-dependencies]
 spexsrv = ["quart"]
-dev = ["pytest", "mypy", "black", "lxml-stubs", "types-jsonschema", "isort",
-      "flake8", "sphinx", "sphinx-copybutton", "furo", "wheel", "build",
-      "twine", "types-setuptools", "reuse"]
+dev = [
+    "pytest",
+    "mypy",
+    "black==23.12.1",
+    "lxml-stubs",
+    "types-jsonschema",
+    "isort",
+    "flake8",
+    "Flake8-pyproject",
+    "sphinx",
+    "sphinx-copybutton",
+    "furo",
+    "wheel",
+    "build",
+    "twine",
+    "types-setuptools",
+    "reuse"]
 all = ["nvme-spex[spexsrv,dev]"]
 
 [tool.distutils.bdist_wheel]
