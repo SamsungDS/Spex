@@ -36,6 +36,10 @@ jobs:
         pip install build
         make clean build install
 
+    - name: run checks
+      run: |
+        make check
+
     - name: run tests
       run: |
         make tests
