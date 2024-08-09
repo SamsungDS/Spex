@@ -39,7 +39,7 @@ spexsrv = ["quart"]
 dev = [
     "pytest",
     "mypy",
-    "black==23.12.1",
+    "black",
     "lxml-stubs",
     "types-jsonschema",
     "isort",

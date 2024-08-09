@@ -99,8 +99,7 @@ class StructTableExtractor(FigureExtractor, ABC):
 
     @property
     @abstractmethod
-    def type(self) -> str:
-        ...
+    def type(self) -> str: ...
 
     def _range_to_row_key(self, val: Union[str, Range]) -> str:
         return str(val["low"]) if isinstance(val, dict) else val
