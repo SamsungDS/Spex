@@ -17,26 +17,21 @@ class S2Model(TypedDict):
 
 
 class Writer(Protocol):
-    def __enter__(self) -> "Writer":
-        ...
+    def __enter__(self) -> "Writer": ...
 
     def __exit__(
         self,
         exc_type: type[BaseException] | None,
         exc_val: BaseException | None,
         exc_tb: TracebackType | None,
-    ) -> None:
-        ...
+    ) -> None: ...
 
-    def write_meta(self, key: str, val: JSON) -> None:
-        ...
+    def write_meta(self, key: str, val: JSON) -> None: ...
 
-    def write_entity(self, entity: JSON) -> None:
-        ...
+    def write_entity(self, entity: JSON) -> None: ...
 
     @property
-    def path(self) -> Optional[Path]:
-        ...
+    def path(self) -> Optional[Path]: ...
 
 
 class StdoutWriter(Writer):
@@ -67,8 +62,8 @@ class StdoutWriter(Writer):
         exc_tb: TracebackType | None,
     ) -> None:
         # retain UTF-8 characters in output
-        res = json.dumps(self._doc, indent=2, ensure_ascii=False).encode("utf-8")
-        print(res.decode())
+        # res = json.dumps(self._doc, indent=2, ensure_ascii=False).encode("utf-8")
+        # print(res.decode())
         if exc_val is not None:
             raise exc_val
 

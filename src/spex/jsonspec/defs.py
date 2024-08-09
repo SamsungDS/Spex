@@ -26,8 +26,7 @@ JSON = Union[None, bool, str, float, int, List["JSON"], Dict[str, "JSON"]]
 
 @runtime_checkable
 class ToJson(Protocol):
-    def to_json(self) -> JSON:
-        ...
+    def to_json(self) -> JSON: ...
 
 
 def cast_json(val: Any) -> JSON:
@@ -62,8 +61,7 @@ class Entity(TypedDict):
 
 
 class ParseFn(Protocol):
-    def __call__(self, entity: EntityMeta, tbl: "Element") -> Iterator[Entity]:
-        ...
+    def __call__(self, entity: EntityMeta, tbl: "Element") -> Iterator[Entity]: ...
 
 
 ExtractorMap: TypeAlias = Dict[str, "FigureExtractor"]
@@ -72,6 +70,10 @@ ValStr: TypeAlias = str
 
 RESERVED = "RESERVED"
 ELLIPSIS = "…"
+OBSOLETE = "OBSOLETE"
+NOTE = "NOTE"
+
+SPECIAL_CASE_SET = {RESERVED, ELLIPSIS, OBSOLETE}
 
 
 class ValueField(TypedDict):
@@ -88,12 +90,15 @@ class ValueTable(TypedDict):
 
 
 class Range(TypedDict):
-    low: int
-    high: int
+    low: int | str
+    high: int | str
+
+
+MaybeRange = Union[Range, str]
 
 
 class StructField(TypedDict):
-    range: Union[Range, str]
+    range: MaybeRange
     label: str
     brief: NotRequired[str]
 

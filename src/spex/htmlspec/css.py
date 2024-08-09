@@ -20,8 +20,7 @@ def css_block(
 
 class CssObj(Protocol):
     @property
-    def css_attrs(self) -> Dict[str, str]:
-        ...
+    def css_attrs(self) -> Dict[str, str]: ...
 
 
 class CssCache:

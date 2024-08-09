@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" data-spec="Spex test case" data-revision="1" />
+    <title>Spex test case</title>
+
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        p:first-child {
+            margin-top: .3em;
+        }
+
+        p:last-child {
+            margin-bottom: .3em;
+        }
+
+        p {
+            margin-top: 0em;
+            margin-left: .2em;
+            margin-right: .2em;
+        }
+
+        table,
+        td,
+        th {
+            border-collapse: collapse;
+            border: 1px solid black;
+            ;
+        }
+
+        table {
+            margin-left: .3em;
+            margin-right: .3em;
+            margin-bottom: 3em;
+            margin-top: 1em;
+        }
+
+        td table {
+            margin-bottom: 1em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <table>
+        <tr>
+            <td colspan="4">
+                <p>
+                    <span>Figure </span><span>36</span><span>: Offset 0h: CAP – Controller Capabilities</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <th class="tcell0">
+                <p>
+                    <span>Bits</span>
+                </p>
+            </th>
+            <th class="tcell0">
+                <p>
+                    <span>Type</span>
+                </p>
+            </th>
+            <th class="tcell0">
+                <p>
+                    <span>Reset</span>
+                </p>
+            </th>
+            <th class="tcell0">
+                <p>
+                    <span>Description</span>
+                </p>
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>63:</span><span>6</span><span>2</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>0h</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Reserved</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>61</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Impl Spec</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">NVM Subsystem Shutdown Enhancements Supported (NSSES): </span><span>This bit
+                        indicates whether the controller supports enhancements to the NVM Subsystem Shutdown
+                        feature.</span>
+                </p>
+                <p>
+                    <span>If the controller supports the enhancements to the NVM Subsystem Shutdown feature as defined
+                        in section </span><span>3.6.3</span><span>, then this bit shall be set to ‘1’ and the NSSS bit
+                        shall be set to ‘1’. If a controller compliant with a revision of the NVM Express Base
+                        Specification later than revision 2.0 sets the NSSS bit to ‘1’, then that controller shall set
+                        this bit to ‘1’.</span>
+                </p>
+                <p>
+                    <span>If this bit is cleared to ‘0’, then the controller does not support the enhancements to the
+                        NVM Subsystem Shutdown feature as defined in section </span><span>3.6.3</span><span>.</span>
+                </p>
+                <p>
+                    <span>If the NSSRS bit is cleared to ‘0’ or the NSSS bit is cleared to ‘0’, then this bit shall be
+                        cleared to ‘0’.</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>60:59</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Impl Spec</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">Controller Ready Modes Supported (CRMS): </span><span>This field indicates the
+                        ready capabilities of the controller. </span><span>Refer to sections
+                    </span><span>3.5.3</span><span> and </span><span>3.5.4</span><span> for more detail.</span>
+                </p>
+                <table>
+                    <tr>
+                        <th class="tcell0">
+                            <p>
+                                <span>Bits</span>
+                            </p>
+                        </th>
+                        <th class="tcell0">
+                            <p>
+                                <span>Description</span>
+                            </p>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span>1</span>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <span class="txtfmt1">Controller Ready Independent of Media Support (CRIMS):
+                                </span><span>If this bit is set to ‘1’, then the controller supports the Controller
+                                    Ready Independent of Media mode.</span>
+                            </p>
+                            <p>
+                                <span>If this bit is cleared to ‘0’, then the controller does not support Controller
+                                    Ready Independent of Media mode.</span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span>0</span>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <span class="txtfmt1">Controller Ready With Media Support (CRWMS): </span><span>If this
+                                    bit is set to ‘1’, then the controller supports the Controller Ready With Media
+                                    mode.</span>
+                            </p>
+                            <p>
+                                <span>If this bit is cleared to ‘0’, then the controller does not support Controller
+                                    Ready With Media mode.</span>
+                            </p>
+                            <p>
+                                <span>This bit shall be set</span><span> to ‘1’ on controllers compliant with
+                                </span><span>NVM Express Base Specification, Revision 2.0 and later</span><span>.</span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>58</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Impl Spec</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">NVM Subsystem Shutdown Supported (NSSS):</span><span class="txtfmt1">
+                        T</span><span>his bit indicates whether the controller supports the NVM Subsystem Shutdown
+                    </span><span>feature</span><span>.</span>
+                </p>
+                <p>
+                    <span>If this bit is set to ‘1’, then the controller supports the NVM Subsystem Shutdown feature. If
+                        the NSSES bit is set to ‘1’, then this bit shall be set to ‘1’.</span>
+                </p>
+                <p>
+                    <span>If this bit is cleared to ‘0’, then the controller does not support the NVM Subsystem Shutdown
+                        feature. If the NSSRS bit is cleared to ‘0’, then this bit shall be cleared to ‘0’.</span>
+                </p>
+                <p>
+                    <span>Refer to section </span><span>3.6.3</span><span> for a description of the NVM Subsystem
+                        Shutdown feature and the behavioral enhancements associated with the NSSES bit being set to
+                        ‘1’.</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>57</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Impl Spec</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">Controller Memory Buffer Supported (CMBS):</span><span> If </span><span>this
+                        bit is </span><span>set to ‘1’, </span><span>then </span><span>this bit indicates that the
+                        controller supports the Controller Memory Buffer, and that addresses supplied by the host are
+                        permitted to reference the Controller Memory Buffer only if the host has enabled the Controller
+                        Memory Buffer’s controller memory space.</span>
+                </p>
+                <p>
+                    <span>If the controller supports the Controller Memory Buffer, </span><span>then </span><span>this
+                        bit shall be set to ‘1’.</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>56</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Impl Spec</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">Persistent Memory Region Supported (PMRS):</span><span> This bit indicates
+                        whether the Persistent Memory Region is supported. This bit is set to ‘1’ if the Persistent
+                        Memory Region is supported. This bit is cleared to ‘0’ if the Persistent Memory Region is not
+                        supported.</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>55:52</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Impl Spec</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">Memory Page Size Maximum (MPSMAX): </span><span>This field indicates the
+                        maximum host memory page size that the controller supports. The maximum memory page size is (2 ^
+                        (12 + MPSMAX)). The host shall not configure a memory page size in CC.MPS that is larger than
+                        this value.</span>
+                </p>
+                <p>
+                    <span>For Discovery </span><span>c</span><span>ontrollers this field shall be cleared to 0h.</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>51:48</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Impl Spec</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">Memory Page Size Minimum (MPSMIN): </span><span>This field indicates the
+                        minimum host memory page size that the controller supports. The minimum memory page size is (2 ^
+                        (12 + MPSMIN)). The host shall not configure a memory page size in CC.MPS that is smaller than
+                        this value.</span>
+                </p>
+                <p>
+                    <span>For Discovery </span><span>c</span><span>ontrollers this shall be cleared to 0h.</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>47:46</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Impl Spec</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">Controller Power Scope (CPS):</span><span> This field indicates scope of
+                        controlling the main power for this controller.</span>
+                </p>
+                <table>
+                    <tr>
+                        <th class="tcell2">
+                            <p>
+                                <span>Value</span>
+                            </p>
+                        </th>
+                        <th class="tcell2">
+                            <p>
+                                <span>Power Scope</span>
+                            </p>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span>00b</span>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <span>Not Reported</span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span>01b</span>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <span>Controller scope</span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span>10b</span>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <span>Domain scope (i.e</span><span>.</span><span>, the NVM subsystem supports multiple
+                                    domains (refer to</span><span> section </span><span>3.2.5</span><span>). </span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span>11b</span>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <span>NVM subsystem scope (i.e., the NVM subsystem does not support multiple
+                                    domains).</span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+                <p>
+                    <span>If the NSSS bit is set to ‘1’, then this field shall not be cleared to 00b.</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>45</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Impl Spec</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">Boot Partition Support (BPS): </span><span>This bit indicates whether the
+                        controller supports Boot Partitions. If this bit is set to &#x27;1‘,</span><span>
+                        then</span><span> the controller supports Boot Partitions. If this bit is cleared to ‘0‘,
+                    </span><span>then </span><span>the controller does not support Boot Partitions. Refer to section
+                    </span><span>8.1.3</span><span>.</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>44:37</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Impl Spec</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">Command Sets Supported (CSS): </span><span>This field indicates the I/O
+                        Command Set(s) that the controller supports.</span>
+                </p>
+                <p>
+                    <span>For Discovery </span><span>c</span><span>ontrollers, this field should have only</span><span>
+                        the NCSS b</span><span>it set to 1.</span>
+                </p>
+                <table>
+                    <tr>
+                        <th class="tcell0">
+                            <p>
+                                <span>Bit</span><span>s</span>
+                            </p>
+                        </th>
+                        <th class="tcell0">
+                            <p>
+                                <span>Description</span>
+                            </p>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span>7</span>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <span class="txtfmt1">No I/O Command Set Support (NOIOCSS):</span><span> This bit
+                                    indicates </span><span>whether</span><span> n</span><span>o I/O Command Set is
+                                    supported (i.e., only the Admin Command Set is supported)</span><span>.</span>
+                            </p>
+                            <p>
+                                <span>This bit shall be set to ‘1’ if no I/O Command Set is supported.</span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span>6</span>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <span class="txtfmt1">I/O Command Set Support (</span><span
+                                    class="txtfmt1">IOCSS):</span><span> This bit indicates whether the
+                                    c</span><span>ontroller supports one or more I/O Command Sets and supports the
+                                    Identify I/O Command Set data structure (refer to section
+                                </span><span>5.1.13.2.19</span><span>). Controllers that support I/O Command Sets other
+                                    than the NVM Command Set shall set this bit to ‘1’. Controllers that only support
+                                    the NVM Command Set may set this bit to ‘1’</span><span>.</span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span>5:1</span>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <span>Reserved</span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span>0</span>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <span class="txtfmt1">NVM Command Set Support (NCSS):</span><span> This bit indicates
+                                    whether the controller supports the </span><span>NVM
+                                </span><span>C</span><span>ommand </span><span>S</span><span>et</span><span> or a
+                                    Discovery controller</span><span>.</span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>36</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Impl Spec</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">NVM Subsystem Reset Supported (NSSRS): </span><span>This bit indicates whether
+                        the controller supports the NVM Subsystem Reset feature defined in section
+                    </span><span>3.7.1</span><span>. This bit is set to &#x27;1&#x27; if the controller supports the NVM
+                        Subsystem Reset feature. This bit is cleared to ‘0&#x27; if the controller does not support the
+                        NVM Subsystem Reset feature.</span>
+                </p>
+                <p>
+                    <span>For Discovery </span><span>c</span><span>ontrollers, this field shall be </span><span>cleared
+                    </span><span>to 0h.</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>35:32</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Impl Spec</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">Doorbell Stride (DSTRD):</span><span> Each Submission Queue and Completion
+                        Queue Doorbell </span><span>property </span><span>is 32-bits in size. This </span><span>property
+                    </span><span>indicates the stride between doorbell </span><span>properties</span><span>. The stride
+                        is specified as (2 ^ (2 + DSTRD)) in bytes. A value of 0h indicates a stride of 4 bytes, where
+                        the doorbell </span><span>properties </span><span>are packed without reserved space between each
+                    </span><span>property</span><span>. Refer to section </span><span>8.2.2</span><span>.</span>
+                </p>
+                <p>
+                    <span>For</span><span> </span><span>NVMe over Fabrics</span><span> I/O
+                    </span><span>c</span><span>ontrollers, this </span><span>property </span><span>shall be
+                    </span><span>cleared </span><span>to a fixed value of 0h.</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>31:24</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Impl Spec</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">Timeout (TO):</span><span> This is the </span><span>worst-</span><span>case
+                        time that host software </span><span>should </span><span>wait for</span><span> the</span><span>
+                        CSTS.RDY </span><span>bit </span><span>to transition from:</span>
+                </p>
+                <ol class="ol230">
+                    <li>
+                        <span>‘0’ to ‘1’ after</span><span> the</span><span> CC.EN</span><span> bit</span><span>
+                            transitions from ‘0’ to ‘1’; or</span>
+                    </li>
+                    <li>
+                        <span>‘1’ to ‘0’ after</span><span> the</span><span> CC.EN </span><span>bit
+                        </span><span>transitions from ‘1’ to ‘0’.</span>
+                    </li>
+                </ol>
+                <p>
+                    <span>This worst</span><span>-</span><span>case time may be experienced after events such as an
+                        abrupt shutdown</span><span>, </span><span>loss of main power without shutting down the
+                        controller</span><span>,</span><span> or activation of a new firmware image; typical times are
+                        expected to be much shorter.</span>
+                </p>
+                <p>
+                    <span>This field is in 500 millisecond units.</span><span> </span><span>The maximum value of this
+                        field is FFh, which indicates a 127.5 second timeout.</span>
+                </p>
+                <p>
+                    <span>If the Controller Ready Independent of Media Enable (CC.CRIME) bit is cleared to ‘0’ and the
+                        worst-case time for </span><span>the </span><span>CSTS.RDY </span><span>bit </span><span>to
+                        change state is due to enabling the controller after </span><span>the </span><span>CC.EN
+                    </span><span>bit </span><span>transitions from ‘0’ to ‘1’, then this field shall be set to:</span>
+                </p>
+                <ol class="ol737">
+                    <li>
+                        <span>the value in</span><span> the</span><span> Controller Ready With Media Timeout
+                            (CRTO.CRWMT)</span><span> field</span><span>; or</span>
+                    </li>
+                    <li>
+                        <span>FFh if</span><span> the value in the</span><span> CRTO.CRWMT </span><span>field
+                        </span><span>is greater than FFh.</span>
+                    </li>
+                </ol>
+                <p>
+                    <span>If the Controller Ready Independent of Media Enable (CC.CRIME) bit is set to ‘1’ and the
+                        worst-case time for </span><span>the </span><span>CSTS.RDY</span><span> bit</span><span> to
+                        change state is due to enabling the controller after </span><span>the
+                    </span><span>CC.EN</span><span> bit</span><span> transitions from ‘0’ to ‘1’, then this field shall
+                        be set to:</span>
+                </p>
+                <ol class="ol554">
+                    <li>
+                        <span>the value in </span><span>the </span><span>Controller Ready Independent of Media Timeout
+                            (CRTO.CRIMT); or</span>
+                    </li>
+                    <li>
+                        <span>FF</span><span>h</span><span> if </span><span>the value in the
+                        </span><span>CRTO.CRIMT</span><span> field</span><span> is greater than FFh.</span>
+                    </li>
+                </ol>
+                <p>
+                    <span>Controllers that support the CRTO register (refer to </span><span>Figure
+                    </span><span>57</span><span>) are able to indicate larger timeouts for enabling the controller. Host
+                        software should use the value in </span><span>the </span><span>CRTO.CRWMT </span><span>field
+                    </span><span>or </span><span>the </span><span>CRTO.CRIMT </span><span>field </span><span>depending
+                        on the controller ready mode indicated by </span><span>the </span><span>CC.CRIME
+                    </span><span>bit </span><span>to determine the worst-case timeout for </span><span>the
+                    </span><span>CSTS.RDY </span><span>bit </span><span>to transition from ‘0’ to ‘1’ after
+                    </span><span>the </span><span>CC.EN </span><span>bit </span><span>transitions from ‘0’ to ‘1’. Host
+                        software that is based on</span><span> revisions earlier than </span><span>NVM Express
+                    </span><span>Base Specification, R</span><span>evision</span><span> </span><span>2.0</span><span> is
+                        not required to wait for more than 127.5 seconds for </span><span>the </span><span>CSTS.RDY
+                    </span><span>bit </span><span>to transition.</span>
+                </p>
+                <p>
+                    <span>Refer to sections </span><span>3.5.3</span><span> and </span><span>3.5.4</span><span>
+                    </span><span>for more information.</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>23:19</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>0h</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Reserved</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>18:17</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Impl Spec</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">Arbitration Mechanism Supported (AMS): </span><span>This field is bit
+                        significant and indicates the optional arbitration mechanisms supported by the controller. If a
+                        bit is set to ‘1’, then the corresponding arbitration mechanism is supported by the controller.
+                        Refer to section </span><span>3.4.4</span><span> for arbitration details.</span>
+                </p>
+                <table>
+                    <tr>
+                        <th class="tcell0">
+                            <p>
+                                <span>Bit</span><span>s</span>
+                            </p>
+                        </th>
+                        <th class="tcell0">
+                            <p>
+                                <span>Description</span>
+                            </p>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span>1</span>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <span>Vendor Specific</span>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span>0</span>
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                <span>Weighted Round Robin with Urgent Priority Class</span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+                <p>
+                    <span>The round robin arbitration mechanism is not listed since all controllers shall support this
+                        arbitration mechanism.</span>
+                </p>
+                <p>
+                    <span>For Discovery </span><span>c</span><span>ontrollers, this </span><span>property</span><span>
+                        shall be </span><span>cleared </span><span>to 0h.</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>16</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Impl Spec</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">Contiguous Queues Required (CQR): </span><span>This bit is set to ‘1’ if the
+                        controller requires that I/O Submission Queues and I/O Completion Queues are required to be
+                        physically contiguous. This bit is cleared to ‘0’ if the controller supports I/O Submission
+                        Queues and I/O Completion Queues that are not physically contiguous. If this bit is set to ‘1’,
+                        then the Physically Contiguous bit (CDW11.PC) in the Create I/O Submission Queue and Create I/O
+                        Completion Queue commands shall be set to ‘1’.</span>
+                </p>
+                <p>
+                    <span>For </span><span>c</span><span>ontrollers</span><span> </span><span>using a message-based
+                        transport</span><span>, this </span><span>property</span><span> shall be set to a value of
+                        1h.</span>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    <span>15:00</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>RO</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span>Impl Spec</span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <span class="txtfmt1">Maximum Queue Entries Supported (MQES): </span><span>This field indicates the
+                        maximum individual queue size that the controller supports. For NVMe over PCIe implementations,
+                        this value applies to the I/O Submission Queues and I/O Completion Queues that the host creates.
+                        For NVMe over Fabrics implementations, this value applies to only the I/O Submission Queues that
+                        the host creates. This is a 0’s based value. The minimum value is 1h, indicating two entries.
+                    </span>
+                </p>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

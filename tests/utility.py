@@ -111,9 +111,9 @@ def html_table() -> Callable[[List[List[str]]], str]:
                         labels = label_structure(td)
                         for k, txt in enumerate(labels):
                             if k == 0:
-                                content += f"<span class='txtfmt1'>{txt}</span>\n"
+                                content += f"<span class='txtfmt1'>{txt}</span>"
                             elif txt != "":
-                                content += f"<span>{txt}</span>\n"
+                                content += f"<span>{txt}</span>"
                         content += "</p></td>\n"
                     else:
                         content += f"<td><p><span>{td}</span></p></td>\n"

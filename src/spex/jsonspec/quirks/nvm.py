@@ -9,7 +9,6 @@ from lxml import etree
 from spex.jsonspec.defs import Entity, EntityMeta, StructField
 from spex.jsonspec.document import DocumentParser
 from spex.jsonspec.extractors.figure import RowErrPolicy
-from spex.jsonspec.extractors.skiptable import SkipTable
 from spex.jsonspec.extractors.structtable import BitsTableExtractor, BytesTableExtractor
 from spex.xml import Element
 
@@ -107,7 +106,7 @@ class NvmCmdSet1c(DocumentParser):
     }
     fig_extractor_overrides = {
         "23": NvmFig23,
-        "41": SkipTable,
+        # "41": SkipTable,
         # "97": NvmFig97,  # TODO: should be inferred
         # "100": NvmFig100,  # TODO: should be inferred
     }

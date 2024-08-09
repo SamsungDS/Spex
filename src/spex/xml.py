@@ -7,6 +7,11 @@ from typing import List, Mapping, Optional, Union, cast
 from lxml import etree
 from lxml.etree import _Element, _ElementTree
 
+from spex.jsonspec.exceptions import (
+    XPathElementNotFoundException,
+    XPathInvalidQueryException,
+)
+
 Element = _Element
 ElementTree = _ElementTree
 XmlElem = Union[_Element, _ElementTree]
@@ -48,13 +53,16 @@ class Xpath:
         # cannot use type Element with isinstance
         if len(res) > 0 and not isinstance(res[0], (_Element, _ElementTree)):
             if query.startswith("@") or "/@" in query:
-                raise RuntimeError(
-                    "don't query attribute values with this function, use `Xpath.attrs`"
+                raise XPathInvalidQueryException(
+                    message="don't query attribute values with"
+                    " this function, use `Xpath.attrs`",
+                    query=query,
                 )
             else:
-                raise RuntimeError(
-                    f"query '{query}' did not return a list of Element, "
-                    f"first element is {type(res[0])}"
+                XPathElementNotFoundException(
+                    message=f"query did not return a list of Element, "
+                    f"first element is {type(res[0])}",
+                    query=query,
                 )
         return cast(List[Element], res)
 
@@ -67,8 +75,22 @@ class Xpath:
     def elem_first_req(cls, e: Union[ElementTree, Element], query: str) -> Element:
         res = cls.elems(e, query)
         if len(res) == 0:
-            raise RuntimeError("failed to find required element")
+            raise XPathElementNotFoundException(
+                message="failed to find required element, with query"
+                f' "{query}" in\n {XmlUtils.fmt(e)}',
+                query=query,
+            )
         return res[0]
+
+    @classmethod
+    def attrs_option(cls, e: XmlElem, query: str) -> List[Element]:
+        if isinstance(e, _ElementTree):
+            e = e.getroot()
+        res = e.xpath(query, namespaces=cast(Mapping[str, str], e.nsmap))
+        assert isinstance(res, list)
+        # if len(res) > 0 and not isinstance(res[0], str):
+        #     return None
+        return cast(List[Element], res)
 
     @classmethod
     def attrs(cls, e: XmlElem, query: str) -> List[str]:

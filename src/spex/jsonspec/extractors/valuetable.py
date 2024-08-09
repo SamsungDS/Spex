@@ -2,16 +2,27 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-from typing import TYPE_CHECKING, Any, Dict, Generator, Iterator, List, Optional, Union
+from dataclasses import replace as dataclass_replace
+from typing import TYPE_CHECKING, Any, Generator, Iterator, List, Optional, Union, cast
 
 from spex.jsonspec.defs import ELLIPSIS, RESERVED, ValueField
 from spex.jsonspec.extractors.figure import FigureExtractor, RowErrPolicy
-from spex.jsonspec.extractors.helpers import content_extract_brief, validate_label
+from spex.jsonspec.extractors.helpers import (
+    ValueTableMapping,
+    content_extract_brief,
+    extract_content,
+    mapping_incomplete,
+    normalize_label,
+    validate_label,
+)
+from spex.jsonspec.extractors.regular_expressions import VALUE_LABEL_REGEX
 from spex.jsonspec.lint import LintErr
+from spex.jsonspec.queries import contains_th
 from spex.xml import Element, XmlUtils, Xpath
 
 if TYPE_CHECKING:
     from spex.jsonspec.defs import Entity, EntityMeta
+    from spex.jsonspec.extractors.helpers import Mapping
 
 
 class ValueTableExtractor(FigureExtractor):
@@ -20,26 +31,37 @@ class ValueTableExtractor(FigureExtractor):
     _col_ndx_label: int
 
     @classmethod
-    def can_apply(cls, tbl_col_hdrs: List[str]) -> bool:
-        return (
-            len(set(cls.value_column_hdrs()).intersection(tbl_col_hdrs)) > 0
-            and len(set(cls.content_column_hdrs()).intersection(tbl_col_hdrs)) > 0
-            and (len(set(cls.label_column_hdrs()).intersection(tbl_col_hdrs))) > 0
+    def _can_apply(cls, tbl_col_hdrs: List[str]) -> "Mapping":
+        m = ValueTableMapping(
+            value_column=next(
+                (hdr for hdr in tbl_col_hdrs if hdr in cls.value_column_hdrs()), None
+            ),
+            label_column=next(
+                (hdr for hdr in tbl_col_hdrs if hdr in cls.label_column_hdrs()), None
+            ),
+            content_column=next(
+                (hdr for hdr in tbl_col_hdrs if hdr in cls.content_column_hdrs()), None
+            ),
         )
+        if not mapping_incomplete(m):
+            return m
+        if len(tbl_col_hdrs) == 2 and m.value_column == "value":
+            other_col = next((hdr for hdr in tbl_col_hdrs if hdr != "value"), None)
+            if other_col:
+                return dataclass_replace(
+                    m, label_column=other_col, content_column=other_col
+                )
 
-    def _get_col_ndx(self, col_hdrs: List[str], tbl_cols_ndxs: Dict[str, int]) -> int:
-        for colname in col_hdrs:
-            ndx = tbl_cols_ndxs.get(colname, None)
-            if ndx is not None:
-                return ndx
-        raise RuntimeError("failed to find column to extract values from")
+        # no other avenue, fail
+        return m
 
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, *args: Any, mapping: ValueTableMapping, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         col_ndxs = {hdr: ndx for ndx, hdr in enumerate(self.tbl_hdrs)}
-        self._col_ndx_value = self._get_col_ndx(self.value_column_hdrs(), col_ndxs)
-        self._col_ndx_content = self._get_col_ndx(self.content_column_hdrs(), col_ndxs)
-        self._col_ndx_label = self._get_col_ndx(self.label_column_hdrs(), col_ndxs)
+
+        self._col_ndx_value = col_ndxs[cast(str, mapping.value_column)]
+        self._col_ndx_label = col_ndxs[cast(str, mapping.label_column)]
+        self._col_ndx_content = col_ndxs[cast(str, mapping.content_column)]
 
     def __call__(self) -> Iterator["Entity"]:
         fields: List[ValueField] = []
@@ -47,6 +69,10 @@ class ValueTableExtractor(FigureExtractor):
         for row in row_it:
             row_val: Element
             row_data: Element
+            if contains_th(row):
+                # Skip this row, its the table header.
+                # In any case, it is handled before getting here.
+                continue
             try:
                 row_val = self.val_elem(row)
                 row_data = self.content_elem(row)
@@ -91,7 +117,7 @@ class ValueTableExtractor(FigureExtractor):
                 "fig_id": f"""{self.fig_id}_{str(val_cleaned)}""",
                 "parent_fig_id": self.fig_id,
             }
-            yield from self.extract_data_subtbls(subtbl_ent, row_data)
+            yield from self.extract_data_sub_table(subtbl_ent, row_data)
 
             fields.append(value_field)
 
@@ -115,10 +141,41 @@ class ValueTableExtractor(FigureExtractor):
         Note:
             First match found in figure's actual table headers is used.
 
-            This is intended to be overridden for specialized extractors where the value
+            This is intended to be overridden for specialized extractors where
+            the value column is using a non-standard heading.
+        """
+        return ["value", "values"]
+
+    @staticmethod
+    def content_column_hdrs() -> List[str]:
+        """Return prioritized list of column headers where extractor should
+        extract the row's content.
+
+        The content row is where the extractor will extract a brief (short
+        documentation string) for the row and any sub-tables, if present.
+        Also, if there is no dedicated column for row names, these too will be
+        extracted from this column.
+
+        Note:
+            First match found in figure's actual table headers is used.
+
+            This is intended to be overridden for specialized extractors where
+            the content column is using a non-standard heading.
+        """
+        return ["definition", "description", "power scope"]
+
+    @staticmethod
+    def label_column_hdrs() -> List[str]:
+        """Return prioritized list of column headers where extractor should
+        extract the row's name.
+
+        Note:
+            First match found in figure's actual table headers is used.
+
+            This is intended to be overridden for specialized extractors where the label
             column is using a non-standard heading.
         """
-        return ["value"]
+        return ["attribute", "definition", "description", "power scope"]
 
     def row_err_handler(
         self,
@@ -187,7 +244,6 @@ class ValueTableExtractor(FigureExtractor):
     def _extract_label_dedicated_col(self, row: Element, row_key: str) -> str:
         # if we hit this, some document actually has a value table with a
         # dedicated 'attribute' column
-        breakpoint()
         p1 = Xpath.elem_first_req(row, f"./td[{self._col_ndx_label + 1}]/p[1]")
         txt = XmlUtils.to_text(p1).lower()
         if txt == "reserved":
@@ -200,38 +256,37 @@ class ValueTableExtractor(FigureExtractor):
         else:
             # if we hit this, some figure actually has a dedicated attribute
             # column where the text contains a an explicitly-given short-hand/label
-            breakpoint()
+            pass
         return txt_parts[0].replace(" ", "_").upper()
 
     def _extract_label(self, row: Element, row_key: str, data: Element) -> str:
         if self._col_ndx_content != self._col_ndx_label:
-            lbl = self._extract_label_dedicated_col(row, row_key)
-            if lbl.lower() == "reserved":
+            label = self._extract_label_dedicated_col(row, row_key)
+            if label.upper() == RESERVED:
                 return RESERVED
         else:
-            p1 = Xpath.elem_first_req(data, "./p[1]")
-            txt: str = "".join(
-                e.decode("utf-8") if isinstance(e, bytes) else e for e in p1.itertext()
-            ).strip()
-            if txt.lower() == "reserved":
+            text: Optional[str] = extract_content(data)
+            if text is None:
+                self.add_issue(LintErr.LBL_EXTRACT_ERR, row_key=row_key)
+                raise Exception("Could not extract label")
+            if text.upper() == RESERVED:
                 return RESERVED
-            txt_parts = txt.split(":", 1)
-            if txt_parts[0] == txt_parts:
-                # TODO: The typing here is off, `txt_parts`` will be a list of
-                # strings So you are comparing a string with a list of strings.
-                # When will this work?
+            match = VALUE_LABEL_REGEX.regex.match(text)
+            if match is None:
+                self.add_issue(LintErr.LBL_EXTRACT_ERR, row_key=row_key)
+                label = text
+            elif match.group("label") is not None and match.group("label") != "":
+                label = match.group("label")
+            else:
+                self.add_issue(LintErr.LBL_EXTRACT_ERR, row_key=row_key)
+                label = text
 
-                # to infer labels, we need the text to be of the form
-                # 'Foo Bar Baz: lorem ipsum...' - if no colon is found, this is
-                # not the case, ergo we cannot reliably extract a label.
-                # TODO: fix, must have the cleaned value here, for reporting
-                self.add_issue(LintErr.LBL_IMPUTED, row_key=row_key)
-            # generic naming strategy
-            lbl = txt_parts[0].replace(" ", "_").upper()
-        validate_label(lbl, self.fig_id, row_key, self.linter)
-        return lbl
+        label = normalize_label(label)
+        validate_label(label, self.fig_id, row_key, self.linter)
+        return label
 
     def _content_extract_brief(
         self, row: Element, row_key: str, data: Element
     ) -> Optional[str]:
-        return content_extract_brief(row, data, self.BRIEF_MAXLEN)
+        content = self.content_elem(row)
+        return content_extract_brief(XmlUtils.to_text(content), self.BRIEF_MAXLEN)

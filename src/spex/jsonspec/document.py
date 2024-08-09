@@ -2,7 +2,9 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
+import traceback
 from re import compile as re_compile
+from re import sub
 from typing import TYPE_CHECKING, Dict, Iterator, List, Optional, Tuple, Type, TypeAlias
 
 from loguru import logger
@@ -12,7 +14,7 @@ from spex.jsonspec.extractors.structtable import BitsTableExtractor, BytesTableE
 from spex.jsonspec.extractors.valuetable import ValueTableExtractor
 from spex.jsonspec.lint import LintEntry, Linter, LintErr
 from spex.jsonspec.parserargs import ParserArgs
-from spex.logging import ULog
+from spex.log import ULog
 from spex.xml import XmlUtils, Xpath
 
 if TYPE_CHECKING:
@@ -70,8 +72,7 @@ class DocumentParser:
         self._unwind_parse_error = False
         self.__fig_id_missing_counter = 0
 
-    def __post_init__(self) -> None:
-        ...
+    def __post_init__(self) -> None: ...
 
     @property
     def args(self) -> ParserArgs:
@@ -82,7 +83,6 @@ class DocumentParser:
     def tbl_normalize_mappings(self) -> Dict[str, str]:
         return {
             "code": "value",
-            "definition": "description",
             "bit": "bits",
             "byte": "bytes",
         }
@@ -222,6 +222,8 @@ class DocumentParser:
         """
 
         def normalize_hdr(hdr: str) -> str:
+            # some headers have newlines and use spaces for indentation, strip
+            hdr = sub(" +", " ", hdr.replace("\n", " ").replace("\r", "")).strip()
             replacement = self.tbl_normalize_mappings.get(hdr, None)
             if replacement is not None:
                 self.linter.add_issue(
@@ -253,9 +255,12 @@ class DocumentParser:
         fig_id = entity["fig_id"]
         tbl_hdrs = self.extract_tbl_headers(fig_id, tbl)
         extractor_cls = self.fig_extractor_overrides.get(fig_id, None)
+        mapping = None
+
         if extractor_cls is None:
             for ecls in self.extractors:
-                if ecls.can_apply(tbl_hdrs):
+                mapping = ecls.can_apply(tbl_hdrs)
+                if mapping is not None:
                     extractor_cls = ecls
                     break
             if extractor_cls is None:
@@ -263,7 +268,15 @@ class DocumentParser:
                     LintErr.TBL_SKIPPED, fig_id, ctx={"columns": cast_json(tbl_hdrs)}
                 )
                 return
+        else:
+            # extractor_cls not None, class gotten from override
+            mapping = extractor_cls.can_apply(tbl_hdrs)
+            if mapping is None:
+                raise RuntimeError(
+                    "override class failed to detect columns to extract from"
+                )
 
+        assert mapping is not None  # only needed to appease type-checking
         e = extractor_cls(
             doc_parser=self,
             entity_meta=entity,
@@ -271,7 +284,8 @@ class DocumentParser:
             tbl_hdrs=tbl_hdrs,
             parse_fn=self._on_parse_fig,
             linter=self.__linter,
-        )
+            mapping=mapping,
+        )  # type: ignore
         with logger.contextualize(
             entity=entity,
             doc={"spec": self.spec, "revision": self.revision},
@@ -283,14 +297,20 @@ class DocumentParser:
                     yield from gen
                     break
                 except Exception as err:
+                    traceback.print_exc()
                     if not self._unwind_parse_error:
+                        if self.args.verbose:
+                            traceback.print_exc()
                         logger.log(ULog.ERROR, f"failed parsing figure {entity!r}")
                         logger.exception("exception when parsing figure")
                         self._unwind_parse_error = True
+                        ctx: Dict[str, JSON] = {}
+                        if "title" in entity:
+                            ctx["title"] = entity["title"]
                         self.linter.add_issue(
                             LintErr.TBL_PARSE_ERR,
                             entity["fig_id"],
-                            ctx={"title": entity["title"]},
+                            ctx=ctx,
                         )
                     else:
                         logger.log(ULog.ERROR, f"  in {entity!r}")
