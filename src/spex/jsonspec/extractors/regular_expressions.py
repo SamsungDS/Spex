@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2023 Samsung Electronics Co., Ltd
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+
 from dataclasses import dataclass
 from re import DOTALL, Pattern, compile
 from typing import Optional, Tuple
