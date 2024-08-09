@@ -81,7 +81,6 @@ def test_struct_basic_ellipsis_all_column(
                     "label": "test1",
                     "brief": "This describes a brief, very brief",
                 },
-                {"range": {"low": -1, "high": -1}, "label": "…"},
                 {
                     "range": {"low": 8, "high": 10},
                     "label": "test2",

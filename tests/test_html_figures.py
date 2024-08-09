@@ -19,7 +19,7 @@ from .utility import *  # noqa
 def test_bits_fig37(
     html_parser: Callable[[str, bool], List[EntityMeta]],
     html_loader: Callable[[str | Path], str],
-):
+) -> None:
     """Simple test case that simulates figure 37 from the
     NVM Express® Base Specification.
 
@@ -52,7 +52,7 @@ def test_bits_fig37(
 def test_bits_fig41(
     html_parser: Callable[[str, bool], List[EntityMeta]],
     html_loader: Callable[[str | Path], str],
-):
+) -> None:
     """Simple test case that simulates figure 37 from the
     NVM Express® Base Specification.
 
@@ -61,12 +61,13 @@ def test_bits_fig41(
     """
     html = html_loader("tests/resources/nvme_base_fig41.html")
     json_doc = html_parser(html, True)
+    print(json_doc)
 
 
 def test_bits_fig47(
     html_parser: Callable[[str, bool], List[EntityMeta]],
     html_loader: Callable[[str | Path], str],
-):
+) -> None:
     """Test case that simulates figure 47 from the
     NVM Express® Base Specification.
 
@@ -104,10 +105,23 @@ def test_bits_fig47(
     assert json_doc == expected_json
 
 
+@pytest.mark.xfail(
+    reason="This will not succeed, it will be an acceptance test for the"
+    " correctness of Spex, currently its is missing support for dynamic tables"
+)
+def test_bytes_fig92(
+    html_parser: Callable[[str, bool], List[EntityMeta]],
+    html_loader: Callable[[str | Path], str],
+) -> None:
+    html = html_loader("tests/resources/nvme_base_fig92.html")
+    json_doc = html_parser(html, False)
+    print(json_doc)
+
+
 def test_bytes_fig93(
     html_parser: Callable[[str, bool], List[EntityMeta]],
     html_loader: Callable[[str | Path], str],
-):
+) -> None:
     """Simple test case that simulates figure 93 from the
     NVM Express® Base Specification.
 
@@ -158,23 +172,64 @@ def test_bytes_fig93(
 def test_bytes_fig95(
     html_parser: Callable[[str, bool], List[EntityMeta]],
     html_loader: Callable[[str | Path], str],
-):
+) -> None:
     """Advanced test case that simulates figure 94 from the
     NVM Express® Base Specification.
 
     This figure contains a byte table with a embedded bit table that contains
     yet another value table.
 
-    Currently this won't succeed.
     """
     html = html_loader("tests/resources/nvme_base_fig95.html")
     json_doc = html_parser(html, False)
+    assert json_doc == [
+        {
+            "fig_id": "95_14",
+            "parent_fig_id": "95",
+            "type": "values",
+            "fields": [
+                {"val": "00b", "label": "NO_DATA_TRANSFFERED"},
+                {"val": "01b", "label": "RESERVED"},
+                {
+                    "val": "10b",
+                    "label": "DATA_TRANSFERRED",
+                    "brief": "This value is used for"
+                    " Fabrics commands that transfer data",
+                },
+                {"val": "11b", "label": "RESERVED"},
+            ],
+        },
+        {
+            "title": "Figure 95: Fabrics Command – Command Dword 0",
+            "fig_id": "95",
+            "type": "bits",
+            "fields": [
+                {
+                    "range": {"low": 0, "high": 7},
+                    "label": "opc",
+                    "brief": "This field is set to 7Fh to specify a Fabrics command",
+                },
+                {
+                    "range": {"low": 8, "high": 9},
+                    "label": "fuse",
+                    "brief": "Refer to Figure 91",
+                },
+                {"range": {"low": 10, "high": 13}, "label": "RESERVED"},
+                {"range": {"low": 14, "high": 15}, "label": "psdt"},
+                {
+                    "range": {"low": 16, "high": 31},
+                    "label": "cid",
+                    "brief": "Refer to Figure 91",
+                },
+            ],
+        },
+    ]
 
 
 def test_bytes_fig94(
     html_parser: Callable[[str, bool], List[EntityMeta]],
     html_loader: Callable[[str | Path], str],
-):
+) -> None:
     """Advanced test case that simulates figure 94 from the
     NVM Express® Base Specification.
 
@@ -241,7 +296,7 @@ def test_bytes_fig94(
 def test_values_fig101(
     html_parser: Callable[[str, bool], List[EntityMeta]],
     html_loader: Callable[[str | Path], str],
-):
+) -> None:
     """Simple test case that simulates figure 101 from the
     NVM Express® Base Specification.
 
@@ -272,6 +327,88 @@ def test_values_fig101(
     assert json_doc == expected_rtrn
 
 
+def test_values_fig113(
+    html_parser: Callable[[str, bool], List[EntityMeta]],
+    html_loader: Callable[[str | Path], str],
+) -> None:
+    """Simple test case that simulates figure 101 from the
+    NVM Express® Base Specification.
+
+    This table is a simple table containing three columns with headers
+    `Value`, `Description` and `References`.
+
+    This is interesting because its the base case for values with an extra
+    column compared to the value base case.
+    """
+    html = html_loader("tests/resources/nvme_base_fig113.html")
+    json = html_parser(html, True)
+    assert json == [
+        {
+            "title": "Figure 113: SGL Segment",
+            "fig_id": "113",
+            "type": "bytes",
+            "fields": [
+                {
+                    "label": "sd0",
+                    "range": {"low": "00", "high": "15"},
+                    "brief": "This field is the first SGL descriptor",
+                },
+                {
+                    "label": "sd1",
+                    "range": {"low": "16", "high": "31"},
+                    "brief": "This field is the second SGL descriptor",
+                },
+                {
+                    "label": "sdn",
+                    "range": {"low": "(n*16)", "high": "((n*16)+15)"},
+                    "brief": "This field is the last SGL descriptor",
+                },
+            ],
+        }
+    ]
+
+
+def test_values_fig213(
+    html_parser: Callable[[str, bool], List[EntityMeta]],
+    html_loader: Callable[[str | Path], str],
+) -> None:
+    """Simple test case that simulates figure 101 from the
+    NVM Express® Base Specification.
+
+    """
+    html = html_loader("tests/resources/nvme_base_fig213.html")
+    json_doc = html_parser(html, True)
+    expected_rtrn = [
+        {
+            "fig_id": "213_9",
+            "parent_fig_id": "213",
+            "type": "values",
+            "fields": [
+                {
+                    "val": "000b",
+                    "label": "THE_CONTROLLER_DETERMINES_THE_DATA_AREAS_TO_BE_CREATED_IN_THE_LOG_PAGE",  # noqa
+                },
+                {"val": "001b", "label": "DATA_AREA_1"},
+                {"val": "010b", "label": "DATA_AREA_1_THROUGH_DATA_AREA_2"},
+                {"val": "011b", "label": "DATA_AREA_1_THROUGH_DATA_AREA_3"},
+                {"val": "100b", "label": "DATA_AREA_1_THROUGH_DATA_AREA_4"},
+                {"val": "101b to 111b", "label": "RESERVED"},
+            ],
+        },
+        {
+            "title": "Figure 213: Telemetry Host-Initiated Log\n            Specific Parameter Field",  # noqa
+            "fig_id": "213",
+            "type": "bits",
+            "fields": [
+                {"range": {"low": 8, "high": 8}, "label": "cthid"},
+                {"range": {"low": 9, "high": 11}, "label": "mcda"},
+                {"range": {"low": 12, "high": 14}, "label": "RESERVED"},
+            ],
+        },
+    ]
+    assert json_doc == expected_rtrn
+
+
 @pytest.mark.xfail(
     reason="This will not succeed, it will be an acceptance test for the"
     " correctness of Spex, currently its is missing support for dynamic tables"
@@ -279,7 +416,7 @@ def test_values_fig101(
 def test_bytes_fig335(
     html_parser: Callable[[str, bool], List[EntityMeta]],
     html_loader: Callable[[str | Path], str],
-):
+) -> None:
     """Advanced test case that simulates figure 335 from the
     NVM Express® Base Specification.
 
@@ -310,7 +447,7 @@ def test_bytes_fig335(
                 {
                     "range": {"low": -1, "high": -1},
                     "label": "…",
-                },  # TODO: This should not be part of the output?
+                },
                 {
                     "range": {"low": 576, "high": 576},
                     "label": "ften",
@@ -324,7 +461,7 @@ def test_bytes_fig335(
 def test_bytes_fig559(
     html_parser: Callable[[str, bool], List[EntityMeta]],
     html_loader: Callable[[str | Path], str],
-):
+) -> None:
     """Test case that simulates figure 559 from the
     NVM Express® Base Specification.
 

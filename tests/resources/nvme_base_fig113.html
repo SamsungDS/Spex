@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" data-spec="Spex test case" data-revision="1" />
+    <title>Spex test case</title>
+
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        p:first-child {
+            margin-top: .3em;
+        }
+
+        p:last-child {
+            margin-bottom: .3em;
+        }
+
+        p {
+            margin-top: 0em;
+            margin-left: .2em;
+            margin-right: .2em;
+        }
+
+        table,
+        td,
+        th {
+            border-collapse: collapse;
+            border: 1px solid black;
+            ;
+        }
+
+        table {
+            margin-left: .3em;
+            margin-right: .3em;
+            margin-bottom: 3em;
+            margin-top: 1em;
+        }
+
+        td table {
+            margin-bottom: 1em;
+        }
+    </style>
+</head>
+
+<body>
+<table>
+  <tr>
+   <td colspan="2">
+    <p>
+     <span>Figure </span><span>113</span><span>: SGL Segment</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <th class="tcell0">
+    <p>
+     <span>Bytes</span>
+    </p>
+   </th>
+   <th class="tcell0">
+    <p>
+     <span>Description</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <th colspan="2" class="tcell0">
+    <p>
+     <span>SGL Descriptor List</span>
+    </p>
+   </th>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>15:00</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">SGL Descriptor 0</span><span class="txtfmt1">: </span><span>This field is the first SGL desc</span><span>riptor.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>31:16</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">SGL Descriptor 1</span><span class="txtfmt1">:</span><span> </span><span>This field is the </span><span>second</span><span> SGL descriptor.</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>…</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span>…</span>
+    </p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <p>
+     <span>((n*16)+15):(n*16)</span>
+    </p>
+   </td>
+   <td>
+    <p>
+     <span class="txtfmt1">SGL Descriptor n</span><span class="txtfmt1">:</span><span> </span><span>This field is the </span><span>last</span><span> SGL descriptor.</span>
+    </p>
+   </td>
+  </tr>
+ </table>
+</body>
+</html>
