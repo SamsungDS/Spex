@@ -108,6 +108,9 @@ def main() -> None:
     cli_parser.add_argument(
         "--validate-json", action=argparse.BooleanOptionalAction, default=False
     )
+    cli_parser.add_argument(
+        "-v", "--verbose", action=argparse.BooleanOptionalAction, default=False
+    )
     cli_parser.add_argument("--lint-ignore", type=arg_lintcode, default=[])
 
     args = cli_parser.parse_args()
@@ -121,6 +124,7 @@ def main() -> None:
         skip_fig_on_error=args.skip_fig_on_error,
         lint_codes_ignore=args.lint_ignore,
         validate_json=args.validate_json,
+        verbose=args.verbose,
     )
 
     try:
@@ -179,7 +183,8 @@ def main() -> None:
                 ]
             ),
         )
-        traceback.print_exc()
+        if pargs.verbose:
+            traceback.print_exc()
         sys.exit(1)
 
 
