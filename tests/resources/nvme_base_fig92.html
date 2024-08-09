@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" data-spec="Spex test case" data-revision="1" />
+  <title>Spex test case</title>
+
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+
+    p:first-child {
+      margin-top: .3em;
+    }
+
+    p:last-child {
+      margin-bottom: .3em;
+    }
+
+    p {
+      margin-top: 0em;
+      margin-left: .2em;
+      margin-right: .2em;
+    }
+
+    table,
+    td,
+    th {
+      border-collapse: collapse;
+      border: 1px solid black;
+      ;
+    }
+
+    table {
+      margin-left: .3em;
+      margin-right: .3em;
+      margin-bottom: 3em;
+      margin-top: 1em;
+    }
+
+    td table {
+      margin-bottom: 1em;
+    }
+  </style>
+</head>
+
+<body>
+
+  <table>
+    <tr>
+      <td colspan="2">
+        <p>
+          <span>Figure </span><span>92</span><span>: Common Command Format</span>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th class="tcell0">
+        <p>
+          <span>Bytes</span>
+        </p>
+      </th>
+      <th class="tcell0">
+        <p>
+          <span>Description</span>
+        </p>
+      </th>
+    </tr>
+    <tr>
+      <td>
+        <p>
+          <span>03:00</span>
+        </p>
+      </td>
+      <td>
+        <p>
+          <span class="txtfmt1">Command Dword 0 (CDW0): </span><span>This field is common to all commands and is defined
+            in </span><span>Figure </span><span>91</span><span>.</span>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>
+          <span>07:04</span>
+        </p>
+      </td>
+      <td>
+        <p>
+          <span class="txtfmt1">Namespace Identifier (NSID): </span><span>This field specifies the namespace that this
+            command applies to. If the namespace identifier is not used for the command, then this field shall be
+            cleared to 0h. The value FFFFFFFFh in this field is a broadcast value (refer to section
+          </span><span>3.2.1.2</span><span>), where the scope (e.g., the NVM subsystem, all attached namespaces, or all
+            namespaces in the NVM subsystem) is dependent on the command. Refer to </span><span>Figure
+          </span><span>141</span><span> and </span><span>Figure </span><span>553</span><span> for commands that support
+            the use of the value FFFFFFFFh in this field.</span>
+        </p>
+        <p>
+          <span>Specifying an inactive namespace identifier (refer to section </span><span>3.2.1.4</span><span>) in a
+            command that uses the namespace identifier shall cause the controller to abort the command with a status
+            code of Invalid Field in Command, unless otherwise spe</span><span>cified. Specifying an invalid namespace
+            identifier (refer to section </span><span>3.2.1.2</span><span>) in a command that uses the namespace
+            identifier shall cause the controller to abort the command with a status code of Invalid Namespace or
+            Format, unless otherwise specified.</span>
+        </p>
+        <p>
+          <span>If the namespace identifier is used for the command (refer to </span><span>Figure
+          </span><span>141</span><span>), the value FFFFFFFFh is not supported for that command, and the host specifies
+            a value of FFFFFFFFh, then the controller shall abort the command with a status code of Invalid Field in
+            Command, unless otherwise specified.</span>
+        </p>
+        <p>
+          <span>If the namespace identifier is not used for the command and the host specifies a value from 1h to
+            FFFFFFFFh, then the controller shall abort the command with a status code of Invalid Field in Command,
+            unless otherwise specified.</span>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>
+          <span>11:08</span>
+        </p>
+      </td>
+      <td>
+        <p>
+          <span class="txtfmt1">Command Dword 2 (CDW2):</span><span> This field is command specific Dword2.</span>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>
+          <span>15:12</span>
+        </p>
+      </td>
+      <td>
+        <p>
+          <span class="txtfmt1">Command Dword 3 (CDW3): </span><span>This field is command specific Dword3.</span>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>
+          <span>23:16</span>
+        </p>
+      </td>
+      <td>
+        <p>
+          <span class="txtfmt1">Metadata Pointer (MPTR): </span><span>If CDW0.PSDT (refer to </span><span>Figure
+          </span><span>91</span><span> is cleared to 00b, then this field shall contain the address of a contiguous
+            physical buffer of metadata and that address shall be dword aligned (i.e., bits 1:0 cleared to 00b). The
+            controller is not required to check that bits 1:0 are cleared to 00b. The controller may report an error of
+            Invalid Field in Command if bits 1:0 are not cleared to 00b. If the controller does not report an error of
+            Invalid Field in Command, then the controller shall operate as if bits 1:0 are cleared to 00b.</span>
+        </p>
+        <p>
+          <span>If CDW0.PSDT is set to 01b, then this field shall contain the address of a contiguous physical buffer of
+            metadata. Refer to </span><span>the Metadata Buffer Alignment (MBA) </span><span>bit of the SGLS field in
+            the Identify Controller data structure for alignment requirements.</span>
+        </p>
+        <p>
+          <span>If CDW0.PSDT is set to 10b, then this field shall contain the address of an SGL segment that contains
+            exactly one SGL Descriptor. The address of that SGL segment shall be qword aligned (i.e., bits 2:0 cleared
+            to 000b). The SGL Descriptor contained in that SGL segment is the first SGL Descriptor of the metadata for
+            the command. If the SGL Descriptor contained in that SGL segment is an SGL Data Block descriptor, then that
+            SGL Data Block Descriptor is the only SGL Descriptor and therefore describes the entire metadata data
+            transfer. Refer to section </span><span>4.3.2</span><span>. The controller is not required to check that
+            bits 2:0 are cleared to 000b. The controller may report an error of Invalid Field in Command if bits 2:0 are
+            not cleared to 000b. If the controller does not report an error of Invalid Field in Command, then the
+            controller shall operate as if bits 2:0 are cleared to 000b.</span>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>
+          <span>39:24</span>
+        </p>
+      </td>
+      <td>
+        <p>
+          <span class="txtfmt1">Data Pointer (DPTR): </span><span>This field specifies the data used in the
+            command.</span>
+        </p>
+        <p>
+          <span>If CDW0.PSDT is cleared to 00b, then the definition of this field is:</span>
+        </p>
+        <table>
+          <tr>
+            <td>
+              <p>
+                <span>39:32</span>
+              </p>
+            </td>
+            <td>
+              <p>
+                <span class="txtfmt1">PRP Entry 2 (PRP2): </span><span>This field:</span>
+              </p>
+              <ul class="ul176">
+                <li>
+                  <span>is reserved if the data transfer does not cross a memory page boundary;</span>
+                </li>
+                <li>
+                  <span>specifies the Page Base Address of the second memory page if the data transfer crosses exactly
+                    one memory page boundary. E.g.,:</span>
+                  <ul class="ul176">
+                    <li>
+                      <span>the command data transfer length is equal in size to one memory page and the offset portion
+                        of the PBAO field of PRP1 is non-zero; or</span>
+                    </li>
+                    <li>
+                      <span>the Offset portion of the PBAO field of PRP1 is equal to 0h and the command data transfer
+                        length is greater than one memory page and less than or equal to two memory pages in
+                        size;</span>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+              <p>
+                <span>and</span>
+              </p>
+              <ul class="ul110">
+                <li>
+                  <span>is a PRP List pointer if the data transfer crosses more than one memory page boundary.
+                    E.g.,:</span>
+                  <ul class="ul110">
+                    <li>
+                      <span>the command data transfer length is greater than or equal to two memory pages in size but
+                        the offset portion of the PBAO field of PRP1 is non-zero; or</span>
+                    </li>
+                    <li>
+                      <span>the command data transfer length is equal in size to more than two memory pages and the
+                        Offset portion of the PBAO field of PRP1 is equal to 0h.</span>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p>
+                <span>31:24</span>
+              </p>
+            </td>
+            <td>
+              <p>
+                <span class="txtfmt1">PRP Entry 1 (PRP1): </span><span>This field contains</span><span>:</span>
+              </p>
+              <ul class="ul110">
+                <li>
+                  <span>the first PRP entry for the command</span><span>;</span><span> or</span>
+                </li>
+                <li>
+                  <span>a PRP List pointer</span><span>,</span>
+                </li>
+              </ul>
+              <p>
+                <span>depending on the command</span><span> (e.g., the Create I/O Completion Queue command (refer to
+                </span><span>Figure </span><span>471</span><span>))</span><span>.</span>
+              </p>
+            </td>
+          </tr>
+        </table>
+        <p>
+          <span>If CDW0.PSDT is set to 01b or 10b, then the definition of this field is:</span>
+        </p>
+        <table>
+          <tr>
+            <td>
+              <p>
+                <span>39:24</span>
+              </p>
+            </td>
+            <td>
+              <p>
+                <span class="txtfmt1">SGL Entry 1 (SGL1): </span><span>This field contains the first SGL segment for the
+                  command. If the SGL segment is an SGL Data Block or Keyed SGL Data Block or Transport SGL Data Block
+                  descriptor, then it describes the entire data transfer. If more than one SGL segment is needed to
+                  describe the data transfer, then the first SGL segment is a Segment, or Last Segment descriptor. Refer
+                  to section </span><span>4.3.2</span><span> for the definition of SGL segments and descriptor
+                  types.</span>
+              </p>
+              <p>
+                <span>The NVMe Transport may support a subset of SGL Descriptor types and features as defined in the
+                  NVMe Transport binding specification.</span>
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>
+          <span>43:40</span>
+        </p>
+      </td>
+      <td>
+        <p>
+          <span class="txtfmt1">Command Dword 10 (CDW10):</span><span> This field is command specific Dword 10.</span>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>
+          <span>47:44</span>
+        </p>
+      </td>
+      <td>
+        <p>
+          <span class="txtfmt1">Command Dword 11 (CDW11):</span><span> This field is command specific Dword 11.</span>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>
+          <span>51:48</span>
+        </p>
+      </td>
+      <td>
+        <p>
+          <span class="txtfmt1">Command Dword 12 (CDW12):</span><span> This field is command specific Dword 12.</span>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>
+          <span>55:52</span>
+        </p>
+      </td>
+      <td>
+        <p>
+          <span class="txtfmt1">Command Dword 13 (CDW13):</span><span> This field is command specific Dword 13.</span>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>
+          <span>59:56</span>
+        </p>
+      </td>
+      <td>
+        <p>
+          <span class="txtfmt1">Command Dword 14 (CDW14):</span><span> This field is command specific Dword 14.</span>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>
+          <span>63:60</span>
+        </p>
+      </td>
+      <td>
+        <p>
+          <span class="txtfmt1">Command Dword 15 (CDW15):</span><span> This field is command specific Dword 15.</span>
+        </p>
+      </td>
+    </tr>
+  </table>
+
+</body>
+
+</html>
