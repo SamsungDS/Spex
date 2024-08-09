@@ -49,8 +49,7 @@ class FigureExtractor(ABC):
         self.__linter = linter
         self.__post_init__()
 
-    def __post_init__(self) -> None:
-        ...
+    def __post_init__(self) -> None: ...
 
     @property
     def entity_meta(self) -> "EntityMeta":

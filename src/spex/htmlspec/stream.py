@@ -9,8 +9,7 @@ T = TypeVar("T")
 
 
 class SupportsNext(Protocol[_T_co]):
-    def __next__(self) -> _T_co:
-        ...
+    def __next__(self) -> _T_co: ...
 
 
 class Stream(Generic[_T_co]):
