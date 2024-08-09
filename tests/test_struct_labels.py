@@ -13,7 +13,7 @@ def test_label_bits_table_with_brief(
     html_parser: Callable[[str, bool], List[EntityMeta]],
     html_doc: Callable[[str], str],
     html_table: Callable[[List[List[str]]], str],
-):
+) -> None:
     table = [
         ["Bits", "Description"],
         ["07:00", "This is the name(TEST): This describes a brief"],
@@ -41,7 +41,7 @@ def test_label_bytes_table_with_brief(
     html_parser: Callable[[str, bool], List[EntityMeta]],
     html_doc: Callable[[str], str],
     html_table: Callable[[List[List[str]]], str],
-):
+) -> None:
     table = [
         ["Bytes", "Description"],
         ["07:00", "This is the name(TEST): This describes a brief, very brief."],
@@ -70,7 +70,7 @@ def test_label_bits_table_without_brief(
     html_parser: Callable[[str, bool], List[EntityMeta]],
     html_doc: Callable[[str], str],
     html_table: Callable[[List[List[str]]], str],
-):
+) -> None:
     table = [
         ["Bits", "Description"],
         ["07:00", "This is the name(TEST)"],
@@ -92,7 +92,7 @@ def test_label_bytes_table_without_brief(
     html_parser: Callable[[str, bool], List[EntityMeta]],
     html_doc: Callable[[str], str],
     html_table: Callable[[List[List[str]]], str],
-):
+) -> None:
     table = [
         ["Bytes", "Description"],
         ["07:00", "This is the name(TEST)"],

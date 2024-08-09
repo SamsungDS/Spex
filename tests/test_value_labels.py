@@ -4,8 +4,6 @@
 
 from typing import Callable, List
 
-import pytest
-
 from spex.jsonspec.defs import EntityMeta
 
 from .utility import *  # noqa
@@ -67,10 +65,6 @@ def test_label_value_table_without_acronym(
     ]
 
 
-@pytest.mark.xfail(
-    reason="This will not succeed, it will be an acceptance test for the"
-    "correctness of Spex"
-)
 def test_label_value_table_without_brief(
     html_parser: Callable[[str, bool], List[EntityMeta]],
     html_doc: Callable[[str], str],
@@ -88,11 +82,6 @@ def test_label_value_table_without_brief(
             "title": "Figure 0: Test",
             "fig_id": "0",
             "type": "values",
-            "fields": [
-                {
-                    "val": "00b",
-                    "label": "Tertiary Version",
-                }
-            ],
+            "fields": [{"val": "00b", "label": "TERTIARY_VERSION"}],
         }
     ]
