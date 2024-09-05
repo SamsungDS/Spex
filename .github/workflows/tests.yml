@@ -2,14 +2,12 @@
 name: Tests
 
 on:
-  push:
+  workflow_run:
+    workflows: [Build]
+    types:
+      - completed
     branches:
-    - '*'
-    tags:
-    - '*'
-  pull_request:
-    types: [opened, reopened, synchronize]
-    branches: [main]
+      - "*"
 
 defaults:
   run:
@@ -19,8 +17,8 @@ jobs:
   tests:
     name: pytests
     runs-on: ubuntu-22.04
-
     steps:
+
     - uses: actions/setup-python@v4
       with:
         python-version: '3.11' 
