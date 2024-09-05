@@ -13,8 +13,8 @@ defaults:
     shell: bash
 
 jobs:
-  build-using-nix:
-    name: Build using nix environment
+  build:
+    name: Build
     runs-on: ubuntu-22.04
     env:
       TZ: UTC
