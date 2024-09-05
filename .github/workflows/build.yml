@@ -16,7 +16,8 @@ jobs:
   build-using-nix:
     name: Build using nix environment
     runs-on: ubuntu-22.04
-
+    env:
+      TZ: UTC
     steps:
       - name: git checkout
         uses: actions/checkout@v3.1.0
@@ -30,8 +31,8 @@ jobs:
       - name: check code integrity
         run:  nix develop --command make check
 
-      - name: check docs
-        run:  nix develop --command make docs
+      - name: Check docs
+        run: nix develop --command make docs
 
       - name: check REUSE compliance
         run:  nix-shell -p reuse --run "reuse lint"

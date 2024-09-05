@@ -12,7 +12,8 @@ defaults:
 jobs:
   generate-docs:
     runs-on: ubuntu-22.04
-
+    env:
+      TZ: UTC
     steps:
     - name: git checkout
       uses: actions/checkout@v3.1.0
