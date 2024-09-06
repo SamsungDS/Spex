@@ -43,7 +43,7 @@ jobs:
           nix develop --command make build
 
       - name: Upload the artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: python-build-artifacts
           path: dist/
