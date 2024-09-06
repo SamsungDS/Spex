@@ -29,10 +29,14 @@ jobs:
     - name: git checkout
       uses: actions/checkout@v4
 
+    - name: Fetch python build artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: python-build-artifacts
+
     - name: build and install
       run: |
-        pip install build
-        make clean build install
+        make install
 
     - name: run checks
       run: |
