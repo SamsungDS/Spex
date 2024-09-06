@@ -11,7 +11,7 @@ set -ex
 
 for file in ./dist/nvme_*.tar.gz ; do
     if [ -e "$file" ] ; then
-        pipx install --include-deps --force "$file[dev,spexsrv]"
+        pipx install --include-deps --force "$file[dev]"
         pipx ensurepath
     fi
 done

@@ -22,7 +22,8 @@ dependencies = [
     "loguru>=0.6,<0.8",
     "jsonschema>=4.21.1",
     "gcgen",
-    "types-jsonschema"
+    "types-jsonschema",
+    "quart",
 ]
 dynamic = ["version"]
 
@@ -35,8 +36,8 @@ spexsrv = "spexsrv.__main__:main"
 spex = "spex.__main__:main"
 
 [project.optional-dependencies]
-spexsrv = ["quart"]
 dev = [
+    "build",
     "pytest",
     "mypy",
     "black",
@@ -53,7 +54,7 @@ dev = [
     "twine",
     "types-setuptools",
     "reuse"]
-all = ["nvme-spex[spexsrv,dev]"]
+all = ["nvme-spex[dev]"]
 
 [tool.pytest.ini_options]
 pythonpath = [ "src" ]
