@@ -7,6 +7,9 @@ on:
     - '*'
     tags:
     - '*'
+  pull_request:
+    branches:
+    - '*'
 
 defaults:
   run:
@@ -14,13 +17,13 @@ defaults:
 
 jobs:
   build:
-    name: Build
+    name: Build python package
     runs-on: ubuntu-22.04
     env:
       TZ: UTC
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v3.1.0
+        uses: actions/checkout@v4.1.7
 
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
@@ -39,11 +42,44 @@ jobs:
 
       - name: Build Release Package
         run: |
-          echo "Building packge"
-          nix develop --command make build
+          echo "Building package"
+          nix develop --command make clean build
 
       - name: Upload the artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: python-build-artifacts
           path: dist/
+
+  tests:
+    name: Test python package
+    runs-on: ubuntu-22.04
+    needs: build
+    steps:
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Set PIPX_DEFAULT_PYTHON
+        run: |
+          echo "PIPX_DEFAULT_PYTHON=$(which python3)" >> $GITHUB_ENV
+
+      - name: git checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch python build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: python-build-artifacts
+
+      - name: install
+        run: |
+          pip install build
+          make install
+
+      - name: run checks
+        run: |
+          make check
+
+      - name: run tests
+        run: |
+          make tests
