@@ -107,5 +107,7 @@ jobs:
       - name: Upload Release to PyPI
         run: |
           echo "Uploading source code"
-          nix develop --command python -m twine upload --verbose --non-interactive --skip-existing -u '__token__' -p ${{ secrets.PYPI_API_TOKEN }} dist/*
+          ls -lha
+          ls -lha dist
+          nix develop --command python -m twine upload --verbose --non-interactive --skip-existing -u '__token__' -p ${{ secrets.PYPI_API_TOKEN }} dist/
      
