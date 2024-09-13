@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Samsung Electronics Co., Ltd
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 ARG DOCKER_BUILDKIT=1
 
 FROM python:3.11-slim as python-base
