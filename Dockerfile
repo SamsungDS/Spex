@@ -22,6 +22,8 @@ RUN pip install --upgrade pip
 
 
 COPY dist/*.tar.gz ${WORK_DIR}/dist/nvme_spex.tar.gz
+COPY scripts/cmd.sh .
 RUN pip install hypercorn dist/nvme_spex.tar.gz[spexsrv]
 
-CMD hypercorn --reload --bind 0.0.0.0:8000 spexsrv.application.app:app
+ENTRYPOINT [ "./cmd.sh" ]
+CMD ["webserver"]
