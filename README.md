@@ -87,7 +87,7 @@ docker pull ghcr.io/samsungds/nvme-spex-webserver:latest
 docker run -p 8000:8000 ghcr.io/samsungds/nvme-spex-webserver:latest
 ```
 
-When the docker image is successfully running the web application can be
+When the docker container is successfully running the web application can be
 accessed in the browser at http://localhost:8000 .
 
 **Note** for Windows it is possible to install docker though the docker
