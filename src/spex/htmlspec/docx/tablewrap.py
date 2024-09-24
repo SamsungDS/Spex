@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-import dataclasses as dc
+from dataclasses import dataclass
 from enum import Enum
 from typing import List
 
@@ -17,7 +17,7 @@ class VMerge(Enum):
     RESTART = 2
 
 
-@dc.dataclass()
+@dataclass()
 class GridElement:
     cell: _Element
     top: int
