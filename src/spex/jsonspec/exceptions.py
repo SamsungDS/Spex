@@ -49,3 +49,11 @@ class XPathInvalidQueryException(XPathException):
         self.message: str = message
         self.query: Optional[str] = query
         self.details: Optional[Any] = details
+
+
+class LabelExtractionError(Exception):
+    """Custom exception raised for errors in label extraction."""
+
+    def __init__(self, message="Error occurred while extracting label"):
+        self.message = message
+        super().__init__(self.message)
