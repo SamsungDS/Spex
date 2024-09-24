@@ -38,9 +38,13 @@ class XmlUtils:
     def to_text(elem: XmlElem) -> str:
         if isinstance(elem, _ElementTree):
             elem = elem.getroot()
-        return "".join(
-            e.decode("utf-8") if isinstance(e, bytes) else e for e in elem.itertext()
-        ).strip()
+
+        def to_str(v: str | bytes) -> str:
+            if isinstance(v, bytes):
+                return v.decode("utf-8")
+            return v
+
+        return "".join(to_str(e) for e in elem.itertext()).strip()
 
 
 class Xpath:
