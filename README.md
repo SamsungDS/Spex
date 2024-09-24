@@ -8,6 +8,7 @@ SPDX-License-Identifier: BSD-3-Clause
 [![Build status](https://github.com/SamsungDS/Spex/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/SamsungDS/Spex/actions/workflows/build-docs.yml)
 [![python](https://img.shields.io/badge/Python-3.11+-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Mypy checked](https://img.shields.io/badge/mypy-checked-blue)](https://mypy-lang.org/)
 
 ## What is NVMe-Spex?
 NVMe-Spex is a tool for linting- and generating a structured representation of the
