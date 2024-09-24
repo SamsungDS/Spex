@@ -124,12 +124,7 @@ class ValueTableExtractor(FigureExtractor):
 
         self.validate_fields(fields)
 
-        yield {
-            # https://github.com/python/mypy/issues/4122#issuecomment-336924377
-            **self.entity_meta,  # type: ignore
-            "type": "values",
-            "fields": fields,
-        }
+        yield {**self.entity_meta, "fields": fields, "type": "values"}
 
     @staticmethod
     def value_column_hdrs() -> List[str]:
