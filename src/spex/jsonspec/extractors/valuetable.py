@@ -225,18 +225,7 @@ class ValueTableExtractor(FigureExtractor):
         return Xpath.elem_first_req(row, f"./td[{self._col_ndx_value + 1}]")
 
     def val_clean(self, row: Element, val_cell: Element) -> Union[str, int]:
-        # TODO: read as number if possible, complain if not a hex value using
-        # the 'h' suffix
-        # TODO: there are also tables using b suffix, is there
-        # always a suffix or..?
-        return (
-            "".join(
-                e.decode("utf-8") if isinstance(e, bytes) else e
-                for e in val_cell.itertext()
-            )
-            .strip()
-            .lower()
-        )
+        return XmlUtils.to_text(val_cell).lower()
 
     def content_elem(self, row: Element) -> Element:
         return Xpath.elem_first_req(row, f"./td[{self._col_ndx_content + 1}]")

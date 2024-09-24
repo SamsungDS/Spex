@@ -133,10 +133,7 @@ class DocumentParser:
 
     def _on_extract_figure_title(self, fig_tr: "Element") -> Optional[str]:
         """Extract title from figure table."""
-        assert fig_tr is not None
-        title = "".join(
-            e.decode("utf-8") if isinstance(e, bytes) else e for e in fig_tr.itertext()
-        ).strip()
+        title = XmlUtils.to_text(fig_tr)
         return title if "Figure" in title else None
 
     def _on_extract_figure_id(self, figure_title: str) -> str:
