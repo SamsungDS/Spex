@@ -65,11 +65,26 @@ T = TypeVar("T")
 
 
 def coerce(v: Any, t: Type[T], f: Callable[[Any], T]) -> T:
+    """_summary_
+
+    Args:
+        v (Any): value
+        t (Type[T]): type
+        f (Callable[[Any], T]): function
+
+    Raises:
+        ValueError: If `v` is None `coerce` will raise a ValueError
+        TypeError: If result of applying f to v is not of type `t`, `coerce`
+        will raise a TypeError
+
+    Returns:
+        T: _description_
+    """
     if v is None:
-        raise Exception("expected a value")
+        raise ValueError("Expected `v` to be not None")
     cv = f(v)
     if not isinstance(cv, t):
-        raise Exception(f"expected value of type {t}, got {type(cv)}")
+        raise TypeError(f"Expected value of type {t}, got {type(cv)}")
     return cv
 
 

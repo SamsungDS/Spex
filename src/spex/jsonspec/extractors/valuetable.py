@@ -6,6 +6,7 @@ from dataclasses import replace as dataclass_replace
 from typing import TYPE_CHECKING, Any, Generator, Iterator, List, Optional, Union, cast
 
 from spex.jsonspec.defs import ELLIPSIS, RESERVED, ValueField
+from spex.jsonspec.exceptions import LabelExtractionError
 from spex.jsonspec.extractors.figure import FigureExtractor, RowErrPolicy
 from spex.jsonspec.extractors.helpers import (
     ValueTableMapping,
@@ -268,7 +269,7 @@ class ValueTableExtractor(FigureExtractor):
             text: Optional[str] = extract_content(data)
             if text is None:
                 self.add_issue(LintErr.LBL_EXTRACT_ERR, row_key=row_key)
-                raise Exception("Could not extract label")
+                raise LabelExtractionError("Could not extract label")
             if text.upper() == RESERVED:
                 return RESERVED
             match = VALUE_LABEL_REGEX.regex.match(text)
