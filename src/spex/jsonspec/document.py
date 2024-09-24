@@ -282,7 +282,7 @@ class DocumentParser:
             parse_fn=self._on_parse_fig,
             linter=self.__linter,
             mapping=mapping,
-        )  # type: ignore
+        )
         with logger.contextualize(
             entity=entity,
             doc={"spec": self.spec, "revision": self.revision},

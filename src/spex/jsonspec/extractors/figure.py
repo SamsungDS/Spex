@@ -7,7 +7,11 @@ from enum import Enum
 from typing import TYPE_CHECKING, Dict, Iterator, List, Optional, Tuple
 
 from spex.jsonspec.defs import JSON
-from spex.jsonspec.extractors.helpers import mapping_incomplete
+from spex.jsonspec.extractors.helpers import (
+    StructTableMapping,
+    ValueTableMapping,
+    mapping_incomplete,
+)
 from spex.jsonspec.lint import Linter, LintErr
 from spex.jsonspec.rowiter import row_iter
 from spex.xml import Element, Xpath
@@ -40,6 +44,7 @@ class FigureExtractor(ABC):
         tbl_hdrs: List[str],
         parse_fn: "ParseFn",
         linter: Linter,
+        mapping: Optional[ValueTableMapping | StructTableMapping] = None,
     ):
         self.doc_parser = doc_parser
         self.__entity_meta = entity_meta
