@@ -259,10 +259,7 @@ class SpexHtmlRenderer:
     def __del__(self) -> None:
         if self._destroyed:
             return
-        try:
-            self._css_writer.__exit__(None, None, None)  # type: ignore
-            self._css_doc = None
-            self._html_writer.__exit__(None, None, None)  # type: ignore
-            self._html_doc = None
-        except Exception as e:
-            print(e)
+        self._css_writer.__exit__(None, None, None)
+        self._css_doc = None
+        self._html_writer.__exit__(None, None, None)
+        self._html_doc = None
