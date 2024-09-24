@@ -46,24 +46,6 @@ def cast_json(val: Any) -> JSON:
     return cast(JSON, val)
 
 
-class EntityMeta(TypedDict):
-    title: NotRequired[str]
-    fig_id: str
-    parent_fig_id: NotRequired[str]
-
-
-class Entity(TypedDict):
-    type: str
-    title: NotRequired[str]
-    fig_id: str
-    parent_fig_id: NotRequired[str]
-    data: dict  # type: ignore
-
-
-class ParseFn(Protocol):
-    def __call__(self, entity: EntityMeta, tbl: "Element") -> Iterator[Entity]: ...
-
-
 ExtractorMap: TypeAlias = Dict[str, "FigureExtractor"]
 FigureId: TypeAlias = str
 ValStr: TypeAlias = str
@@ -108,3 +90,21 @@ class StructTable(TypedDict):
     parent_fig_id: NotRequired[str]
     fig_id: str
     fields: List[Union["StructTable", StructField]]
+
+
+class EntityMeta(TypedDict):
+    title: NotRequired[str]
+    fig_id: str
+    parent_fig_id: NotRequired[str]
+
+
+class Entity(TypedDict):
+    type: str
+    title: NotRequired[str]
+    fig_id: str
+    parent_fig_id: NotRequired[str]
+    fields: List[StructField] | List[ValueField]
+
+
+class ParseFn(Protocol):
+    def __call__(self, entity: EntityMeta, tbl: "Element") -> Iterator[Entity]: ...
