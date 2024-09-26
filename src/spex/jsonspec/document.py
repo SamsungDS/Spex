@@ -45,6 +45,18 @@ class DocLinter:
         row_key: Optional[str] = None,
         ctx: Optional[Dict[str, JSON]] = None,
     ) -> None:
+        """Method to add new linting issue
+
+        Args:
+            err (LintErr): Linting error, defines which type of error should be logged
+            fig (str): Figure identifier as a string
+            msg (Optional[str], optional): Message describing error. Defaults to None.
+            row_key (Optional[str], optional): Row key that specifies which row
+                        in figure has failed. Defaults to None.
+            ctx (Optional[Dict[str, JSON]], optional): Optional context can be
+                        added, containing field values or other relevant information to
+                        identify why the error occurred. Defaults to None.
+        """
         l_entry = LintEntry(
             err=err,
             fig=fig,
@@ -55,6 +67,11 @@ class DocLinter:
         self._lint_issues.append(l_entry)
 
     def lint_entries(self) -> List[LintEntry]:
+        """Method to return the list of linting entries
+
+        Returns:
+            List[LintEntry]: List of lint entries that have been registered.
+        """
         return [*self._lint_issues]
 
 
@@ -216,6 +233,13 @@ class DocumentParser:
             variant of the standard table heading for that type was used.
             Some classic examples would be 'bit' instead of 'bits', 'code' instead
             of 'value' or 'definition' instead of 'description'.
+
+        Args:
+            fig_id (str): Figure id
+            tbl (Element): Xml element that contains table
+
+        Returns:
+            List[str]: List of table headers as string
         """
 
         def normalize_hdr(hdr: str) -> str:
