@@ -10,7 +10,7 @@ from spex.jsonspec.defs import Entity, EntityMeta, StructField
 from spex.jsonspec.document import DocumentParser
 from spex.jsonspec.extractors.figure import RowErrPolicy
 from spex.jsonspec.extractors.structtable import BitsTableExtractor, BytesTableExtractor
-from spex.xml import Element
+from spex.xml import Element, XmlUtils
 
 
 class NvmFig23(BitsTableExtractor):
@@ -37,14 +37,7 @@ class NvmFig23(BitsTableExtractor):
         # From there, we construct a table and meta element, save both and override
         # the normal __call__ implementation to first process the (figure 23) struct
         # table as usual, then yield Figure 24.
-        row_txt = (
-            "".join(
-                elem.decode("utf-8") if isinstance(elem, bytes) else elem
-                for elem in row.itertext()
-            )
-            .lstrip()
-            .lower()
-        )
+        row_txt = XmlUtils.to_text(row).lstrip().lower()
         if not row_txt.startswith("figure 24"):
             return RowErrPolicy.Raise
 

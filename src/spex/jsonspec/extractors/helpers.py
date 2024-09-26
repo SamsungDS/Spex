@@ -11,23 +11,18 @@ from spex.jsonspec.extractors.regular_expressions import (
     STRUCT_LABEL_REGEX,
 )
 from spex.jsonspec.lint import Linter, LintErr
-from spex.xml import Xpath
+from spex.xml import XmlUtils, Xpath
 
 if TYPE_CHECKING:
     from spex.xml import Element
 
 
 def extract_content(data: "Element") -> Optional[str]:
-    p1_opt = Xpath.elem_first(data, "./p[1]")
-    if p1_opt is None:
+    maybe_paragraph = Xpath.elem_first(data, "./p[1]")
+    if maybe_paragraph is None:
         return None
-    p1 = p1_opt
-    txt: str = "".join(
-        # typestubs say we can receive either str's or byte's
-        e.decode("utf-8") if isinstance(e, bytes) else e
-        for e in p1.itertext()
-    ).strip()
-    return txt
+    paragraph = maybe_paragraph
+    return XmlUtils.to_text(paragraph)
 
 
 def content_extract_brief(content: str, brief_maxlen: int = 60) -> Optional[str]:
