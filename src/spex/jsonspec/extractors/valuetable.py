@@ -194,27 +194,29 @@ class ValueTableExtractor(FigureExtractor):
         if len(fields) < 2:
             return
 
-        lbls = set()
-        vals = set()
+        labels = set()
+        values = set()
 
         for field in fields:
-            fval = field["val"]
-            flbl = field["label"]
+            field_value = field["val"]
+            field_label = field["label"]
 
-            if flbl in {RESERVED, ELLIPSIS}:
+            if field_label in {RESERVED, ELLIPSIS}:
                 continue
 
-            if flbl in lbls:
+            if field_label in labels:
                 self.add_issue(
                     LintErr.LBL_DUPLICATE,
-                    row_key=self._val_to_rowkey(fval),
-                    ctx={"label": flbl},
+                    row_key=self._val_to_rowkey(field_value),
+                    ctx={"label": field_label},
                 )
-            lbls.add(flbl)
+            labels.add(field_label)
 
-            if fval in vals:
-                self.add_issue(LintErr.VAL_DUPLICATE, row_key=self._val_to_rowkey(fval))
-            vals.add(fval)
+            if field_value in values:
+                self.add_issue(
+                    LintErr.VAL_DUPLICATE, row_key=self._val_to_rowkey(field_value)
+                )
+            values.add(field_value)
 
     def val_elem(self, row: Element) -> Element:
         return Xpath.elem_first_req(row, f"./td[{self._col_ndx_value + 1}]")
