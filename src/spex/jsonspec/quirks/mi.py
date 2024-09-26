@@ -10,7 +10,7 @@ from spex.jsonspec.defs import Entity, EntityMeta, StructField
 from spex.jsonspec.document import DocumentParser
 from spex.jsonspec.extractors.figure import RowErrPolicy
 from spex.jsonspec.extractors.structtable import BitsTableExtractor
-from spex.xml import Element
+from spex.xml import Element, XmlUtils
 
 
 class MiFig64(BitsTableExtractor):
@@ -28,16 +28,7 @@ class MiFig64(BitsTableExtractor):
         fields: List[StructField],
         err: Exception,
     ) -> Generator["Entity", None, RowErrPolicy]:
-        # TODO: raise lint error
-
-        row_txt = (
-            "".join(
-                elem.decode("utf-8") if isinstance(elem, bytes) else elem
-                for elem in row.itertext()
-            )
-            .lstrip()
-            .lower()
-        )
+        row_txt = XmlUtils.to_text(row).lstrip().lower()
         if not row_txt.startswith("figure 65"):
             return RowErrPolicy.Raise
 
