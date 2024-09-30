@@ -26,6 +26,15 @@ def extract_content(data: "Element") -> Optional[str]:
 
 
 def content_extract_brief(content: str, brief_maxlen: int = 60) -> Optional[str]:
+    """Extract brief from a string
+
+    Args:
+        content (str): Content string
+        brief_maxlen (int, optional): Max length of the output string. Defaults to 60.
+
+    Returns:
+        Optional[str]: Brief
+    """
     txt = content
     if txt is None or ":" not in txt:
         return None
@@ -42,10 +51,31 @@ def content_extract_brief(content: str, brief_maxlen: int = 60) -> Optional[str]
 
 
 def generate_acronym(text: str) -> str:
+    """Generate a acronym from a text string
+
+    It will use the first character of every word and concatenate it together
+    to a string.
+
+    Args:
+        text (str): Text string
+
+    Returns:
+        str: String that contains the acronym
+    """
     return "".join(w[0] for w in text.split()).lower()
 
 
 def normalize_label(label: str) -> str:
+    """Normalize a input string by replacing specific characters
+
+    such as white space(" ") are replaced by underscore("_").
+
+    Args:
+        label (str): Input string
+
+    Returns:
+        str: Normalized string
+    """
     return (
         label.lstrip()
         .rstrip()
@@ -58,6 +88,14 @@ def normalize_label(label: str) -> str:
 
 
 def validate_label(lbl: str, fig_id: str, row_key: str, linter: Linter) -> None:
+    """Validate that a label conforms to a set of rules
+
+    Args:
+        lbl (str): The label as a string
+        fig_id (str): figure id associated with the label
+        row_key (str): row key associated with the label
+        linter (Linter): linter used if validation fails
+    """
     if (
         LABEL_VALIDATION_REGEX.match(lbl) is None
         and ELLIPSIS_LABEL_REGEX.match(lbl) is None
