@@ -118,7 +118,7 @@ not impacted by other Python software you install.  `make uninstall` removes
 
 ## Using Spex
 
-See https://openmpdk.github.io/Spex/user_guide/using_spex.html for details.
+See https://samsungds.github.io/Spex/user_guide/using_spex.html for details.
 
 
 ## Setting up the development environment
