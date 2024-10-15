@@ -95,6 +95,11 @@ class LintEntry:
             )
 
     def to_json(self) -> JSON:
+        """Convert lint errors to json
+
+        Returns:
+            JSON: json representation of lint errors
+        """
         ret: Dict[str, JSON] = {
             "code": self.err.value.name,
             "msg": self.msg,
@@ -121,4 +126,10 @@ class Linter(Protocol):
         ctx: Optional[Dict[str, JSON]] = None,
     ) -> None: ...
 
-    def lint_entries(self) -> List[LintEntry]: ...
+    def lint_entries(self) -> List[LintEntry]:
+        """
+
+        Returns:
+            List[LintEntry]:
+        """
+        ...

@@ -11,16 +11,18 @@ import tempfile
 from contextlib import contextmanager
 from os import environ
 from pathlib import Path
-from typing import Any, AsyncIterator, Dict, Iterator, Tuple
+from typing import Any, AsyncIterator, Dict, Iterator, Set, Tuple
 
 import quart
 from quart import Quart, abort, make_response, redirect, request, url_for
 from quart.wrappers.response import Response
 
+from spex import __version__
 from spex.jsonspec.defs import JSON
 from spex.jsonspec.lint import Code
 from spex.jsonspec.parserargs import ParserArgs
 from spex.parse import parse_spec
+from spexsrv.application.report_view import get_erroneous_figures
 
 SPEX_CACHE = environ.get("SPEX_CACHE", "true").lower() in ("1", "y", "yes", "true")
 
@@ -58,9 +60,9 @@ def json_to_sse(data: JSON) -> bytes:
 @contextmanager
 def temp_dir() -> Iterator[Path]:
     tmp = tempfile.TemporaryDirectory()
-    tmpd = Path(tmp.name)
+    tmp_path = Path(tmp.name)
     try:
-        yield tmpd
+        yield tmp_path
     finally:
         tmp.cleanup()
 
@@ -109,21 +111,29 @@ async def index() -> str:
 async def report(hash: str) -> str:
     # TODO: enable this part again this actually looks for the document requested
     json_fpath = app.config[SPEX_CACHE_LOOKUP].get(hash)
+    html_fpath = Path(app.config[SPEX_CACHE_LOOKUP].get(hash)).with_suffix(".html")
+
     if json_fpath is None or not json_fpath.is_file():
         abort(404)
 
-    print(json_fpath)
     with open(json_fpath) as fh:
         report_json = json.load(fh)
 
-    bundle = request.args.get("bundle", default=None, type=str) is not None
+    erroneous_figure_ids: Set[str] = {
+        report["fig"].split("_")[0] for report in report_json["meta"]["lint"]
+    }
+    report_html = get_erroneous_figures(list(erroneous_figure_ids), html_fpath)
 
+    bundle = request.args.get("bundle", default=None, type=str) is not None
     tpl_ctx = {
         "title": "Report",
         "report_json": report_json,
+        "report_html": report_html,
+        "erroneous_figure_ids": list(erroneous_figure_ids),
         "lint_codes": lint_codes,
         "link_self": url_for("report", hash=hash, bundle=1) if not bundle else None,
         "bundle": bundle,
+        "spex_version": __version__,
     }
 
     return await render_template("report.html", **tpl_ctx)
@@ -141,11 +151,12 @@ async def spec_parse() -> Response | Tuple[str, int, Dict[Any, Any]]:
 
     spec = files["document"]
 
-    tdir = tempfile.TemporaryDirectory()
-    tdir_path = Path(tdir.name)
-    dst = tdir_path / spec.filename
-    await spec.save(dst)
-    hash = md5sum(dst)
+    temp_dir = tempfile.TemporaryDirectory()
+    temp_dir_path = Path(temp_dir.name)
+    destination = temp_dir_path / spec.filename
+
+    await spec.save(destination)
+    hash = md5sum(destination)
     report_url = url_for("report", hash=hash)
     json_path = app.config[SPEX_CACHE_LOOKUP].get(hash)
     if SPEX_CACHE and json_path:
@@ -153,14 +164,14 @@ async def spec_parse() -> Response | Tuple[str, int, Dict[Any, Any]]:
         return redirect(report_url)  # type: ignore
 
     pargs = ParserArgs(
-        output_dir=Path(tdir_path),
+        output_dir=Path(temp_dir_path),
         skip_fig_on_error=True,  # required for caching making sense
         lint_codes_ignore=[],
     )
 
     async def sse_events() -> AsyncIterator[bytes]:
         try:
-            gen = parse_spec(dst, pargs, yield_progress=True)
+            gen = parse_spec(destination, pargs, yield_progress=True)
             try:
                 while True:
                     phase, fig_ndx, num_figs = next(gen)
@@ -174,17 +185,21 @@ async def spec_parse() -> Response | Tuple[str, int, Dict[Any, Any]]:
                     )
             except StopIteration as e:
                 json_fpath = e.value
+                html_path = Path(json_fpath.with_suffix(".html"))
+
                 cache_entry = Path(app.config[SPEX_CACHE_TMPDIR].name) / json_fpath.name
                 shutil.copy(json_fpath, cache_entry)
-                print(f"hash({hash}) -> {cache_entry}")
+                shutil.copy(
+                    html_path, Path(app.config[SPEX_CACHE_TMPDIR].name) / html_path.name
+                )
                 app.config[SPEX_CACHE_LOOKUP][hash] = cache_entry
                 yield json_to_sse({"type": "report-completed", "url": report_url})
         finally:
-            tdir.cleanup()
+            temp_dir.cleanup()
 
     # skip parsing..
     # then generate, then return big ass report doc
-    rsp = await make_response(
+    response = await make_response(
         sse_events(),
         {
             "Content-Type": "text/event-stream",
@@ -192,5 +207,5 @@ async def spec_parse() -> Response | Tuple[str, int, Dict[Any, Any]]:
             "Transfer-Encoding": "chunked",
         },
     )
-    rsp.timeout = 60  # type: ignore
-    return rsp  # type: ignore
+    response.timeout = 60  # type: ignore
+    return response  # type: ignore

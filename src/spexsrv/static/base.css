@@ -1,0 +1,20 @@
+.flex {
+    display: flex;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.filter_selected {
+    color: #fff;
+    background-color: #a2b1bd;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.no-select {
+    user-select: none;
+}

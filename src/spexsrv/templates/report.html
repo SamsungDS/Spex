@@ -22,12 +22,27 @@
     .no-select {
         user-select: none;
     }
+    .figure-err table {
+        border: 1px solid black;
+    }
+    .figure-err table tr {
+        border: 1px solid black;
+    }
+    .figure-err table td {
+        padding: 0.5em 1em;
+    }
+    .figure-err table th {
+        padding: 0.5em 1em;
+    }
 </style>
 {% endblock %}
 {% block content %}
 <section class="container box mt-6">
     <div class="flex justify-between">
         <h1 class="title">Report</h1>
+        {% if link_json is defined and link_json is not none %}
+        <a class="button is-info" href="{{ link_json }}" download="report.json">Download Json</a>
+        {% endif %}
         {% if link_self is defined and link_self is not none %}
         <a class="button is-success" href="{{ link_self }}" download="report.html">Download Report</a>
         {% endif %}
@@ -41,6 +56,10 @@
         <li>
             <span class="has-text-weight-bold">Revision: </span>
             <span x-data x-text="report.meta.revision"></span>
+        </li>
+        <li>
+            <span class="has-text-weight-bold">NVMe Spex version: </span>
+            <span> {{ spex_version }}</span>
         </li>
     </ul>
     <div x-data class="tabs">
@@ -97,12 +116,42 @@
         <template x-if="!$store.figures.loading && $store.figures.value && $store.figures.length !== 0">
             <div>
                 <template x-data x-for="e in $store.figures.value">
-                    <span>
-                        <span>&quot;</span>
-                        <span x-text="e.fig_id"></span>
-                        <span>&quot;</span>
-                        <span>,</span>
-                    </span>
+                    <template x-if="e.lint_errors.length > 0">
+                        <article class="message figure-err">
+                            <div class="message-header" x-text="figureHeader(`${e.fig_id}`)">
+                            </div>
+                            <div x-data="{err: e.lint_errors}" class="message-body">
+                                <div x-html="getFigureId(`${e.fig_id}`)" class="mb-2"></div>
+                                <div class="columns is-flex-wrap-wrap">
+                                    <template x-for="lint_err in err">
+                                        <div class="column is-half">
+                                            <div class="card">
+                                                <div class="card-content">
+                                                    <div class="content">
+                                                        <span class="tag is-text is-size-6 has-text-weight-bold">
+                                                            <strong class="mr-3"> Row: </strong>
+                                                            <span x-text="lint_err.row"></span>
+                                                        </span>
+                                                        <span class="tag is-warning is-size-6">
+                                                            <span class="mr-2 ml-2"> Linting error: </span>
+                                                            <span x-text="lint_err.msg"></span>
+                                                            (
+                                                            <span x-text="lint_err.code"></span>
+                                                            )
+                                                        </span>
+                                                        <template x-if="lint_err.context.label">
+                                                            <span class="tag is-size-6  has-text-weight-bold is-info"
+                                                                x-text="lint_err.context.label"></span>
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </article>
+                    </template>
                 </template>
             </div>
         </template>
@@ -113,18 +162,21 @@
 {% block scripts %}
 <script defer>
     const report = {{ report_json | tojson }};
+    const erroneous_figure_ids = {{ erroneous_figure_ids  | tojson }};
+    const report_html = {{ report_html | tojson }};
     const lintCodes = {{ lint_codes | tojson }};
 
     const capitalize = (word) => (
         word.charAt(0).toUpperCase()
         + word.slice(1)
     );
+    const figureHeader = (fig) => {
+        return "Figure " + fig;
+    };
     const figureTitle = (ent) => {
         if (ent.title) {
             return ent.title;
         }
-
-        // report[0].fig_id.split("_") // [ "11", "0" ];
         fig_elems = ent.fig_id.split("_");
         rfig_id = fig_elems[0];
         rfig = report.entities.find(parent => parent.fig_id === rfig_id);
@@ -162,7 +214,19 @@
         // sort in descending order
         arr.sort((a, b) => b.amount - a.amount)
         return arr;
-    }
+    };
+
+    const getFigureId = (figure) => {
+        const fig_id = figure.split("_")[0];
+        const html = report_html[fig_id];
+        if (html != undefined) {
+            return html;
+        } else {
+            return figure;
+        }
+
+    };
+
     document.addEventListener("alpine:init", () => {
     Alpine.store("tab", "summary");
     Alpine.store("error_summary", {
@@ -196,8 +260,7 @@
                 this.loading = true;
                 console.warn("RECOMPUTING FIGURES");
                 let ents = report.entities;
-                console.debug("ENTS");
-                console.debug(ents);
+
                 let filter_codes = Alpine.store("error_summary")
                     .rows.filter(e => e.selected)
                     .map(e => e.code);
@@ -208,6 +271,7 @@
                     // only retain lint entries whose lint code is contained in the filter applied
                     lints = lints.filter(l => filter_codes.find(c => c === l.code));
                 }
+                console.log(lints)
 
                 // group lints by fig (fig_id)
                 let lints_by_fig = lints.reduce((acc, l) => {
@@ -218,46 +282,38 @@
                     }
                     return acc;
                 }, {});
+                console.log("lints by fig", lints_by_fig)
 
+                console.log("Before aggregation", ents);
                 // add lint_errors to entities
                 let ents_w_lints = ents.map(e => {
-                    if (lints_by_fig[e.fig_id]) {
+                    let entity = e
+                    console.log("Entity", entity.fig_id);
+                    if (lints_by_fig[entity.fig_id]) {
+                        console.log("Found lint!! ", e);
                         e.lint_errors = lints_by_fig[e.fig_id];
                     } else {
+                        console.log("Could not foind lint, ", e.fig_id);
                         e.lint_errors = [];
                     }
                     return e;
                 });
-
+                console.log("Before filter", ents_w_lints);
                 if (filter_codes.length) {
                     ents_w_lints = ents_w_lints.filter(e => e.lint_errors.length > 0);
                 }
+                console.log("After filter", ents_w_lints);
 
                 this.value = ents_w_lints;
+                this.lints = lints_by_fig;
                 this.loading = false;
+                console.log(this.value)
+                console.log("LINTS: ", this.lints);
                 console.warn(`recompute DONE ${this.value.length} elems`);
             });
         }
     });
 
-    // Alpine.store("fig_uistate", {
-    //     toggleShow(fig_id) {
-    //         this[fig_id].show = ! this[fig_id].show;
-    //     },
-    //     init() {
-    //         Alpine.effect(() => {
-    //             console.info("STORE[fig_uistate] init");
-    //             //let ents = report.entities;
-    //             let ents = Alpine.store("figures").value;
-    //             console.warn(typeof(ents));
-    //             console.warn(ents);
-    //             ents.forEach(e => this[e.fig_id] = {
-    //                 show: false,
-    //                 tab: 'figure'
-    //             });
-    //         });
-    //     }
-    // });
 });
 
 </script>
