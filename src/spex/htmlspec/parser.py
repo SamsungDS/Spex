@@ -11,6 +11,7 @@ from lxml.etree import _Element
 
 from spex.htmlspec.docx import AbstractNumLvl, Document, RunProperties, TableWrap, Tag
 from spex.htmlspec.stream import Stream
+from spex.jsonspec.extractors.regular_expressions import TABLE_ID_REGEX
 from spex.xml import Xpath
 
 
@@ -57,10 +58,13 @@ class Point:
     y: int
 
 
+HTMLUnits = Union[List, Paragraph, Span, "Table"]
+
+
 @dataclass(frozen=True)
 class TableCell:
     tag: str
-    elems: TList[Union[List, Paragraph, Span, "Table"]]
+    elems: TList[HTMLUnits]
     span: Point
     origin: Point
     tc_pr: Optional[TcPr]
@@ -69,6 +73,30 @@ class TableCell:
 @dataclass(frozen=True)
 class Table:
     rows: TList[TList[TableCell]]
+    id: Optional[str] = None
+
+
+def find_id(rows: TList[TList[TableCell]]) -> Optional[str]:
+    def extract_text(elem: Paragraph) -> str:
+        return "".join([e.text for e in elem.spans])
+
+    # Find first row
+    if len(rows):
+        row = rows[0]
+        if len(row):
+            # Find first cell i row
+            cell = row[0]
+            if (
+                cell.tag == "td"
+                and len(cell.elems)
+                and isinstance(cell.elems[0], Paragraph)
+            ):
+                text = extract_text(cell.elems[0])
+                if text != "":
+                    maybe_id = TABLE_ID_REGEX.match(text)
+                    if maybe_id:
+                        return maybe_id.group("id")
+    return None
 
 
 class SpexParser:
@@ -252,4 +280,5 @@ class SpexParser:
                 cell_cache[p] = tcell
                 cells.append(tcell)
             rows.append(cells)
-        return Table(rows=rows)
+        table = Table(rows=rows, id=find_id(rows))
+        return table

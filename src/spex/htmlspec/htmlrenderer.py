@@ -198,7 +198,10 @@ class SpexHtmlRenderer:
         s.dedent().emitln(f"</{lst.tag}>")
 
     def _render_table(self, s: Section, tbl: Table) -> None:
-        s.emitln("<table>").indent()
+        if tbl.id:
+            s.emitln(f"<table id='{tbl.id}'>").indent()
+        else:
+            s.emitln("<table>").indent()
         for rndx, row in enumerate(tbl.rows):
             s.emitln("<tr>").indent()
             for cndx, cell in enumerate(row):
