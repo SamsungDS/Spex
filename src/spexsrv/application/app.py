@@ -132,11 +132,29 @@ async def report(hash: str) -> str:
         "erroneous_figure_ids": list(erroneous_figure_ids),
         "lint_codes": lint_codes,
         "link_self": url_for("report", hash=hash, bundle=1) if not bundle else None,
+        "link_json": (
+            url_for("json_report", hash=hash, bundle=1) if not bundle else None
+        ),
+        "link_html": (
+            url_for("html_report", hash=hash, bundle=1) if not bundle else None
+        ),
         "bundle": bundle,
         "spex_version": __version__,
     }
 
     return await render_template("report.html", **tpl_ctx)
+
+
+@app.route("/json/<hash>")
+async def json_report(hash: str) -> Response:
+    json_fpath = Path(app.config[SPEX_CACHE_LOOKUP].get(hash))
+    return await quart.helpers.send_file(json_fpath)
+
+
+@app.route("/html/<hash>")
+async def html_report(hash: str) -> Response:
+    html_fpath = Path(app.config[SPEX_CACHE_LOOKUP].get(hash)).with_suffix(".html")
+    return await quart.helpers.send_file(html_fpath)
 
 
 @app.route("/parse", methods=["POST"])
@@ -158,10 +176,13 @@ async def spec_parse() -> Response | Tuple[str, int, Dict[Any, Any]]:
     await spec.save(destination)
     hash = md5sum(destination)
     report_url = url_for("report", hash=hash)
-    json_path = app.config[SPEX_CACHE_LOOKUP].get(hash)
-    if SPEX_CACHE and json_path:
-        # redirect immediately to the existing report
-        return redirect(report_url)  # type: ignore
+    # json_path = app.config[SPEX_CACHE_LOOKUP].get(hash)
+    # if SPEX_CACHE and json_path:
+    #     # redirect immediately to the existing report
+    #     print(
+    #         f"Cache is active {SPEX_CACHE} and json path is {json_path} the url is: {report_url}"
+    #     )
+    #     return redirect(report_url)  # type: ignore
 
     pargs = ParserArgs(
         output_dir=Path(temp_dir_path),

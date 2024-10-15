@@ -4,8 +4,9 @@
 {% block content %}
 
 <section x-data class="container box mt-6" x-show="!$store.processing">
-    <h1 class="title">Submit Specification For Parsing</h1>
+    <h1 class="title">Submit specification for parsing</h1>
     <!-- action="/parse" method="post" enctype="multipart/form-data" -->
+     <div class="notification is-info">To upload and parse a NVMe Specification it is needed to be in the docx format or the html document that this </div>
     <form @submit.prevent="submitForm" x-data="{
         'path': '',
         'filename': '',

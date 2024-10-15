@@ -34,34 +34,55 @@
     .figure-err table th {
         padding: 0.5em 1em;
     }
+    .button {
+        min-width: 250px;
+    }
 </style>
 {% endblock %}
 {% block content %}
 <section class="container box mt-6">
     <div class="flex justify-between">
-        <h1 class="title">Report</h1>
-        {% if link_json is defined and link_json is not none %}
-        <a class="button is-info" href="{{ link_json }}" download="report.json">Download Json</a>
-        {% endif %}
-        {% if link_self is defined and link_self is not none %}
-        <a class="button is-success" href="{{ link_self }}" download="report.html">Download Report</a>
-        {% endif %}
-    </div>
+        <h1 class="title">NVMe Spex Report</h1>
 
-    <ul>
-        <li>
-            <span class="has-text-weight-bold">Specification: </span>
-            <span x-data x-text="report.meta.specification"></span>
-        </li>
-        <li>
-            <span class="has-text-weight-bold">Revision: </span>
-            <span x-data x-text="report.meta.revision"></span>
-        </li>
-        <li>
-            <span class="has-text-weight-bold">NVMe Spex version: </span>
-            <span> {{ spex_version }}</span>
-        </li>
-    </ul>
+    </div>
+    <div class="columns">
+        <div class="column">
+            <ul>
+                <li>
+                    <span class="has-text-weight-bold">Specification: </span>
+                    <span x-data x-text="report.meta.specification"></span>
+                </li>
+                <li>
+                    <span class="has-text-weight-bold">Revision: </span>
+                    <span x-data x-text="report.meta.revision"></span>
+                </li>
+                <li>
+                    <span class="has-text-weight-bold">NVMe Spex version: </span>
+                    <span> {{ spex_version }}</span>
+                </li>
+            </ul>
+
+        </div>
+        <div class="column" align="right">
+            <ul>
+            <li class="m-1" >
+            {% if link_self is defined and link_self is not none %}
+            <a class="button is-success" href="{{ link_self }}" download="report.html">Download Report</a>
+            {% endif %}
+            {% if link_json is defined and link_json is not none %}
+            </li>
+            <li class="m-1">
+            <a class="button is-info" href="{{ link_json }}" download="report.json">Download JSON</a>
+            </li>
+            {% endif %}
+            {% if link_html is defined and link_html is not none %}
+            <li class="m-1">
+            <a class="button is-link" href="{{ link_html }}" download="spec.html">Download HTML</a>
+            </li>
+            {% endif %}
+            </ul>
+        </div>
+    </div>
     <div x-data class="tabs">
         <ul>
             <li x-data :class="{'is-active': $store.tab === 'summary'}">
@@ -99,6 +120,11 @@
                             <td class="has-text-right"><span x-text="entry.amount"></span></td>
                         </tr>
                     </template>
+                        <tr>
+                            <td></td>
+                            <td>All errors</td>
+                            <td class="has-text-right" x-text="errorSum()"></td>
+                        </tr>
                 </tbody>
             </table>
             <div class="level">
@@ -106,6 +132,14 @@
                     <div class="level-item">
                         <button class="button is-warning" x-on:click="$store.error_summary.clear()">Clear all
                             filters</button>
+
+                    </div>
+                </div>
+                <div class="level-left">
+                    <div class="level-item">
+                        {% if link_self is defined and link_self is not none %}
+                        <a class="button is-primary" href="/" >Generate New Report</a>
+                        {% endif %}                        
                     </div>
                 </div>
             </div>
@@ -115,15 +149,15 @@
         <h2 class="title">Figures:</h2>
         <template x-if="!$store.figures.loading && $store.figures.value && $store.figures.length !== 0">
             <div>
-                <template x-data x-for="e in $store.figures.value">
-                    <template x-if="e.lint_errors.length > 0">
+                <template x-data x-for="[fig_id, e] in Object.entries($store.figures.lints)">
+                    <template x-if="e.length > 0">
                         <article class="message figure-err">
-                            <div class="message-header" x-text="figureHeader(`${e.fig_id}`)">
+                            <div class="message-header" x-text="figureHeader(`${fig_id}`)">
                             </div>
                             <div x-data="{err: e.lint_errors}" class="message-body">
-                                <div x-html="getFigureId(`${e.fig_id}`)" class="mb-2"></div>
+                                <div x-html="getFigureId(`${fig_id}`)" class="mb-2 is-full"></div>
                                 <div class="columns is-flex-wrap-wrap">
-                                    <template x-for="lint_err in err">
+                                    <template x-for="lint_err in e">
                                         <div class="column is-half">
                                             <div class="card">
                                                 <div class="card-content">
@@ -215,6 +249,11 @@
         arr.sort((a, b) => b.amount - a.amount)
         return arr;
     };
+
+    const errorSum = () => {
+        lints = lintGroupByCode();
+        return lints.reduce((n, {amount}) => n + amount, 0);
+    }
 
     const getFigureId = (figure) => {
         const fig_id = figure.split("_")[0];
