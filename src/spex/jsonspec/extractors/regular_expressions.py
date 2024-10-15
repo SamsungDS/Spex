@@ -65,3 +65,5 @@ DYNAMIC_RANGE_REGEX = compile(
 ELLIPSIS_LABEL_REGEX = compile(r"^[\s]*[\.\.\.]|[…][\s]*$")
 
 LABEL_VALIDATION_REGEX = compile(r"^[a-zA-Z][\w]*$")
+
+TABLE_ID_REGEX = compile(r"^Figure (?P<id>\d+):.*")
