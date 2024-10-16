@@ -5,6 +5,7 @@
 from pathlib import Path
 from typing import Generator, Optional, Set, cast
 
+from spex import __version__
 from spex.htmlspec.htmlrenderer import SpexHtmlRenderer
 from spex.jsonspec import parse
 from spex.jsonspec.defs import JSON
@@ -45,6 +46,7 @@ def parse_spec(
         w.write_meta("specification", sdoc.key)
         w.write_meta("revision", sdoc.rev)
         w.write_meta("format version", 1)  # TODO define elsewhere
+        w.write_meta("spex version", __version__)  # TODO define elsewhere
         dparser = sdoc.get_parser(args)
         if yield_progress:
             num_figures = dparser.num_figures

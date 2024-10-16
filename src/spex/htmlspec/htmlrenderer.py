@@ -9,6 +9,7 @@ from typing import Any, Generator, Optional, Set, Tuple, TypeAlias
 from gcgen.api import Section, write_file
 from lxml.etree import _Element
 
+from spex import __version__
 from spex.htmlspec import css
 from spex.htmlspec.docx import Document
 from spex.htmlspec.parser import (
@@ -137,6 +138,7 @@ class SpexHtmlRenderer:
         if revision is not None:
             s.emit(f' data-revision="{revision}"')
         s.emitln("/>")
+        s.emitln(f'<meta name="spexVersion" content="{__version__}" />')
         s.emitln(f"<title>{self._fname}</title>")
         s.add_section(self._html_head)
         s.emitln(f'<link rel="stylesheet" href="{self._fname}.css"/>')

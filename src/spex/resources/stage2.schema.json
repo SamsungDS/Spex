@@ -21,6 +21,10 @@
           "type": "number",
           "minimum": 1
         },
+        "spex version": {
+          "description": "version of the NVMe Spex tool",
+          "type": "string"
+        },
         "lint": {
           "description": "linting issues encountered during parsing",
           "type": "array",
