@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Optional, Union
 
 from spex.jsonspec.extractors.regular_expressions import (
     ELLIPSIS_LABEL_REGEX,
+    LABEL_NUMERICAL_REARRANGE_REGEX,
     LABEL_VALIDATION_REGEX,
     STRUCT_LABEL_REGEX,
 )
@@ -63,6 +64,22 @@ def generate_acronym(text: str) -> str:
         str: String that contains the acronym
     """
     return "".join(w[0] for w in text.split()).lower()
+
+
+def rearrange_num_label(label: str) -> str:
+    # Use regex to check if the string starts with a number followed by an underscore
+    match = LABEL_NUMERICAL_REARRANGE_REGEX.match(label)
+
+    if match:
+        # Extract the number and the rest of the string
+        num = match.group(1)
+        rest_of_string = match.group(2).strip("_")
+
+        # Return the rearranged string with the number at the end
+        return f"{rest_of_string}_{num}".strip("_")
+    else:
+        # If the string doesn't match the pattern, return the original string
+        return label
 
 
 def normalize_label(label: str) -> str:

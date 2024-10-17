@@ -14,6 +14,7 @@ from spex.jsonspec.extractors.helpers import (
     extract_content,
     mapping_incomplete,
     normalize_label,
+    rearrange_num_label,
     validate_label,
 )
 from spex.jsonspec.extractors.regular_expressions import VALUE_LABEL_REGEX
@@ -267,7 +268,7 @@ class ValueTableExtractor(FigureExtractor):
             else:
                 self.add_issue(LintErr.LBL_EXTRACT_ERR, row_key=row_key)
                 label = text
-
+        label = rearrange_num_label(label)
         label = normalize_label(label)
         validate_label(label, self.fig_id, row_key, self.linter)
         return label
