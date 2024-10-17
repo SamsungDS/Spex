@@ -66,4 +66,6 @@ ELLIPSIS_LABEL_REGEX = compile(r"^[\s]*[\.\.\.]|[…][\s]*$")
 
 LABEL_VALIDATION_REGEX = compile(r"^[a-zA-Z][\w]*$")
 
+LABEL_NUMERICAL_REARRANGE_REGEX = compile(r"^(\d+)(.*)")
+
 TABLE_ID_REGEX = compile(r"^Figure (?P<id>\d+):.*")
