@@ -113,8 +113,3 @@ features to use.
 contained in each specification document, it is up to you to merge these
 descriptions where appropriate and to write a tool for generating code suitable
 to your project.
-
-Why does Spex *not* produce an NVMe Model?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-...
