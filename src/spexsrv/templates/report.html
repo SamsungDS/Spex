@@ -173,6 +173,13 @@
                                                             <span x-text="lint_err.code"></span>
                                                             )
                                                         </span>
+                                                        <template x-for="[k, v] in Object.entries(lint_err.context)">
+                                                            <span class="tag is-size-6  has-text-weight-bold is-info">
+                                                                <span x-text="k" ></span>
+                                                                <span class="p-2">:</span>
+                                                                <span x-text="v"></span>
+                                                            </span>
+                                                        </template>
                                                         <template x-if="lint_err.context.label">
                                                             <span class="tag is-size-6  has-text-weight-bold is-info"
                                                                 x-text="lint_err.context.label"></span>
